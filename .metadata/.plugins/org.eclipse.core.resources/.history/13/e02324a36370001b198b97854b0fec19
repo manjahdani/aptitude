@@ -1,0 +1,11 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents
+
+/** 
+ * @author manjah
+ * 
+ */
+class UDPSender {
+}

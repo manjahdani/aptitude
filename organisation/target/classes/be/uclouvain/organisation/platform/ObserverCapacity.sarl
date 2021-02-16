@@ -1,0 +1,12 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+/** 
+ * @author manjah
+ * 
+ */
+capacity ObserverCapacity {
+	def Signal2Perception()
+}

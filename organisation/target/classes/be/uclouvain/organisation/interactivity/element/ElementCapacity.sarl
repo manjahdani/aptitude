@@ -1,0 +1,14 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.interactivity.element
+
+import UDPMessages.UDP_Message_Base
+
+/** 
+ * @author manjah
+ * 
+ */
+capacity ElementCapacity {
+	def InformationAnalysis(msg : UDP_Message_Base)
+}

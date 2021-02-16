@@ -1,0 +1,12 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.interactivity.outputDevice
+
+/** 
+ * @author manjah
+ * 
+ */
+capacity OutputDeviceCapacity {
+	def outputConversion(idSender : UUID, info : UDP_Message_Base)
+}

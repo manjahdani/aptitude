@@ -1,0 +1,93 @@
+/** 
+ * 
+ */
+package be.uclouvain.launcher
+
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.core.Schedules
+import javafx.application.Application
+import be.uclouvain.aptitudeAgents.PlatformAgent
+import be.uclouvain.organisation.platform.util.PlatformConfig
+import UDPMessages.UDP_Message_Base
+import be.uclouvain.aptitudeAgents.CommitSuicide
+import java.net.DatagramPacket
+import java.net.DatagramSocket
+import UDPMessages.MessageDeserializer
+import be.uclouvain.aptitudeAgents.Paraddis
+
+/** 
+ * @author manjah
+ * 
+ */
+agent bootAgent extends Paraddis {
+	uses Lifecycle, Schedules, DefaultContextInteractions, Logging
+
+	val junctionList = "MacqWoolridge"
+
+	val client : DatagramSocket = new DatagramSocket(65000) // A client to listen requests
+	val clientSender = new UDPSender() // homeMade client to send UDP message
+
+	on Initialize {
+		// Event trigger before the agent begin to live or to be used.
+		// You should put all the initialization statements in this block of code.
+		// loggingName = "Boot" + "-" + this.ID
+		// info("Boot agent was started.")
+		enableInputStream()
+		task("Application-Launcher").execute[Application::launch(GUI, " ")]
+		
+	}
+
+	def setAgentsReady {
+		var PlatformHolonConfig = new PlatformConfig(0, 5);
+		// for (wc : subWorldConfig) {
+		// WorldHolon.addSubWorld(wc)
+		// }
+		spawn(PlatformAgent, PlatformHolonConfig)
+		// StartSimulation
+	}
+
+	def MessageAnalysis(msg : UDP_Message_Base, adrss : String) {
+
+		switch (msg.method) {
+			case "stopSimulation": {
+				info("Message received")
+				disable()
+				emit(new CommitSuicide)
+			}
+			default: {
+				info("Unknown message received by boot agent : " + msg.method)
+			}
+		}
+	}
+
+	def synchronized enableInputStream {
+		var parser = new MessageDeserializer();
+		val Enable_Server = task("Enable_Server")
+		Enable_Server.execute([
+			while (!isCanceled(Enable_Server) && !client.isClosed) {
+				var buffer = newByteArrayOfSize(8192);
+				var packet = new DatagramPacket(buffer, buffer.length);
+				client.receive(packet);
+				var message = new String(packet.getData(), packet.getOffset(), packet.getLength());
+				var data : UDP_Message_Base = parser.Deserialize(message);
+				if (data !== null) {
+					print(data)
+					MessageAnalysis(data, (packet.getAddress()).getHostAddress)
+				} else {
+					println("I received it NULLL" + data)
+				}
+				packet.setLength(buffer.length);
+			}
+		])
+
+	}
+
+	def synchronized disable() {
+		this.client.close()
+		task("Enable_Server").cancel
+		task("Application-Launcher").cancel
+	}
+}

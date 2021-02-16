@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+F:\aptitude\.metadata\.plugins\org.eclipse.jdt.core
+1825655984.index
+285048439.index
+24132819.index

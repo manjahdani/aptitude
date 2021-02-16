@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;aptitude-launcher&apos;" deleteContents="false" description="Delete resource &apos;aptitude-launcher&apos;" element1="/aptitude-launcher" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1613488915087"/>
+</session>

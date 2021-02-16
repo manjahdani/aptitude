@@ -1,0 +1,15 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.interactivity.inputDevice
+
+/** 
+ * @author manjah
+ * 
+ */
+capacity InputDeviceCapacity {
+	
+	def EnableInputStream()
+
+	def DisableInputStream()
+}

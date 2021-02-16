@@ -1,0 +1,41 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.interactivity.inputDevice
+
+import be.uclouvain.organisation.interactivity.inputDevice.InputDeviceCapacity
+import io.sarl.core.Logging
+
+/** 
+ * @author manjah
+ * 
+ */
+skill inputSkill implements InputDeviceCapacity {
+	uses Logging
+
+	def install {
+		// Function invoked when the skill is installed in the owner.
+		// You should put all the initialization statements in this block of code.
+		info("Installing the skill")
+	}
+
+	def prepareUninstallation {
+		// Function invoked when the skill is preparing to be uninstalled from the owner, but before the owner is destroyed.
+		// You should put all the resource release statements that should be executed before the owner is destroyed.
+		info("Preparing the uninstallation of the skill")
+	}
+
+	def uninstall {
+		// Function invoked when the skill is uninstalled from the owner, and after the owner is destroyed.
+		// You should put all the resource release statements in this block of code.
+		info("Uninstalling the skill")
+	}
+
+	override DisableInputStream {
+		// TODO Auto-generated code.
+	}
+
+	override EnableInputStream {
+		// TODO Auto-generated code.
+	}
+}

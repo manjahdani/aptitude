@@ -1,0 +1,10 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.interactivity.outputDevice
+
+/** 
+ * @author manjah
+ * 
+ */
+event OutputEvent

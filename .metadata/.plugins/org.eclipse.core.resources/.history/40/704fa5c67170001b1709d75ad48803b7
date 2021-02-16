@@ -1,0 +1,13 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents
+
+import be.uclouvain.organisation.interactivity.element.ElementCapacity
+
+/** 
+ * @author manjah
+ * 
+ */
+capacity DeviceCapacity extends ElementCapacity {
+}

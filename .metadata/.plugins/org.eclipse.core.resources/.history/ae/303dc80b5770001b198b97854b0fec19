@@ -1,0 +1,42 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents
+
+import io.sarl.core.AgentKilled
+import io.sarl.core.AgentSpawned
+import io.sarl.core.ContextJoined
+import io.sarl.core.ContextLeft
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.core.MemberJoined
+import io.sarl.core.MemberLeft
+import io.sarl.core.ParticipantJoined
+import io.sarl.core.ParticipantLeft
+import io.sarl.core.SpaceCreated
+import io.sarl.core.SpaceDestroyed
+
+/** 
+ * @author manjah
+ * 
+ */
+agent UserInterface {
+	uses Logging
+
+	on Initialize {
+		val UI_type = occurrence.parameters.get(0).toString
+		switch (UI_type) {
+			// To change, its a user job !!! It doens'nt make sense
+			case "NetworkDeviceManager": {
+				val s = setSkill(
+					new DeviceNetworkManagerSkill(65001, occurrence.parameters.get(1) as TreeMap<UUID, EventSpace>),
+					InputDeviceCapacity)
+				registerBehavior(new InputDeviceRole(this))
+				setSkill(new MobileOutputSkill(s.getMobileAddress), OutputDeviceCapacity)
+				registerBehavior(new OutputDeviceRole(this))
+			}
+		}
+
+	}
+}

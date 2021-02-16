@@ -1,0 +1,46 @@
+/** 
+ * 
+ */
+package be.uclouvain.launcher
+
+/** 
+ * @author manjah
+ * 
+ */
+import javafx.application.Application
+
+import javafx.^event.ActionEvent
+import javafx.^event.EventHandler
+import javafx.fxml.FXMLLoader
+import javafx.scene.Scene
+import javafx.scene.control.Button
+import javafx.scene.layout.StackPane
+import javafx.stage.Stage
+import UDPMessages.UDP_Message_StopSimulation
+
+class GUI extends Application {
+	var clientSender = new UDPSender()
+
+	protected def doApplicationStart(arg0 : Stage) : FXMLLoader {
+		arg0.setTitle("Application");
+		var btn = new Button();
+		btn.setText("Exit Program'");
+		btn.setOnAction(new EventHandler<ActionEvent>() {
+			def handle(eve : ActionEvent) {
+				clientSender.SendData(new UDP_Message_StopSimulation(true), "192.168.0.104", 65000)
+				print("Sa5")
+			}
+		});
+
+		var root = new StackPane();
+		root.getChildren().add(btn);
+		arg0.setScene(new Scene(root, 300, 250));
+		arg0.show();
+		return null;
+	}
+
+	def start(primaryStage : Stage) throws Exception {
+		doApplicationStart(primaryStage)
+	}
+
+}

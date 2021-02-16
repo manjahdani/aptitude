@@ -1,0 +1,30 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents
+
+import be.uclouvain.organisation.interactivity.element.ElementCapacity
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.lang.core.EventSpace
+import java.util.ArrayList
+import java.util.TreeMap
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+agent User extends Paraddis{
+	uses Logging
+	
+	on Initialize {
+		
+		info("agent started.")
+		setSkill(
+			new UserSkill(occurrence.parameters.get(0) as TreeMap<UUID, EventSpace>,
+				occurrence.parameters.get(1) as ArrayList<UUID>, occurrence.parameters.get(2).toString), DeviceCapacity,
+			ElementCapacity)
+		//registerBehavior(new DeviceElementRole(this))
+	}
+}

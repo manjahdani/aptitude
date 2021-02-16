@@ -1,0 +1,20 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents
+
+import be.uclouvain.organisation.interactivity.element.ElementCapacity
+import java.util.UUID
+import UDPMessages.UDP_Message_Base
+import java.util.TreeMap
+
+/** 
+ * @author manjah
+ * 
+ */
+capacity DeviceCapacity extends ElementCapacity {
+	def getEntityList : TreeMap<UUID, CharacterData>
+	
+	def informationAnalysis(msg : UDP_Message_Base)
+	def updateBehavior
+}

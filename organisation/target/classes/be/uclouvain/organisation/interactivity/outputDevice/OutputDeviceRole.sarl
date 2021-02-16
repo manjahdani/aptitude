@@ -1,0 +1,16 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.interactivity.outputDevice
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior OutputDeviceRole {
+	uses OutputDeviceCapacity
+
+	on OutputMsg {
+		outputConversion(occurrence.source.getUUID, occurrence.Information)
+	}
+}

@@ -1,0 +1,31 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents
+
+import be.uclouvain.organisation.interactivity.inputDevice.InputDeviceCapacity
+import be.uclouvain.organisation.interactivity.inputDevice.InputDeviceRole
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.lang.core.EventSpace
+import java.util.TreeMap
+import java.util.UUID
+import io.sarl.core.Behaviors
+import be.uclouvain.organisation.interactivity.outputDevice.OutputDeviceRole
+import be.uclouvain.organisation.interactivity.outputDevice.OutputDeviceCapacity
+
+/** 
+ * @author manjah
+ * 
+ */
+agent UserInterface extends Paraddis{
+	uses Logging, Behaviors
+	on Initialize {
+		
+		val s = setSkill(new DeviceNetworkManagerSkill(65001, occurrence.parameters.get(0) as TreeMap<UUID, EventSpace>),
+					InputDeviceCapacity)
+		registerBehavior(new InputDeviceRole(this))
+		setSkill(new MobileOutputSkill(s.getMobileAddress), OutputDeviceCapacity)
+		registerBehavior(new OutputDeviceRole(this))
+		}
+}

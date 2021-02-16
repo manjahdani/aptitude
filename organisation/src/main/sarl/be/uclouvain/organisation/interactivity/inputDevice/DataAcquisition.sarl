@@ -1,0 +1,32 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.interactivity.inputDevice
+
+import java.util.UUID
+import UDPMessages.UDP_Message_Base
+
+/** 
+ * @author manjah
+ * 
+ */
+
+event DataAcquisition {
+
+	/** 
+	  * The ID of the Element that has to be updated.
+	  */
+	val elementID : UUID
+
+	/** 
+	 * The information. 
+	 * The {@code Object} type allows to store every kind of data. As it is the {@code Agent }(and not the {@code Behavior}) that has to process the
+	 * data, it is not necessary for the organisation to know the kind of exchanged data.
+	 */
+	val data : UDP_Message_Base
+
+	new (uid : UUID, o : UDP_Message_Base) {
+		this.elementID = uid
+		this.data = o;
+	}
+}

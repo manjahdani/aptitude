@@ -1,0 +1,21 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+/** 
+ * @author manjah
+ * 
+ */
+capacity PlatformCapacity {
+
+	/** 
+	  * Verifies if some conditions in the World have changed.
+	*/
+	def ConditionActivation()
+
+	/** 
+	 * Verifies if the different information provided to the {@code WorldRole} respect the rules of the World.
+	 */
+	def RuleManagement(InfoRule : Object) : boolean
+}

@@ -1,0 +1,18 @@
+package be.uclouvain.launcher;
+
+import io.sarl.lang.annotation.SarlElementType;
+import io.sarl.lang.annotation.SarlSpecification;
+import io.sarl.lang.annotation.SyntheticMember;
+
+/**
+ * @author manjah
+ */
+@SarlSpecification("0.11")
+@SarlElementType(10)
+@SuppressWarnings("all")
+public class GUI {
+  @SyntheticMember
+  public GUI() {
+    super();
+  }
+}

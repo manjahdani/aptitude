@@ -1,0 +1,100 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents
+
+
+import io.sarl.core.Behaviors
+import io.sarl.core.Destroy
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.core.Schedules
+import io.sarl.core.Initialize
+
+/** 
+ * @author manjah
+ * 
+ */
+ 
+event CommitSuicide
+
+agent Paraddis {
+	uses Lifecycle, Logging, InnerContextAccess, Schedules, Behaviors
+
+	protected var AgentType : String = 'Unknown'
+	
+	on Initialize {
+	// Event trigger before the agent begin to live or to be used.
+
+				/* 
+	 * The goal in the statements below is to help us setting the AgentType in 
+	 * order to have an idea of which agents is producing which <<log
+	 */
+	val Classa = this.class.toString // to get the class of the agent
+	 synchronized (AgentType)
+	 switch (Classa) {
+	 case "class be.uclouvain.parkar.launcher.AgentBoot": {
+	  AgentType = "Boot"}
+	 /* case "class be.uclouvain.parkar.universe.agents.WorldAgent": {
+	 * AgentType = "World"
+	 * }
+	 * case "class be.uclouvain.parkar.devices.Mobile": {
+	 * AgentType = "Mobile"
+	 * }
+	 * case "class be.uclouvain.parkar.superagents.Unity": {
+	 * AgentType = "Unity"
+	 * }
+	 * case "class be.uclouvain.parkar.superagents.AgentSupermobile": {
+	 * AgentType = "SuperMobile"
+	 * }
+	 * case "class be.uclouvain.parkar.worldelements.agents.Poppy": {
+	 * AgentType = "Poppy"
+	 * }
+	 * case "class be.uclouvain.parkar.universe.agents.User": {
+	 * AgentType = "User"
+	 * }
+	 * default: {
+	 * AgentType = " AgentNotKnown"  
+	 * info(Classa)
+	 * }
+	 * }
+	 */}
+	loggingName = AgentType + "-" + this.ID
+	 synchronized (AgentType)
+	info(AgentType+" agent was started.")
+	}
+	on Destroy {
+		synchronized (AgentType)
+			info(getLogger + " agent was stopped.")
+	}
+
+	on CommitSuicide {
+
+			/* 
+			 * When receiving this, the agent tries
+			 * 1. to cancel all the tasks he was busy with
+			 * 2. 
+			 */
+		if (!getActiveTasks.isEmpty) {
+			for (e : getActiveTasks) {
+				task(e).cancel
+			}
+		}
+
+		if (hasMemberAgent) {
+			val waitTask = task("wait-task")
+			waitTask.every(1000) [
+				if (!hasMemberAgent) {
+					waitTask.cancel
+					killMe
+				} else {
+					wake(new CommitSuicide)
+				}
+			]
+		} else {
+
+			killMe
+		}
+	}
+}
