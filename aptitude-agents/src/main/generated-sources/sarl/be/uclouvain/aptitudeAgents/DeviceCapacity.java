@@ -5,8 +5,6 @@ import be.uclouvain.organisation.interactivity.element.ElementCapacity;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.core.AgentTrait;
-import java.util.TreeMap;
-import java.util.UUID;
 
 /**
  * @author manjah
@@ -15,9 +13,9 @@ import java.util.UUID;
 @SarlElementType(20)
 @SuppressWarnings("all")
 public interface DeviceCapacity extends ElementCapacity {
-  public abstract TreeMap<UUID, CharacterData> getEntityList();
+  public abstract void setupPhysicalDevice(final CharacterData[] cd);
   
-  public abstract void updateBehavior();
+  public abstract void updateBehavior(final CharacterData[] cd);
   
   /**
    * @ExcludeFromApidoc
@@ -27,19 +25,19 @@ public interface DeviceCapacity extends ElementCapacity {
       super(capacity, caller);
     }
     
-    public TreeMap<UUID, CharacterData> getEntityList() {
+    public void setupPhysicalDevice(final CharacterData[] cd) {
       try {
         ensureCallerInLocalThread();
-        return this.capacity.getEntityList();
+        this.capacity.setupPhysicalDevice(cd);
       } finally {
         resetCallerInLocalThread();
       }
     }
     
-    public void updateBehavior() {
+    public void updateBehavior(final CharacterData[] cd) {
       try {
         ensureCallerInLocalThread();
-        this.capacity.updateBehavior();
+        this.capacity.updateBehavior(cd);
       } finally {
         resetCallerInLocalThread();
       }

@@ -1,0 +1,40 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents
+
+import io.sarl.core.Logging
+import io.sarl.core.Initialize
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
+
+/** 
+ * @author manjah
+ * 
+ */
+agent Algorithm {
+	uses Logging, Lifecycle,InnerContextAccess, DefaultContextInteractions
+	
+	var belief : String; 
+	var goal   : String;
+	var level : int
+	
+	on Initialize {
+		belief = occurrence.parameters.get(0) as String
+		level = occurrence.parameters.get(1) as int
+		loggingName = "ALGORITHM" + this.ID
+		info("Algorithm " + belief+ " was started.")
+	}
+	on JoinPlatform{
+		
+		if(level = 0)
+		{
+			spawnInContext(Algorithm, innerContext, belief, 1)
+		}
+		
+	}
+	 
+
+
+}

@@ -1,0 +1,138 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents
+
+import UDPMessages.ActorStats
+import UDPMessages.ObjectData
+import UDPMessages.ScreenData
+import UDPMessages.SpawnAuthorizations
+import UDPMessages.SpawnCharacterAuthorization
+import UDPMessages.SpawnObjectAuthorization
+import UDPMessages.UDP_Message_AckAuthenticateMobile
+import UDPMessages.UDP_Message_Base
+import UDPMessages.UDP_Message_RequestSpawn
+import UDPMessages.UDP_Message_RequestWithdraw
+import UDPMessages.UDP_Message_UpdateInventory
+import be.uclouvain.organisation.interactivity.outputDevice.OutputMsg
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.lang.core.EventSpace
+import java.util.ArrayList
+import java.util.TreeMap
+import java.util.UUID
+import UDPMessages.CharacterData
+
+/** 
+ * @author manjah
+ * 
+ */
+skill UserSkill implements DeviceCapacity {
+	uses Logging
+
+	uses ExternalContextAccess, DefaultContextInteractions, InnerContextAccess, Lifecycle
+
+	val entityList : TreeMap<UUID, CharacterData> = new TreeMap<UUID, CharacterData>
+	val worldlistenersSpaceIDs : TreeMap<UUID, EventSpace>
+	val worldList : ArrayList<UUID>
+	val playerID : String
+
+	val POPPY_MAXNUMBER = 4;
+	// val characterType = newArrayList(1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	// 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+	val characterType = newArrayList(1, 2, 3, 0)
+
+	new (map : TreeMap<UUID, EventSpace>, l : ArrayList<UUID>, userID : String) {
+		this.worldlistenersSpaceIDs = map
+		this.worldList = l
+		this.playerID = userID
+	}
+
+	def install {
+		for (var i = 0; i < POPPY_MAXNUMBER; i++) {
+			val id = UUID.randomUUID
+			//spawnInContextWithID(Pedestrian, id, innerContext, new PedestrianBody(), characterType.get(i))
+			entityList.put(id, new CharacterData(id.toString, characterType.get(i), 0, -1))
+		}
+		setupPhysicalDevice
+	}
+
+	def synchronized outputSend(msgOut : UDP_Message_Base) {
+		emit(new OutputMsg(msgOut))
+	}
+
+	def setupPhysicalDevice {
+
+		var objectsAuthorizations : SpawnObjectAuthorization[] = newArrayOfSize(4)
+		objectsAuthorizations.set(0, new SpawnObjectAuthorization(1, true))
+		objectsAuthorizations.set(1, new SpawnObjectAuthorization(2, true))
+		objectsAuthorizations.set(2, new SpawnObjectAuthorization(3, false))
+		objectsAuthorizations.set(3, new SpawnObjectAuthorization(4, false))
+
+		var charactersAuthorizations : SpawnCharacterAuthorization[] = newArrayOfSize(2)
+		charactersAuthorizations.set(0, new SpawnCharacterAuthorization(0, true))
+		charactersAuthorizations.set(1, new SpawnCharacterAuthorization(1, true))
+
+		var spawnAuthorization = new SpawnAuthorizations(false, true, charactersAuthorizations, objectsAuthorizations)
+		spawnAuthorization.areCharactersSpawnable = true;
+
+		var screen1 = new ScreenData(0, 1, spawnAuthorization)
+		var screen2 = new ScreenData(1, 0, spawnAuthorization)
+		var screens : ScreenData[] = newArrayOfSize(2)
+		screens.set(0, screen1)
+		screens.set(1, screen2)
+
+		var allStats : ActorStats[] = newArrayOfSize(1)
+		allStats.set(0, new ActorStats(this.ID.toString, "20"))
+
+		outputSend(new UDP_Message_AckAuthenticateMobile(playerID, getCharacterList, getObjectList, allStats, screens))
+
+	}
+
+	def updateBehavior {
+		outputSend(new UDP_Message_UpdateInventory(playerID, getCharacterList, getObjectList))
+	}
+
+	def getCharacterList {
+		var characterList : CharacterData[] = newArrayOfSize(20)
+		var i = 0;
+		for (id : entityList.keySet) {
+			var cD = entityList.get(id)
+			characterList.set(i, cD)
+			i++
+		}
+		return characterList
+	}
+
+	def getEntityList : TreeMap<UUID, CharacterData> {
+		return this.entityList
+	}
+
+	def getObjectList {
+		var objectsList : ObjectData[] = newArrayOfSize(1);
+		objectsList.set(0, new ObjectData(this.ID.toString, 1, 0))
+		return objectsList
+	}
+
+	override InformationAnalysis(msg : UDP_Message_Base) {
+
+		if (msg instanceof UDP_Message_RequestSpawn) {
+
+			val worldUUID = worldList.get(msg.sceneID);
+			val entityID = UUID.fromString(msg.actorUID);
+
+			//val data = new EntityData3D(entityID, new Point3d(msg.position.x, msg.position.y, msg.position.z),
+				//entityList.get(entityID))
+			//emit(worldlistenersSpaceIDs.get(worldUUID), new AddEntity(getDefaultSpace(), data))[it.UUID == worldUUID]
+			//entityList.get(entityID).screenID = msg.sceneID
+			updateBehavior
+		} else if (msg instanceof UDP_Message_RequestWithdraw) {
+			var entityID = UUID.fromString(msg.actorUID)
+			//var worldUUID = worldList.get(entityList.get(entityID).screenID)
+			//emit(worldlistenersSpaceIDs.get(worldUUID), new RemoveEntity(Pedestrian, entityID))[it.UUID == worldUUID]
+		}
+	}
+}

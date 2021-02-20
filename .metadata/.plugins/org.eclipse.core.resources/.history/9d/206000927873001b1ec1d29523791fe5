@@ -1,0 +1,26 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents
+
+import io.sarl.core.Logging
+import io.sarl.core.Initialize
+
+/** 
+ * @author manjah
+ * 
+ */
+agent Algorithm {
+	uses Logging
+	
+	var belief : int; 
+	var goal : int;
+	
+	on Initialize {
+		loggingName = "ALGORITHM" + this.ID
+
+		info("Algorithm was started.")
+	} 
+
+
+}

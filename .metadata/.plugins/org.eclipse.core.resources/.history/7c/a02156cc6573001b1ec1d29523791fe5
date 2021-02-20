@@ -1,0 +1,17 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.interactivity.element
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior ElementRole {
+	uses ElementCapacity
+
+	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	on ElementInformation {
+		InformationAnalysis(occurrence.information)
+	}
+}

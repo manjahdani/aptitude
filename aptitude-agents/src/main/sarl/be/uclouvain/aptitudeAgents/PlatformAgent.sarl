@@ -13,6 +13,7 @@ import java.util.TreeMap
 import java.util.UUID
 
 import be.uclouvain.organisation.platform.util.PlatformConfig
+import be.uclouvain.organisation.platform.PlatformRole
 
 /** 
  * @author manjah
@@ -39,7 +40,7 @@ agent PlatformAgent extends Paraddis {
 		// registerBehavior(new TimeManagerBehavior(this))
 
 		/* 
-		 * Spawn of sub-worlds 
+		 * Spawn of sub-platforms 
 		 */
 		for (swc : platformConfig.subPlatformConfig) {
 			val randomID = UUID.randomUUID
@@ -47,8 +48,8 @@ agent PlatformAgent extends Paraddis {
 			subPlatformSpaceIDs.put(randomID, innerContext.getDefaultSpace)
 		}
 		if (platformConfig.getLevel > 0) {
-			//registerBehavior(new CyberWorld3DRole(this))
-			//spawnInContext(GameEngine, innerContext, WorldConfig.getServer, WorldConfig.getPCaddrss) 	// Only first layer wouldn't have a unity server, as it doesn't need to have physical representation
+			registerBehavior(new PlatformRole(this))
+			spawn(TOLDAgent) 		// Only first layer wouldn't have a unity server, as it doesn't need to have physical representation
 		} else {
 			//setSkill(new WorldSkill(WorldConfig), WorldCapacity)
 			//registerBehavior(new WorldRole(this))

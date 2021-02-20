@@ -3,21 +3,21 @@
  */
 package be.uclouvain.launcher
 
+import UDPMessages.MessageDeserializer
+import UDPMessages.UDP_Message_Base
+import be.uclouvain.aptitudeAgents.CommitSuicide
+import be.uclouvain.aptitudeAgents.Paraddis
+import be.uclouvain.aptitudeAgents.PlatformAgent
+import be.uclouvain.organisation.platform.util.PlatformConfig
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
-import javafx.application.Application
-import be.uclouvain.aptitudeAgents.PlatformAgent
-import be.uclouvain.organisation.platform.util.PlatformConfig
-import UDPMessages.UDP_Message_Base
-import be.uclouvain.aptitudeAgents.CommitSuicide
 import java.net.DatagramPacket
 import java.net.DatagramSocket
-import UDPMessages.MessageDeserializer
-import be.uclouvain.aptitudeAgents.Paraddis
-import be.uclouvain.aptitudeAgents.UserInterface
+import javafx.application.Application
+import be.uclouvain.aptitudeAgents.TOLDAgent
 
 /** 
  * @author manjah
@@ -52,7 +52,6 @@ agent bootAgent extends Paraddis {
 		var PlatformHolonConfig = new PlatformConfig(5, 0)
 		PlatformHolonConfig.addSubPlatform(new PlatformConfig(100, 1))
 		spawn(PlatformAgent, PlatformHolonConfig)
-		
 		// StartSimulation
 	}
 

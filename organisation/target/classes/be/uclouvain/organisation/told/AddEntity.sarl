@@ -1,0 +1,22 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.told
+
+import io.sarl.lang.core.EventSpace
+
+/** 
+ * @author manjah
+ * 
+ */
+
+event AddEntity {
+
+	val SourceEventSpace : EventSpace
+	val entityData : int
+
+	new(sourceEventSpace : EventSpace, data : int) {
+		this.SourceEventSpace = sourceEventSpace
+		this.entityData = data
+	}
+}

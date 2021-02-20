@@ -1,0 +1,14 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import io.sarl.core.Logging
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior AnalystRole {
+	uses Logging
+}

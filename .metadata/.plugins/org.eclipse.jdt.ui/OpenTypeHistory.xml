@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <typeInfoHistroy>
-<typeInfo handle="=organisation/src\/main\/generated-sources\/sarl=/ignore_optional_problems=/true=/&lt;be.uclouvain.organisation.interactivity.element{ElementCapacity.java[ElementCapacity" modifiers="513" timestamp="1613492404662"/>
-<typeInfo handle="=aptitude-agents/src\/main\/generated-sources\/sarl=/ignore_optional_problems=/true=/&lt;be.uclouvain.aptitudeAgents{DeviceCapacity.java[DeviceCapacity" modifiers="513" timestamp="1613492091005"/>
+<typeInfo handle="=organisation/src\/main\/generated-sources\/sarl=/ignore_optional_problems=/true=/&lt;be.uclouvain.organisation.platform{PlatformCapacity.java[PlatformCapacity" modifiers="513" timestamp="1613815343082"/>
 </typeInfoHistroy>

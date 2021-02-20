@@ -1,10 +1,15 @@
 package be.uclouvain.aptitudeAgents;
 
 import be.uclouvain.aptitudeAgents.DeviceCapacity;
+import be.uclouvain.aptitudeAgents.Expert;
 import be.uclouvain.aptitudeAgents.Paraddis;
+import be.uclouvain.aptitudeAgents.UserRole;
 import be.uclouvain.aptitudeAgents.UserSkill;
 import be.uclouvain.organisation.interactivity.element.ElementCapacity;
+import io.sarl.core.Behaviors;
 import io.sarl.core.Initialize;
+import io.sarl.core.InnerContextAccess;
+import io.sarl.core.Lifecycle;
 import io.sarl.core.Logging;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
@@ -36,13 +41,20 @@ public class User extends Paraddis {
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(("UserInterface-" + _iD));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("agent started.");
+    String _string = occurrence.parameters[2].toString();
+    UserSkill _userSkill = new UserSkill(_string);
+    this.<UserSkill>setSkill(_userSkill, DeviceCapacity.class, ElementCapacity.class);
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    UserRole _userRole = new UserRole(this);
     Object _get = occurrence.parameters[0];
     Object _get_1 = occurrence.parameters[1];
-    String _string = occurrence.parameters[2].toString();
-    UserSkill _userSkill = new UserSkill(((TreeMap<UUID, EventSpace>) _get), 
-      ((ArrayList<UUID>) _get_1), _string);
-    this.<UserSkill>setSkill(_userSkill, DeviceCapacity.class, 
-      ElementCapacity.class);
+    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_userRole, ((TreeMap<UUID, EventSpace>) _get), 
+      ((ArrayList<UUID>) _get_1));
+    Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+    Object _get_2 = occurrence.parameters[0];
+    Object _get_3 = occurrence.parameters[1];
+    _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContext(Expert.class, _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext(), ((TreeMap<UUID, EventSpace>) _get_2), ((ArrayList<UUID>) _get_3));
   }
   
   @Extension
@@ -57,6 +69,48 @@ public class User extends Paraddis {
       this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = $getSkill(Logging.class);
     }
     return $castSkill(Logging.class, this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
+  }
+  
+  @Extension
+  @ImportedCapacityFeature(Behaviors.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_BEHAVIORS;
+  
+  @SyntheticMember
+  @Pure
+  private Behaviors $CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS == null || this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS = $getSkill(Behaviors.class);
+    }
+    return $castSkill(Behaviors.class, this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS);
+  }
+  
+  @Extension
+  @ImportedCapacityFeature(Lifecycle.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_LIFECYCLE;
+  
+  @SyntheticMember
+  @Pure
+  private Lifecycle $CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE == null || this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE = $getSkill(Lifecycle.class);
+    }
+    return $castSkill(Lifecycle.class, this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE);
+  }
+  
+  @Extension
+  @ImportedCapacityFeature(InnerContextAccess.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS;
+  
+  @SyntheticMember
+  @Pure
+  private InnerContextAccess $CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS == null || this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS = $getSkill(InnerContextAccess.class);
+    }
+    return $castSkill(InnerContextAccess.class, this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS);
   }
   
   @SyntheticMember

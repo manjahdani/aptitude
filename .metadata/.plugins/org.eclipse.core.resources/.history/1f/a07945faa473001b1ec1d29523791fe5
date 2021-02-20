@@ -1,0 +1,30 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.told
+
+import io.sarl.core.Logging
+import be.uclouvain.organisation.OrganisationInfo
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.Behaviors
+import io.sarl.core.MemberJoined
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior TOLDRole {
+	uses Logging,Behaviors
+	
+	var WorldSpace : OpenEventSpace
+	
+	on OrganisationInfo {
+		info("Me TOLD I am going to listen to Platform")
+		WorldSpace = occurrence.spaceID
+		WorldSpace.register(asEventListener)
+	}
+	
+	on MemberJoined{
+		info("I noticed" + occurrence.agentType)
+	}
+}

@@ -1,0 +1,26 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import io.sarl.lang.core.AgentContext
+import io.sarl.core.OpenEventSpace
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+event AuthorizationToJoin {
+
+	val contextID : AgentContext
+	val defaultSpaceID : OpenEventSpace
+	val entityID : UUID
+	val missionData : MissionData
+
+	new (context : AgentContext, Space : OpenEventSpace, id : UUID, md : MissionData) {
+		this.contextID = context
+		this.defaultSpaceID = Space
+		this.entityID = id
+	}
+}

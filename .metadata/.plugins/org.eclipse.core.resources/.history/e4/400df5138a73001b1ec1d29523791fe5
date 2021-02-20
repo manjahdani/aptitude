@@ -1,0 +1,28 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import be.uclouvain.organisation.platform.PlatformCapacity
+import io.sarl.core.Logging
+
+/** 
+ * @author manjah
+ * 
+ */
+skill PlatformSkill implements PlatformCapacity {
+	uses Logging
+
+	def RuleManagement(info : Object) : boolean {
+		if (info instanceof MembershipInfoRule) {
+			return (getMemberAgentCount - 1 <= getWorldConfig.getENTITY_MAX)
+		} else {
+			throw new UnsupportedOperationException("Unknown Rule")
+		}
+
+	}
+
+	override ConditionActivation {
+		// TODO Auto-generated code.
+	}
+}

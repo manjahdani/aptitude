@@ -1,0 +1,43 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents
+
+import io.sarl.core.AgentKilled
+import io.sarl.core.AgentSpawned
+import io.sarl.core.ContextJoined
+import io.sarl.core.ContextLeft
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.core.MemberJoined
+import io.sarl.core.MemberLeft
+import io.sarl.core.ParticipantJoined
+import io.sarl.core.ParticipantLeft
+import io.sarl.core.SpaceCreated
+import io.sarl.core.SpaceDestroyed
+import java.util.TreeMap
+
+/** 
+ * @author manjah
+ * 
+ */
+agent TOLDAgent {
+	uses Logging
+
+ 	val AlgorithmDatabase : TreeMap<String,String> = new TreeMap<String,String> // configPath
+ 	
+	on Initialize {
+		// Event trigger before the agent begin to live or to be used.
+		// You should put all the initialization statements in this block of code.
+		
+		AlgorithmDatabase.put("YOLO", "F:/aptitude/aptitude-agents/src/main/resources/config/test-YOLO.json")
+		AlgorithmDatabase.put("TinyYOLO","F:/aptitude/aptitude-agents/src/main/resources/config/test-TinyYOLO.json")
+		AlgorithmDatabase.put("SORT", "F:/aptitude/aptitude-agents/src/main/resources/config/test-SORT.json")
+		AlgorithmDatabase.put("DeepSORT", "F:/aptitude/aptitude-agents/src/main/resources/config/test-DeepSORT.json")
+		loggingName = "TOLD-" + this.ID
+		info("The agent was started.")
+	}
+
+
+}

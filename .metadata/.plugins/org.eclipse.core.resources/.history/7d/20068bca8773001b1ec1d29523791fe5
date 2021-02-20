@@ -1,0 +1,28 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import io.sarl.core.Logging
+import be.uclouvain.organisation.told.EntityRole
+import io.sarl.lang.core.AgentContext
+import io.sarl.lang.core.EventSpace
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior AnalystRole {
+	uses Logging
+
+	protected var BaseContext : AgentContext
+	protected var BaseSpace : EventSpace
+
+	/** 
+	 * Receiving this event, the behavior has to update its fields of perception.
+	 */
+	on Initialize {
+		BaseContext = getDefaultContext
+		BaseSpace = getDefaultSpace
+	}
+}

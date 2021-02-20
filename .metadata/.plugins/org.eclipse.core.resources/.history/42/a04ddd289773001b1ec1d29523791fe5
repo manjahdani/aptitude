@@ -1,0 +1,105 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents
+
+import UDPMessages.ActorStats
+import UDPMessages.CharacterData
+import UDPMessages.ObjectData
+import UDPMessages.ScreenData
+import UDPMessages.SpawnAuthorizations
+import UDPMessages.SpawnCharacterAuthorization
+import UDPMessages.SpawnObjectAuthorization
+import UDPMessages.UDP_Message_AckAuthenticateMobile
+import UDPMessages.UDP_Message_Base
+import UDPMessages.UDP_Message_UpdateInventory
+import be.uclouvain.organisation.interactivity.outputDevice.OutputMsg
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.lang.core.EventSpace
+import java.util.ArrayList
+import java.util.TreeMap
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+skill UserSkill implements DeviceCapacity {
+
+	uses DefaultContextInteractions
+
+
+	val playerID : String
+
+	new (userID : String) {
+		this.playerID = userID
+	}
+
+	def install {
+		setupPhysicalDevice
+	}
+
+	def synchronized outputSend(msgOut : UDP_Message_Base) {
+		emit(new OutputMsg(msgOut))
+	}
+
+	def setupPhysicalDevice {
+
+		var objectsAuthorizations : SpawnObjectAuthorization[] = newArrayOfSize(4)
+		objectsAuthorizations.set(0, new SpawnObjectAuthorization(1, true))
+		objectsAuthorizations.set(1, new SpawnObjectAuthorization(2, true))
+		objectsAuthorizations.set(2, new SpawnObjectAuthorization(3, false))
+		objectsAuthorizations.set(3, new SpawnObjectAuthorization(4, false))
+
+		var charactersAuthorizations : SpawnCharacterAuthorization[] = newArrayOfSize(2)
+		charactersAuthorizations.set(0, new SpawnCharacterAuthorization(0, true))
+		charactersAuthorizations.set(1, new SpawnCharacterAuthorization(1, true))
+
+		var spawnAuthorization = new SpawnAuthorizations(false, true, charactersAuthorizations, objectsAuthorizations)
+		spawnAuthorization.areCharactersSpawnable = true;
+
+		var screen1 = new ScreenData(0, 1, spawnAuthorization)
+		var screen2 = new ScreenData(1, 0, spawnAuthorization)
+		var screens : ScreenData[] = newArrayOfSize(2)
+		screens.set(0, screen1)
+		screens.set(1, screen2)
+
+		var allStats : ActorStats[] = newArrayOfSize(1)
+		allStats.set(0, new ActorStats(this.ID.toString, "20"))
+
+		outputSend(new UDP_Message_AckAuthenticateMobile(playerID, getCharacterList, getObjectList, allStats, screens))
+
+	}
+
+	def updateBehavior {
+		outputSend(new UDP_Message_UpdateInventory(playerID, getCharacterList, getObjectList))
+	}
+
+	def getCharacterList {
+		var characterList : CharacterData[] = newArrayOfSize(20)
+		var i = 0;
+		for (id : entityList.keySet) {
+			var cD = entityList.get(id)
+			characterList.set(i, cD)
+			i++
+		}
+		return characterList
+	}
+
+	def getEntityList : TreeMap<UUID, CharacterData> {
+		return this.entityList
+	}
+
+	def getObjectList {
+		var objectsList : ObjectData[] = newArrayOfSize(1);
+		objectsList.set(0, new ObjectData(this.ID.toString, 1, 0))
+		return objectsList
+	}
+	
+	def InformationAnalysis(msg : UDP_Message_Base) {
+		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+}

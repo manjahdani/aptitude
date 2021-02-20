@@ -1,0 +1,20 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.told
+
+import io.sarl.core.Logging
+import be.uclouvain.organisation.OrganisationInfo
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior TOLD {
+	uses Logging
+	
+	on OrganisationInfo {
+		WorldSpace = occurrence.spaceID
+		WorldSpace.register(asEventListener)
+	}
+}

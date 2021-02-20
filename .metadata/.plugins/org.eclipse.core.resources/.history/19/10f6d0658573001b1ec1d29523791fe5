@@ -1,0 +1,27 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import io.sarl.core.Logging
+import be.uclouvain.organisation.told.LeavePlatform
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior ObserverRole {
+	uses Logging, ObserverCapacity
+
+	on LeavePlatform {
+		// join(BaseContext.ID, BaseSpace.spaceID.ID)
+		leave(WorldID)
+	}
+
+	on JoinPlatform {
+		join(occurrence.contextID.getID, occurrence.DefaultSpaceID.getSpaceID.getID)
+		leave(defaultContext.getID)
+		occurrence.DefaultSpaceID.register(asEventListener)
+	}
+
+}

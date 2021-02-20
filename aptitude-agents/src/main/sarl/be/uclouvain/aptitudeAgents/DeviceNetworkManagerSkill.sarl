@@ -28,8 +28,7 @@ import java.util.UUID
  * 
  */
 skill DeviceNetworkManagerSkill extends InputSkill {
-	uses Logging
-
+	
 	uses Logging, InnerContextAccess, Lifecycle, Behaviors
 
 	var clientSender = new UDPSender()

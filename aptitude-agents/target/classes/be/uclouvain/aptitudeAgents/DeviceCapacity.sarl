@@ -3,11 +3,8 @@
  */
 package be.uclouvain.aptitudeAgents
 
-import be.uclouvain.organisation.interactivity.element.ElementCapacity
-import java.util.UUID
-import UDPMessages.UDP_Message_Base
-import java.util.TreeMap
 import UDPMessages.CharacterData
+import be.uclouvain.organisation.interactivity.element.ElementCapacity
 
 /** 
  * @author manjah
@@ -15,6 +12,7 @@ import UDPMessages.CharacterData
  */
 capacity DeviceCapacity extends ElementCapacity {
 	
-	def getEntityList : TreeMap<UUID, CharacterData>
-	def updateBehavior
+	//def getEntityList : TreeMap<UUID, CharacterData>
+	def setupPhysicalDevice(cd : CharacterData[])
+	def updateBehavior(cd : CharacterData[])
 }

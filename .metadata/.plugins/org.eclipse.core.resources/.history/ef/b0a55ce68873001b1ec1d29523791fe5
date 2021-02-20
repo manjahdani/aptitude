@@ -1,0 +1,62 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import be.uclouvain.organisation.told.AddEntity
+import io.sarl.core.Behaviors
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Logging
+import io.sarl.core.MemberJoined
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.OpenEventSpaceSpecification
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior PlatformRole {
+	uses PlatformCapacity, Behaviors, InnerContextAccess, ExternalContextAccess, Logging
+
+	on Initialize {
+		// Event trigger before the behavior begin to live or to be used.
+		// You should put all the initialization statements in this block of code.
+		info("The behavior was started.")
+	}
+
+	
+
+	protected var WorldPedestrianSpace : OpenEventSpace
+	protected var WorldGameEngineSpace : OpenEventSpace
+
+	on Initialize {
+		this.WorldPedestrianSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID) // Space for the communication between a World and Poppies
+		this.WorldGameEngineSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID) // Space for the communication between Unity and the World
+		WorldPedestrianSpace.register(asEventListener)
+		WorldGameEngineSpace.register(asEventListener)
+	}
+
+	on AddEntity {
+		if (RuleManagement(new MembershipInfoRule(occurrence.source, occurrence.SourceEventSpace, occurrence.entityData))) {
+
+			emit(occurrence.SourceEventSpace, new AuthorizationToJoin(innerContext, innerContext.getDefaultSpace as OpenEventSpace, occurrence.entityData.entityID))[it.UUID == occurrence.source.getUUID]
+
+			val tmp = occurrence.entityData as EntityData3D
+			WorldGameEngineSpace.emit(this.ID, new SpawnEntity(tmp.getEntityData.evolution, tmp.position, tmp.entityID))
+		}
+	}
+
+	on MemberJoined {
+		if (occurrence.agentType == "be.uclouvain.trail.GameEngine") {
+			wake(new OrganisationInfo(innerContext, WorldGameEngineSpace))[it.UUID == occurrence.agentID]
+			wake(new WorldLimitsUpdate(getWorldLimit()))[it.UUID == occurrence.agentID]
+		} else if (occurrence.agentType == "be.uclouvain.world_elements.Pedestrian") {
+			ConditionActivation
+			wake(new OrganisationInfo(innerContext, WorldPedestrianSpace))[it.UUID == occurrence.agentID]
+		}
+	}
+
+}

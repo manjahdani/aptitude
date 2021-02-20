@@ -1,7 +1,9 @@
 package be.uclouvain.aptitudeAgents;
 
 import be.uclouvain.aptitudeAgents.Paraddis;
+import be.uclouvain.aptitudeAgents.TOLDAgent;
 import be.uclouvain.aptitudeAgents.UserInterface;
+import be.uclouvain.organisation.platform.PlatformRole;
 import be.uclouvain.organisation.platform.util.PlatformConfig;
 import io.sarl.core.Behaviors;
 import io.sarl.core.Initialize;
@@ -56,9 +58,14 @@ public class PlatformAgent extends Paraddis {
     }
     int _level_1 = platformConfig.getLevel();
     if ((_level_1 > 0)) {
-    } else {
+      Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+      PlatformRole _platformRole = new PlatformRole(this);
+      _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_platformRole);
       Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawn(UserInterface.class, this.subPlatformSpaceIDs);
+      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawn(TOLDAgent.class);
+    } else {
+      Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER_1.spawn(UserInterface.class, this.subPlatformSpaceIDs);
     }
   }
   

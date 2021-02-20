@@ -1,0 +1,48 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import io.sarl.core.Logging
+
+import io.sarl.lang.core.AgentContext
+import io.sarl.lang.core.EventSpace
+import io.sarl.core.OpenEventSpace
+import java.util.UUID
+import io.sarl.core.Initialize
+import io.sarl.core.DefaultContextInteractions
+import be.uclouvain.organisation.told.AddEntity
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.ContextJoined
+import be.uclouvain.organisation.OrganisationInfo
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior AnalystRole {
+	uses Logging, DefaultContextInteractions, ExternalContextAccess
+
+	protected var BaseContext : AgentContext
+	protected var BaseSpace : EventSpace
+
+	protected var PlatformSpace : OpenEventSpace
+	protected var PlatformID : UUID
+	
+	var Sensitivity : int
+	/** 
+	 * Receiving this event, the behavior has to update its fields of perception.
+	 */
+	on Initialize {
+		BaseContext = getDefaultContext
+		BaseSpace = getDefaultSpace
+	}
+
+	on OrganisationInfo {
+		// info("Joining the World organisation: " + occurrence.spaceID + " (" + occurrence.context + ").")
+		PlatformID = occurrence.source.getUUID
+		PlatformSpace = occurrence.spaceID
+		PlatformSpace.register(asEventListener)
+	}
+	
+}
