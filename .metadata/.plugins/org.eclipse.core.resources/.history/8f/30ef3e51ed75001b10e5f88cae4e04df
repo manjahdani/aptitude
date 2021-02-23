@@ -1,0 +1,13 @@
+package be.uclouvain.aptitude.aptitude.tracking
+
+import be.uclouvain.aptitude.other.Observer
+import org.json.simple.JSONObject
+import be.uclouvain.aptitude.messages.BBoxes2DMessage
+
+capacity Tracking extends Observer {
+
+	def requestTracker(jsonConfig : JSONObject)
+
+	def getTrack(detection : BBoxes2DMessage)
+
+}

@@ -2,9 +2,9 @@ package be.uclouvain.launcher;
 
 import UDPMessages.MessageDeserializer;
 import UDPMessages.UDP_Message_Base;
-import be.uclouvain.aptitudeAgents.CommitSuicide;
-import be.uclouvain.aptitudeAgents.Paraddis;
-import be.uclouvain.aptitudeAgents.PlatformAgent;
+import be.uclouvain.aptitude.agents.CommitSuicide;
+import be.uclouvain.aptitude.agents.Paraddis;
+import be.uclouvain.aptitude.agents.PlatformAgent;
 import be.uclouvain.launcher.GUI;
 import be.uclouvain.launcher.UDPSender;
 import be.uclouvain.organisation.platform.util.PlatformConfig;
@@ -75,8 +75,6 @@ public class bootAgent extends Paraddis {
   }
   
   protected void setAgentsReady() {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Setting the agents");
     PlatformConfig PlatformHolonConfig = new PlatformConfig(5, 0);
     PlatformConfig _platformConfig = new PlatformConfig(100, 1);
     PlatformHolonConfig.addSubPlatform(_platformConfig);

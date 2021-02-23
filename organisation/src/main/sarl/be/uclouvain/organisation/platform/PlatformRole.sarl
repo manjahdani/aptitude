@@ -15,6 +15,7 @@ import io.sarl.core.OpenEventSpaceSpecification
 import java.util.UUID
 import be.uclouvain.organisation.OrganisationInfo
 import io.sarl.core.DefaultContextInteractions
+import be.uclouvain.organisation.told.LeavePlatform
 
 /** 
  * @author manjah
@@ -52,14 +53,19 @@ behavior PlatformRole {
 	on MemberJoined {
 		info("I see " +occurrence.agentType)
 		
-		if (occurrence.agentType == "be.uclouvain.aptitudeAgents.TOLDAgent") {
+		if (occurrence.agentType == "be.uclouvain.aptitude.agents.TOLDAgent") {
 			info("I sended you")
 			emit(new OrganisationInfo(defaultContext, PlatformTOLDSpace))[it.UUID == occurrence.agentID]
 		} 
-		else if (occurrence.agentType == "be.uclouvain.aptitudeAgents.Expert") {
+		else if (occurrence.agentType == "be.uclouvain.aptitude.agents.Expert") {
 			info("I sended you")
 			wake(new OrganisationInfo(innerContext, PlatformTOLDSpace))[it.UUID == occurrence.agentID]
 		}
+	}
+
+	on StopMission {
+		info("Me Platform Role I received stopMission")
+		wake(new LeavePlatform)
 	}
 
 }

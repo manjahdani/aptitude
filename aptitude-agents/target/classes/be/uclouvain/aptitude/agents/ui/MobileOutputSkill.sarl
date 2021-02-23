@@ -1,0 +1,27 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.agents.ui
+
+import UDPMessages.UDP_Message_Base
+import be.uclouvain.organisation.interactivity.outputDevice.OutputDeviceCapacity
+import java.util.TreeMap
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+skill MobileOutputSkill implements OutputDeviceCapacity {
+	val mobileAddress : TreeMap<UUID, String>
+	
+	val clientSender = new UDPSender()
+
+	new (m : TreeMap<UUID, String>) {
+		this.mobileAddress = m
+	}
+
+	def outputConversion(idSender : UUID, data : UDP_Message_Base) {
+		clientSender.SendData(data, mobileAddress.get(idSender), 65003)
+	}
+}

@@ -4,6 +4,8 @@
 package be.uclouvain.organisation.platform
 
 import be.uclouvain.organisation.OrganisationInfo
+import be.uclouvain.organisation.told.JoinPlatform
+import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
@@ -12,10 +14,6 @@ import io.sarl.core.OpenEventSpace
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.EventSpace
 import java.util.UUID
-import io.sarl.core.Behaviors
-import java.util.TreeMap
-import java.util.ArrayList
-import be.uclouvain.organisation.told.JoinPlatform
 
 /** 
  * @author manjah

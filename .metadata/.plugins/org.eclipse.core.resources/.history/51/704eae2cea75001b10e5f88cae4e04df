@@ -1,0 +1,23 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import io.sarl.lang.core.EventSpace
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+event NewMission{
+
+	val SourceEventSpace : EventSpace
+	val missionData : MissionData
+
+	new(sourceEventSpace : EventSpace, data : MissionData) {
+		this.SourceEventSpace = sourceEventSpace
+		this.missionData = data
+	}
+}
+

@@ -1,0 +1,89 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.aptitude.detection
+
+import be.uclouvain.aptitude.agents.algorithm.messages.ActionMessage
+import be.uclouvain.aptitude.aptitude.messages.BBoxes2DMessage
+import be.uclouvain.aptitude.aptitude.messages.BaseMessage
+import be.uclouvain.aptitude.aptitude.messages.RequestMessage
+import be.uclouvain.aptitude.aptitude.other.BBoxes2DResult
+import be.uclouvain.aptitude.aptitude.other.CommunicationManager
+import be.uclouvain.aptitude.aptitude.other.PartnerDetectionFound
+import com.hazelcast.util.UuidUtil
+import io.sarl.core.AgentTask
+import io.sarl.core.Behaviors
+import io.sarl.core.Logging
+import io.sarl.core.Schedules
+import org.json.simple.JSONObject
+
+/** 
+ * @author samelson
+ * 
+ */
+skill DetectionImpl implements Detection {
+	uses Logging, Behaviors, Schedules
+
+	var topicRequestSub : String
+	var topicDetectionSub : String
+
+	var pendingRequestID : String
+	var requestTask : AgentTask
+
+	def install {
+		topicRequestSub = CommunicationManager.instance.subscribeTopic("request", this)
+	}
+
+	def uninstall {
+		if (topicRequestSub !== null) {
+			CommunicationManager.instance.unsubscribeTopic(topicRequestSub)
+			topicRequestSub = null
+		}
+		if (topicDetectionSub !== null){
+			CommunicationManager.instance.unsubscribeTopic(topicDetectionSub)
+			topicDetectionSub = null		
+		}
+	}
+
+	def requestDetector(jsonConfig : JSONObject) {
+		this.pendingRequestID = UuidUtil.newSecureUuidString
+		this.requestTask = every(1000) [
+			info("Detection partner not found, send discovery message")
+			var requestMessage = new RequestMessage()
+			requestMessage.requestID = pendingRequestID
+			requestMessage.agentID = owner.ID.toString
+			requestMessage.jsonConfig = jsonConfig.toString
+			CommunicationManager.instance.publishMessage(topicRequestSub, requestMessage)
+		]
+	}
+
+	def sendAction(actionID : int) {
+		info("Send action: " + actionID)
+		var actionMessage = new ActionMessage()
+		actionMessage.actionID = actionID
+		CommunicationManager.instance.publishMessage(topicDetectionSub, actionMessage)
+	}
+
+	def update(m : BaseMessage) {
+		if (m instanceof BBoxes2DMessage) {
+			wake(new BBoxes2DResult(m))
+		} else if (m instanceof RequestMessage) {
+			onRequestMessage(m)
+		} else if (m instanceof ActionMessage) {
+			if (m.ack){
+				info("Ack action " + m.actionID.toString)
+			}
+		}
+	}
+
+	private def onRequestMessage(message : RequestMessage) {
+		if (message.ack && message.requestID == this.pendingRequestID) {
+			requestTask.cancel
+			CommunicationManager.instance.unsubscribeTopic(topicRequestSub)
+			topicRequestSub = null
+			val topicName = "detection_" + owner.ID.toString + "_" + message.clientName
+			topicDetectionSub = CommunicationManager.instance.subscribeTopic(topicName, this)
+			wake(new PartnerDetectionFound(message.clientName))
+		}
+	}
+}

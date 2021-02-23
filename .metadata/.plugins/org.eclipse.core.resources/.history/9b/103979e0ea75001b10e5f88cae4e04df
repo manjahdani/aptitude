@@ -1,0 +1,18 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents
+
+import UDPMessages.CharacterData
+import be.uclouvain.organisation.interactivity.element.ElementCapacity
+
+/** 
+ * @author manjah
+ * 
+ */
+capacity UserElementCapacity extends ElementCapacity {
+	
+	//def getEntityList : TreeMap<UUID, CharacterData>
+	def setupPhysicalDevice(cd : CharacterData[])
+	def updateBehavior(cd : CharacterData[])
+}

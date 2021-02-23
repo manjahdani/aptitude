@@ -6,8 +6,14 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="getEntityList"/>
+		<item key="selection" value="Counted Horizontally"/>
 		<list key="findhistory">
+			<item value="Counted Horizontally"/>
+			<item value="130"/>
+			<item value="151"/>
+			<item value="Counted Horizontally at the frame"/>
+			<item value="Counted Horizontally at the frame 307 at : A"/>
+			<item value="Counted Horizontally at the frame 307 at : B"/>
 			<item value="getEntityList"/>
 			<item value="characterList"/>
 			<item value="entityList"/>

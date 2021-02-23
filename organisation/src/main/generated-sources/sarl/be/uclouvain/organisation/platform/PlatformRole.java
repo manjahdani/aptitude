@@ -3,7 +3,9 @@ package be.uclouvain.organisation.platform;
 import be.uclouvain.organisation.OrganisationInfo;
 import be.uclouvain.organisation.platform.AuthorizationToJoin;
 import be.uclouvain.organisation.platform.PlatformCapacity;
+import be.uclouvain.organisation.platform.StopMission;
 import be.uclouvain.organisation.told.AddEntity;
+import be.uclouvain.organisation.told.LeavePlatform;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
@@ -102,7 +104,7 @@ public class PlatformRole extends Behavior {
   private void $behaviorUnit$MemberJoined$3(final MemberJoined occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I see " + occurrence.agentType));
-    boolean _equals = Objects.equal(occurrence.agentType, "be.uclouvain.aptitudeAgents.TOLDAgent");
+    boolean _equals = Objects.equal(occurrence.agentType, "be.uclouvain.aptitude.agents.TOLDAgent");
     if (_equals) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("I sended you");
@@ -136,7 +138,7 @@ public class PlatformRole extends Behavior {
       };
       _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_organisationInfo, _function);
     } else {
-      boolean _equals_1 = Objects.equal(occurrence.agentType, "be.uclouvain.aptitudeAgents.Expert");
+      boolean _equals_1 = Objects.equal(occurrence.agentType, "be.uclouvain.aptitude.agents.Expert");
       if (_equals_1) {
         Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
         _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info("I sended you");
@@ -171,6 +173,14 @@ public class PlatformRole extends Behavior {
         _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_organisationInfo_1, _function_1);
       }
     }
+  }
+  
+  private void $behaviorUnit$StopMission$4(final StopMission occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Me Platform Role I received stopMission");
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    LeavePlatform _leavePlatform = new LeavePlatform();
+    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_leavePlatform);
   }
   
   @Extension
@@ -264,6 +274,14 @@ public class PlatformRole extends Behavior {
     assert ___SARLlocal_runnableCollection != null;
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$0(occurrence));
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$1(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$StopMission(final StopMission occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$StopMission$4(occurrence));
   }
   
   @SyntheticMember

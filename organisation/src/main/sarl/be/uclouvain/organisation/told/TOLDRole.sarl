@@ -24,7 +24,6 @@ behavior TOLDRole {
 		info("Me TOLD I am going to listen to WorldSpace")
 		WorldSpace.register(asEventListener)
 	}
-	
 	on MemberJoined{
 		info("I noticed" + occurrence.agentType)
 	}

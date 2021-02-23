@@ -1,0 +1,21 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.aptitude.detection
+
+import be.uclouvain.aptitude.other.Observer
+import org.json.simple.JSONObject
+
+/** 
+ * @author samelson
+ * 
+ */
+capacity Detasection extends Observer{
+	
+	def requestDetector(jsonConfig : JSONObject)
+
+	def sendAction(actionID: int)
+	
+}
+
+

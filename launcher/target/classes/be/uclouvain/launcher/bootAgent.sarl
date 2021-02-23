@@ -5,9 +5,7 @@ package be.uclouvain.launcher
 
 import UDPMessages.MessageDeserializer
 import UDPMessages.UDP_Message_Base
-import be.uclouvain.aptitudeAgents.CommitSuicide
-import be.uclouvain.aptitudeAgents.Paraddis
-import be.uclouvain.aptitudeAgents.PlatformAgent
+
 import be.uclouvain.organisation.platform.util.PlatformConfig
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
@@ -17,7 +15,9 @@ import io.sarl.core.Schedules
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import javafx.application.Application
-import be.uclouvain.aptitudeAgents.TOLDAgent
+import be.uclouvain.aptitude.agents.CommitSuicide
+import be.uclouvain.aptitude.agents.Paraddis
+import be.uclouvain.aptitude.agents.PlatformAgent
 
 /** 
  * @author manjah
@@ -48,7 +48,7 @@ agent bootAgent extends Paraddis {
 		// for (wc : subWorldConfig) {
 		// WorldHolon.addSubWorld(wc)
 		// }
-		info("Setting the agents")
+		//info("Setting the agents")
 		var PlatformHolonConfig = new PlatformConfig(5, 0)
 		PlatformHolonConfig.addSubPlatform(new PlatformConfig(100, 1))
 		spawn(PlatformAgent, PlatformHolonConfig)

@@ -1,0 +1,10 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+/** 
+ * @author manjah
+ * 
+ */
+event NewMission

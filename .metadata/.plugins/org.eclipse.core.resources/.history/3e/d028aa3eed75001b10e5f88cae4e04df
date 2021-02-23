@@ -1,0 +1,41 @@
+package be.uclouvain.aptitude.aptitude.other
+
+import be.uclouvain.aptitude.messages.BBoxes2DMessage
+import be.uclouvain.aptitude.messages.BBoxes2DTrackMessage
+
+event BBoxes2DResult {
+	
+	var bboxes2D : BBoxes2DMessage
+	
+	//TODO Create a BBoxes2D Object
+	new(message: BBoxes2DMessage) {
+		this.bboxes2D = message
+	}
+}
+
+event BBoxes2DTrackResult {
+
+	var bboxes2DTrack : BBoxes2DTrackMessage
+
+	// TODO Create a BBoxes2D Object
+	new(message : BBoxes2DTrackMessage) {
+		this.bboxes2DTrack = message
+	}
+}
+
+
+event PartnerDetectionFound {
+	var partnerName : String
+
+	new(partnerName : String) {
+		this.partnerName = partnerName
+	}
+}
+
+event PartnerTrackingFound {
+	var partnerName : String
+
+	new(partnerName : String) {
+		this.partnerName = partnerName
+	}
+}
