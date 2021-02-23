@@ -1,0 +1,55 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents.util
+
+/** 
+ * @author manjah
+ * 
+ */
+class countingLine {
+	
+	
+	
+	public val Direction : int;
+
+	public var lowerX : double
+	public var upperX : double
+	public var lowerY : double
+	public var upperY : double
+	public var lowerZ : double
+	public var upperZ : double
+
+	new (lX : double, uX : double, lY : double, uY : double, lZ : double, uZ : double) {
+		this.lowerX = lX
+		this.upperX = uX
+		this.lowerY = lY
+		this.upperY = uY
+		this.lowerZ = lZ
+		this.upperZ = uZ
+	}
+
+	def isInWorldLimit(x : double, y : double, z : double) : boolean {
+		if (x > lowerX && x < upperX) {
+			return false
+		}
+		if (y > lowerY && y < upperY) {
+			return false
+		}
+		if (z > lowerZ && z < upperZ) {
+			return false
+		}
+		return true
+	}
+
+	def CopyWorld(w : CyberWorld3DLimits) {
+		this.lowerX = w.lowerX
+		this.upperX = w.upperX
+		this.lowerY = w.lowerY
+		this.upperY = w.upperY
+		this.lowerZ = w.lowerZ
+		this.upperZ = w.upperZ
+	}
+
+	
+}

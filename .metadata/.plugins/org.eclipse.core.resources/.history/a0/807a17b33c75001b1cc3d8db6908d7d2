@@ -1,0 +1,121 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents.util
+
+
+
+import org.arakhne.afc.math.geometry.d2.d.Point2d
+import java.util.ArrayList
+
+/** 
+ * @author manjah
+ * 
+ */
+class BBoxes2D {
+	
+	
+	val bbox : BBOX
+	val conf : double 
+	var frame : int
+	val globalID : int
+	var classeID : int
+	val lines_crossed = new ArrayList<String>
+	val oldPos = new Point2d(0,0)
+	val curPos = new Point2d(0,0)
+	
+	new (bb:BBOX, conf:double, globalID:int, classeID:int, frame:int)
+	{
+		this.bbox = bb
+		this.conf=conf;
+		this.frame=frame;
+		this.globalID = globalID
+		this.classeID=classeID
+	}
+	def getConf {
+		return this.conf
+	}
+	def getFrame {
+		return this.frame
+	}
+	def getBBOX{
+		return this.bbox
+	}
+	def getGlobalID{
+		return this.globalID
+		
+	}
+	def getClasseID{
+		return this.classeID
+	}
+	def getLines_crossed{
+		return lines_crossed;
+	}
+	def hasCrossedLine (label : String){
+		if(lines_crossed.contains(label)){
+			return true
+		}
+		else{
+			lines_crossed.add(label)
+			return false
+		}
+	}
+	def update(X : double, Y : double, W : double, H : double, classID : int, frameNumber:int){
+		
+		if(new Point2d(X,Y).getDistance(curPos)>0.1){
+			this.bbox.update(X,Y,W,H)
+		}
+		this.classeID = classID
+		this.frame=frameNumber
+	}
+	
+
+}
+class BBOX {
+	
+	var x : double
+	var y : double
+	var w : double
+	var h : double
+	
+	new (x : double, y : double, w : double, h : double)
+	{
+		this.x=x;
+		this.y=y;
+		this.w=w;
+		this.h=h;
+	}
+	
+	def getX{
+		return this.x
+	}
+
+	def getY {
+		return this.y
+	}
+
+	def getW {
+		return this.w
+	}
+
+	def getH {
+		return this.h
+	}
+	
+	def update(X : double, Y : double, W : double, H : double)
+	{
+		x = X;
+		y = Y;
+		w = W;
+		h = H;
+	}
+	
+	def getCentroid(){
+	
+		return ( new Point2d(( x + x + w)/2, ( y + y + h)/2))
+	}
+	
+	def getArea(){
+		return w*h
+	}
+}

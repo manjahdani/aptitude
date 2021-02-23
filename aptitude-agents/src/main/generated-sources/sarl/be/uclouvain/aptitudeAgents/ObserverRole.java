@@ -8,6 +8,9 @@ import be.uclouvain.aptitude.other.PartnerDetectionFound;
 import be.uclouvain.aptitude.other.PartnerTrackingFound;
 import be.uclouvain.aptitude.tracking.Tracking;
 import be.uclouvain.aptitude.tracking.TrackingImpl;
+import be.uclouvain.aptitudeAgents.util.BBOX;
+import be.uclouvain.aptitudeAgents.util.BBoxes2D;
+import be.uclouvain.aptitudeAgents.util.countingLine;
 import be.uclouvain.organisation.platform.ObserverCapacity;
 import be.uclouvain.organisation.told.LeavePlatform;
 import io.sarl.core.Behaviors;
@@ -26,9 +29,15 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.Behavior;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.UUID;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -62,10 +71,22 @@ public class ObserverRole extends Behavior {
   
   private long start;
   
+  private final TreeMap<String, countingLine> countingLines = new TreeMap<String, countingLine>();
+  
+  private final countingLine CTA = new countingLine(1235, 700, 309, 664, 1);
+  
+  private final countingLine CTB = new countingLine(1531, 392, 1775, 376, (-1));
+  
+  private final TreeMap<Integer, BBoxes2D> ObjectPresentInframe = new TreeMap<Integer, BBoxes2D>();
+  
+  private final ArrayList<BBoxes2D> ObjectToBeAnalyzed = new ArrayList<BBoxes2D>();
+  
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     try {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("My Observer Role started");
+      this.countingLines.put("A", this.CTA);
+      this.countingLines.put("B", this.CTB);
       DetectionImpl _detectionImpl = new DetectionImpl();
       this.<DetectionImpl>setSkill(_detectionImpl);
       TrackingImpl _trackingImpl = new TrackingImpl();
@@ -119,10 +140,42 @@ public class ObserverRole extends Behavior {
   }
   
   private void $behaviorUnit$BBoxes2DTrackResult$5(final BBoxes2DTrackResult occurrence) {
+    int _dimWidth = occurrence.bboxes2DTrack.getDimWidth();
+    double ratio_width = (1920.0 / _dimWidth);
+    int _dimHeight = occurrence.bboxes2DTrack.getDimHeight();
+    double ratio_height = (1080.0 / _dimHeight);
+    int frameNumber = occurrence.bboxes2DTrack.getFrameNumber();
+    this.ObjectToBeAnalyzed.clear();
+    for (int i = 0; (i < occurrence.bboxes2DTrack.getNumberObjects()); i++) {
+      {
+        int _get = occurrence.bboxes2DTrack.getBboxes()[(4 * i)];
+        double X = (_get * ratio_width);
+        int _get_1 = occurrence.bboxes2DTrack.getBboxes()[((4 * i) + 1)];
+        double Y = (_get_1 * ratio_height);
+        int _get_2 = occurrence.bboxes2DTrack.getBboxes()[((4 * i) + 2)];
+        double W = (_get_2 * ratio_width);
+        int _get_3 = occurrence.bboxes2DTrack.getBboxes()[((4 * i) + 3)];
+        double H = (_get_3 * ratio_height);
+        int classID = occurrence.bboxes2DTrack.getClassIDs()[i];
+        int globalID = occurrence.bboxes2DTrack.getGlobalIDs()[i];
+        double conf = occurrence.bboxes2DTrack.getDetConfs()[i];
+        boolean _containsKey = this.ObjectPresentInframe.containsKey(Integer.valueOf(globalID));
+        if (_containsKey) {
+          this.ObjectPresentInframe.get(Integer.valueOf(globalID)).update(X, Y, W, H, classID, frameNumber, conf);
+        } else {
+          BBOX _bBOX = new BBOX(X, Y, W, H);
+          BBoxes2D _bBoxes2D = new BBoxes2D(_bBOX, conf, globalID, classID, frameNumber);
+          this.ObjectPresentInframe.put(Integer.valueOf(globalID), _bBoxes2D);
+        }
+        this.ObjectToBeAnalyzed.add(this.ObjectPresentInframe.get(Integer.valueOf(globalID)));
+      }
+    }
+    ArrayList<BBoxes2D> _arrayList = new ArrayList<BBoxes2D>(this.ObjectToBeAnalyzed);
+    this.attemp_count(_arrayList);
     boolean _isLastFrame = occurrence.bboxes2DTrack.isLastFrame();
     if (_isLastFrame) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("That was it!");
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("That was it! ");
       long _currentTimeMillis = System.currentTimeMillis();
       final long totalTime = ((_currentTimeMillis - this.start) / 1000);
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
@@ -133,6 +186,147 @@ public class ObserverRole extends Behavior {
       String _string_1 = Long.valueOf((_frameNumber / totalTime)).toString();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("Average FPS : " + _string_1));
     }
+  }
+  
+  public void attemp_count(final ArrayList<BBoxes2D> boundingBoxes) {
+    for (final BBoxes2D bb : boundingBoxes) {
+      Set<String> _keySet = this.countingLines.keySet();
+      for (final String counting_line : _keySet) {
+        if ((this.has_crossed_counting_line(bb.getBBOX(), this.countingLines.get(counting_line)) && (!this.countingLines.get(counting_line).ObjectEncountered(bb.getGlobalID())))) {
+          final int orientation = this.countingLines.get(counting_line).Orientation(bb.getDirection());
+          Vector2d bbDir = bb.getDirection();
+          Vector2d nDir = this.countingLines.get(counting_line).getNormale();
+          if ((orientation != 0)) {
+            Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+            int _frame = bb.getFrame();
+            int _IncrementCounts = this.countingLines.get(counting_line).IncrementCounts();
+            String _plus = ((((((("Counted at frame " + Integer.valueOf(_frame)) + " and ") + counting_line) + " is : ") + Integer.valueOf(_IncrementCounts)) + 
+              " v=") + "(");
+            double _x = bbDir.getX();
+            String _plus_1 = ((_plus + Double.valueOf(_x)) + " , ");
+            double _y = bbDir.getY();
+            String _plus_2 = (((_plus_1 + Double.valueOf(_y)) + 
+              "And n=") + "(");
+            double _x_1 = nDir.getX();
+            String _plus_3 = ((_plus_2 + Double.valueOf(_x_1)) + " , ");
+            double _y_1 = nDir.getY();
+            _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((((_plus_3 + Double.valueOf(_y_1)) + ")") + " ori:") + Integer.valueOf(orientation)));
+          } else {
+            Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+            int _frame_1 = bb.getFrame();
+            double _x_2 = bbDir.getX();
+            double _y_2 = bbDir.getY();
+            double _x_3 = nDir.getX();
+            double _y_3 = nDir.getY();
+            _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(
+              ((((((((((((((((("Counted Horizontally at the frame " + Integer.valueOf(_frame_1)) + " at : ") + counting_line) + " v=") + "(") + Double.valueOf(_x_2)) + " , ") + Double.valueOf(_y_2)) + ")") + " and n=") + "(") + Double.valueOf(_x_3)) + 
+                ",") + Double.valueOf(_y_3)) + ")") + " orientation:") + Integer.valueOf(orientation)));
+          }
+        }
+      }
+    }
+  }
+  
+  @Pure
+  public boolean has_crossed_counting_line(final BBOX b, final countingLine cl) {
+    double _x = b.getX();
+    double _y = b.getY();
+    Point2d _point2d = new Point2d(_x, _y);
+    double _x_1 = b.getX();
+    double _w = b.getW();
+    double _y_1 = b.getY();
+    Point2d _point2d_1 = new Point2d((_x_1 + _w), _y_1);
+    final ArrayList<Point2d> bbox_line1 = CollectionLiterals.<Point2d>newArrayList(_point2d, _point2d_1);
+    double _x_2 = b.getX();
+    double _w_1 = b.getW();
+    double _y_2 = b.getY();
+    Point2d _point2d_2 = new Point2d((_x_2 + _w_1), _y_2);
+    double _x_3 = b.getX();
+    double _w_2 = b.getW();
+    double _y_3 = b.getY();
+    double _h = b.getH();
+    Point2d _point2d_3 = new Point2d((_x_3 + _w_2), (_y_3 + _h));
+    final ArrayList<Point2d> bbox_line2 = CollectionLiterals.<Point2d>newArrayList(_point2d_2, _point2d_3);
+    double _x_4 = b.getX();
+    double _y_4 = b.getY();
+    Point2d _point2d_4 = new Point2d(_x_4, _y_4);
+    double _x_5 = b.getX();
+    double _y_5 = b.getY();
+    double _h_1 = b.getH();
+    Point2d _point2d_5 = new Point2d(_x_5, (_y_5 + _h_1));
+    final ArrayList<Point2d> bbox_line3 = CollectionLiterals.<Point2d>newArrayList(_point2d_4, _point2d_5);
+    double _x_6 = b.getX();
+    double _y_6 = b.getY();
+    double _h_2 = b.getH();
+    Point2d _point2d_6 = new Point2d(_x_6, (_y_6 + _h_2));
+    double _x_7 = b.getX();
+    double _w_3 = b.getW();
+    double _y_7 = b.getY();
+    double _h_3 = b.getH();
+    Point2d _point2d_7 = new Point2d((_x_7 + _w_3), (_y_7 + _h_3));
+    final ArrayList<Point2d> bbox_line4 = CollectionLiterals.<Point2d>newArrayList(_point2d_6, _point2d_7);
+    if ((((this.line_segments_intersect(bbox_line1, cl.getLine()) || this.line_segments_intersect(bbox_line2, cl.getLine())) || 
+      this.line_segments_intersect(bbox_line3, cl.getLine())) || this.line_segments_intersect(bbox_line4, cl.getLine()))) {
+      return true;
+    }
+    return false;
+  }
+  
+  @Pure
+  public boolean line_segments_intersect(final ArrayList<Point2d> line1, final ArrayList<Point2d> line2) {
+    Point2d p1 = line1.get(0);
+    Point2d q1 = line1.get(1);
+    Point2d p2 = line2.get(0);
+    Point2d q2 = line2.get(1);
+    int o1 = this.get_orientation(p1, q1, p2);
+    int o2 = this.get_orientation(p1, q1, q2);
+    int o3 = this.get_orientation(p2, q2, p1);
+    int o4 = this.get_orientation(p2, q2, q1);
+    if (((o1 != o2) && (o3 != o4))) {
+      return true;
+    }
+    if (((o1 == 0) && this.is_on_segment(p1, p2, q1))) {
+      return true;
+    }
+    if (((o2 == 0) && this.is_on_segment(p1, q2, q1))) {
+      return true;
+    }
+    if (((o3 == 0) && this.is_on_segment(p2, p1, q2))) {
+      return true;
+    }
+    if (((o4 == 0) && this.is_on_segment(p2, q1, q2))) {
+      return true;
+    }
+    return false;
+  }
+  
+  @Pure
+  public int get_orientation(final Point2d p, final Point2d q, final Point2d r) {
+    double _y = q.getY();
+    double _y_1 = p.getY();
+    double _x = r.getX();
+    double _x_1 = q.getX();
+    double _x_2 = q.getX();
+    double _x_3 = p.getX();
+    double _y_2 = r.getY();
+    double _y_3 = q.getY();
+    final double a = (((_y - _y_1) * (_x - _x_1)) - ((_x_2 - _x_3) * (_y_2 - _y_3)));
+    if ((a == 0)) {
+      return 0;
+    } else {
+      if ((a > 0)) {
+        return 1;
+      }
+    }
+    return 2;
+  }
+  
+  @Pure
+  public boolean is_on_segment(final Point2d p, final Point2d q, final Point2d r) {
+    if (((((q.getX() <= Math.max(p.getX(), r.getX())) && (q.getX() >= Math.min(p.getX(), r.getX()))) && (q.getY() <= Math.max(p.getY(), r.getY()))) && (q.getY() >= Math.min(p.getY(), r.getY())))) {
+      return true;
+    }
+    return false;
   }
   
   private void $behaviorUnit$Destroy$6(final Destroy occurrence) {

@@ -1,0 +1,11 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents.util
+
+/** 
+ * @author manjah
+ * 
+ */
+class BBoxes2D {
+}

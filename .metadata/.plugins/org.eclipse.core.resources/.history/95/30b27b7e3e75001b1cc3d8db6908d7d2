@@ -1,0 +1,105 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents.util
+
+import java.util.concurrent.atomic.AtomicInteger
+import org.arakhne.afc.math.geometry.d2.d.Point2d
+import java.util.ArrayList
+
+/** 
+ * @author manjah
+ * 
+ */
+class countingLine {
+	
+	
+	
+	public var direction : int;
+	public var lowerX : double
+	public var upperX : double
+	public var lowerY : double
+	public var upperY : double
+	public val counts = new AtomicInteger(0)
+  	public val ObjEncountered = new ArrayList<Integer>
+	
+	new (lX : double, lY : double, uX : double, uY : double, d : int) {
+		this.lowerX = lX
+		this.upperX = uX
+		this.lowerY = lY
+		this.upperY = uY
+		this.direction = d
+	}
+
+	def isInWorldLimit(x : double, y : double, z : double) : boolean {
+		if (x > lowerX && x < upperX) {
+			return false
+		}
+		if (y > lowerY && y < upperY) {
+			return false
+		}
+		
+		return true
+	}
+
+	def CopyWorld(w : countingLine) {
+		this.lowerX = w.lowerX
+		this.upperX = w.upperX
+		this.lowerY = w.lowerY
+		this.upperY = w.upperY
+		this.direction = w.direction
+	}
+	
+	def getCounts
+	{
+		return this.counts
+	}
+	
+	def IncrementCounts{
+		
+		this.counts.andIncrement
+	}
+	def getLine {
+		return newArrayList(new Point2d(lowerX,lowerY),new Point2d(upperX,upperY))
+	}
+	
+	def ObjectEncountered(ID : int) {
+		
+		if(ObjEncountered.contains(ID)){
+			return true
+		}
+		else{
+			ObjEncountered.add(ID)
+			return false
+		}
+		
+		
+	}
+
+	def get_normale(P1 : Point2d, P2:Point2d, flag : int) {
+	//
+		//    """
+    //# Flag :  1  gives the normale towards South or West
+    //# Flag : -1  gives the normale towards North or East
+    //"""
+    if (P1.x > P2.x){
+    	//: #Make sure that A is with the point with inferior X 
+       var A = P2
+       var B = P1
+    }
+      
+    else{
+    	 var A = P1
+         var B = P2
+    }
+       
+    m = (B[1]-A[1])/(B[0]-A[0]) #slope
+    norm_n = math.sqrt(m*m + 1)*flag #Be carefully I did it here because it was simpler
+    n_hat = [-m/norm_n,1/norm_n]
+    return n_hat
+	}
+}
+
+
+	
+

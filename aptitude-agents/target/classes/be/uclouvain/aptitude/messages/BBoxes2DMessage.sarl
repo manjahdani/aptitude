@@ -11,7 +11,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
  */
 class BBoxes2DMessage extends BaseMessage {
 
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var numberObjects : int
+	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var numberObjects : int 
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var detectionTime : double
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var bboxes : int[]
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var classIDs : int[]

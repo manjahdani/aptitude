@@ -1,0 +1,58 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitudeAgents.util
+
+/** 
+ * @author manjah
+ * 
+ */
+class BBoxes2D extends BBOX {
+	
+
+
+	val conf : double 
+	val frame : int
+	
+	new (x:int, y:int, w:int, h:int, conf:double, frame:int)
+	{
+		super(x,y,w,h)
+		this.conf=conf;
+		this.frame=frame;
+	}
+	
+	
+}
+class BBOX {
+	
+	val x : int
+	val y : int
+	val w : int
+	val h : int
+	
+	new (x : int, y : int, w : int, h : int)
+	{
+		this.x=x;
+		this.y=y;
+		this.w=w;
+		this.h=h;
+	}
+	
+	def getX{
+		return this.x
+	}
+
+	def getY {
+		return this.y
+	}
+
+	def getW {
+		return this.w
+	}
+
+	def getH {
+		return this.h
+	}
+	
+	
+}
