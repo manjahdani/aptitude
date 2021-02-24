@@ -1,0 +1,72 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.agents.algorithm
+
+import be.uclouvain.organisation.told.LeavePlatform
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import java.io.FileReader
+import org.json.simple.JSONObject
+import org.json.simple.parser.JSONParser
+import io.sarl.core.DefaultContextInteractions
+import java.util.UUID
+import be.uclouvain.organisation.platform.ObserverRole
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior DetectorRole extends ObserverRole {
+	uses Logging, Detection, DefaultContextInteractions
+
+	var partnerDetectionName : String
+	//var start : long
+	//var configPathYOLO = "F:/aptitude/aptitude-agents/src/main/resources/config/test-YOLO.json"
+	//var configPathTinyYOLO = "F:/aptitude/aptitude-agents/src/main/resources/config/test-TinyYOLO.json"
+	
+	var partnerObserver : UUID
+	on Initialize {
+		// Event trigger before the behavior begin to live or to be used.
+		// You should put all the initialization statements in this block of code.
+		
+		setSkill(new DetectionImpl)
+		var parser = new JSONParser(); // occurrence.parameters.get(0).toString
+		var configPathDetector = occurrence.parameters.get(0).toString
+		var jsonDetector = parser.parse(new FileReader(configPathDetector)) as JSONObject;
+		requestDetector(jsonDetector)
+	}
+	
+	on PartnerDetectionFound {
+		
+		this.partnerDetectionName = occurrence.partnerName
+		info("Detection partner found: " + this.partnerDetectionName)
+		Thread.sleep(2000)
+		sendAction(1) // PLAY
+		//this.start = System.currentTimeMillis()
+
+	// Thread.sleep(10000)
+	// sendAction(2) // PAUSE
+	// Thread.sleep(5000)
+	// this.start -= 5000
+	// sendAction(3) 	// RESUME
+}
+
+	on BBoxes2DResult{
+		emit(new BBoxes2DResult(occurrence.bboxes2D))[it.UUID == partnerObserver]
+	}
+
+	on Destroy {
+		// Event trigger when the behavior is destroyed from the system.
+		// You should put all the resource releasing statements in this block of code.
+		info("The behavior was stopped.")
+	}
+
+	on LeavePlatform {
+		// join(BaseContext.ID, BaseSpace.spaceID.ID)
+		info("Observer Leaving")
+		sendAction(4)
+		//leave(PlatformID)
+	}
+}

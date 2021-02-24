@@ -171,6 +171,36 @@ public class PlatformRole extends Behavior {
           }
         };
         _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_organisationInfo_1, _function_1);
+      } else {
+        Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+        InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+        AgentContext _innerContext_1 = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1.getInnerContext();
+        OrganisationInfo _organisationInfo_2 = new OrganisationInfo(_innerContext_1, this.PlatformTOLDSpace);
+        class $SerializableClosureProxy_2 implements Scope<Address> {
+          
+          private final UUID $_agentID;
+          
+          public $SerializableClosureProxy_2(final UUID $_agentID) {
+            this.$_agentID = $_agentID;
+          }
+          
+          @Override
+          public boolean matches(final Address it) {
+            UUID _uUID = it.getUUID();
+            return Objects.equal(_uUID, $_agentID);
+          }
+        }
+        final Scope<Address> _function_2 = new Scope<Address>() {
+          @Override
+          public boolean matches(final Address it) {
+            UUID _uUID = it.getUUID();
+            return Objects.equal(_uUID, occurrence.agentID);
+          }
+          private Object writeReplace() throws ObjectStreamException {
+            return new SerializableProxy($SerializableClosureProxy_2.class, occurrence.agentID);
+          }
+        };
+        _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.wake(_organisationInfo_2, _function_2);
       }
     }
   }

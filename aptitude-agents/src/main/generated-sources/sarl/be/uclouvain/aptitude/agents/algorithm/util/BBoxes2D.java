@@ -28,8 +28,6 @@ public class BBoxes2D {
   
   private final ArrayList<String> lines_crossed = new ArrayList<String>();
   
-  private final Point2d oldPos = new Point2d(0, 0);
-  
   private final Point2d curPos = new Point2d(0, 0);
   
   private final Vector2d direction = new Vector2d(0, 0);

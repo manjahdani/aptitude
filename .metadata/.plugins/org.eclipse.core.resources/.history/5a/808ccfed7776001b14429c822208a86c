@@ -1,0 +1,82 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.agents.algorithm
+
+import be.uclouvain.aptitude.agents.AlgorithmNeeded
+import be.uclouvain.organisation.told.EntityRole
+import io.sarl.core.Behaviors
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+
+/** 
+ * @author manjah
+ * 
+ */
+agent Algorithm {
+	
+	uses Behaviors,Logging, Lifecycle
+	
+	//var belief : String; 
+	var name   : String;
+	var level : int
+	
+	on Initialize {
+		level = occurrence.parameters.get(0) as Integer
+		name = occurrence.parameters.get(1) as String
+		//		if (belief == "YOLO" || belief == "TinyYOLO"){
+//			goal = "Detector"
+//		}
+//		else{
+//			goal = "Tracker"
+//		}
+		loggingName = "ALGORITHM-"+ name + "-"+ level +"-" + this.ID
+		info("Algorithm level" + name + " was started.")
+		registerBehavior(new EntityRole(this))
+		
+		if(level>0)
+		{
+			switch(occurrence.parameters.get(2)){
+				case "Counter": {
+					registerBehavior(new ObserverRole(this), occurrence.parameters.get(3))
+				//registerBehavior(new CounterRole(this), occurrence.parameters.get(3), occurrence.parameters.get(4))
+				}
+				case "Tracker": {
+				//registerBehavior(new ObserverRole(this), occurrence.parameters.get(3))
+					//registerBehavior(new TrackerRole(this),
+						//"F:/aptitude/aptitude-agents/src/main/resources/config/test-SORT.json",
+						//occurrence.parameters.get(4))
+				}
+				case "Detector": {
+				// registerBehavior(new ObserverRole(this), occurrence.parameters.get(3))
+					//registerBehavior(new DetectorRole(this),
+					 //"F:/aptitude/aptitude-agents/src/main/resources/config/test-YOLO.json", occurrence.parameters.get(4))
+			}
+			}
+		 }
+//		if (level > 0) {
+//			switch (occurrence.parameters.get(2)) {
+//				case "Counter": {
+//					registerBehavior(new CounterRole(this), occurrence.parameters.get(3), occurrence.parameters.get(4))
+//					registerBehavior(new DetectorRole(this),
+//						"F:/aptitude/aptitude-agents/src/main/resources/config/test-YOLO.json")
+//					
+//					}
+//			}
+//		}
+	}
+	on AlgorithmNeeded{
+		
+		if(occurrence.name== name)
+		{
+			info("I receive a JoinPlatform " + occurrence.task + occurrence.belief)
+			spawnInContext(Algorithm, occurrence.contextID, 1, occurrence.name,
+			occurrence.task, occurrence.belief, occurrence.dest)
+			}
+		}
+}
+
+
+		
+

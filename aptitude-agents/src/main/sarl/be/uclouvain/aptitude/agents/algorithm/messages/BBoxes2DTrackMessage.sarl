@@ -1,4 +1,4 @@
-package be.uclouvain.aptitude.aptitude.messages
+package be.uclouvain.aptitude.agents.algorithm.messages
 
 import com.hazelcast.nio.ObjectDataInput
 import com.hazelcast.nio.ObjectDataOutput
@@ -11,8 +11,8 @@ import org.eclipse.xtend.lib.annotations.Accessors
  */
 class BBoxes2DTrackMessage extends BBoxes2DMessage {
 
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var trackingTime : double
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var globalIDs : int[]
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var trackingTime : double
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var globalIDs : int[]
 
 	val FACTORY_ID = 1
 	val CLASS_ID = 211

@@ -1,11 +1,11 @@
 package be.uclouvain.aptitude.agents.algorithm;
 
 import be.uclouvain.aptitude.agents.algorithm.Observer;
-import be.uclouvain.aptitude.agents.algorithm.RequestMessage;
 import be.uclouvain.aptitude.agents.algorithm.messages.ActionMessage;
-import be.uclouvain.aptitude.aptitude.messages.BBoxes2DMessage;
-import be.uclouvain.aptitude.aptitude.messages.BBoxes2DTrackMessage;
-import be.uclouvain.aptitude.aptitude.messages.BaseMessage;
+import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DMessage;
+import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DTrackMessage;
+import be.uclouvain.aptitude.agents.algorithm.messages.BaseMessage;
+import be.uclouvain.aptitude.agents.algorithm.messages.RequestMessage;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.SerializationConfig;
 import com.hazelcast.core.Hazelcast;

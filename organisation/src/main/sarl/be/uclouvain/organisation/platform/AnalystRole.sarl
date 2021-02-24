@@ -14,6 +14,7 @@ import io.sarl.core.OpenEventSpace
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.EventSpace
 import java.util.UUID
+import be.uclouvain.organisation.told.AlgorithmJoinPlatform
 
 /** 
  * @author manjah
@@ -44,7 +45,7 @@ behavior AnalystRole {
 		PlatformID = occurrence.source.getUUID
 		PlatformSpace = occurrence.spaceID
 		PlatformSpace.register(asEventListener)
-		emit(PlatformSpace, new JoinPlatform(occurrence.context,occurrence.spaceID))
+		emit(PlatformSpace, new AlgorithmJoinPlatform(occurrence.context,occurrence.spaceID,"APTITUDE","Counter"))
 	}
 
 }

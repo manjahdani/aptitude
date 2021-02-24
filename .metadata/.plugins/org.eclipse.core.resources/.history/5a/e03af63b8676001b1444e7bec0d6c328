@@ -1,0 +1,100 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.agents.algorithm
+
+
+import com.hazelcast.config.Config
+import com.hazelcast.config.SerializationConfig
+import com.hazelcast.core.Hazelcast
+import com.hazelcast.core.HazelcastInstance
+import com.hazelcast.core.ITopic
+import com.hazelcast.core.Message
+import com.hazelcast.core.MessageListener
+import com.hazelcast.nio.serialization.DataSerializableFactory
+import com.hazelcast.nio.serialization.IdentifiedDataSerializable
+import java.util.HashMap
+import be.uclouvain.aptitude.aptitude.messages.BBoxes2DMessage
+import be.uclouvain.aptitude.aptitude.messages.BBoxes2DTrackMessage
+import be.uclouvain.aptitude.agents.algorithm.messages.ActionMessage
+import be.uclouvain.aptitude.aptitude.messages.BaseMessage
+import be.uclouvain.aptitude.agents.algorithm.Observer
+
+/** 
+ * @author samelson
+ * 
+ */
+ class SampleDataSerializableFactory implements DataSerializableFactory {
+	def create(typeId : int) : IdentifiedDataSerializable {
+		if (typeId == 10) {
+			return new RequestMessage
+		}else if (typeId == 11){
+			return new ActionMessage
+		}else if (typeId == 21){
+			return new BBoxes2DMessage
+		}else if (typeId == 22){
+			return new BBoxes2DTrackMessage
+		}
+		return null
+	}
+	
+}
+ 
+class CommunicationManager{
+
+	static var instance: CommunicationManager
+	static var hzInstance : HazelcastInstance
+	
+	var subscribtionTopic : HashMap<String, ITopic<BaseMessage>> = newHashMap
+	
+	static def getInstance(): CommunicationManager{
+		if (instance === null){
+			instance = new CommunicationManager()
+			hzInstance = getHzInstance()
+		}
+		return instance
+	}
+	
+	private static def getHzInstance(): HazelcastInstance{
+		if (hzInstance === null) {
+			var hzConfig = new Config
+			var serialConfig = new SerializationConfig()
+			serialConfig.addDataSerializableFactory(1, 
+				[id| if (id == 10) return new RequestMessage
+				else if (id == 11) return new ActionMessage
+				else if (id == 21) return new BBoxes2DMessage 
+				else if (id == 211) return new BBoxes2DTrackMessage
+				else return null
+				]
+			)
+			hzConfig.serializationConfig = serialConfig
+			hzConfig.setProperty("hazelcast.rest.enabled", "true")
+			hzConfig.managementCenterConfig.setEnabled(true);
+			hzConfig.managementCenterConfig.setUrl("http://localhost:8080/hazelcast-mancenter/");
+			hzInstance = Hazelcast.newHazelcastInstance(hzConfig)
+		}
+		return hzInstance
+	}
+
+	def subscribeTopic(topicName : String, observer : Observer) {
+		val topic = getHzInstance.getTopic(topicName)
+		val subscribtionID : String = topic.addMessageListener(new MessageListener<BaseMessage>(){
+			def onMessage(m : Message<BaseMessage>) {
+				observer.update(m.messageObject)
+			}
+		})
+		subscribtionTopic.put(subscribtionID, topic)
+		return subscribtionID
+	}
+	
+	def unsubscribeTopic(subscribtionID : String) {
+		val topic = subscribtionTopic.remove(subscribtionID)
+		topic.removeMessageListener(subscribtionID)
+	}
+	
+	def publishMessage(topicSub : String, message : BaseMessage) {
+		val topic = subscribtionTopic.get(topicSub)
+		topic.publish(message)
+	}
+
+}

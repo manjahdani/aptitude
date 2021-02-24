@@ -22,7 +22,6 @@ class BBoxes2D {
 	val globalID : int
 	var classeID : int
 	val lines_crossed = new ArrayList<String>
-	val oldPos = new Point2d(0,0)
 	val curPos = new Point2d(0,0)
 	val direction = new Vector2d(0,0)
 	

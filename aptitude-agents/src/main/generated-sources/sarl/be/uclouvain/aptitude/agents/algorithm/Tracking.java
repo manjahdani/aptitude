@@ -1,7 +1,7 @@
 package be.uclouvain.aptitude.agents.algorithm;
 
 import be.uclouvain.aptitude.agents.algorithm.Observer;
-import be.uclouvain.aptitude.aptitude.messages.BBoxes2DMessage;
+import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DMessage;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.core.AgentTrait;

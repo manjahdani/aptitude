@@ -1,6 +1,6 @@
 package be.uclouvain.aptitude.agents.algorithm;
 
-import be.uclouvain.aptitude.aptitude.messages.BaseMessage;
+import be.uclouvain.aptitude.agents.algorithm.messages.BaseMessage;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.core.AgentTrait;

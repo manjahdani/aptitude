@@ -61,6 +61,9 @@ behavior PlatformRole {
 			info("I sended you")
 			wake(new OrganisationInfo(innerContext, PlatformTOLDSpace))[it.UUID == occurrence.agentID]
 		}
+		else {
+			wake(new OrganisationInfo(innerContext, PlatformTOLDSpace))[it.UUID == occurrence.agentID]
+		}
 	}
 
 	on StopMission {

@@ -1,5 +1,6 @@
 package be.uclouvain.aptitude.agents;
 
+import be.uclouvain.aptitude.agents.Paraddis;
 import be.uclouvain.organisation.platform.AnalystRole;
 import be.uclouvain.organisation.platform.AuthorizationToJoin;
 import be.uclouvain.organisation.platform.NewMission;
@@ -17,7 +18,6 @@ import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Address;
-import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.DynamicSkillProvider;
@@ -39,7 +39,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlSpecification("0.11")
 @SarlElementType(19)
 @SuppressWarnings("all")
-public class Expert extends Agent {
+public class Expert extends Paraddis {
   private TreeMap<UUID, EventSpace> platformlistenersSpaceIDs;
   
   private ArrayList<UUID> platformList;

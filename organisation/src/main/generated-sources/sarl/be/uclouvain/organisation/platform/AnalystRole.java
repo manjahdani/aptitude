@@ -1,7 +1,7 @@
 package be.uclouvain.organisation.platform;
 
 import be.uclouvain.organisation.OrganisationInfo;
-import be.uclouvain.organisation.told.JoinPlatform;
+import be.uclouvain.organisation.told.AlgorithmJoinPlatform;
 import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.ExternalContextAccess;
@@ -60,8 +60,8 @@ public class AnalystRole extends Behavior {
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     this.PlatformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    JoinPlatform _joinPlatform = new JoinPlatform(occurrence.context, occurrence.spaceID);
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.PlatformSpace, _joinPlatform);
+    AlgorithmJoinPlatform _algorithmJoinPlatform = new AlgorithmJoinPlatform(occurrence.context, occurrence.spaceID, "APTITUDE", "Counter");
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.PlatformSpace, _algorithmJoinPlatform);
   }
   
   @Extension

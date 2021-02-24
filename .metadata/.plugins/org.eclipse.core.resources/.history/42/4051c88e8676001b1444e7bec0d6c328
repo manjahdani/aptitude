@@ -1,0 +1,16 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.agents.algorithm
+
+import be.uclouvain.aptitude.aptitude.messages.BaseMessage
+
+/** 
+ * @author samelson
+ * 
+ */
+capacity Observer {
+	
+	def update(m : BaseMessage)
+	
+}

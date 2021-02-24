@@ -1,0 +1,65 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.agents
+
+
+import be.uclouvain.organisation.told.JoinPlatform
+import be.uclouvain.organisation.told.TOLDRole
+import io.sarl.core.Behaviors
+import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.core.OpenEventSpace
+import io.sarl.lang.core.AgentContext
+import java.util.TreeMap
+import be.uclouvain.aptitude.agents.algorithm.Algorithm
+
+/** 
+ * @author manjah
+ * 
+ */
+agent TOLDAgent {
+	uses Logging, Lifecycle, InnerContextAccess,Behaviors
+
+ 	val AlgorithmDatabase : TreeMap<String,String> = new TreeMap<String,String>
+	
+	
+	// configPath
+ 	
+	on Initialize {
+		// Event trigger before the agent begin to live or to be used.
+		// You should put all the initialization statements in this block of code.
+		info("TOLD agent was started.")
+		AlgorithmDatabase.put("YOLO", "F:/aptitude/aptitude-agents/src/main/resources/config/test-YOLO.json")
+		AlgorithmDatabase.put("TinyYOLO","F:/aptitude/aptitude-agents/src/main/resources/config/test-TinyYOLO.json")
+		AlgorithmDatabase.put("SORT", "F:/aptitude/aptitude-agents/src/main/resources/config/test-SORT.json")
+		AlgorithmDatabase.put("DeepSORT", "F:/aptitude/aptitude-agents/src/main/resources/config/test-DeepSORT.json")
+		loggingName = "TOLD-" + this.ID
+		
+		for(k : AlgorithmDatabase.keySet){
+			spawnInContext(Algorithm,innerContext,k,0)
+		}
+		registerBehavior(new TOLDRole(this))
+		
+	}
+	on JoinPlatform {
+		info("Me TOLD I receiveJoin")
+		 wake(new AlgorithmNeeded(occurrence.contextID,occurrence.DefaultSpaceID,"Detector","YOLO"))
+	}
+}
+
+event AlgorithmNeeded{
+	val contextID : AgentContext
+	val DefaultSpaceID : OpenEventSpace
+	val task : String
+	val belief : String
+
+	new (context : AgentContext, Space : OpenEventSpace,t : String, bel : String) {
+		this.contextID = context
+		this.DefaultSpaceID = Space
+		this.task = t; 
+		this.belief = bel;
+	}
+}

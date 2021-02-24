@@ -1,4 +1,4 @@
-package be.uclouvain.aptitude.aptitude.messages
+package be.uclouvain.aptitude.agents.algorithm.messages
 
 import com.hazelcast.nio.ObjectDataInput
 import com.hazelcast.nio.ObjectDataOutput
@@ -11,16 +11,16 @@ import org.eclipse.xtend.lib.annotations.Accessors
  */
 class BBoxes2DMessage extends BaseMessage {
 
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var numberObjects : int 
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var detectionTime : double
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var bboxes : int[]
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var classIDs : int[]
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var detConfs : double[]
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var dimWidth : int
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var dimHeight : int
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var bboxesFormat : String
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var frameNumber : int
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var lastFrame : boolean
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var numberObjects : int 
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var detectionTime : double
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var bboxes : int[]
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var classIDs : int[]
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var detConfs : double[]
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var dimWidth : int
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var dimHeight : int
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var bboxesFormat : String
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var frameNumber : int
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var lastFrame : boolean
 
 	val FACTORY_ID = 1
 	val CLASS_ID = 21

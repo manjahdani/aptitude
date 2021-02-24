@@ -1,9 +1,9 @@
 package be.uclouvain.aptitude.agents.algorithm;
 
-import be.uclouvain.aptitude.agents.algorithm.RequestMessage;
 import be.uclouvain.aptitude.agents.algorithm.messages.ActionMessage;
-import be.uclouvain.aptitude.aptitude.messages.BBoxes2DMessage;
-import be.uclouvain.aptitude.aptitude.messages.BBoxes2DTrackMessage;
+import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DMessage;
+import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DTrackMessage;
+import be.uclouvain.aptitude.agents.algorithm.messages.RequestMessage;
 import com.hazelcast.nio.serialization.DataSerializableFactory;
 import com.hazelcast.nio.serialization.IdentifiedDataSerializable;
 import io.sarl.lang.annotation.SarlElementType;

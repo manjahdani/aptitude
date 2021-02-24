@@ -52,7 +52,7 @@ agent Paraddis {
 	}
 
 	on CommitSuicide {
-
+		
 			/* 
 			 * When receiving this, the agent tries
 			 * 1. to cancel all the tasks he was busy with

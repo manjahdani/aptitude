@@ -1,6 +1,6 @@
 package be.uclouvain.aptitude.agents.algorithm.messages;
 
-import be.uclouvain.aptitude.aptitude.messages.BaseMessage;
+import be.uclouvain.aptitude.agents.algorithm.messages.BaseMessage;
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
 import io.sarl.lang.annotation.SarlElementType;

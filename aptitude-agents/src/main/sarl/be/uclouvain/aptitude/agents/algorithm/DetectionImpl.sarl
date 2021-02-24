@@ -4,8 +4,6 @@
 package be.uclouvain.aptitude.agents.algorithm
 
 import be.uclouvain.aptitude.agents.algorithm.messages.ActionMessage
-import be.uclouvain.aptitude.aptitude.messages.BBoxes2DMessage
-import be.uclouvain.aptitude.aptitude.messages.BaseMessage
 import com.hazelcast.util.UuidUtil
 import io.sarl.core.AgentTask
 import io.sarl.core.Behaviors
@@ -13,6 +11,10 @@ import io.sarl.core.Logging
 import io.sarl.core.Schedules
 import org.json.simple.JSONObject
 import be.uclouvain.aptitude.agents.algorithm.Detection
+
+import be.uclouvain.aptitude.agents.algorithm.messages.BaseMessage
+import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DMessage
+import be.uclouvain.aptitude.agents.algorithm.messages.RequestMessage
 
 /** 
  * @author samelson

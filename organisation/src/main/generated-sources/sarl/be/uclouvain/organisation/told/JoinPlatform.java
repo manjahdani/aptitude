@@ -18,11 +18,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 public class JoinPlatform extends Event {
   public final AgentContext contextID;
   
-  public final OpenEventSpace DefaultSpaceID;
+  public final OpenEventSpace defaultSpaceID;
   
-  public JoinPlatform(final AgentContext context, final OpenEventSpace Space) {
+  public JoinPlatform(final AgentContext context, final OpenEventSpace openSpace) {
     this.contextID = context;
-    this.DefaultSpaceID = Space;
+    this.defaultSpaceID = openSpace;
   }
   
   @Override
@@ -48,9 +48,9 @@ public class JoinPlatform extends Event {
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
     builder.add("contextID", this.contextID);
-    builder.add("DefaultSpaceID", this.DefaultSpaceID);
+    builder.add("defaultSpaceID", this.defaultSpaceID);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = -1300382629L;
+  private static final long serialVersionUID = -298389445L;
 }

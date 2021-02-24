@@ -22,7 +22,7 @@ import be.uclouvain.organisation.platform.NewMission
  * @author manjah
  * 
  */
-agent Expert {
+agent Expert extends Paraddis {
 	uses Logging, Behaviors, ExternalContextAccess,DefaultContextInteractions
 
 	var platformlistenersSpaceIDs : TreeMap<UUID, EventSpace>

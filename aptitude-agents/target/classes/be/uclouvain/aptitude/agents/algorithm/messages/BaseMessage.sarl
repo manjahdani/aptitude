@@ -1,4 +1,4 @@
-package be.uclouvain.aptitude.aptitude.messages
+package be.uclouvain.aptitude.agents.algorithm.messages
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import com.hazelcast.nio.serialization.IdentifiedDataSerializable
@@ -13,8 +13,8 @@ import com.hazelcast.util.UuidUtil
  */
 abstract class BaseMessage implements IdentifiedDataSerializable {
 
-	@Accessors(PUBLIC_GETTER, PRIVATE_SETTER) var uuid : String = UuidUtil.newSecureUuidString
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var ack : boolean
+	@Accessors(#[PUBLIC_GETTER, PRIVATE_SETTER]) var uuid : String = UuidUtil.newSecureUuidString
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var ack : boolean
 
 	def writeData(odo : ObjectDataOutput) throws IOException {
 		odo.writeUTF(this.uuid)

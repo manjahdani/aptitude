@@ -1,0 +1,19 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import io.sarl.core.Logging
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior Sensor {
+	uses Logging, SensorCapacity
+
+}
+
+event Signal{
+
+}

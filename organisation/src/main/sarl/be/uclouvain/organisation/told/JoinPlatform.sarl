@@ -12,10 +12,21 @@ import io.sarl.core.OpenEventSpace
  */
 event JoinPlatform{
 	val contextID : AgentContext
-	val DefaultSpaceID : OpenEventSpace
-
-	new (context : AgentContext, Space : OpenEventSpace) {
+	val defaultSpaceID : OpenEventSpace
+	
+	new (context : AgentContext, openSpace : OpenEventSpace) {
 		this.contextID = context
-		this.DefaultSpaceID = Space
+		this.defaultSpaceID = openSpace
+	}
+}
+
+event AlgorithmJoinPlatform extends JoinPlatform {
+	
+	val name : String
+	val task : String
+	new (context : AgentContext, openSpace : OpenEventSpace, n : String, t : String) {
+		super(context,openSpace)
+		this.name = n
+		this.task = t
 	}
 }

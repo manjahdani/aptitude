@@ -8,11 +8,13 @@ import io.sarl.core.Logging
 import io.sarl.core.Schedules
 import org.json.simple.JSONObject
 import be.uclouvain.aptitude.agents.algorithm.Tracking
-import be.uclouvain.aptitude.aptitude.messages.BBoxes2DTrackMessage
-import be.uclouvain.aptitude.aptitude.messages.BaseMessage
+
 import be.uclouvain.aptitude.agents.algorithm.BBoxes2DTrackResult
 import be.uclouvain.aptitude.agents.algorithm.PartnerTrackingFound
-import be.uclouvain.aptitude.aptitude.messages.BBoxes2DMessage
+import be.uclouvain.aptitude.agents.algorithm.messages.BaseMessage
+import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DTrackMessage
+import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DMessage
+import be.uclouvain.aptitude.agents.algorithm.messages.RequestMessage
 
 skill TrackingImpl implements Tracking {
 	uses Logging, Behaviors, Schedules

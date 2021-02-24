@@ -1,13 +1,14 @@
 package be.uclouvain.aptitude.agents.algorithm;
 
 import be.uclouvain.aptitude.agents.AlgorithmNeeded;
-import be.uclouvain.aptitude.agents.algorithm.ObserverRole;
-import be.uclouvain.organisation.told.EntityRole;
+import be.uclouvain.aptitude.agents.Paraddis;
+import be.uclouvain.aptitude.agents.algorithm.CounterRole;
+import be.uclouvain.aptitude.agents.algorithm.DetectorRole;
+import be.uclouvain.aptitude.agents.algorithm.TrackerRole;
+import be.uclouvain.organisation.told.entity.EntityRole;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
-import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Initialize;
-import io.sarl.core.InnerContextAccess;
 import io.sarl.core.Lifecycle;
 import io.sarl.core.Logging;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
@@ -15,7 +16,6 @@ import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
-import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.DynamicSkillProvider;
@@ -31,46 +31,63 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlSpecification("0.11")
 @SarlElementType(19)
 @SuppressWarnings("all")
-public class Algorithm extends Agent {
-  private String belief;
-  
-  private String goal;
+public class Algorithm extends Paraddis {
+  private String name;
   
   private int level;
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Object _get = occurrence.parameters[0];
-    this.belief = (_get == null ? null : _get.toString());
+    this.level = ((((Integer) _get)) == null ? 0 : (((Integer) _get)).intValue());
     Object _get_1 = occurrence.parameters[1];
-    this.level = ((((Integer) _get_1)) == null ? 0 : (((Integer) _get_1)).intValue());
-    if ((Objects.equal(this.belief, "YOLO") || Objects.equal(this.belief, "TinyYOLO"))) {
-      this.goal = "Detector";
-    } else {
-      this.goal = "Tracker";
-    }
+    this.name = (_get_1 == null ? null : _get_1.toString());
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     UUID _iD = this.getID();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(((((("ALGORITHM-" + this.belief) + "") + Integer.valueOf(this.level)) + "-") + _iD));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(((((("ALGORITHM-" + this.name) + "-") + Integer.valueOf(this.level)) + "-") + _iD));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info((("Algorithm level" + this.belief) + " was started."));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info((("Algorithm level" + this.name) + " was started."));
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     EntityRole _entityRole = new EntityRole(this);
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_entityRole);
     if ((this.level > 0)) {
-      Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-      ObserverRole _observerRole = new ObserverRole(this);
-      _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.registerBehavior(_observerRole);
+      Object _get_2 = occurrence.parameters[2];
+      boolean _matched = false;
+      if (Objects.equal(_get_2, "Counter")) {
+        _matched=true;
+        Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+        CounterRole _counterRole = new CounterRole(this);
+        _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.registerBehavior(_counterRole, occurrence.parameters[3], occurrence.parameters[4]);
+      }
+      if (!_matched) {
+        if (Objects.equal(_get_2, "Tracker")) {
+          _matched=true;
+          Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+          TrackerRole _trackerRole = new TrackerRole(this);
+          _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_2.registerBehavior(_trackerRole, 
+            "F:/aptitude/aptitude-agents/src/main/resources/config/test-SORT.json", 
+            occurrence.parameters[4]);
+        }
+      }
+      if (!_matched) {
+        if (Objects.equal(_get_2, "Detector")) {
+          _matched=true;
+          Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+          DetectorRole _detectorRole = new DetectorRole(this);
+          _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_3.registerBehavior(_detectorRole, 
+            "F:/aptitude/aptitude-agents/src/main/resources/config/test-YOLO.json", 
+            occurrence.parameters[4]);
+        }
+      }
     }
   }
   
   private void $behaviorUnit$AlgorithmNeeded$1(final AlgorithmNeeded occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((("I receive a JoinPlatform " + occurrence.task) + occurrence.belief));
-    if ((Objects.equal(this.goal, occurrence.task) && Objects.equal(this.belief, occurrence.belief))) {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Spawnig the algo");
+    boolean _equals = Objects.equal(occurrence.name, this.name);
+    if (_equals) {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((("I receive a JoinPlatform " + occurrence.task) + occurrence.belief));
       Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContext(Algorithm.class, occurrence.contextID, this.belief, Integer.valueOf(1));
+      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContext(Algorithm.class, occurrence.contextID, Integer.valueOf(1), occurrence.name, occurrence.task, occurrence.belief, occurrence.dest);
     }
   }
   
@@ -116,34 +133,6 @@ public class Algorithm extends Agent {
     return $castSkill(Lifecycle.class, this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE);
   }
   
-  @Extension
-  @ImportedCapacityFeature(InnerContextAccess.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS;
-  
-  @SyntheticMember
-  @Pure
-  private InnerContextAccess $CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS == null || this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS = $getSkill(InnerContextAccess.class);
-    }
-    return $castSkill(InnerContextAccess.class, this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS);
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(DefaultContextInteractions.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS;
-  
-  @SyntheticMember
-  @Pure
-  private DefaultContextInteractions $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);
-    }
-    return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
-  }
-  
   @SyntheticMember
   @PerceptGuardEvaluator
   private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
@@ -171,9 +160,7 @@ public class Algorithm extends Agent {
     if (getClass() != obj.getClass())
       return false;
     Algorithm other = (Algorithm) obj;
-    if (!java.util.Objects.equals(this.belief, other.belief))
-      return false;
-    if (!java.util.Objects.equals(this.goal, other.goal))
+    if (!java.util.Objects.equals(this.name, other.name))
       return false;
     if (other.level != this.level)
       return false;
@@ -186,8 +173,7 @@ public class Algorithm extends Agent {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
-    result = prime * result + java.util.Objects.hashCode(this.belief);
-    result = prime * result + java.util.Objects.hashCode(this.goal);
+    result = prime * result + java.util.Objects.hashCode(this.name);
     result = prime * result + Integer.hashCode(this.level);
     return result;
   }

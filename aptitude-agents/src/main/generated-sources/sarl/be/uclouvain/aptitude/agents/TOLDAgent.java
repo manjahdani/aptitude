@@ -1,8 +1,9 @@
 package be.uclouvain.aptitude.agents;
 
 import be.uclouvain.aptitude.agents.AlgorithmNeeded;
+import be.uclouvain.aptitude.agents.Paraddis;
 import be.uclouvain.aptitude.agents.algorithm.Algorithm;
-import be.uclouvain.organisation.told.JoinPlatform;
+import be.uclouvain.organisation.told.AlgorithmJoinPlatform;
 import be.uclouvain.organisation.told.TOLDRole;
 import io.sarl.core.Behaviors;
 import io.sarl.core.Initialize;
@@ -14,13 +15,12 @@ import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
-import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.DynamicSkillProvider;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.UUID;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -32,35 +32,39 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlSpecification("0.11")
 @SarlElementType(19)
 @SuppressWarnings("all")
-public class TOLDAgent extends Agent {
-  private final TreeMap<String, String> AlgorithmDatabase = new TreeMap<String, String>();
+public class TOLDAgent extends Paraddis {
+  private final HashMap<String, String> AlgorithmDatabase = new HashMap<String, String>();
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("TOLD agent was started.");
+    UUID _iD = this.getID();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(("TOLD-" + _iD));
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("TOLD started.");
     this.AlgorithmDatabase.put("YOLO", "F:/aptitude/aptitude-agents/src/main/resources/config/test-YOLO.json");
     this.AlgorithmDatabase.put("TinyYOLO", "F:/aptitude/aptitude-agents/src/main/resources/config/test-TinyYOLO.json");
     this.AlgorithmDatabase.put("SORT", "F:/aptitude/aptitude-agents/src/main/resources/config/test-SORT.json");
     this.AlgorithmDatabase.put("DeepSORT", "F:/aptitude/aptitude-agents/src/main/resources/config/test-DeepSORT.json");
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    UUID _iD = this.getID();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.setLoggingName(("TOLD-" + _iD));
+    this.AlgorithmDatabase.put("APTITUDE", "NoneForTheMoment");
     Set<String> _keySet = this.AlgorithmDatabase.keySet();
-    for (final String k : _keySet) {
+    for (final String name : _keySet) {
       Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
       InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContext(Algorithm.class, _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext(), k, Integer.valueOf(0));
+      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContext(Algorithm.class, _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext(), Integer.valueOf(0), name);
     }
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     TOLDRole _tOLDRole = new TOLDRole(this);
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_tOLDRole);
   }
   
-  private void $behaviorUnit$JoinPlatform$1(final JoinPlatform occurrence) {
+  private void $behaviorUnit$AlgorithmJoinPlatform$1(final AlgorithmJoinPlatform occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Me TOLD I receiveJoin");
+    String _string = occurrence.toString();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I received a request " + _string));
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    AlgorithmNeeded _algorithmNeeded = new AlgorithmNeeded(occurrence.contextID, occurrence.DefaultSpaceID, "Detector", "YOLO");
+    String _get = this.AlgorithmDatabase.get(occurrence.name);
+    UUID _uUID = occurrence.getSource().getUUID();
+    AlgorithmNeeded _algorithmNeeded = new AlgorithmNeeded(occurrence.contextID, occurrence.defaultSpaceID, occurrence.name, occurrence.task, _get, _uUID);
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_algorithmNeeded);
   }
   
@@ -130,10 +134,10 @@ public class TOLDAgent extends Agent {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$JoinPlatform(final JoinPlatform occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+  private void $guardEvaluator$AlgorithmJoinPlatform(final AlgorithmJoinPlatform occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$JoinPlatform$1(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AlgorithmJoinPlatform$1(occurrence));
   }
   
   @Override

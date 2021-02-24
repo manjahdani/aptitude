@@ -14,11 +14,13 @@ import com.hazelcast.core.MessageListener
 import com.hazelcast.nio.serialization.DataSerializableFactory
 import com.hazelcast.nio.serialization.IdentifiedDataSerializable
 import java.util.HashMap
-import be.uclouvain.aptitude.aptitude.messages.BBoxes2DMessage
-import be.uclouvain.aptitude.aptitude.messages.BBoxes2DTrackMessage
+
 import be.uclouvain.aptitude.agents.algorithm.messages.ActionMessage
-import be.uclouvain.aptitude.aptitude.messages.BaseMessage
 import be.uclouvain.aptitude.agents.algorithm.Observer
+import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DMessage
+import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DTrackMessage
+import be.uclouvain.aptitude.agents.algorithm.messages.BaseMessage
+import be.uclouvain.aptitude.agents.algorithm.messages.RequestMessage
 
 /** 
  * @author samelson

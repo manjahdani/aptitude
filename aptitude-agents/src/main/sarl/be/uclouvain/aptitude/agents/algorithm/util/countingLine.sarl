@@ -84,11 +84,10 @@ class countingLine {
 	}
 
 	def get_normale(P1 : Point2d, P2:Point2d, flag : int) {
-	//
-		//    """
-    //# Flag :  1  gives the normale towards South or West
-    //# Flag : -1  gives the normale towards North or East
-    //"""
+
+    // Flag :  1  gives the normale towards South or West
+    // Flag : -1  gives the normale towards North or East
+    
     var A:Point2d = P1
     var B:Point2d = P2
     
@@ -114,7 +113,6 @@ class countingLine {
 		return 0
 		
 	}
-	
 }
 
 

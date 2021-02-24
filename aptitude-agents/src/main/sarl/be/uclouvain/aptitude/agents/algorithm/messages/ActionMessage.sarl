@@ -4,7 +4,7 @@ import com.hazelcast.nio.ObjectDataInput
 import java.io.IOException
 import com.hazelcast.nio.ObjectDataOutput
 import org.eclipse.xtend.lib.annotations.Accessors
-import be.uclouvain.aptitude.aptitude.messages.BaseMessage
+
 
 /** 
  * @author samelson
