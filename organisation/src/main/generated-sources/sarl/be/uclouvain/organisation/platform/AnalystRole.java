@@ -1,7 +1,10 @@
 package be.uclouvain.organisation.platform;
 
 import be.uclouvain.organisation.OrganisationInfo;
+import be.uclouvain.organisation.platform.MissionSensitivity;
+import be.uclouvain.organisation.platform.SensititvityRequest;
 import be.uclouvain.organisation.told.AlgorithmJoinPlatform;
+import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.ExternalContextAccess;
@@ -13,14 +16,18 @@ import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
+import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.EventSpace;
+import io.sarl.lang.core.Scope;
+import io.sarl.lang.util.SerializableProxy;
+import java.io.ObjectStreamException;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -35,11 +42,13 @@ public class AnalystRole extends Behavior {
   
   protected EventSpace BaseSpace;
   
-  protected OpenEventSpace PlatformSpace;
+  protected AgentContext PlatformContext;
+  
+  protected OpenEventSpace TOLDSpace;
   
   protected UUID PlatformID;
   
-  private int Sensitivity;
+  private final AtomicInteger Sensitivity = new AtomicInteger();
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
@@ -47,21 +56,53 @@ public class AnalystRole extends Behavior {
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
     this.BaseSpace = _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1.getDefaultSpace();
     Object _get = occurrence.parameters[0];
-    this.Sensitivity = ((((Integer) _get)) == null ? 0 : (((Integer) _get)).intValue());
+    this.Sensitivity.set(((((Integer) _get)) == null ? 0 : (((Integer) _get)).intValue()));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I am an analyst and will solve a problem with the sensitivity  " + Integer.valueOf(this.Sensitivity)));
+    int _get_1 = this.Sensitivity.get();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I am an analyst and will solve a problem with the sensitivity  " + Integer.valueOf(_get_1)));
   }
   
   private void $behaviorUnit$OrganisationInfo$1(final OrganisationInfo occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((((("Joining the Platform organisation: " + occurrence.spaceID) + " (") + occurrence.context) + ")."));
+    this.PlatformContext = occurrence.context;
     this.PlatformID = occurrence.getSource().getUUID();
-    this.PlatformSpace = occurrence.spaceID;
+    this.TOLDSpace = occurrence.spaceID;
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    this.PlatformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    this.TOLDSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     AlgorithmJoinPlatform _algorithmJoinPlatform = new AlgorithmJoinPlatform(occurrence.context, occurrence.spaceID, "APTITUDE", "Counter");
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.PlatformSpace, _algorithmJoinPlatform);
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.TOLDSpace, _algorithmJoinPlatform);
+  }
+  
+  private void $behaviorUnit$SensititvityRequest$2(final SensititvityRequest occurrence) {
+    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
+    int _get = this.Sensitivity.get();
+    MissionSensitivity _missionSensitivity = new MissionSensitivity(_get);
+    class $SerializableClosureProxy implements Scope<Address> {
+      
+      private final UUID $_uUID;
+      
+      public $SerializableClosureProxy(final UUID $_uUID) {
+        this.$_uUID = $_uUID;
+      }
+      
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, $_uUID);
+      }
+    }
+    final Scope<Address> _function = new Scope<Address>() {
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        UUID _uUID_1 = occurrence.getSource().getUUID();
+        return Objects.equal(_uUID, _uUID_1);
+      }
+      private Object writeReplace() throws ObjectStreamException {
+        return new SerializableProxy($SerializableClosureProxy.class, occurrence.getSource().getUUID());
+      }
+    };
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.PlatformContext.getDefaultSpace(), _missionSensitivity, _function);
   }
   
   @Extension
@@ -139,6 +180,14 @@ public class AnalystRole extends Behavior {
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$OrganisationInfo$1(occurrence));
   }
   
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$SensititvityRequest(final SensititvityRequest occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$SensititvityRequest$2(occurrence));
+  }
+  
   @Override
   @Pure
   @SyntheticMember
@@ -150,9 +199,7 @@ public class AnalystRole extends Behavior {
     if (getClass() != obj.getClass())
       return false;
     AnalystRole other = (AnalystRole) obj;
-    if (!Objects.equals(this.PlatformID, other.PlatformID))
-      return false;
-    if (other.Sensitivity != this.Sensitivity)
+    if (!java.util.Objects.equals(this.PlatformID, other.PlatformID))
       return false;
     return super.equals(obj);
   }
@@ -163,8 +210,7 @@ public class AnalystRole extends Behavior {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
-    result = prime * result + Objects.hashCode(this.PlatformID);
-    result = prime * result + Integer.hashCode(this.Sensitivity);
+    result = prime * result + java.util.Objects.hashCode(this.PlatformID);
     return result;
   }
   

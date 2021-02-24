@@ -28,7 +28,7 @@ agent TOLDAgent extends Paraddis {
 	on Initialize {
 		
 		loggingName = "TOLD-" + this.ID
-		info("TOLD started.")
+		//info("TOLD started.")
 		
 		AlgorithmDatabase.put("YOLO", "F:/aptitude/aptitude-agents/src/main/resources/config/test-YOLO.json")
 		AlgorithmDatabase.put("TinyYOLO","F:/aptitude/aptitude-agents/src/main/resources/config/test-TinyYOLO.json")
@@ -41,7 +41,6 @@ agent TOLDAgent extends Paraddis {
 		}
 		registerBehavior(new TOLDRole(this))}
 	on AlgorithmJoinPlatform {
-		info("I received a request " + occurrence.toString)
 		wake(new AlgorithmNeeded(occurrence.contextID,occurrence.defaultSpaceID, occurrence.name, occurrence.task, AlgorithmDatabase.get(occurrence.name), occurrence.source.UUID))// //"Detector","YOLO"))
 	}
 }

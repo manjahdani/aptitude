@@ -28,6 +28,8 @@ agent Expert extends Paraddis {
 	var platformlistenersSpaceIDs : TreeMap<UUID, EventSpace>
 	var platformList : ArrayList<UUID>
 	val MissionList = new TreeMap<UUID,EventSpace>
+	
+	
 	on Initialize {
 		// Event trigger before the agent begin to live or to be used.
 		// You should put all the initialization statements in this block of code
@@ -38,7 +40,6 @@ agent Expert extends Paraddis {
 		
 	}
 	on NewMission {
-		
 		info("I have a new mission")
 		val PlatformID = platformList.get(occurrence.missionData.location);
 		val PlatformSpace = platformlistenersSpaceIDs.get(PlatformID)

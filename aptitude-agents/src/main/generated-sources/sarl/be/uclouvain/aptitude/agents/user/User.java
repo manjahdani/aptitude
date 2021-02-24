@@ -1,6 +1,5 @@
 package be.uclouvain.aptitude.agents.user;
 
-import be.uclouvain.aptitude.agents.Expert;
 import be.uclouvain.aptitude.agents.Paraddis;
 import be.uclouvain.aptitude.agents.user.UserElementCapacity;
 import be.uclouvain.aptitude.agents.user.UserRole;
@@ -50,11 +49,6 @@ public class User extends Paraddis {
     Object _get_1 = occurrence.parameters[1];
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_userRole, ((TreeMap<UUID, EventSpace>) _get), 
       ((ArrayList<UUID>) _get_1));
-    Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-    Object _get_2 = occurrence.parameters[0];
-    Object _get_3 = occurrence.parameters[1];
-    _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContext(Expert.class, _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext(), ((TreeMap<UUID, EventSpace>) _get_2), ((ArrayList<UUID>) _get_3));
   }
   
   @Extension

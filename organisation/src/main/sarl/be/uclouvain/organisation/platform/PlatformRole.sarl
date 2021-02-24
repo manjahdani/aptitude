@@ -28,9 +28,6 @@ behavior PlatformRole {
 	protected var PlatformTOLDSpace : OpenEventSpace
 
 	on Initialize {
-		// Event trigger before the behavior begin to live or to be used.
-		// You should put all the initialization statements in this block of code.
-		info("The platform behavior started.")
 	}
 
 
@@ -51,14 +48,14 @@ behavior PlatformRole {
 	}
 
 	on MemberJoined {
-		info("I see " +occurrence.agentType)
+		//info("I see " +occurrence.agentType)
 		
 		if (occurrence.agentType == "be.uclouvain.aptitude.agents.TOLDAgent") {
-			info("I sended you")
+			//info("I sended you")
 			emit(new OrganisationInfo(defaultContext, PlatformTOLDSpace))[it.UUID == occurrence.agentID]
 		} 
 		else if (occurrence.agentType == "be.uclouvain.aptitude.agents.Expert") {
-			info("I sended you")
+			//info("I sended you")
 			wake(new OrganisationInfo(innerContext, PlatformTOLDSpace))[it.UUID == occurrence.agentID]
 		}
 		else {

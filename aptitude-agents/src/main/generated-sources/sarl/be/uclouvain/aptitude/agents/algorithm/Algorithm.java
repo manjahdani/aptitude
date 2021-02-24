@@ -44,8 +44,6 @@ public class Algorithm extends Paraddis {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     UUID _iD = this.getID();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(((((("ALGORITHM-" + this.name) + "-") + Integer.valueOf(this.level)) + "-") + _iD));
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info((("Algorithm level" + this.name) + " was started."));
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     EntityRole _entityRole = new EntityRole(this);
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_entityRole);
@@ -63,9 +61,7 @@ public class Algorithm extends Paraddis {
           _matched=true;
           Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
           TrackerRole _trackerRole = new TrackerRole(this);
-          _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_2.registerBehavior(_trackerRole, 
-            "F:/aptitude/aptitude-agents/src/main/resources/config/test-SORT.json", 
-            occurrence.parameters[4]);
+          _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_2.registerBehavior(_trackerRole, occurrence.parameters[3], occurrence.parameters[4]);
         }
       }
       if (!_matched) {
@@ -73,9 +69,7 @@ public class Algorithm extends Paraddis {
           _matched=true;
           Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
           DetectorRole _detectorRole = new DetectorRole(this);
-          _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_3.registerBehavior(_detectorRole, 
-            "F:/aptitude/aptitude-agents/src/main/resources/config/test-YOLO.json", 
-            occurrence.parameters[4]);
+          _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_3.registerBehavior(_detectorRole, occurrence.parameters[3], occurrence.parameters[4]);
         }
       }
     }
@@ -84,8 +78,6 @@ public class Algorithm extends Paraddis {
   private void $behaviorUnit$AlgorithmNeeded$1(final AlgorithmNeeded occurrence) {
     boolean _equals = Objects.equal(occurrence.name, this.name);
     if (_equals) {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((("I receive a JoinPlatform " + occurrence.task) + occurrence.belief));
       Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContext(Algorithm.class, occurrence.contextID, Integer.valueOf(1), occurrence.name, occurrence.task, occurrence.belief, occurrence.dest);
     }

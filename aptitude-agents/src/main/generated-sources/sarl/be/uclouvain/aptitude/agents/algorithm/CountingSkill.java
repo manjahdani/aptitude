@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
-import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -31,8 +30,6 @@ public class CountingSkill extends Skill implements ObserverCapacity {
   private final TreeMap<String, countingLine> countingLines = new TreeMap<String, countingLine>();
   
   public void install() {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Installing the skill");
     countingLine _countingLine = new countingLine(1235, 700, 309, 664, 1);
     this.countingLines.put("A", _countingLine);
     countingLine _countingLine_1 = new countingLine(1477, 324, 1676, 310, (-1));
@@ -46,30 +43,9 @@ public class CountingSkill extends Skill implements ObserverCapacity {
         if ((this.has_crossed_counting_line(bb.getBBOX(), this.countingLines.get(counting_line)) && 
           (!this.countingLines.get(counting_line).ObjectEncountered(bb.getGlobalID())))) {
           final int orientation = this.countingLines.get(counting_line).Orientation(bb.getDirection());
-          Vector2d bbDir = bb.getDirection();
-          Vector2d nDir = this.countingLines.get(counting_line).getNormale();
           if ((orientation != 0)) {
-            Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-            int _frame = bb.getFrame();
-            int _IncrementCounts = this.countingLines.get(counting_line).IncrementCounts();
-            String _plus = ((((((("Counted at frame " + Integer.valueOf(_frame)) + " and ") + counting_line) + " is : ") + Integer.valueOf(_IncrementCounts)) + " v=") + "(");
-            double _x = bbDir.getX();
-            String _plus_1 = ((_plus + Double.valueOf(_x)) + " , ");
-            double _y = bbDir.getY();
-            String _plus_2 = (((_plus_1 + Double.valueOf(_y)) + "And n=") + "(");
-            double _x_1 = nDir.getX();
-            String _plus_3 = ((_plus_2 + Double.valueOf(_x_1)) + " , ");
-            double _y_1 = nDir.getY();
-            _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((((_plus_3 + Double.valueOf(_y_1)) + ")") + " ori:") + Integer.valueOf(orientation)));
+            this.countingLines.get(counting_line).IncrementCounts();
           } else {
-            Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-            int _globalID = bb.getGlobalID();
-            int _frame_1 = bb.getFrame();
-            double _x_2 = bbDir.getX();
-            double _y_2 = bbDir.getY();
-            double _x_3 = nDir.getX();
-            double _y_3 = nDir.getY();
-            _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(((((((((((((((((((("ID :" + Integer.valueOf(_globalID)) + " Counted Horizontally at the frame ") + Integer.valueOf(_frame_1)) + " at : ") + counting_line) + " v=") + "(") + Double.valueOf(_x_2)) + " , ") + Double.valueOf(_y_2)) + ")") + " and n=") + "(") + Double.valueOf(_x_3)) + ",") + Double.valueOf(_y_3)) + ")") + " orientation:") + Integer.valueOf(orientation)));
           }
         }
       }
@@ -177,6 +153,15 @@ public class CountingSkill extends Skill implements ObserverCapacity {
       return true;
     }
     return false;
+  }
+  
+  public void displayPerception() {
+    Set<String> _keySet = this.countingLines.keySet();
+    for (final String counting_line : _keySet) {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      int _IncrementCounts = this.countingLines.get(counting_line).IncrementCounts();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((counting_line + " : ") + Integer.valueOf(_IncrementCounts)));
+    }
   }
   
   @Extension

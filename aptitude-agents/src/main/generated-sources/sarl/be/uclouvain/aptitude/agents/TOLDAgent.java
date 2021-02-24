@@ -39,8 +39,6 @@ public class TOLDAgent extends Paraddis {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     UUID _iD = this.getID();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(("TOLD-" + _iD));
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("TOLD started.");
     this.AlgorithmDatabase.put("YOLO", "F:/aptitude/aptitude-agents/src/main/resources/config/test-YOLO.json");
     this.AlgorithmDatabase.put("TinyYOLO", "F:/aptitude/aptitude-agents/src/main/resources/config/test-TinyYOLO.json");
     this.AlgorithmDatabase.put("SORT", "F:/aptitude/aptitude-agents/src/main/resources/config/test-SORT.json");
@@ -58,9 +56,6 @@ public class TOLDAgent extends Paraddis {
   }
   
   private void $behaviorUnit$AlgorithmJoinPlatform$1(final AlgorithmJoinPlatform occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    String _string = occurrence.toString();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I received a request " + _string));
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     String _get = this.AlgorithmDatabase.get(occurrence.name);
     UUID _uUID = occurrence.getSource().getUUID();

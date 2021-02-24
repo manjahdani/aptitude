@@ -5901,3 +5901,605 @@ Caused by: java.lang.Exception: Resource '/organisation/src/main/sarl/be/uclouva
 	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
 	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
 	... 36 more
+!SESSION 2021-02-24 14:25:31.942 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_211
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_GB
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:38:32.800
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:38:33.227
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:38:33.277
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:38:33.319
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:38:33.740
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:38:33.800
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:39:34.084
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:43:58.183
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:43:59.122
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:44:05.538
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:44:32.438
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:44:39.933
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:44:44.848
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:44:44.898
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:44:46.958
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:45:33.844
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:45:34.018
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:45:34.058
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:45:34.368
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:45:34.628
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:45:34.677
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:45:37.918
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY org.eclipse.jface.text 4 0 2021-02-24 14:49:37.125
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:49:40.350
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:49:40.350
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:50:12.656
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:50:49.395
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/DetectorRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:50:57.248
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/DetectorRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:51:15.628
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:51:16.172
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:51:16.674
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:51:16.737
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:51:17.209
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:51:17.256
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:51:33.049
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:51:35.514
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:51:37.453
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:52:54.560
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:00.661
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:00.717
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:02.573
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:02.625
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:04.673
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:04.726
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:21.049
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:21.104
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:24.471
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:24.521
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:26.331
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:26.732
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:27.271
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:27.321
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:28.866
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:28.921
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:31.479
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:31.532
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:32.291
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:32.341
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:35.641
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:35.696
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:51.347
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:51.402
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:54.838
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:54.892
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:53:58.694
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY org.eclipse.jface.text 4 0 2021-02-24 14:54:56.043
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:56:54.933
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:57:31.036
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:57:31.092
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:57:45.121
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:57:45.176
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:57:49.107
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:57:49.157
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:57:58.827
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:57:58.877
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:58:06.177
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:58:06.247
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:58:11.427
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:58:11.482
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:58:15.322
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:59:58.318
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:59:58.318
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:59:58.369
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:59:58.889
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 14:59:58.958
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:00:19.405
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY org.eclipse.jface.text 4 0 2021-02-24 15:03:40.332
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+!SESSION 2021-02-24 15:13:26.010 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_211
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_GB
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:21:58.558
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:21:59.003
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:21:59.039
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:21:59.045
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:22:11.388
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:22:42.078
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:22:47.295
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:25:57.692
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:25:58.036
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:25:58.086
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:25:58.209
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:25:58.709
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:25:58.725
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:26:00.261
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY org.eclipse.jface.text 4 0 2021-02-24 15:27:01.901
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+!SESSION 2021-02-24 15:28:27.917 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_211
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_GB
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.jface.text 4 0 2021-02-24 15:32:58.921
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:35:37.977
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:35:38.507
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:35:38.509
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:35:38.558
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:35:39.243
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:35:39.254
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:35:39.255
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 15:35:50.109
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY org.eclipse.jface.text 4 0 2021-02-24 15:40:16.735
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 16:01:26.732
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/ObserverRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 16:01:26.734
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/ObserverRole.sarl. Reconciliation of the editor is forced.
+!SESSION 2021-02-24 16:30:01.041 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_211
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_GB
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 16:53:06.944
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/User.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 16:53:07.450
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/User.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 16:56:15.332
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 16:56:15.809
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 16:56:15.861
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 16:56:15.862
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 16:56:16.435
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 16:56:16.487
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 16:56:17.340
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 16:56:37.677
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 16:56:38.024
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 16:56:38.072
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 16:56:38.196
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 16:57:41.231
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY org.eclipse.jface.text 4 0 2021-02-24 17:11:48.336
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:16:55.694
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:16:57.178
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:16:57.244
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:17:00.124
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:17:00.194
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:17:01.105
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:17:01.185
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:17:01.921
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:17:01.989
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:17:11.110
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:17:11.170
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:17:12.155
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:17:12.217
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:17:13.111
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:17:13.115
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:17:13.644
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:17:16.086
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:20:17.153
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:20:19.361
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:20:19.411
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:20:20.347
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:20:20.355
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:20:20.699
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:20:22.840
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.

@@ -16,6 +16,11 @@ import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import java.util.TreeMap
 import java.util.UUID
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
+import be.uclouvain.aptitude.agents.Expert
+import io.sarl.lang.core.EventSpace
+import java.util.ArrayList
 
 /** 
  * @author manjah
@@ -23,7 +28,7 @@ import java.util.UUID
  */
 behavior UserRole extends ElementRole {
 
-	uses Behaviors, UserElementCapacity, DefaultContextInteractions
+	uses Behaviors, UserElementCapacity, DefaultContextInteractions,InnerContextAccess,Lifecycle
 	
 	val entityList : TreeMap<UUID, CharacterData> = new TreeMap<UUID, CharacterData>
 	val AVAILABLE_MODELS = 4;
@@ -32,16 +37,23 @@ behavior UserRole extends ElementRole {
 	on Initialize {
 		for (var i = 0; i < AVAILABLE_MODELS; i++){
 			val id = UUID.randomUUID
-			entityList.put(id, new CharacterData(id.toString, characterType.get(i), 0, -1))}
+			entityList.put(id, new CharacterData(id.toString, characterType.get(i), 0, -1))
+			spawnInContextWithID(Expert,id, innerContext, occurrence.parameters.get(0) as TreeMap<UUID, EventSpace>,
+				occurrence.parameters.get(1) as ArrayList<UUID>)
+		}
+		
 			setupPhysicalDevice(getCharacterList)
+			
 			}
+			
+			
 	on ElementInformation {
 		
 		val msg = occurrence.information; 
 		if (msg instanceof UDP_Message_RequestSpawn) {
 			
 			val entityID = UUID.fromString(msg.actorUID)
-			wake(new NewMission(getDefaultSpace, new MissionData(entityID,msg.sceneID, entityList.get(entityID).evolution)))
+			wake(new NewMission(getDefaultSpace, new MissionData(entityID,msg.sceneID, entityList.get(entityID).evolution)))[it.UUID==entityID]
 			entityList.get(entityID).screenID = msg.sceneID
 			updateBehavior(getCharacterList)
 			}

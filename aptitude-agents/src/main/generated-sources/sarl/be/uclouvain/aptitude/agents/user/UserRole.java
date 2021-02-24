@@ -4,23 +4,31 @@ import UDPMessages.CharacterData;
 import UDPMessages.UDP_Message_Base;
 import UDPMessages.UDP_Message_RequestSpawn;
 import UDPMessages.UDP_Message_RequestWithdraw;
+import be.uclouvain.aptitude.agents.Expert;
 import be.uclouvain.aptitude.agents.user.UserElementCapacity;
 import be.uclouvain.organisation.interactivity.element.ElementInformation;
 import be.uclouvain.organisation.interactivity.element.ElementRole;
 import be.uclouvain.organisation.platform.NewMission;
 import be.uclouvain.organisation.platform.StopMission;
 import be.uclouvain.organisation.platform.util.MissionData;
+import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Initialize;
+import io.sarl.core.InnerContextAccess;
+import io.sarl.core.Lifecycle;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
+import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.EventSpace;
+import io.sarl.lang.core.Scope;
+import io.sarl.lang.util.SerializableProxy;
+import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
@@ -51,6 +59,12 @@ public class UserRole extends ElementRole {
         Integer _get = this.characterType.get(i);
         CharacterData _characterData = new CharacterData(_string, ((_get) == null ? 0 : (_get).intValue()), 0, (-1));
         this.entityList.put(id, _characterData);
+        Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+        InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+        Object _get_1 = occurrence.parameters[0];
+        Object _get_2 = occurrence.parameters[1];
+        _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(Expert.class, id, _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext(), ((TreeMap<UUID, EventSpace>) _get_1), 
+          ((ArrayList<UUID>) _get_2));
       }
     }
     UserElementCapacity _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_USER_USERELEMENTCAPACITY$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_USER_USERELEMENTCAPACITY$CALLER();
@@ -66,7 +80,31 @@ public class UserRole extends ElementRole {
       EventSpace _defaultSpace = _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultSpace();
       MissionData _missionData = new MissionData(entityID, ((UDP_Message_RequestSpawn)msg).sceneID, this.entityList.get(entityID).evolution);
       NewMission _newMission = new NewMission(_defaultSpace, _missionData);
-      _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_newMission);
+      class $SerializableClosureProxy implements Scope<Address> {
+        
+        private final UUID entityID;
+        
+        public $SerializableClosureProxy(final UUID entityID) {
+          this.entityID = entityID;
+        }
+        
+        @Override
+        public boolean matches(final Address it) {
+          UUID _uUID = it.getUUID();
+          return Objects.equal(_uUID, entityID);
+        }
+      }
+      final Scope<Address> _function = new Scope<Address>() {
+        @Override
+        public boolean matches(final Address it) {
+          UUID _uUID = it.getUUID();
+          return Objects.equal(_uUID, entityID);
+        }
+        private Object writeReplace() throws ObjectStreamException {
+          return new SerializableProxy($SerializableClosureProxy.class, entityID);
+        }
+      };
+      _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_newMission, _function);
       CharacterData _get = this.entityList.get(entityID);
       _get.screenID = ((UDP_Message_RequestSpawn)msg).sceneID;
       UserElementCapacity _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_USER_USERELEMENTCAPACITY$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_USER_USERELEMENTCAPACITY$CALLER();
@@ -145,6 +183,34 @@ public class UserRole extends ElementRole {
       this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);
     }
     return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
+  }
+  
+  @Extension
+  @ImportedCapacityFeature(InnerContextAccess.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS;
+  
+  @SyntheticMember
+  @Pure
+  private InnerContextAccess $CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS == null || this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS = $getSkill(InnerContextAccess.class);
+    }
+    return $castSkill(InnerContextAccess.class, this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS);
+  }
+  
+  @Extension
+  @ImportedCapacityFeature(Lifecycle.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_LIFECYCLE;
+  
+  @SyntheticMember
+  @Pure
+  private Lifecycle $CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE == null || this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE = $getSkill(Lifecycle.class);
+    }
+    return $castSkill(Lifecycle.class, this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE);
   }
   
   @SyntheticMember

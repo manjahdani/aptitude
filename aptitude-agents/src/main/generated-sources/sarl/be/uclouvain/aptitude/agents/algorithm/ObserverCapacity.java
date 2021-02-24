@@ -10,12 +10,13 @@ import java.util.ArrayList;
 /**
  * @author manjah
  */
-@FunctionalInterface
 @SarlSpecification("0.11")
 @SarlElementType(20)
 @SuppressWarnings("all")
 public interface ObserverCapacity extends Capacity {
   public abstract void Signal2Perception(final ArrayList<BBoxes2D> a);
+  
+  public abstract void displayPerception();
   
   /**
    * @ExcludeFromApidoc
@@ -29,6 +30,15 @@ public interface ObserverCapacity extends Capacity {
       try {
         ensureCallerInLocalThread();
         this.capacity.Signal2Perception(a);
+      } finally {
+        resetCallerInLocalThread();
+      }
+    }
+    
+    public void displayPerception() {
+      try {
+        ensureCallerInLocalThread();
+        this.capacity.displayPerception();
       } finally {
         resetCallerInLocalThread();
       }

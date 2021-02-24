@@ -19,12 +19,12 @@ behavior TOLDRole {
 	var WorldSpace : OpenEventSpace
 	
 	on OrganisationInfo {
-		info("Me TOLD I am going to listen to Platform")
+		//info("Me TOLD I am going to listen to Platform")
 		WorldSpace = occurrence.spaceID
-		info("Me TOLD I am going to listen to WorldSpace")
+		//info("Me TOLD I am going to listen to WorldSpace")
 		WorldSpace.register(asEventListener)
 	}
 	on MemberJoined{
-		info("I noticed" + occurrence.agentType)
+		//info("I noticed" + occurrence.agentType)
 	}
 }

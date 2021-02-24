@@ -12,4 +12,6 @@ import java.util.ArrayList
  */
 capacity ObserverCapacity {
 	def Signal2Perception(a : ArrayList<BBoxes2D>)
+	
+	def displayPerception
 }

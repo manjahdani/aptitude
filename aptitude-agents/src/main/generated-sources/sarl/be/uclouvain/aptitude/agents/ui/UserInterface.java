@@ -37,8 +37,6 @@ public class UserInterface extends Paraddis {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     UUID _iD = this.getID();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(("UserInterface-" + _iD));
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("agent started.");
     Object _get = occurrence.parameters[0];
     DeviceNetworkManagerSkill _deviceNetworkManagerSkill = new DeviceNetworkManagerSkill(65001, ((TreeMap<UUID, EventSpace>) _get));
     final DeviceNetworkManagerSkill s = this.<DeviceNetworkManagerSkill>setSkill(_deviceNetworkManagerSkill, 

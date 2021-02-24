@@ -1,0 +1,99 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.agents.algorithm
+
+import be.uclouvain.organisation.told.LeavePlatform
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import java.io.FileReader
+import org.json.simple.JSONObject
+import org.json.simple.parser.JSONParser
+import be.uclouvain.aptitude.agents.algorithm.Tracking
+import be.uclouvain.aptitude.agents.algorithm.TrackingImpl
+import be.uclouvain.aptitude.agents.algorithm.BBoxes2DResult
+import be.uclouvain.aptitude.agents.algorithm.PartnerTrackingFound
+import io.sarl.core.OpenEventSpace
+import java.util.UUID
+import be.uclouvain.organisation.OrganisationInfo
+import io.sarl.core.ExternalContextAccess
+import be.uclouvain.organisation.told.AlgorithmJoinPlatform
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import be.uclouvain.organisation.platform.ObserverRole
+import be.uclouvain.organisation.platform.MissionSensitivity
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior TrackerRole extends ObserverRole {
+	uses Logging, Tracking, ExternalContextAccess, Behaviors, DefaultContextInteractions
+
+	var partnerTrackingName : String
+
+	protected var PlatformSpace : OpenEventSpace
+	protected var PlatformID : UUID
+
+	val availableObservers = newArrayList("TinyYOLO", "YOLO")
+	on Initialize {
+
+		
+		setSkill(new TrackingImpl)
+		var parser = new JSONParser(); // occurrence.parameters.get(0).toString
+		var configPathTracker = occurrence.parameters.get(0).toString
+		var jsonTracker = parser.parse(new FileReader(configPathTracker)) as JSONObject;
+		requestTracker(jsonTracker)
+	}
+
+	on Destroy {
+		// Event trigger when the behavior is destroyed from the system.
+		// You should put all the resource releasing statements in this block of code.
+		info("The behavior was stopped.")
+	}
+
+	on PartnerTrackingFound {
+		this.partnerTrackingName = occurrence.partnerName
+		info("Tracking Partner found: " + this.partnerTrackingName)
+	}
+	on LeavePlatform {
+		// join(BaseContext.ID, BaseSpace.spaceID.ID)
+		info("ObserverTrackerLeaving")
+		// sendAction(4)
+			// leave(PlatformID)
+	}
+
+	on OrganisationInfo {
+		info("Joining the Platform organisation: " + occurrence.spaceID + " (" + occurrence.context + ").")
+		PlatformID = occurrence.source.getUUID
+		PlatformSpace = occurrence.spaceID
+		PlatformSpace.register(asEventListener)
+		emit(PlatformSpace, new AlgorithmJoinPlatform(occurrence.context, occurrence.spaceID,"TinyYOLO", "Detector"))
+
+	}
+
+	
+	on MissionSensitivity {
+
+		info("Received Mission Sensitivity" + occurrence.s)
+		val Observer = availableObservers.get(intensityMap.get(occurrence.s))
+		emit(TOLDSpace, new AlgorithmJoinPlatform(PlatformContext, TOLDSpace, Observer, "Tracker"))
+	}
+
+	on BBoxes2DTrackResult {
+		emit(new BBoxes2DTrackResult(occurrence.bboxes2DTrack))[it.UUID == observerID]
+		// println("***********************")
+			// println("*  " + occurrence.bboxes2DTrack.frameNumber)
+				// println("*  " + occurrence.bboxes2DTrack.trackingTime)
+			// println("*  " + Arrays.toString(occurrence.bboxes2DTrack.globalIDs))
+		// println("*  " + Arrays.toString(occurrence.bboxes2DTrack.bboxes))
+		// println("*  " + Arrays.toString(occurrence.bboxes2DTrack.classIDs))
+		// println("*  " + Arrays.toString(occurrence.bboxes2DTrack.detConfs))
+		// println("*  " + occurrence.bboxes2DTrack.lastFrame)
+		// println("***********************")
+	}
+	on BBoxes2DResult {
+		getTrack(occurrence.bboxes2D)
+	}
+}

@@ -30,7 +30,7 @@ agent PlatformAgent extends Paraddis {
 		val platformConfig = occurrence.parameters.get(0) as PlatformConfig
 
 		loggingName = "Platform-" + platformConfig.getLevel() + "-" + this.ID
-		info("agent started.")
+		//info("agent started.")
 		
 
 		/* 

@@ -5,7 +5,7 @@ import be.uclouvain.aptitude.agents.algorithm.BBoxes2DTrackResult;
 import be.uclouvain.aptitude.agents.algorithm.PartnerTrackingFound;
 import be.uclouvain.aptitude.agents.algorithm.Tracking;
 import be.uclouvain.aptitude.agents.algorithm.TrackingImpl;
-import be.uclouvain.organisation.OrganisationInfo;
+import be.uclouvain.organisation.platform.MissionSensitivity;
 import be.uclouvain.organisation.platform.ObserverRole;
 import be.uclouvain.organisation.told.AlgorithmJoinPlatform;
 import be.uclouvain.organisation.told.LeavePlatform;
@@ -29,8 +29,11 @@ import io.sarl.lang.core.Scope;
 import io.sarl.lang.util.SerializableProxy;
 import java.io.FileReader;
 import java.io.ObjectStreamException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.TreeMap;
 import java.util.UUID;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -50,8 +53,16 @@ public class TrackerRole extends ObserverRole {
   
   protected UUID PlatformID;
   
+  private final TreeMap<Integer, Integer> intensityMap = new TreeMap<Integer, Integer>();
+  
+  private final ArrayList<String> availableObservers = CollectionLiterals.<String>newArrayList("TinyYOLO", "YOLO");
+  
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     try {
+      this.intensityMap.put(Integer.valueOf(0), Integer.valueOf(1));
+      this.intensityMap.put(Integer.valueOf(1), Integer.valueOf(0));
+      this.intensityMap.put(Integer.valueOf(2), Integer.valueOf(0));
+      this.intensityMap.put(Integer.valueOf(3), Integer.valueOf(1));
       TrackingImpl _trackingImpl = new TrackingImpl();
       this.<TrackingImpl>setSkill(_trackingImpl);
       JSONParser parser = new JSONParser();
@@ -82,16 +93,14 @@ public class TrackerRole extends ObserverRole {
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("ObserverTrackerLeaving");
   }
   
-  private void $behaviorUnit$OrganisationInfo$4(final OrganisationInfo occurrence) {
+  private void $behaviorUnit$MissionSensitivity$4(final MissionSensitivity occurrence) {
+    this.sensitivity = occurrence.s;
+    final String Observer = this.availableObservers.get(((this.intensityMap.get(Integer.valueOf(this.sensitivity))) == null ? 0 : (this.intensityMap.get(Integer.valueOf(this.sensitivity))).intValue()));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((((("Joining the Platform organisation: " + occurrence.spaceID) + " (") + occurrence.context) + ")."));
-    this.PlatformID = occurrence.getSource().getUUID();
-    this.PlatformSpace = occurrence.spaceID;
-    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    this.PlatformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("Tracker Mission Sensitivity" + Integer.valueOf(this.sensitivity)) + "Selected Observer : ") + Observer));
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    AlgorithmJoinPlatform _algorithmJoinPlatform = new AlgorithmJoinPlatform(occurrence.context, occurrence.spaceID, "TinyYOLO", "Detector");
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.PlatformSpace, _algorithmJoinPlatform);
+    AlgorithmJoinPlatform _algorithmJoinPlatform = new AlgorithmJoinPlatform(this.PlatformContext, this.TOLDSpace, Observer, "Detector");
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.TOLDSpace, _algorithmJoinPlatform);
   }
   
   private void $behaviorUnit$BBoxes2DTrackResult$5(final BBoxes2DTrackResult occurrence) {
@@ -209,6 +218,14 @@ public class TrackerRole extends ObserverRole {
   
   @SyntheticMember
   @PerceptGuardEvaluator
+  private void $guardEvaluator$MissionSensitivity(final MissionSensitivity occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$MissionSensitivity$4(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
   private void $guardEvaluator$LeavePlatform(final LeavePlatform occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
@@ -245,14 +262,6 @@ public class TrackerRole extends ObserverRole {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Destroy$1(occurrence));
-  }
-  
-  @SyntheticMember
-  @PerceptGuardEvaluator
-  private void $guardEvaluator$OrganisationInfo(final OrganisationInfo occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
-    assert occurrence != null;
-    assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$OrganisationInfo$4(occurrence));
   }
   
   @Override

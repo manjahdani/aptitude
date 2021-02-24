@@ -1,0 +1,56 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import java.util.UUID
+import io.sarl.core.OpenEventSpace
+import be.uclouvain.organisation.OrganisationInfo
+import io.sarl.core.Behaviors
+import io.sarl.lang.core.AgentContext
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior ObserverRole {
+	uses Logging, Behaviors
+
+	protected var TOLDSpace : OpenEventSpace
+	protected var TOLDID : UUID
+	protected var PlatformContext : AgentContext
+
+	protected var observerID : UUID
+	protected var sensitivty : int
+	
+	on Initialize {
+		// Event trigger before the behavior begin to live or to be used.
+		// You should put all the initialization statements in this block of code.
+		info("Observer Role started" + occurrence.parameters.get(0).toString)
+
+		observerID = occurrence.parameters.get(1) as UUID
+		info("The behavior was started.")
+	}
+
+	on Destroy {
+		info("The behavior was stopped.")
+	}
+
+	on OrganisationInfo {
+		//info("Joining the Platform organisation: " + occurrence.spaceID + " (" + occurrence.context + ").")
+		PlatformContext = occurrence.context
+		TOLDID = occurrence.source.getUUID
+		TOLDSpace = occurrence.spaceID
+		TOLDSpace.register(asEventListener)
+	}
+	
+	
+	//	on LeavePlatform {
+//		// join(BaseContext.ID, BaseSpace.spaceID.ID)
+//		info("ObserverLeaving")
+//		leave(PlatformID)
+//	}
+}

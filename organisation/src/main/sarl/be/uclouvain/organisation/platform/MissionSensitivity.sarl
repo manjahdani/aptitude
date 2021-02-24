@@ -1,0 +1,16 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+/** 
+ * @author manjah
+ * 
+ */
+event MissionSensitivity{
+	val s : int
+	
+	new(s:int){
+		this.s=s
+	}
+}

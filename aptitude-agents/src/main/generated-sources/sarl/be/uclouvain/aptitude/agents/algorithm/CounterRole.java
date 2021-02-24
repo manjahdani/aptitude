@@ -5,11 +5,9 @@ import be.uclouvain.aptitude.agents.algorithm.CountingSkill;
 import be.uclouvain.aptitude.agents.algorithm.ObserverCapacity;
 import be.uclouvain.aptitude.agents.algorithm.util.BBOX;
 import be.uclouvain.aptitude.agents.algorithm.util.BBoxes2D;
-import be.uclouvain.organisation.OrganisationInfo;
+import be.uclouvain.organisation.platform.MissionSensitivity;
 import be.uclouvain.organisation.platform.ObserverRole;
 import be.uclouvain.organisation.told.AlgorithmJoinPlatform;
-import io.sarl.core.Behaviors;
-import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.Initialize;
 import io.sarl.core.Logging;
@@ -23,6 +21,7 @@ import io.sarl.lang.core.AtomicSkillReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeMap;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -33,25 +32,34 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlElementType(21)
 @SuppressWarnings("all")
 public class CounterRole extends ObserverRole {
+  private long start;
+  
+  private final ArrayList<String> availableObservers = CollectionLiterals.<String>newArrayList("SORT", "DeepSORT");
+  
+  private final TreeMap<Integer, Integer> intensityMap = new TreeMap<Integer, Integer>();
+  
   private final TreeMap<Integer, BBoxes2D> ObjectPresentInframe = new TreeMap<Integer, BBoxes2D>();
   
   private final ArrayList<BBoxes2D> ObjectToBeAnalyzed = new ArrayList<BBoxes2D>();
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
+    this.intensityMap.put(Integer.valueOf(0), Integer.valueOf(1));
+    this.intensityMap.put(Integer.valueOf(1), Integer.valueOf(0));
+    this.intensityMap.put(Integer.valueOf(2), Integer.valueOf(1));
+    this.intensityMap.put(Integer.valueOf(3), Integer.valueOf(0));
     CountingSkill _countingSkill = new CountingSkill();
     this.<CountingSkill>setSkill(_countingSkill, ObserverCapacity.class);
   }
   
-  private void $behaviorUnit$OrganisationInfo$1(final OrganisationInfo occurrence) {
+  private void $behaviorUnit$MissionSensitivity$1(final MissionSensitivity occurrence) {
+    this.sensitivity = occurrence.s;
+    final String Observer = this.availableObservers.get(((this.intensityMap.get(Integer.valueOf(this.sensitivity))) == null ? 0 : (this.intensityMap.get(Integer.valueOf(this.sensitivity))).intValue()));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((((("Joining the Platform organisation: " + occurrence.spaceID) + " (") + occurrence.context) + ")."));
-    this.TOLDID = occurrence.getSource().getUUID();
-    this.TOLDSpace = occurrence.spaceID;
-    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    this.TOLDSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("Counter Mission Sensitivity" + Integer.valueOf(this.sensitivity)) + "Selected Observer : ") + Observer));
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    AlgorithmJoinPlatform _algorithmJoinPlatform = new AlgorithmJoinPlatform(occurrence.context, occurrence.spaceID, "SORT", "Tracker");
+    AlgorithmJoinPlatform _algorithmJoinPlatform = new AlgorithmJoinPlatform(this.PlatformContext, this.TOLDSpace, Observer, "Tracker");
     _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.TOLDSpace, _algorithmJoinPlatform);
+    this.start = System.currentTimeMillis();
   }
   
   private void $behaviorUnit$BBoxes2DTrackResult$2(final BBoxes2DTrackResult occurrence) {
@@ -92,6 +100,17 @@ public class CounterRole extends ObserverRole {
     if (_isLastFrame) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("That was it! ");
+      long _currentTimeMillis = System.currentTimeMillis();
+      final long totalTime = ((_currentTimeMillis - this.start) / 1000);
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      String _string = Long.valueOf(totalTime).toString();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info((("It took " + _string) + " seconds"));
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      int _frameNumber = occurrence.bboxes2DTrack.getFrameNumber();
+      String _string_1 = Long.valueOf((_frameNumber / totalTime)).toString();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("Average FPS : " + _string_1));
+      ObserverCapacity _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY$CALLER_1 = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY$CALLER();
+      _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY$CALLER_1.displayPerception();
     }
   }
   
@@ -124,34 +143,6 @@ public class CounterRole extends ObserverRole {
   }
   
   @Extension
-  @ImportedCapacityFeature(DefaultContextInteractions.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS;
-  
-  @SyntheticMember
-  @Pure
-  private DefaultContextInteractions $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);
-    }
-    return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(Behaviors.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_BEHAVIORS;
-  
-  @SyntheticMember
-  @Pure
-  private Behaviors $CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS == null || this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS = $getSkill(Behaviors.class);
-    }
-    return $castSkill(Behaviors.class, this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS);
-  }
-  
-  @Extension
   @ImportedCapacityFeature(ObserverCapacity.class)
   @SyntheticMember
   private transient AtomicSkillReference $CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY;
@@ -175,24 +166,33 @@ public class CounterRole extends ObserverRole {
   
   @SyntheticMember
   @PerceptGuardEvaluator
+  private void $guardEvaluator$MissionSensitivity(final MissionSensitivity occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$MissionSensitivity$1(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
   private void $guardEvaluator$BBoxes2DTrackResult(final BBoxes2DTrackResult occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$BBoxes2DTrackResult$2(occurrence));
   }
   
-  @SyntheticMember
-  @PerceptGuardEvaluator
-  private void $guardEvaluator$OrganisationInfo(final OrganisationInfo occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
-    assert occurrence != null;
-    assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$OrganisationInfo$1(occurrence));
-  }
-  
   @Override
   @Pure
   @SyntheticMember
   public boolean equals(final Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    CounterRole other = (CounterRole) obj;
+    if (other.start != this.start)
+      return false;
     return super.equals(obj);
   }
   
@@ -201,6 +201,8 @@ public class CounterRole extends ObserverRole {
   @SyntheticMember
   public int hashCode() {
     int result = super.hashCode();
+    final int prime = 31;
+    result = prime * result + Long.hashCode(this.start);
     return result;
   }
   

@@ -43,8 +43,6 @@ public class PlatformAgent extends Paraddis {
     int _level = platformConfig.getLevel();
     UUID _iD = this.getID();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(((("Platform-" + Integer.valueOf(_level)) + "-") + _iD));
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("agent started.");
     List<PlatformConfig> _subPlatformConfig = platformConfig.getSubPlatformConfig();
     for (final PlatformConfig swc : _subPlatformConfig) {
       {

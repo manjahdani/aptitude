@@ -20,7 +20,6 @@ skill CountingSkill implements ObserverCapacity {
 	
 	val countingLines : TreeMap<String, countingLine> = new TreeMap<String, countingLine>;
 	def install {
-		info("Installing the skill")
 		countingLines.put("A", new countingLine(1235, 700, 309, 664, 1)) // ObjectCounter
 		countingLines.put("B", new countingLine(1477, 324, 1676, 310, -1))
 		// countingLines.put("B", new countingLine(1531, 392, 1775, 376, -1)) // ObjectCounter
@@ -34,18 +33,18 @@ skill CountingSkill implements ObserverCapacity {
 				if (has_crossed_counting_line(bb.getBBOX, countingLines.get(counting_line)) &&
 					!countingLines.get(counting_line).ObjectEncountered(bb.globalID)) {
 					val orientation = countingLines.get(counting_line).Orientation(bb.getDirection)
-					var bbDir = bb.getDirection
-					var nDir = countingLines.get(counting_line).getNormale
+					//var bbDir = bb.getDirection
+					//var nDir = countingLines.get(counting_line).getNormale
 					if (orientation != 0) {
-						info("Counted at frame " + bb.frame + " and " + counting_line + " is : " +
-								countingLines.get(counting_line).IncrementCounts() + " v=" + "(" + bbDir.x + " , " +
-							bbDir.y + "And n=" + "(" + nDir.getX + " , " + nDir.getY + ")" + " ori:" +
-								orientation)
+						countingLines.get(counting_line).IncrementCounts()
+						//info("Counted at frame " + bb.frame + " and " + counting_line + " is : " +
+							//	countingLines.get(counting_line).IncrementCounts() + " v=" + "(" + bbDir.x + " , " +
+							//bbDir.y + "And n=" + "(" + nDir.getX + " , " + nDir.getY + ")" + " ori:" +
+								//orientation)
 					} else {
-
-						info("ID :" + bb.globalID + " Counted Horizontally at the frame " + bb.frame + " at : " +
-								counting_line + " v=" + "(" + bbDir.x + " , " + bbDir.y + ")" + " and n=" + "(" +
-							nDir.getX + "," + nDir.getY + ")" + " orientation:" + orientation)
+						//info("ID :" + bb.globalID + " Counted Horizontally at the frame " + bb.frame + " at : " +
+							//	counting_line + " v=" + "(" + bbDir.x + " , " + bbDir.y + ")" + " and n=" + "(" +
+							//nDir.getX + "," + nDir.getY + ")" + " orientation:" + orientation)
 					}
 				}
 			}
@@ -119,4 +118,12 @@ skill CountingSkill implements ObserverCapacity {
 		}
 		return false
 	}
+	
+	def displayPerception {
+		for (counting_line : countingLines.keySet)
+			 {
+				info( counting_line +" : " + countingLines.get(counting_line).IncrementCounts())
+
+	}}
+	
 }

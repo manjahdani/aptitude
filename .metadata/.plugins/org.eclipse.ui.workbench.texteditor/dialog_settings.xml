@@ -6,8 +6,11 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="Counted Horizontally"/>
+		<item key="selection" value="Received SRequest"/>
 		<list key="findhistory">
+			<item value="Received SRequest"/>
+			<item value="Platform"/>
+			<item value="I receive a JoinPlatform"/>
 			<item value="Counted Horizontally"/>
 			<item value="130"/>
 			<item value="151"/>

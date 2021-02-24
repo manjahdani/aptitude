@@ -1,7 +1,11 @@
 package be.uclouvain.organisation.platform;
 
 import be.uclouvain.organisation.OrganisationInfo;
+import be.uclouvain.organisation.platform.MissionSensitivity;
+import be.uclouvain.organisation.platform.SensititvityRequest;
+import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
+import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
 import io.sarl.core.Logging;
@@ -11,11 +15,15 @@ import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
+import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.Behavior;
+import io.sarl.lang.core.Scope;
+import io.sarl.lang.util.SerializableProxy;
+import java.io.ObjectStreamException;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -31,16 +39,18 @@ public class ObserverRole extends Behavior {
   
   protected UUID TOLDID;
   
+  protected AgentContext PlatformContext;
+  
   protected UUID observerID;
+  
+  protected int sensitivity;
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     String _string = occurrence.parameters[0].toString();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Observer Role started" + _string));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Observer Role started witch config = " + _string));
     Object _get = occurrence.parameters[1];
     this.observerID = ((UUID) _get);
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("The behavior was started.");
   }
   
   private void $behaviorUnit$Destroy$1(final Destroy occurrence) {
@@ -49,10 +59,72 @@ public class ObserverRole extends Behavior {
   }
   
   private void $behaviorUnit$OrganisationInfo$2(final OrganisationInfo occurrence) {
+    this.PlatformContext = occurrence.context;
     this.TOLDID = occurrence.getSource().getUUID();
     this.TOLDSpace = occurrence.spaceID;
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     this.TOLDSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+    SensititvityRequest _sensititvityRequest = new SensititvityRequest();
+    class $SerializableClosureProxy implements Scope<Address> {
+      
+      private final UUID $_observerID_1;
+      
+      public $SerializableClosureProxy(final UUID $_observerID_1) {
+        this.$_observerID_1 = $_observerID_1;
+      }
+      
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, $_observerID_1);
+      }
+    }
+    final Scope<Address> _function = new Scope<Address>() {
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, ObserverRole.this.observerID);
+      }
+      private Object writeReplace() throws ObjectStreamException {
+        return new SerializableProxy($SerializableClosureProxy.class, ObserverRole.this.observerID);
+      }
+    };
+    _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_sensititvityRequest, _function);
+  }
+  
+  private void $behaviorUnit$SensititvityRequest$3(final SensititvityRequest occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    UUID _uUID = occurrence.getSource().getUUID();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I received A Sensititivy Request" + _uUID));
+    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+    MissionSensitivity _missionSensitivity = new MissionSensitivity(this.sensitivity);
+    class $SerializableClosureProxy implements Scope<Address> {
+      
+      private final UUID $_uUID;
+      
+      public $SerializableClosureProxy(final UUID $_uUID) {
+        this.$_uUID = $_uUID;
+      }
+      
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, $_uUID);
+      }
+    }
+    final Scope<Address> _function = new Scope<Address>() {
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        UUID _uUID_1 = occurrence.getSource().getUUID();
+        return Objects.equal(_uUID, _uUID_1);
+      }
+      private Object writeReplace() throws ObjectStreamException {
+        return new SerializableProxy($SerializableClosureProxy.class, occurrence.getSource().getUUID());
+      }
+    };
+    _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_missionSensitivity, _function);
   }
   
   @Extension
@@ -83,6 +155,20 @@ public class ObserverRole extends Behavior {
     return $castSkill(Behaviors.class, this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS);
   }
   
+  @Extension
+  @ImportedCapacityFeature(DefaultContextInteractions.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS;
+  
+  @SyntheticMember
+  @Pure
+  private DefaultContextInteractions $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);
+    }
+    return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
+  }
+  
   @SyntheticMember
   @PerceptGuardEvaluator
   private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
@@ -107,6 +193,14 @@ public class ObserverRole extends Behavior {
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$OrganisationInfo$2(occurrence));
   }
   
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$SensititvityRequest(final SensititvityRequest occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$SensititvityRequest$3(occurrence));
+  }
+  
   @Override
   @Pure
   @SyntheticMember
@@ -118,9 +212,11 @@ public class ObserverRole extends Behavior {
     if (getClass() != obj.getClass())
       return false;
     ObserverRole other = (ObserverRole) obj;
-    if (!Objects.equals(this.TOLDID, other.TOLDID))
+    if (!java.util.Objects.equals(this.TOLDID, other.TOLDID))
       return false;
-    if (!Objects.equals(this.observerID, other.observerID))
+    if (!java.util.Objects.equals(this.observerID, other.observerID))
+      return false;
+    if (other.sensitivity != this.sensitivity)
       return false;
     return super.equals(obj);
   }
@@ -131,8 +227,9 @@ public class ObserverRole extends Behavior {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
-    result = prime * result + Objects.hashCode(this.TOLDID);
-    result = prime * result + Objects.hashCode(this.observerID);
+    result = prime * result + java.util.Objects.hashCode(this.TOLDID);
+    result = prime * result + java.util.Objects.hashCode(this.observerID);
+    result = prime * result + Integer.hashCode(this.sensitivity);
     return result;
   }
   
