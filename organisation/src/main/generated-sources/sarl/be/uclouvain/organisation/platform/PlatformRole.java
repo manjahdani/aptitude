@@ -1,3 +1,10 @@
+/**
+ * @Name       : PlatformRole
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1
+ * @Date       : 22/03/2021
+ */
 package be.uclouvain.organisation.platform;
 
 import be.uclouvain.organisation.OrganisationInfo;
@@ -36,7 +43,7 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * @author manjah
+ * Platform concept-roles manages the resources.
  */
 @SarlSpecification("0.11")
 @SarlElementType(21)
@@ -49,56 +56,57 @@ public class PlatformRole extends Behavior {
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
   }
   
+  @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$Initialize$1(final Initialize occurrence) {
     InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
     this.PlatformInteractivitySpace = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, 
       UUID.randomUUID());
-    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-    this.PlatformTOLDSpace = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1.getInnerContext().<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, UUID.randomUUID());
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     this.PlatformInteractivitySpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+    this.PlatformTOLDSpace = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1.getInnerContext().<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, UUID.randomUUID());
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     this.PlatformTOLDSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.asEventListener());
   }
   
+  @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$AddEntity$2(final AddEntity occurrence) {
-    if (true) {
-      ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-      InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-      AgentContext _innerContext = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext();
-      InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-      EventSpace _defaultSpace = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1.getInnerContext().getDefaultSpace();
-      UUID _uUID = occurrence.getSource().getUUID();
-      AuthorizationToJoin _authorizationToJoin = new AuthorizationToJoin(_innerContext, ((OpenEventSpace) _defaultSpace), _uUID, occurrence.entityData);
-      class $SerializableClosureProxy implements Scope<Address> {
-        
-        private final UUID $_uUID;
-        
-        public $SerializableClosureProxy(final UUID $_uUID) {
-          this.$_uUID = $_uUID;
-        }
-        
-        @Override
-        public boolean matches(final Address it) {
-          UUID _uUID = it.getUUID();
-          return Objects.equal(_uUID, $_uUID);
-        }
+    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
+    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+    AgentContext _innerContext = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext();
+    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+    EventSpace _defaultSpace = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1.getInnerContext().getDefaultSpace();
+    UUID _uUID = occurrence.getSource().getUUID();
+    AuthorizationToJoin _authorizationToJoin = new AuthorizationToJoin(_innerContext, ((OpenEventSpace) _defaultSpace), _uUID, occurrence.entityData);
+    class $SerializableClosureProxy implements Scope<Address> {
+      
+      private final UUID $_uUID;
+      
+      public $SerializableClosureProxy(final UUID $_uUID) {
+        this.$_uUID = $_uUID;
       }
-      final Scope<Address> _function = new Scope<Address>() {
-        @Override
-        public boolean matches(final Address it) {
-          UUID _uUID = it.getUUID();
-          UUID _uUID_1 = occurrence.getSource().getUUID();
-          return Objects.equal(_uUID, _uUID_1);
-        }
-        private Object writeReplace() throws ObjectStreamException {
-          return new SerializableProxy($SerializableClosureProxy.class, occurrence.getSource().getUUID());
-        }
-      };
-      _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(occurrence.SourceEventSpace, _authorizationToJoin, _function);
+      
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, $_uUID);
+      }
     }
+    final Scope<Address> _function = new Scope<Address>() {
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        UUID _uUID_1 = occurrence.getSource().getUUID();
+        return Objects.equal(_uUID, _uUID_1);
+      }
+      private Object writeReplace() throws ObjectStreamException {
+        return new SerializableProxy($SerializableClosureProxy.class, occurrence.getSource().getUUID());
+      }
+    };
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(occurrence.SourceEventSpace, _authorizationToJoin, _function);
   }
   
+  @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$MemberJoined$3(final MemberJoined occurrence) {
     boolean _equals = Objects.equal(occurrence.agentType, "be.uclouvain.aptitude.agents.TOLDAgent");
     if (_equals) {
@@ -132,91 +140,66 @@ public class PlatformRole extends Behavior {
       };
       _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_organisationInfo, _function);
     } else {
-      boolean _equals_1 = Objects.equal(occurrence.agentType, "be.uclouvain.aptitude.agents.Expert");
-      if (_equals_1) {
-        Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-        InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-        AgentContext _innerContext = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext();
-        OrganisationInfo _organisationInfo_1 = new OrganisationInfo(_innerContext, this.PlatformTOLDSpace);
-        class $SerializableClosureProxy_1 implements Scope<Address> {
-          
-          private final UUID $_agentID;
-          
-          public $SerializableClosureProxy_1(final UUID $_agentID) {
-            this.$_agentID = $_agentID;
-          }
-          
-          @Override
-          public boolean matches(final Address it) {
-            UUID _uUID = it.getUUID();
-            return Objects.equal(_uUID, $_agentID);
-          }
+      Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+      InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+      AgentContext _innerContext = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext();
+      OrganisationInfo _organisationInfo_1 = new OrganisationInfo(_innerContext, this.PlatformTOLDSpace);
+      class $SerializableClosureProxy_1 implements Scope<Address> {
+        
+        private final UUID $_agentID;
+        
+        public $SerializableClosureProxy_1(final UUID $_agentID) {
+          this.$_agentID = $_agentID;
         }
-        final Scope<Address> _function_1 = new Scope<Address>() {
-          @Override
-          public boolean matches(final Address it) {
-            UUID _uUID = it.getUUID();
-            return Objects.equal(_uUID, occurrence.agentID);
-          }
-          private Object writeReplace() throws ObjectStreamException {
-            return new SerializableProxy($SerializableClosureProxy_1.class, occurrence.agentID);
-          }
-        };
-        _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_organisationInfo_1, _function_1);
-      } else {
-        Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-        InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-        AgentContext _innerContext_1 = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1.getInnerContext();
-        OrganisationInfo _organisationInfo_2 = new OrganisationInfo(_innerContext_1, this.PlatformTOLDSpace);
-        class $SerializableClosureProxy_2 implements Scope<Address> {
-          
-          private final UUID $_agentID;
-          
-          public $SerializableClosureProxy_2(final UUID $_agentID) {
-            this.$_agentID = $_agentID;
-          }
-          
-          @Override
-          public boolean matches(final Address it) {
-            UUID _uUID = it.getUUID();
-            return Objects.equal(_uUID, $_agentID);
-          }
+        
+        @Override
+        public boolean matches(final Address it) {
+          UUID _uUID = it.getUUID();
+          return Objects.equal(_uUID, $_agentID);
         }
-        final Scope<Address> _function_2 = new Scope<Address>() {
-          @Override
-          public boolean matches(final Address it) {
-            UUID _uUID = it.getUUID();
-            return Objects.equal(_uUID, occurrence.agentID);
-          }
-          private Object writeReplace() throws ObjectStreamException {
-            return new SerializableProxy($SerializableClosureProxy_2.class, occurrence.agentID);
-          }
-        };
-        _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.wake(_organisationInfo_2, _function_2);
       }
+      final Scope<Address> _function_1 = new Scope<Address>() {
+        @Override
+        public boolean matches(final Address it) {
+          UUID _uUID = it.getUUID();
+          return Objects.equal(_uUID, occurrence.agentID);
+        }
+        private Object writeReplace() throws ObjectStreamException {
+          return new SerializableProxy($SerializableClosureProxy_1.class, occurrence.agentID);
+        }
+      };
+      _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_organisationInfo_1, _function_1);
     }
   }
   
   private void $behaviorUnit$StopMission$4(final StopMission occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Me Platform Role I received stopMission");
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     LeavePlatform _leavePlatform = new LeavePlatform();
-    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_leavePlatform);
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(PlatformCapacity.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY;
-  
-  @SyntheticMember
-  @Pure
-  private PlatformCapacity $CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY$CALLER() {
-    if (this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY == null || this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY.get() == null) {
-      this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY = $getSkill(PlatformCapacity.class);
+    class $SerializableClosureProxy implements Scope<Address> {
+      
+      private final UUID $_missionID;
+      
+      public $SerializableClosureProxy(final UUID $_missionID) {
+        this.$_missionID = $_missionID;
+      }
+      
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, $_missionID);
+      }
     }
-    return $castSkill(PlatformCapacity.class, this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY);
+    final Scope<Address> _function = new Scope<Address>() {
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, occurrence.missionID);
+      }
+      private Object writeReplace() throws ObjectStreamException {
+        return new SerializableProxy($SerializableClosureProxy.class, occurrence.missionID);
+      }
+    };
+    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_leavePlatform, _function);
   }
   
   @Extension
@@ -287,6 +270,20 @@ public class PlatformRole extends Behavior {
       this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);
     }
     return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
+  }
+  
+  @Extension
+  @ImportedCapacityFeature(PlatformCapacity.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY;
+  
+  @SyntheticMember
+  @Pure
+  private PlatformCapacity $CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY$CALLER() {
+    if (this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY == null || this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY.get() == null) {
+      this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY = $getSkill(PlatformCapacity.class);
+    }
+    return $castSkill(PlatformCapacity.class, this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY);
   }
   
   @SyntheticMember

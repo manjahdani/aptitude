@@ -8,7 +8,7 @@ import io.sarl.core.Destroy
 import io.sarl.core.Initialize
 import be.uclouvain.organisation.interactivity.inputDevice.DataAcquisition
 import be.uclouvain.organisation.interactivity.element.ElementInformation
-import UDPMessages.UDP_Message_Base
+
 
 /** 
  * @author manjah
@@ -20,15 +20,9 @@ behavior InputDeviceRole {
 	on Initialize {
 		EnableInputStream()
 	}
-
-	// info("The input device behavior was started.")
-	// }
 	on Destroy {
 		DisableInputStream()
 	}
-
-	// info("The input device behavior was stopped.")
-	// }
 	on DataAcquisition {
 		emit(new ElementInformation(occurrence.data))[it.UUID == occurrence.elementID]
 	}

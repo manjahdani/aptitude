@@ -10,7 +10,6 @@ import be.uclouvain.organisation.platform.ObserverRole;
 import be.uclouvain.organisation.told.AlgorithmJoinPlatform;
 import be.uclouvain.organisation.told.LeavePlatform;
 import com.google.common.base.Objects;
-import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Destroy;
 import io.sarl.core.ExternalContextAccess;
@@ -82,6 +81,7 @@ public class TrackerRole extends ObserverRole {
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The behavior was stopped.");
   }
   
+  @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$PartnerTrackingFound$2(final PartnerTrackingFound occurrence) {
     this.partnerTrackingName = occurrence.partnerName;
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
@@ -94,10 +94,10 @@ public class TrackerRole extends ObserverRole {
   }
   
   private void $behaviorUnit$MissionSensitivity$4(final MissionSensitivity occurrence) {
-    this.sensitivity = occurrence.s;
-    final String Observer = this.availableObservers.get(((this.intensityMap.get(Integer.valueOf(this.sensitivity))) == null ? 0 : (this.intensityMap.get(Integer.valueOf(this.sensitivity))).intValue()));
+    this.sensitivity.set(occurrence.s);
+    final String Observer = this.availableObservers.get(((this.intensityMap.get(Integer.valueOf(this.sensitivity.get()))) == null ? 0 : (this.intensityMap.get(Integer.valueOf(this.sensitivity.get()))).intValue()));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("Tracker Mission Sensitivity" + Integer.valueOf(this.sensitivity)) + "Selected Observer : ") + Observer));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Come here : " + Observer));
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     AlgorithmJoinPlatform _algorithmJoinPlatform = new AlgorithmJoinPlatform(this.PlatformContext, this.TOLDSpace, Observer, "Detector");
     _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.TOLDSpace, _algorithmJoinPlatform);
@@ -133,6 +133,7 @@ public class TrackerRole extends ObserverRole {
     _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_bBoxes2DTrackResult, _function);
   }
   
+  @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$BBoxes2DResult$6(final BBoxes2DResult occurrence) {
     Tracking _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_TRACKING$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_TRACKING$CALLER();
     _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_TRACKING$CALLER.getTrack(occurrence.bboxes2D);
@@ -178,20 +179,6 @@ public class TrackerRole extends ObserverRole {
       this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS = $getSkill(ExternalContextAccess.class);
     }
     return $castSkill(ExternalContextAccess.class, this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS);
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(Behaviors.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_BEHAVIORS;
-  
-  @SyntheticMember
-  @Pure
-  private Behaviors $CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS == null || this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS = $getSkill(Behaviors.class);
-    }
-    return $castSkill(Behaviors.class, this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS);
   }
   
   @Extension

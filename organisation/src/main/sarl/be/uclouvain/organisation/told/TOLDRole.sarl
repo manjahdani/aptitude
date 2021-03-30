@@ -1,28 +1,37 @@
 /** 
- * 
+ * @Name       : TOLDRole
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1 
+ * @Date       : 22/03/2021 
  */
 package be.uclouvain.organisation.told
 
-import io.sarl.core.Logging
 import be.uclouvain.organisation.OrganisationInfo
-import io.sarl.core.OpenEventSpace
 import io.sarl.core.Behaviors
 import io.sarl.core.MemberJoined
+import io.sarl.core.OpenEventSpace
 
 /** 
- * @author manjah
+ * Trusted Observations and Learning Database is a database aiming to achieve two goals. 
+ * 
+ *  - Storing the information communicated by a platform.  
+ * 
+ *  - Contains ground truth signals dedicated to learning.
  * 
  */
 behavior TOLDRole {
-	uses Logging,Behaviors
+	uses Behaviors
 	
-	var WorldSpace : OpenEventSpace
+	var PlatformSpace : OpenEventSpace
 	
+	@SuppressWarnings("potential_field_synchronization_problem")
 	on OrganisationInfo {
 		//info("Me TOLD I am going to listen to Platform")
-		WorldSpace = occurrence.spaceID
+
+		PlatformSpace = occurrence.spaceID
+		PlatformSpace.register(asEventListener)
 		//info("Me TOLD I am going to listen to WorldSpace")
-		WorldSpace.register(asEventListener)
 	}
 	on MemberJoined{
 		//info("I noticed" + occurrence.agentType)

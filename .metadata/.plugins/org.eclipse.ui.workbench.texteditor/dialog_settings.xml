@@ -6,8 +6,11 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="Received SRequest"/>
+		<item key="selection" value="Come here : Vehicle Counter"/>
 		<list key="findhistory">
+			<item value="Come here : Vehicle Counter"/>
+			<item value="double"/>
+			<item value="As an expert I will start the mission of Vehicle Counting with the sensitivity"/>
 			<item value="Received SRequest"/>
 			<item value="Platform"/>
 			<item value="I receive a JoinPlatform"/>

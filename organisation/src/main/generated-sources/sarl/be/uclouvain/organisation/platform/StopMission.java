@@ -9,9 +9,6 @@ import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
-/**
- * @author manjah
- */
 @SarlSpecification("0.11")
 @SarlElementType(15)
 @SuppressWarnings("all")

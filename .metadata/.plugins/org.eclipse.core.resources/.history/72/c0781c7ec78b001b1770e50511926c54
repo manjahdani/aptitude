@@ -1,0 +1,20 @@
+/** 
+ * @Name       : Entity
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1 
+ * @Date       : 22/03/2021 
+ */
+package be.uclouvain.organisation.told
+
+/** 
+ * @author manjah
+ * 
+ */
+ 
+capacity TOLDatabase {
+	def read() //allows the role to read a DB o provide 
+	def create()
+	def update()
+	def delete()
+}

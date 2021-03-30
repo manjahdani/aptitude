@@ -6503,3 +6503,1464 @@ Caused by: org.eclipse.core.runtime.OperationCanceledException
 
 !ENTRY io.sarl.lang.ui 4 0 2021-02-24 17:20:22.840
 !MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+!SESSION 2021-02-25 14:19:02.686 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_211
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_GB
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.jface.text 4 0 2021-02-25 14:23:34.122
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-02-25 14:32:39.244
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-02-25 14:32:39.284
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+!SESSION 2021-03-23 11:16:12.675 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_211
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_GB
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-23 11:23:05.065
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-23 11:31:59.016
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-23 11:41:51.626
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-23 11:45:25.023
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-23 12:08:26.406
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-23 13:05:14.941
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-23 13:06:56.453
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.apache.log4j 4 0 2021-03-23 13:11:52.339
+!MESSAGE org.eclipse.xtext.xbase.resource.BatchLinkableResource  - resolution of uriFragment '/0/@xtendTypes.0/@members.6/@expression/@expressions.0/@else/@then/@expressions.0/@featureCallArguments.0/@arguments.1' failed.
+
+!STACK 0
+java.lang.IllegalArgumentException: The feature 'arguments' is not a valid feature
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eStructuralFeature(BasicEObjectImpl.java:733)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eObjectForURIFragmentSegment(BasicEObjectImpl.java:527)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:811)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:787)
+	at org.eclipse.xtext.resource.XtextResource.access$101(XtextResource.java:63)
+	at org.eclipse.xtext.resource.XtextResource$1.getEObject(XtextResource.java:119)
+	at org.eclipse.xtext.resource.DefaultFragmentProvider.getEObject(DefaultFragmentProvider.java:28)
+	at org.eclipse.xtext.resource.XtextResource.basicGetEObject(XtextResource.java:363)
+	at org.eclipse.xtext.resource.XtextResource.getEObject(XtextResource.java:349)
+	at org.eclipse.xtext.linking.lazy.LazyLinkingResource.getEObject(LazyLinkingResource.java:246)
+	at org.eclipse.xtext.resource.persistence.StorageAwareResource.getEObject(StorageAwareResource.java:119)
+	at org.eclipse.xtext.xbase.resource.BatchLinkableResource.getEObject(BatchLinkableResource.java:124)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.getEObject(ResourceSetImpl.java:223)
+	at io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification.accept(SuppressWarningsAddModification.java:85)
+	at io.sarl.lang.ui.quickfix.SARLQuickfixProvider.fixSuppressWarnings(SARLQuickfixProvider.java:184)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:57)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:87)
+	at org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider.getResolutions(DefaultQuickfixProvider.java:249)
+	at org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider.getResolutions(XtendQuickfixProvider.java:187)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractIssueResolutionProviderAdapter.getResolutions(AbstractIssueResolutionProviderAdapter.java:46)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.createQuickfixes(XtextQuickAssistProcessor.java:154)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.computeQuickAssistProposals(XtextQuickAssistProcessor.java:123)
+	at org.eclipse.xtext.ui.editor.hover.AnnotationWithQuickFixesHover$CompletionProposalRunnable.run(AnnotationWithQuickFixesHover.java:604)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:185)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3963)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3590)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1049)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:660)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:154)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:150)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:657)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:594)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+
+!ENTRY org.apache.log4j 4 0 2021-03-23 13:13:56.662
+!MESSAGE org.eclipse.xtext.xbase.resource.BatchLinkableResource  - resolution of uriFragment '/0/@xtendTypes.0/@members.4/@expression/@expressions.1/@memberCallTarget' failed.
+
+!STACK 0
+java.lang.IllegalArgumentException: The feature 'memberCallTarget' is not a valid feature
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eStructuralFeature(BasicEObjectImpl.java:733)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eObjectForURIFragmentSegment(BasicEObjectImpl.java:551)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:811)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:787)
+	at org.eclipse.xtext.resource.XtextResource.access$101(XtextResource.java:63)
+	at org.eclipse.xtext.resource.XtextResource$1.getEObject(XtextResource.java:119)
+	at org.eclipse.xtext.resource.DefaultFragmentProvider.getEObject(DefaultFragmentProvider.java:28)
+	at org.eclipse.xtext.resource.XtextResource.basicGetEObject(XtextResource.java:363)
+	at org.eclipse.xtext.resource.XtextResource.getEObject(XtextResource.java:349)
+	at org.eclipse.xtext.linking.lazy.LazyLinkingResource.getEObject(LazyLinkingResource.java:246)
+	at org.eclipse.xtext.resource.persistence.StorageAwareResource.getEObject(StorageAwareResource.java:119)
+	at org.eclipse.xtext.xbase.resource.BatchLinkableResource.getEObject(BatchLinkableResource.java:124)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.getEObject(ResourceSetImpl.java:223)
+	at io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification.accept(SuppressWarningsAddModification.java:85)
+	at io.sarl.lang.ui.quickfix.SARLQuickfixProvider.fixSuppressWarnings(SARLQuickfixProvider.java:184)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:57)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:87)
+	at org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider.getResolutions(DefaultQuickfixProvider.java:249)
+	at org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider.getResolutions(XtendQuickfixProvider.java:187)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractIssueResolutionProviderAdapter.getResolutions(AbstractIssueResolutionProviderAdapter.java:46)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.createQuickfixes(XtextQuickAssistProcessor.java:154)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.computeQuickAssistProposals(XtextQuickAssistProcessor.java:123)
+	at org.eclipse.xtext.ui.editor.hover.AnnotationWithQuickFixesHover$CompletionProposalRunnable.run(AnnotationWithQuickFixesHover.java:604)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:185)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3963)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3590)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1049)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:660)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:154)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:150)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:657)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:594)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+
+!ENTRY org.apache.log4j 4 0 2021-03-23 13:14:37.208
+!MESSAGE org.eclipse.xtext.xbase.resource.BatchLinkableResource  - resolution of uriFragment '/0/@xtendTypes.0/@members.5/@expression/@expressions.0/@featureCallArguments.0' failed.
+
+!STACK 0
+java.lang.IllegalArgumentException: The feature 'featureCallArguments' is not a valid feature
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eStructuralFeature(BasicEObjectImpl.java:733)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eObjectForURIFragmentSegment(BasicEObjectImpl.java:527)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:811)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:787)
+	at org.eclipse.xtext.resource.XtextResource.access$101(XtextResource.java:63)
+	at org.eclipse.xtext.resource.XtextResource$1.getEObject(XtextResource.java:119)
+	at org.eclipse.xtext.resource.DefaultFragmentProvider.getEObject(DefaultFragmentProvider.java:28)
+	at org.eclipse.xtext.resource.XtextResource.basicGetEObject(XtextResource.java:363)
+	at org.eclipse.xtext.resource.XtextResource.getEObject(XtextResource.java:349)
+	at org.eclipse.xtext.linking.lazy.LazyLinkingResource.getEObject(LazyLinkingResource.java:246)
+	at org.eclipse.xtext.resource.persistence.StorageAwareResource.getEObject(StorageAwareResource.java:119)
+	at org.eclipse.xtext.xbase.resource.BatchLinkableResource.getEObject(BatchLinkableResource.java:124)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.getEObject(ResourceSetImpl.java:223)
+	at io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification.accept(SuppressWarningsAddModification.java:85)
+	at io.sarl.lang.ui.quickfix.SARLQuickfixProvider.fixSuppressWarnings(SARLQuickfixProvider.java:184)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:57)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:87)
+	at org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider.getResolutions(DefaultQuickfixProvider.java:249)
+	at org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider.getResolutions(XtendQuickfixProvider.java:187)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractIssueResolutionProviderAdapter.getResolutions(AbstractIssueResolutionProviderAdapter.java:46)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.createQuickfixes(XtextQuickAssistProcessor.java:154)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.computeQuickAssistProposals(XtextQuickAssistProcessor.java:123)
+	at org.eclipse.xtext.ui.editor.hover.AnnotationWithQuickFixesHover$CompletionProposalRunnable.run(AnnotationWithQuickFixesHover.java:604)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:185)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3963)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3590)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1049)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:660)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:154)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:150)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:657)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:594)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+
+!ENTRY org.apache.log4j 4 0 2021-03-23 13:14:44.951
+!MESSAGE org.eclipse.xtext.xbase.resource.BatchLinkableResource  - resolution of uriFragment '/0/@xtendTypes.0/@members.5/@expression/@expressions.0/@featureCallArguments.0' failed.
+
+!STACK 0
+java.lang.IllegalArgumentException: The feature 'featureCallArguments' is not a valid feature
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eStructuralFeature(BasicEObjectImpl.java:733)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eObjectForURIFragmentSegment(BasicEObjectImpl.java:527)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:811)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:787)
+	at org.eclipse.xtext.resource.XtextResource.access$101(XtextResource.java:63)
+	at org.eclipse.xtext.resource.XtextResource$1.getEObject(XtextResource.java:119)
+	at org.eclipse.xtext.resource.DefaultFragmentProvider.getEObject(DefaultFragmentProvider.java:28)
+	at org.eclipse.xtext.resource.XtextResource.basicGetEObject(XtextResource.java:363)
+	at org.eclipse.xtext.resource.XtextResource.getEObject(XtextResource.java:349)
+	at org.eclipse.xtext.linking.lazy.LazyLinkingResource.getEObject(LazyLinkingResource.java:246)
+	at org.eclipse.xtext.resource.persistence.StorageAwareResource.getEObject(StorageAwareResource.java:119)
+	at org.eclipse.xtext.xbase.resource.BatchLinkableResource.getEObject(BatchLinkableResource.java:124)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.getEObject(ResourceSetImpl.java:223)
+	at io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification.accept(SuppressWarningsAddModification.java:85)
+	at io.sarl.lang.ui.quickfix.SARLQuickfixProvider.fixSuppressWarnings(SARLQuickfixProvider.java:184)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:57)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:87)
+	at org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider.getResolutions(DefaultQuickfixProvider.java:249)
+	at org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider.getResolutions(XtendQuickfixProvider.java:187)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractIssueResolutionProviderAdapter.getResolutions(AbstractIssueResolutionProviderAdapter.java:46)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.createQuickfixes(XtextQuickAssistProcessor.java:154)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.computeQuickAssistProposals(XtextQuickAssistProcessor.java:123)
+	at org.eclipse.xtext.ui.editor.hover.AnnotationWithQuickFixesHover$CompletionProposalRunnable.run(AnnotationWithQuickFixesHover.java:604)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:185)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3963)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3590)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1049)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:660)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:154)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:150)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:657)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:594)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-23 13:17:21.488
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:09.677
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:11.193
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:11.247
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:12.906
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:12.960
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:15.649
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:15.697
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:17.400
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/ObserverRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:17.455
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/ObserverRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:17.630
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/ObserverRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:18.027
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:18.089
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/ObserverRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:18.089
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:18.099
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/ObserverRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:18.455
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:18.505
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:32.310
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/ObserverRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:33.815
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:33.868
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:36.254
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:36.303
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:39.711
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:39.763
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:41.492
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:41.544
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:52.637
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:27:52.901
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CounterRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:28:22.125
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:36:12.687
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:36:13.033
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:36:13.083
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:36:13.252
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:36:13.607
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:36:13.657
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 13:54:35.745
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:08:08.227
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:08:08.560
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:08:08.606
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:08:08.745
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:08:19.047
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY org.eclipse.core.resources 4 2 2021-03-23 14:14:11.391
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 0
+org.eclipse.emf.ecore.resource.impl.ResourceSetImpl$1DiagnosticWrappedException: org.eclipse.core.internal.resources.ResourceException: Resource '/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/oldObserverRole.sarl' does not exist.
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.handleDemandLoadException(ResourceSetImpl.java:319)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.demandLoadHelper(ResourceSetImpl.java:278)
+	at org.eclipse.xtext.resource.XtextResourceSet.getResource(XtextResourceSet.java:265)
+	at org.eclipse.xtext.resource.SynchronizedXtextResourceSet.getResource(SynchronizedXtextResourceSet.java:25)
+	at io.sarl.lang.ui.editor.SARLEditorErrorTickUpdater.getXtextResource(SARLEditorErrorTickUpdater.java:105)
+	at io.sarl.lang.ui.editor.SARLEditorErrorTickUpdater.modelChanged(SARLEditorErrorTickUpdater.java:121)
+	at org.eclipse.jface.text.source.AnnotationModel.fireModelChanged(AnnotationModel.java:592)
+	at org.eclipse.jface.text.source.AnnotationModel.fireModelChanged(AnnotationModel.java:556)
+	at org.eclipse.jface.text.source.AnnotationModel.replaceAnnotations(AnnotationModel.java:408)
+	at org.eclipse.jface.text.source.AnnotationModel.replaceAnnotations(AnnotationModel.java:373)
+	at org.eclipse.search2.internal.ui.text.AnnotationHighlighter.removeAnnotations(AnnotationHighlighter.java:141)
+	at org.eclipse.search2.internal.ui.text.AnnotationHighlighter.removeHighlights(AnnotationHighlighter.java:108)
+	at org.eclipse.search2.internal.ui.text.EditorAnnotationManager.removeAnnotations(EditorAnnotationManager.java:251)
+	at org.eclipse.search2.internal.ui.text.EditorAnnotationManager.searchResultChanged(EditorAnnotationManager.java:134)
+	at org.eclipse.search.ui.text.AbstractTextSearchResult.fireChange(AbstractTextSearchResult.java:265)
+	at org.eclipse.search.ui.text.AbstractTextSearchResult.removeMatches(AbstractTextSearchResult.java:221)
+	at org.eclipse.search.internal.ui.text.SearchResultUpdater.lambda$0(SearchResultUpdater.java:58)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:67)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:77)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:77)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:77)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:77)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:77)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:77)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:77)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:77)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:77)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:77)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:51)
+	at org.eclipse.search.internal.ui.text.SearchResultUpdater.handleDelta(SearchResultUpdater.java:50)
+	at org.eclipse.search.internal.ui.text.SearchResultUpdater.resourceChanged(SearchResultUpdater.java:45)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:305)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:295)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:158)
+	at org.eclipse.core.internal.resources.Workspace.broadcastPostChange(Workspace.java:380)
+	at org.eclipse.core.internal.resources.Workspace.checkpoint(Workspace.java:575)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation$1.run(PerformChangeOperation.java:265)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2292)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2317)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.executeChange(PerformChangeOperation.java:298)
+	at org.eclipse.ltk.internal.ui.refactoring.UIPerformChangeOperation.executeChange(UIPerformChangeOperation.java:99)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:219)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2292)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2317)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:89)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: org.eclipse.core.internal.resources.ResourceException: Resource '/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/oldObserverRole.sarl' does not exist.
+	at org.eclipse.core.internal.resources.Resource.checkExists(Resource.java:330)
+	at org.eclipse.core.internal.resources.Resource.checkAccessible(Resource.java:204)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:273)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:266)
+	at org.eclipse.emf.ecore.resource.impl.PlatformResourceURIHandlerImpl$WorkbenchHelper.createPlatformResourceInputStream(PlatformResourceURIHandlerImpl.java:207)
+	at org.eclipse.emf.ecore.resource.impl.PlatformResourceURIHandlerImpl.createInputStream(PlatformResourceURIHandlerImpl.java:525)
+	at org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl.createInputStream(ExtensibleURIConverterImpl.java:360)
+	at org.eclipse.xtext.resource.XtextResourceSet$1.createInputStream(XtextResourceSet.java:298)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.load(ResourceImpl.java:1314)
+	at org.eclipse.xtext.resource.persistence.StorageAwareResource.load(StorageAwareResource.java:79)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.demandLoad(ResourceSetImpl.java:259)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.demandLoadHelper(ResourceSetImpl.java:274)
+	... 45 more
+Caused by: java.lang.Exception: Resource '/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/oldObserverRole.sarl' does not exist.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	... 57 more
+
+!ENTRY org.eclipse.core.resources 4 2 2021-03-23 14:14:11.440
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 0
+org.eclipse.emf.ecore.resource.impl.ResourceSetImpl$1DiagnosticWrappedException: org.eclipse.core.internal.resources.ResourceException: Resource '/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/oldObserverRole.sarl' does not exist.
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.handleDemandLoadException(ResourceSetImpl.java:319)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.demandLoadHelper(ResourceSetImpl.java:278)
+	at org.eclipse.xtext.resource.XtextResourceSet.getResource(XtextResourceSet.java:265)
+	at org.eclipse.xtext.resource.SynchronizedXtextResourceSet.getResource(SynchronizedXtextResourceSet.java:25)
+	at io.sarl.lang.ui.editor.SARLEditorErrorTickUpdater.getXtextResource(SARLEditorErrorTickUpdater.java:105)
+	at io.sarl.lang.ui.editor.SARLEditorErrorTickUpdater.modelChanged(SARLEditorErrorTickUpdater.java:121)
+	at org.eclipse.jface.text.source.AnnotationModel.fireModelChanged(AnnotationModel.java:592)
+	at org.eclipse.jface.text.source.AnnotationModel.fireModelChanged(AnnotationModel.java:556)
+	at org.eclipse.ui.texteditor.ResourceMarkerAnnotationModel.update(ResourceMarkerAnnotationModel.java:114)
+	at org.eclipse.ui.texteditor.ResourceMarkerAnnotationModel$ResourceChangeListener.resourceChanged(ResourceMarkerAnnotationModel.java:58)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:305)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:295)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:158)
+	at org.eclipse.core.internal.resources.Workspace.broadcastPostChange(Workspace.java:380)
+	at org.eclipse.core.internal.resources.Workspace.checkpoint(Workspace.java:575)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation$1.run(PerformChangeOperation.java:265)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2292)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2317)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.executeChange(PerformChangeOperation.java:298)
+	at org.eclipse.ltk.internal.ui.refactoring.UIPerformChangeOperation.executeChange(UIPerformChangeOperation.java:99)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:219)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2292)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2317)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:89)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: org.eclipse.core.internal.resources.ResourceException: Resource '/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/oldObserverRole.sarl' does not exist.
+	at org.eclipse.core.internal.resources.Resource.checkExists(Resource.java:330)
+	at org.eclipse.core.internal.resources.Resource.checkAccessible(Resource.java:204)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:273)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:266)
+	at org.eclipse.emf.ecore.resource.impl.PlatformResourceURIHandlerImpl$WorkbenchHelper.createPlatformResourceInputStream(PlatformResourceURIHandlerImpl.java:207)
+	at org.eclipse.emf.ecore.resource.impl.PlatformResourceURIHandlerImpl.createInputStream(PlatformResourceURIHandlerImpl.java:525)
+	at org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl.createInputStream(ExtensibleURIConverterImpl.java:360)
+	at org.eclipse.xtext.resource.XtextResourceSet$1.createInputStream(XtextResourceSet.java:298)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.load(ResourceImpl.java:1314)
+	at org.eclipse.xtext.resource.persistence.StorageAwareResource.load(StorageAwareResource.java:79)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.demandLoad(ResourceSetImpl.java:259)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.demandLoadHelper(ResourceSetImpl.java:274)
+	... 24 more
+Caused by: java.lang.Exception: Resource '/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/oldObserverRole.sarl' does not exist.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	... 36 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-23 14:15:06.701
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-23 14:15:16.734
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-23 14:15:22.919
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:33:21.170
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:33:21.546
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:33:21.597
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:33:21.686
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:33:22.138
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:33:22.181
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:33:39.679
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:33:52.212
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:33:52.571
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:33:52.620
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:33:52.724
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:33:53.193
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:33:53.214
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:34:02.647
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY org.apache.log4j 4 0 2021-03-23 14:37:00.130
+!MESSAGE org.eclipse.xtext.xbase.resource.BatchLinkableResource  - resolution of uriFragment '/0/@xtendTypes.0/@members.5/@expression/@expressions.0/@then/@expressions.0/@right/@memberCallArguments.0' failed.
+
+!STACK 0
+java.lang.IllegalArgumentException: The feature 'then' is not a valid feature
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eStructuralFeature(BasicEObjectImpl.java:733)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eObjectForURIFragmentSegment(BasicEObjectImpl.java:551)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:811)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:787)
+	at org.eclipse.xtext.resource.XtextResource.access$101(XtextResource.java:63)
+	at org.eclipse.xtext.resource.XtextResource$1.getEObject(XtextResource.java:119)
+	at org.eclipse.xtext.resource.DefaultFragmentProvider.getEObject(DefaultFragmentProvider.java:28)
+	at org.eclipse.xtext.resource.XtextResource.basicGetEObject(XtextResource.java:363)
+	at org.eclipse.xtext.resource.XtextResource.getEObject(XtextResource.java:349)
+	at org.eclipse.xtext.linking.lazy.LazyLinkingResource.getEObject(LazyLinkingResource.java:246)
+	at org.eclipse.xtext.resource.persistence.StorageAwareResource.getEObject(StorageAwareResource.java:119)
+	at org.eclipse.xtext.xbase.resource.BatchLinkableResource.getEObject(BatchLinkableResource.java:124)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.getEObject(ResourceSetImpl.java:223)
+	at io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification.accept(SuppressWarningsAddModification.java:85)
+	at io.sarl.lang.ui.quickfix.SARLQuickfixProvider.fixSuppressWarnings(SARLQuickfixProvider.java:184)
+	at sun.reflect.GeneratedMethodAccessor292.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:57)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:87)
+	at org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider.getResolutions(DefaultQuickfixProvider.java:249)
+	at org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider.getResolutions(XtendQuickfixProvider.java:187)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractIssueResolutionProviderAdapter.getResolutions(AbstractIssueResolutionProviderAdapter.java:46)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.createQuickfixes(XtextQuickAssistProcessor.java:154)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.computeQuickAssistProposals(XtextQuickAssistProcessor.java:123)
+	at org.eclipse.xtext.ui.editor.hover.AnnotationWithQuickFixesHover$CompletionProposalRunnable.run(AnnotationWithQuickFixesHover.java:604)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:185)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3963)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3590)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1049)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:660)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:154)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:150)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:657)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:594)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+
+!ENTRY org.apache.log4j 4 0 2021-03-23 14:37:05.797
+!MESSAGE org.eclipse.xtext.xbase.resource.BatchLinkableResource  - resolution of uriFragment '/0/@xtendTypes.0/@members.5/@expression/@expressions.0/@then/@expressions.0/@right/@memberCallArguments.0' failed.
+
+!STACK 0
+java.lang.IllegalArgumentException: The feature 'then' is not a valid feature
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eStructuralFeature(BasicEObjectImpl.java:733)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eObjectForURIFragmentSegment(BasicEObjectImpl.java:551)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:811)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:787)
+	at org.eclipse.xtext.resource.XtextResource.access$101(XtextResource.java:63)
+	at org.eclipse.xtext.resource.XtextResource$1.getEObject(XtextResource.java:119)
+	at org.eclipse.xtext.resource.DefaultFragmentProvider.getEObject(DefaultFragmentProvider.java:28)
+	at org.eclipse.xtext.resource.XtextResource.basicGetEObject(XtextResource.java:363)
+	at org.eclipse.xtext.resource.XtextResource.getEObject(XtextResource.java:349)
+	at org.eclipse.xtext.linking.lazy.LazyLinkingResource.getEObject(LazyLinkingResource.java:246)
+	at org.eclipse.xtext.resource.persistence.StorageAwareResource.getEObject(StorageAwareResource.java:119)
+	at org.eclipse.xtext.xbase.resource.BatchLinkableResource.getEObject(BatchLinkableResource.java:124)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.getEObject(ResourceSetImpl.java:223)
+	at io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification.accept(SuppressWarningsAddModification.java:85)
+	at io.sarl.lang.ui.quickfix.SARLQuickfixProvider.fixSuppressWarnings(SARLQuickfixProvider.java:184)
+	at sun.reflect.GeneratedMethodAccessor292.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:57)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:87)
+	at org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider.getResolutions(DefaultQuickfixProvider.java:249)
+	at org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider.getResolutions(XtendQuickfixProvider.java:187)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractIssueResolutionProviderAdapter.getResolutions(AbstractIssueResolutionProviderAdapter.java:46)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.createQuickfixes(XtextQuickAssistProcessor.java:154)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.computeQuickAssistProposals(XtextQuickAssistProcessor.java:123)
+	at org.eclipse.xtext.ui.editor.hover.AnnotationWithQuickFixesHover$CompletionProposalRunnable.run(AnnotationWithQuickFixesHover.java:604)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:185)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3963)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3590)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1049)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:660)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:154)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:150)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:657)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:594)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:37:12.586
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-23 14:37:12.655
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+!SESSION 2021-03-24 15:42:56.214 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_211
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_GB
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-24 15:49:44.142
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-24 15:56:31.417
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-24 16:01:18.468
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-24 16:01:50.672
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:07:01.418
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/launcher/src/main/sarl/be/uclouvain/launcher/bootAgent.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:07:01.977
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/launcher/src/main/sarl/be/uclouvain/launcher/bootAgent.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:07:01.994
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/launcher/src/main/sarl/be/uclouvain/launcher/bootAgent.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:07:01.996
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/launcher/src/main/sarl/be/uclouvain/launcher/bootAgent.sarl. Reconciliation of the editor is forced.
+
+!ENTRY org.apache.log4j 4 0 2021-03-24 16:15:56.115
+!MESSAGE org.eclipse.xtext.xbase.resource.BatchLinkableResource  - resolution of uriFragment '/0/@xtendTypes.0/@members.6/@expression/@expressions.0/@then/@expressions.0/@featureCallArguments.0/@arguments.1' failed.
+
+!STACK 0
+java.lang.IllegalArgumentException: The feature 'then' is not a valid feature
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eStructuralFeature(BasicEObjectImpl.java:733)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eObjectForURIFragmentSegment(BasicEObjectImpl.java:551)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:811)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:787)
+	at org.eclipse.xtext.resource.XtextResource.access$101(XtextResource.java:63)
+	at org.eclipse.xtext.resource.XtextResource$1.getEObject(XtextResource.java:119)
+	at org.eclipse.xtext.resource.DefaultFragmentProvider.getEObject(DefaultFragmentProvider.java:28)
+	at org.eclipse.xtext.resource.XtextResource.basicGetEObject(XtextResource.java:363)
+	at org.eclipse.xtext.resource.XtextResource.getEObject(XtextResource.java:349)
+	at org.eclipse.xtext.linking.lazy.LazyLinkingResource.getEObject(LazyLinkingResource.java:246)
+	at org.eclipse.xtext.resource.persistence.StorageAwareResource.getEObject(StorageAwareResource.java:119)
+	at org.eclipse.xtext.xbase.resource.BatchLinkableResource.getEObject(BatchLinkableResource.java:124)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.getEObject(ResourceSetImpl.java:223)
+	at io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification.accept(SuppressWarningsAddModification.java:85)
+	at io.sarl.lang.ui.quickfix.SARLQuickfixProvider.fixSuppressWarnings(SARLQuickfixProvider.java:184)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:57)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:87)
+	at org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider.getResolutions(DefaultQuickfixProvider.java:249)
+	at org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider.getResolutions(XtendQuickfixProvider.java:187)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractIssueResolutionProviderAdapter.getResolutions(AbstractIssueResolutionProviderAdapter.java:46)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.createQuickfixes(XtextQuickAssistProcessor.java:154)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.computeQuickAssistProposals(XtextQuickAssistProcessor.java:123)
+	at org.eclipse.xtext.ui.editor.hover.AnnotationWithQuickFixesHover$CompletionProposalRunnable.run(AnnotationWithQuickFixesHover.java:604)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:185)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3963)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3590)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1049)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:660)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:154)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:150)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:657)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:594)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+
+!ENTRY org.apache.log4j 4 0 2021-03-24 16:15:58.088
+!MESSAGE org.eclipse.xtext.xbase.resource.BatchLinkableResource  - resolution of uriFragment '/0/@xtendTypes.0/@members.6/@expression/@expressions.0/@then/@expressions.0/@featureCallArguments.0/@arguments.1' failed.
+
+!STACK 0
+java.lang.IllegalArgumentException: The feature 'then' is not a valid feature
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eStructuralFeature(BasicEObjectImpl.java:733)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eObjectForURIFragmentSegment(BasicEObjectImpl.java:551)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:811)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:787)
+	at org.eclipse.xtext.resource.XtextResource.access$101(XtextResource.java:63)
+	at org.eclipse.xtext.resource.XtextResource$1.getEObject(XtextResource.java:119)
+	at org.eclipse.xtext.resource.DefaultFragmentProvider.getEObject(DefaultFragmentProvider.java:28)
+	at org.eclipse.xtext.resource.XtextResource.basicGetEObject(XtextResource.java:363)
+	at org.eclipse.xtext.resource.XtextResource.getEObject(XtextResource.java:349)
+	at org.eclipse.xtext.linking.lazy.LazyLinkingResource.getEObject(LazyLinkingResource.java:246)
+	at org.eclipse.xtext.resource.persistence.StorageAwareResource.getEObject(StorageAwareResource.java:119)
+	at org.eclipse.xtext.xbase.resource.BatchLinkableResource.getEObject(BatchLinkableResource.java:124)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.getEObject(ResourceSetImpl.java:223)
+	at io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification.accept(SuppressWarningsAddModification.java:85)
+	at io.sarl.lang.ui.quickfix.SARLQuickfixProvider.fixSuppressWarnings(SARLQuickfixProvider.java:184)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:57)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:87)
+	at org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider.getResolutions(DefaultQuickfixProvider.java:249)
+	at org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider.getResolutions(XtendQuickfixProvider.java:187)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractIssueResolutionProviderAdapter.getResolutions(AbstractIssueResolutionProviderAdapter.java:46)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.createQuickfixes(XtextQuickAssistProcessor.java:154)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.computeQuickAssistProposals(XtextQuickAssistProcessor.java:123)
+	at org.eclipse.xtext.ui.editor.hover.AnnotationWithQuickFixesHover$CompletionProposalRunnable.run(AnnotationWithQuickFixesHover.java:604)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:185)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3963)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3590)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1049)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:660)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:154)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:150)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:657)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:594)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:16:56.389
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:16:56.564
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/TrackerRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:16:57.197
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/Algorithm.sarl. Reconciliation of the editor is forced.
+
+!ENTRY org.apache.log4j 4 0 2021-03-24 16:18:12.962
+!MESSAGE org.eclipse.xtext.ui.editor.formatting2.ContentFormatter$FormattingUnitOfWork  - Error formatting platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl: org.eclipse.xtext.formatting2.ConflictingFormattingException: Conflicting values for 'space': ' ' and ''.
+
+!STACK 0
+org.eclipse.xtext.formatting2.internal.RegionTraceMissingException: org.eclipse.xtext.formatting2.ConflictingFormattingException: Conflicting values for 'space': ' ' and ''.
+	at org.eclipse.xtext.formatting2.internal.TextSegmentSet.handleConflict(TextSegmentSet.java:70)
+	at org.eclipse.xtext.formatting2.internal.ArrayListTextSegmentSet.replaceExistingEntry(ArrayListTextSegmentSet.java:177)
+	at org.eclipse.xtext.formatting2.internal.ArrayListTextSegmentSet.add(ArrayListTextSegmentSet.java:50)
+	at org.eclipse.xtext.formatting2.internal.FormattableDocument.addReplacer(FormattableDocument.java:77)
+	at org.eclipse.xtext.formatting2.internal.MaxLineWidthDocument.addReplacer(MaxLineWidthDocument.java:33)
+	at org.eclipse.xtext.formatting2.internal.FormattableDocument.set(FormattableDocument.java:321)
+	at org.eclipse.xtext.formatting2.internal.FormattableDocument.append(FormattableDocument.java:98)
+	at org.eclipse.xtext.xbase.formatting2.XbaseFormatter.lambda$_format$120(XbaseFormatter.java:1193)
+	at org.eclipse.xtext.formatting2.internal.ConditionalReplacer.createReplacements(ConditionalReplacer.java:41)
+	at org.eclipse.xtext.formatting2.internal.FormattableDocument.createReplacements(FormattableDocument.java:146)
+	at org.eclipse.xtext.formatting2.internal.SubDocument.createReplacements(SubDocument.java:38)
+	at org.eclipse.xtext.formatting2.internal.MaxLineWidthDocument.createReplacements(MaxLineWidthDocument.java:38)
+	at org.eclipse.xtext.formatting2.internal.FormattableDocument.createReplacements(FormattableDocument.java:146)
+	at org.eclipse.xtext.formatting2.internal.SubDocument.createReplacements(SubDocument.java:38)
+	at org.eclipse.xtext.formatting2.internal.ConditionalReplacer.createReplacements(ConditionalReplacer.java:43)
+	at org.eclipse.xtext.formatting2.internal.FormattableDocument.createReplacements(FormattableDocument.java:146)
+	at org.eclipse.xtext.formatting2.internal.FormattableDocument.renderToTextReplacements(FormattableDocument.java:293)
+	at org.eclipse.xtext.formatting2.AbstractFormatter2.format(AbstractFormatter2.java:280)
+	at org.eclipse.xtext.ui.editor.formatting2.ContentFormatter.exec(ContentFormatter.java:97)
+	at org.eclipse.xtext.ui.editor.formatting2.ContentFormatter$FormattingUnitOfWork.exec(ContentFormatter.java:58)
+	at org.eclipse.xtext.ui.editor.formatting2.ContentFormatter$FormattingUnitOfWork.exec(ContentFormatter.java:1)
+	at org.eclipse.xtext.resource.OutdatedStateManager.exec(OutdatedStateManager.java:91)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:524)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.priorityReadOnly(XtextDocument.java:488)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.priorityReadOnly(XtextDocument.java:144)
+	at org.eclipse.xtext.ui.editor.formatting2.ContentFormatter.format(ContentFormatter.java:110)
+	at io.sarl.lang.ui.editor.DocumentAutoFormatter.formatRegion(DocumentAutoFormatter.java:124)
+	at io.sarl.lang.ui.editor.DocumentAutoFormatter.endAutoFormat(DocumentAutoFormatter.java:102)
+	at io.sarl.lang.ui.editor.SARLSourceViewer.doOperation(SARLSourceViewer.java:106)
+	at org.eclipse.ui.texteditor.TextOperationAction.lambda$0(TextOperationAction.java:130)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:72)
+	at org.eclipse.ui.texteditor.TextOperationAction.run(TextOperationAction.java:130)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:474)
+	at org.eclipse.jface.commands.ActionHandler.execute(ActionHandler.java:121)
+	at org.eclipse.ui.internal.handlers.E4HandlerProxy.execute(E4HandlerProxy.java:97)
+	at sun.reflect.GeneratedMethodAccessor250.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.e4.core.internal.di.MethodRequestor.execute(MethodRequestor.java:58)
+	at org.eclipse.e4.core.internal.di.InjectorImpl.invokeUsingClass(InjectorImpl.java:318)
+	at org.eclipse.e4.core.internal.di.InjectorImpl.invoke(InjectorImpl.java:252)
+	at org.eclipse.e4.core.contexts.ContextInjectionFactory.invoke(ContextInjectionFactory.java:173)
+	at org.eclipse.e4.core.commands.internal.HandlerServiceHandler.execute(HandlerServiceHandler.java:156)
+	at org.eclipse.core.commands.Command.executeWithChecks(Command.java:488)
+	at org.eclipse.core.commands.ParameterizedCommand.executeWithChecks(ParameterizedCommand.java:487)
+	at org.eclipse.e4.core.commands.internal.HandlerServiceImpl.executeHandler(HandlerServiceImpl.java:213)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.executeCommand(KeyBindingDispatcher.java:308)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.press(KeyBindingDispatcher.java:584)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.processKeyEvent(KeyBindingDispatcher.java:653)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.filterKeySequenceBindings(KeyBindingDispatcher.java:443)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.access$2(KeyBindingDispatcher.java:386)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher$KeyDownFilter.handleEvent(KeyBindingDispatcher.java:96)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:89)
+	at org.eclipse.swt.widgets.Display.filterEvent(Display.java:1201)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1056)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1081)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1066)
+	at org.eclipse.swt.widgets.Widget.sendKeyEvent(Widget.java:1108)
+	at org.eclipse.swt.widgets.Widget.sendKeyEvent(Widget.java:1104)
+	at org.eclipse.swt.widgets.Widget.wmChar(Widget.java:1491)
+	at org.eclipse.swt.widgets.Control.WM_CHAR(Control.java:4881)
+	at org.eclipse.swt.widgets.Canvas.WM_CHAR(Canvas.java:353)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:4759)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:348)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4819)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessage(Native Method)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3585)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1049)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:660)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:154)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:150)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:657)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:594)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+Caused by: org.eclipse.xtext.formatting2.ConflictingFormattingException: Conflicting values for 'space': ' ' and ''.
+	at org.eclipse.xtext.formatting2.internal.HiddenRegionFormatting.merge(HiddenRegionFormatting.java:102)
+	at org.eclipse.xtext.formatting2.internal.HiddenRegionFormatting.mergeValuesFrom(HiddenRegionFormatting.java:110)
+	at org.eclipse.xtext.formatting2.internal.HiddenRegionFormattingMerger.merge(HiddenRegionFormattingMerger.java:32)
+	at org.eclipse.xtext.formatting2.internal.HiddenRegionFormattingMerger.merge(HiddenRegionFormattingMerger.java:19)
+	at org.eclipse.xtext.formatting2.internal.TextReplacerMerger.mergeHiddenRegionReplacers(TextReplacerMerger.java:73)
+	at org.eclipse.xtext.formatting2.internal.TextReplacerMerger.merge(TextReplacerMerger.java:36)
+	at org.eclipse.xtext.formatting2.internal.TextReplacerMerger.merge(TextReplacerMerger.java:23)
+	at org.eclipse.xtext.formatting2.internal.ArrayListTextSegmentSet.replaceExistingEntry(ArrayListTextSegmentSet.java:166)
+	... 86 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-24 16:18:28.506
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.apache.log4j 4 0 2021-03-24 16:18:28.510
+!MESSAGE org.eclipse.xtext.ui.editor.formatting2.ContentFormatter$FormattingUnitOfWork  - Error formatting platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl: org.eclipse.xtext.formatting2.ConflictingFormattingException: Conflicting values for 'space': ' ' and ''.
+
+!STACK 0
+org.eclipse.xtext.formatting2.internal.RegionTraceMissingException: org.eclipse.xtext.formatting2.ConflictingFormattingException: Conflicting values for 'space': ' ' and ''.
+	at org.eclipse.xtext.formatting2.internal.TextSegmentSet.handleConflict(TextSegmentSet.java:70)
+	at org.eclipse.xtext.formatting2.internal.ArrayListTextSegmentSet.replaceExistingEntry(ArrayListTextSegmentSet.java:177)
+	at org.eclipse.xtext.formatting2.internal.ArrayListTextSegmentSet.add(ArrayListTextSegmentSet.java:50)
+	at org.eclipse.xtext.formatting2.internal.FormattableDocument.addReplacer(FormattableDocument.java:77)
+	at org.eclipse.xtext.formatting2.internal.MaxLineWidthDocument.addReplacer(MaxLineWidthDocument.java:33)
+	at org.eclipse.xtext.formatting2.internal.FormattableDocument.set(FormattableDocument.java:321)
+	at org.eclipse.xtext.formatting2.internal.FormattableDocument.append(FormattableDocument.java:98)
+	at org.eclipse.xtext.xbase.formatting2.XbaseFormatter.lambda$_format$120(XbaseFormatter.java:1193)
+	at org.eclipse.xtext.formatting2.internal.ConditionalReplacer.createReplacements(ConditionalReplacer.java:41)
+	at org.eclipse.xtext.formatting2.internal.FormattableDocument.createReplacements(FormattableDocument.java:146)
+	at org.eclipse.xtext.formatting2.internal.SubDocument.createReplacements(SubDocument.java:38)
+	at org.eclipse.xtext.formatting2.internal.MaxLineWidthDocument.createReplacements(MaxLineWidthDocument.java:38)
+	at org.eclipse.xtext.formatting2.internal.FormattableDocument.createReplacements(FormattableDocument.java:146)
+	at org.eclipse.xtext.formatting2.internal.SubDocument.createReplacements(SubDocument.java:38)
+	at org.eclipse.xtext.formatting2.internal.ConditionalReplacer.createReplacements(ConditionalReplacer.java:43)
+	at org.eclipse.xtext.formatting2.internal.FormattableDocument.createReplacements(FormattableDocument.java:146)
+	at org.eclipse.xtext.formatting2.internal.FormattableDocument.renderToTextReplacements(FormattableDocument.java:293)
+	at org.eclipse.xtext.formatting2.AbstractFormatter2.format(AbstractFormatter2.java:280)
+	at org.eclipse.xtext.ui.editor.formatting2.ContentFormatter.exec(ContentFormatter.java:97)
+	at org.eclipse.xtext.ui.editor.formatting2.ContentFormatter$FormattingUnitOfWork.exec(ContentFormatter.java:58)
+	at org.eclipse.xtext.ui.editor.formatting2.ContentFormatter$FormattingUnitOfWork.exec(ContentFormatter.java:1)
+	at org.eclipse.xtext.resource.OutdatedStateManager.exec(OutdatedStateManager.java:91)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:524)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.priorityReadOnly(XtextDocument.java:488)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.priorityReadOnly(XtextDocument.java:144)
+	at org.eclipse.xtext.ui.editor.formatting2.ContentFormatter.format(ContentFormatter.java:110)
+	at io.sarl.lang.ui.editor.DocumentAutoFormatter.formatRegion(DocumentAutoFormatter.java:124)
+	at io.sarl.lang.ui.editor.DocumentAutoFormatter.endAutoFormat(DocumentAutoFormatter.java:102)
+	at io.sarl.lang.ui.editor.SARLSourceViewer.doOperation(SARLSourceViewer.java:106)
+	at org.eclipse.ui.texteditor.TextOperationAction.lambda$0(TextOperationAction.java:130)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:72)
+	at org.eclipse.ui.texteditor.TextOperationAction.run(TextOperationAction.java:130)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:474)
+	at org.eclipse.jface.commands.ActionHandler.execute(ActionHandler.java:121)
+	at org.eclipse.ui.internal.handlers.E4HandlerProxy.execute(E4HandlerProxy.java:97)
+	at sun.reflect.GeneratedMethodAccessor250.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.e4.core.internal.di.MethodRequestor.execute(MethodRequestor.java:58)
+	at org.eclipse.e4.core.internal.di.InjectorImpl.invokeUsingClass(InjectorImpl.java:318)
+	at org.eclipse.e4.core.internal.di.InjectorImpl.invoke(InjectorImpl.java:252)
+	at org.eclipse.e4.core.contexts.ContextInjectionFactory.invoke(ContextInjectionFactory.java:173)
+	at org.eclipse.e4.core.commands.internal.HandlerServiceHandler.execute(HandlerServiceHandler.java:156)
+	at org.eclipse.core.commands.Command.executeWithChecks(Command.java:488)
+	at org.eclipse.core.commands.ParameterizedCommand.executeWithChecks(ParameterizedCommand.java:487)
+	at org.eclipse.e4.core.commands.internal.HandlerServiceImpl.executeHandler(HandlerServiceImpl.java:213)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.executeCommand(KeyBindingDispatcher.java:308)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.press(KeyBindingDispatcher.java:584)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.processKeyEvent(KeyBindingDispatcher.java:653)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.filterKeySequenceBindings(KeyBindingDispatcher.java:443)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.access$2(KeyBindingDispatcher.java:386)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher$KeyDownFilter.handleEvent(KeyBindingDispatcher.java:96)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:89)
+	at org.eclipse.swt.widgets.Display.filterEvent(Display.java:1201)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1056)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1081)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1066)
+	at org.eclipse.swt.widgets.Widget.sendKeyEvent(Widget.java:1108)
+	at org.eclipse.swt.widgets.Widget.sendKeyEvent(Widget.java:1104)
+	at org.eclipse.swt.widgets.Widget.wmChar(Widget.java:1491)
+	at org.eclipse.swt.widgets.Control.WM_CHAR(Control.java:4881)
+	at org.eclipse.swt.widgets.Canvas.WM_CHAR(Canvas.java:353)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:4759)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:348)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4819)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessage(Native Method)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3585)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1049)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:660)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:154)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:150)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:657)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:594)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+Caused by: org.eclipse.xtext.formatting2.ConflictingFormattingException: Conflicting values for 'space': ' ' and ''.
+	at org.eclipse.xtext.formatting2.internal.HiddenRegionFormatting.merge(HiddenRegionFormatting.java:102)
+	at org.eclipse.xtext.formatting2.internal.HiddenRegionFormatting.mergeValuesFrom(HiddenRegionFormatting.java:110)
+	at org.eclipse.xtext.formatting2.internal.HiddenRegionFormattingMerger.merge(HiddenRegionFormattingMerger.java:32)
+	at org.eclipse.xtext.formatting2.internal.HiddenRegionFormattingMerger.merge(HiddenRegionFormattingMerger.java:19)
+	at org.eclipse.xtext.formatting2.internal.TextReplacerMerger.mergeHiddenRegionReplacers(TextReplacerMerger.java:73)
+	at org.eclipse.xtext.formatting2.internal.TextReplacerMerger.merge(TextReplacerMerger.java:36)
+	at org.eclipse.xtext.formatting2.internal.TextReplacerMerger.merge(TextReplacerMerger.java:23)
+	at org.eclipse.xtext.formatting2.internal.ArrayListTextSegmentSet.replaceExistingEntry(ArrayListTextSegmentSet.java:166)
+	... 86 more
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:18:31.050
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:18:31.105
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:18:31.159
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:19:33.075
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-24 16:21:15.706
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:29:40.990
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:29:41.037
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:29:41.118
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:29:41.678
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:29:41.720
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:29:47.125
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY org.eclipse.jface.text 4 0 2021-03-24 16:29:47.130
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:30:21.155
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:30:21.481
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:30:21.533
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:30:21.670
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-24 16:30:46.938
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.

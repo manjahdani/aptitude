@@ -65,7 +65,10 @@ agent Paraddis {
 		}
 
 		if (hasMemberAgent) {
+
+
 			val waitTask = task("wait-task")
+			
 			waitTask.every(1000) [
 				if (!hasMemberAgent) {
 					waitTask.cancel

@@ -21,6 +21,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class GUI extends Application {
   private UDPSender clientSender = new UDPSender();
   
+  @SuppressWarnings("forbidden_reference")
   protected FXMLLoader doApplicationStart(final Stage arg0) {
     abstract class __GUI_0 implements EventHandler<ActionEvent> {
       public abstract void handle(final ActionEvent eve);

@@ -49,8 +49,8 @@ behavior DetectorRole extends ObserverRole {
 	on BBoxes2DResult{
 		emit(new BBoxes2DResult(occurrence.bboxes2D))[it.UUID == observerID]
 
-		// println("***********************")
-		// println("----  " + occurrence.bboxes2D.frameNumber)
+		 //println("***********************")
+		//println("---- etectionD " + occurrence.bboxes2D.frameNumber)
 		// println("*  " + Arrays.toString(occurrence.bboxes2D.bboxes))
 		// println("*  " + Arrays.toString(occurrence.bboxes2D.classIDs))
 		// println("*  " + Arrays.toString(occurrence.bboxes2D.detConfs))

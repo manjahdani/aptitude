@@ -12,7 +12,6 @@ import com.google.common.base.Objects;
 import com.hazelcast.util.UuidUtil;
 import io.sarl.core.AgentTask;
 import io.sarl.core.Behaviors;
-import io.sarl.core.Logging;
 import io.sarl.core.Schedules;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.SarlElementType;
@@ -57,8 +56,6 @@ public class TrackingImpl extends Skill implements Tracking {
     this.pendingRequestID = UuidUtil.newSecureUuidString();
     Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
     final Procedure1<Agent> _function = (Agent it) -> {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Tracking partner not found, send discovery message");
       RequestMessage requestMessage = new RequestMessage();
       requestMessage.setRequestID(this.pendingRequestID);
       requestMessage.setAgentID(this.getOwner().getID().toString());
@@ -99,20 +96,6 @@ public class TrackingImpl extends Skill implements Tracking {
   
   public void getTrack(final BBoxes2DMessage detectionMessage) {
     CommunicationManager.getInstance().publishMessage(this.topicTrackingSub, detectionMessage);
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(Logging.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_LOGGING;
-  
-  @SyntheticMember
-  @Pure
-  private Logging $CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = $getSkill(Logging.class);
-    }
-    return $castSkill(Logging.class, this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
   }
   
   @Extension

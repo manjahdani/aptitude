@@ -1,5 +1,9 @@
 /** 
- * 
+ * @Name       : PlatformRole
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1 
+ * @Date       : 22/03/2021 
  */
 package be.uclouvain.aptitude.agents
 
@@ -28,7 +32,7 @@ agent TOLDAgent extends Paraddis {
 	on Initialize {
 		
 		loggingName = "TOLD-" + this.ID
-		//info("TOLD started.")
+		info("Ready to share my stored Knowledge.")
 		
 		AlgorithmDatabase.put("YOLO", "F:/aptitude/aptitude-agents/src/main/resources/config/test-YOLO.json")
 		AlgorithmDatabase.put("TinyYOLO","F:/aptitude/aptitude-agents/src/main/resources/config/test-TinyYOLO.json")
@@ -40,8 +44,10 @@ agent TOLDAgent extends Paraddis {
 			spawnInContext(Algorithm,innerContext, 0, name)
 		}
 		registerBehavior(new TOLDRole(this))}
+	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on AlgorithmJoinPlatform {
-		wake(new AlgorithmNeeded(occurrence.contextID,occurrence.defaultSpaceID, occurrence.name, occurrence.task, AlgorithmDatabase.get(occurrence.name), occurrence.source.UUID))// //"Detector","YOLO"))
+		info("I received Algorithm Join Platform" + AlgorithmDatabase.get(occurrence.name))
+		wake(new AlgorithmNeeded(occurrence.contextID,occurrence.defaultSpaceID, occurrence.name, occurrence.task, AlgorithmDatabase.get(occurrence.name), occurrence.source.UUID))
 	}
 }
 

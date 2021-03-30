@@ -1,3 +1,10 @@
+/**
+ * @Name       : PlatformRole
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1
+ * @Date       : 22/03/2021
+ */
 package be.uclouvain.aptitude.agents;
 
 import io.sarl.lang.annotation.SarlElementType;

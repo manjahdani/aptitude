@@ -21,6 +21,8 @@ import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.DynamicSkillProvider;
 import java.util.Collection;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -32,32 +34,33 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlElementType(19)
 @SuppressWarnings("all")
 public class Algorithm extends Paraddis {
-  private String name;
+  private final AtomicReference<String> name = new AtomicReference<String>();
   
-  private int level;
+  private final AtomicInteger level = new AtomicInteger();
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Object _get = occurrence.parameters[0];
-    this.level = ((((Integer) _get)) == null ? 0 : (((Integer) _get)).intValue());
-    Object _get_1 = occurrence.parameters[1];
-    this.name = (_get_1 == null ? null : _get_1.toString());
+    this.level.set(((((Integer) _get)) == null ? 0 : (((Integer) _get)).intValue()));
+    this.name.set(occurrence.parameters[1].toString());
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     UUID _iD = this.getID();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(((((("ALGORITHM-" + this.name) + "-") + Integer.valueOf(this.level)) + "-") + _iD));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(((((("ALGORITHM-" + this.name) + "-") + this.level) + "-") + _iD));
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     EntityRole _entityRole = new EntityRole(this);
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_entityRole);
-    if ((this.level > 0)) {
-      Object _get_2 = occurrence.parameters[2];
+    if ((this.level.intValue() > 0)) {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info((" I am a copy of " + this.name));
+      Object _get_1 = occurrence.parameters[2];
       boolean _matched = false;
-      if (Objects.equal(_get_2, "Counter")) {
+      if (Objects.equal(_get_1, "Counter")) {
         _matched=true;
         Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
         CounterRole _counterRole = new CounterRole(this);
         _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.registerBehavior(_counterRole, occurrence.parameters[3], occurrence.parameters[4]);
       }
       if (!_matched) {
-        if (Objects.equal(_get_2, "Tracker")) {
+        if (Objects.equal(_get_1, "Tracker")) {
           _matched=true;
           Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
           TrackerRole _trackerRole = new TrackerRole(this);
@@ -65,19 +68,26 @@ public class Algorithm extends Paraddis {
         }
       }
       if (!_matched) {
-        if (Objects.equal(_get_2, "Detector")) {
+        if (Objects.equal(_get_1, "Detector")) {
           _matched=true;
           Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
           DetectorRole _detectorRole = new DetectorRole(this);
           _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_3.registerBehavior(_detectorRole, occurrence.parameters[3], occurrence.parameters[4]);
         }
       }
+    } else {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("I believe in: " + this.name));
     }
   }
   
+  @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$AlgorithmNeeded$1(final AlgorithmNeeded occurrence) {
-    boolean _equals = Objects.equal(occurrence.name, this.name);
+    String _get = this.name.get();
+    boolean _equals = Objects.equal(occurrence.name, _get);
     if (_equals) {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((("I receive a JoinPlatform " + occurrence.task) + occurrence.belief));
       Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContext(Algorithm.class, occurrence.contextID, Integer.valueOf(1), occurrence.name, occurrence.task, occurrence.belief, occurrence.dest);
     }
@@ -145,17 +155,6 @@ public class Algorithm extends Paraddis {
   @Pure
   @SyntheticMember
   public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Algorithm other = (Algorithm) obj;
-    if (!java.util.Objects.equals(this.name, other.name))
-      return false;
-    if (other.level != this.level)
-      return false;
     return super.equals(obj);
   }
   
@@ -164,9 +163,6 @@ public class Algorithm extends Paraddis {
   @SyntheticMember
   public int hashCode() {
     int result = super.hashCode();
-    final int prime = 31;
-    result = prime * result + java.util.Objects.hashCode(this.name);
-    result = prime * result + Integer.hashCode(this.level);
     return result;
   }
   

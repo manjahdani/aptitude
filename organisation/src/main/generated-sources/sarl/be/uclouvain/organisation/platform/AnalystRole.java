@@ -25,9 +25,11 @@ import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.util.SerializableProxy;
 import java.io.ObjectStreamException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -50,6 +52,12 @@ public class AnalystRole extends Behavior {
   
   private final AtomicInteger Sensitivity = new AtomicInteger();
   
+  /**
+   * Receiving this event, the behavior has to update its fields of perception.
+   */
+  private final ArrayList<String> availableObservers = CollectionLiterals.<String>newArrayList("Extremely Careful", "Speed, Speed, Speed ", " I over-trust my tracker", "Balanced");
+  
+  @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
     this.BaseContext = _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext();
@@ -58,8 +66,8 @@ public class AnalystRole extends Behavior {
     Object _get = occurrence.parameters[0];
     this.Sensitivity.set(((((Integer) _get)) == null ? 0 : (((Integer) _get)).intValue()));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    int _get_1 = this.Sensitivity.get();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I am an analyst and will solve a problem with the sensitivity  " + Integer.valueOf(_get_1)));
+    String _get_1 = this.availableObservers.get(this.Sensitivity.get());
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("As an expert I will start the mission of Vehicle Counting with the sensitivity:  " + _get_1));
   }
   
   private void $behaviorUnit$OrganisationInfo$1(final OrganisationInfo occurrence) {
@@ -68,15 +76,20 @@ public class AnalystRole extends Behavior {
     this.TOLDSpace = occurrence.spaceID;
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     this.TOLDSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Come here : Vehicle Counter");
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     AlgorithmJoinPlatform _algorithmJoinPlatform = new AlgorithmJoinPlatform(occurrence.context, occurrence.spaceID, "APTITUDE", "Counter");
     _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.TOLDSpace, _algorithmJoinPlatform);
   }
   
   private void $behaviorUnit$SensititvityRequest$2(final SensititvityRequest occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    String _get = this.availableObservers.get(this.Sensitivity.get());
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Thank you for joining the mission. Please use the following sensitivity : " + _get));
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    int _get = this.Sensitivity.get();
-    MissionSensitivity _missionSensitivity = new MissionSensitivity(_get);
+    int _get_1 = this.Sensitivity.get();
+    MissionSensitivity _missionSensitivity = new MissionSensitivity(_get_1);
     class $SerializableClosureProxy implements Scope<Address> {
       
       private final UUID $_uUID;
@@ -161,9 +174,6 @@ public class AnalystRole extends Behavior {
     return $castSkill(ExternalContextAccess.class, this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS);
   }
   
-  /**
-   * Receiving this event, the behavior has to update its fields of perception.
-   */
   @SyntheticMember
   @PerceptGuardEvaluator
   private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {

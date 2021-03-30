@@ -34,11 +34,14 @@ behavior AnalystRole {
 	/** 
 	 * Receiving this event, the behavior has to update its fields of perception.
 	 */
+	val availableObservers = newArrayList("Extremely Careful", "Speed, Speed, Speed ", " I over-trust my tracker", "Balanced")
+
+	@SuppressWarnings("potential_field_synchronization_problem")
 	on Initialize {
 		BaseContext = getDefaultContext
 		BaseSpace = getDefaultSpace
 		Sensitivity.set(occurrence.parameters.get(0) as Integer)
-		info("I am an analyst and will solve a problem with the sensitivity  " + Sensitivity.get)
+		info("As an expert I will start the mission of Vehicle Counting with the sensitivity:  " + availableObservers.get(Sensitivity.get))
 	}
 
 	on OrganisationInfo {
@@ -47,9 +50,11 @@ behavior AnalystRole {
 		PlatformID = occurrence.source.getUUID
 		TOLDSpace = occurrence.spaceID
 		TOLDSpace.register(asEventListener)
+		info("Come here : Vehicle Counter")
 		emit(TOLDSpace, new AlgorithmJoinPlatform(occurrence.context,occurrence.spaceID,"APTITUDE","Counter"))
 	}
 	on SensititvityRequest{
+		info("Thank you for joining the mission. Please use the following sensitivity : " + availableObservers.get(Sensitivity.get))
 		emit(PlatformContext.defaultSpace, new MissionSensitivity(Sensitivity.get)
 		)[it.UUID==occurrence.source.UUID]
 	}

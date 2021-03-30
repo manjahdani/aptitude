@@ -47,7 +47,7 @@ skill DetectionImpl implements Detection {
 	def requestDetector(jsonConfig : JSONObject) {
 		this.pendingRequestID = UuidUtil.newSecureUuidString
 		this.requestTask = every(1000) [
-			info("Detection partner not found, send discovery message")
+			//info("Detection partner not found, send discovery message")
 			var requestMessage = new RequestMessage()
 			requestMessage.requestID = pendingRequestID
 			requestMessage.agentID = owner.ID.toString

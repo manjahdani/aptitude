@@ -1,0 +1,73 @@
+/** 
+ * @Name       : PlatformRole
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1 
+ * @Date       : 22/03/2021 
+ */
+package be.uclouvain.organisation.platform
+
+import be.uclouvain.organisation.told.AddEntity
+import io.sarl.core.Behaviors
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Logging
+import io.sarl.core.MemberJoined
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.OpenEventSpaceSpecification
+import java.util.UUID
+import be.uclouvain.organisation.OrganisationInfo
+import io.sarl.core.DefaultContextInteractions
+import be.uclouvain.organisation.told.LeavePlatform
+
+/** 
+ * Platform concept-roles manages the resources. 
+ *   
+ */
+behavior PlatformRole {
+	uses Behaviors, InnerContextAccess, ExternalContextAccess, Logging, DefaultContextInteractions
+
+	protected var PlatformInteractivitySpace : OpenEventSpace
+	protected var PlatformTOLDSpace : OpenEventSpace
+
+	on Initialize {
+	}
+
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on Initialize {
+		this.PlatformInteractivitySpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification,
+			UUID.randomUUID) // Space for the communication between a World and Poppies
+		PlatformInteractivitySpace.register(asEventListener)
+		this.PlatformTOLDSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID) // Space for the communication between Unity and the World
+		
+		PlatformTOLDSpace.register(asEventListener)
+	}
+
+	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	on AddEntity {
+		// RuleManagement(new MembershipInfoRule(occurrence.source, occurrence.SourceEventSpace, occurrence.entityData))
+		//if (true) {
+			emit(occurrence.SourceEventSpace,
+				new AuthorizationToJoin(innerContext, innerContext.getDefaultSpace as OpenEventSpace, occurrence.source.getUUID, occurrence.entityData))[it.UUID == occurrence.source.getUUID]
+		//}
+	}
+
+	on MemberJoined {
+		//info("I see " +occurrence.agentType)
+		synchronized (PlatformTOLDSpace)
+		if (occurrence.agentType == "be.uclouvain.aptitude.agents.TOLDAgent") {
+			emit(new OrganisationInfo(defaultContext, PlatformTOLDSpace))[it.UUID == occurrence.agentID]
+		} 
+		else{
+			wake(new OrganisationInfo(innerContext, PlatformTOLDSpace))[it.UUID == occurrence.agentID]
+		}
+	}
+
+	on StopMission {
+		info("Me Platform Role I received stopMission")
+		wake(new LeavePlatform)
+	}
+
+}

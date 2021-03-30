@@ -28,9 +28,8 @@ public class OrganisationInfo extends Event {
   
   /**
    * Constructor
-   * 
    * @param	ctxt	The context to join
-   * @param	sid	The space in the context to join
+   * @param	sid	    The space in the context to join
    */
   public OrganisationInfo(final AgentContext ctxt, final OpenEventSpace sid) {
     this.context = ctxt;

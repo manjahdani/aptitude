@@ -1,3 +1,10 @@
+/**
+ * @Name       : ObserverRole
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1
+ * @Date       : 22/03/2021
+ */
 package be.uclouvain.organisation.platform;
 
 import be.uclouvain.organisation.OrganisationInfo;
@@ -25,12 +32,10 @@ import io.sarl.lang.util.SerializableProxy;
 import java.io.ObjectStreamException;
 import java.util.Collection;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/**
- * @author manjah
- */
 @SarlSpecification("0.11")
 @SarlElementType(21)
 @SuppressWarnings("all")
@@ -43,12 +48,10 @@ public class ObserverRole extends Behavior {
   
   protected UUID observerID;
   
-  protected int sensitivity;
+  protected AtomicInteger sensitivity = new AtomicInteger();
   
+  @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    String _string = occurrence.parameters[0].toString();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Observer Role started witch config = " + _string));
     Object _get = occurrence.parameters[1];
     this.observerID = ((UUID) _get);
   }
@@ -58,6 +61,7 @@ public class ObserverRole extends Behavior {
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The behavior was stopped.");
   }
   
+  @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$OrganisationInfo$2(final OrganisationInfo occurrence) {
     this.PlatformContext = occurrence.context;
     this.TOLDID = occurrence.getSource().getUUID();
@@ -95,10 +99,11 @@ public class ObserverRole extends Behavior {
   
   private void $behaviorUnit$SensititvityRequest$3(final SensititvityRequest occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    UUID _uUID = occurrence.getSource().getUUID();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I received A Sensititivy Request" + _uUID));
+    int _get = this.sensitivity.get();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Thank you for joining the mission. Please use the following sensitivity" + Integer.valueOf(_get)));
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-    MissionSensitivity _missionSensitivity = new MissionSensitivity(this.sensitivity);
+    int _get_1 = this.sensitivity.get();
+    MissionSensitivity _missionSensitivity = new MissionSensitivity(_get_1);
     class $SerializableClosureProxy implements Scope<Address> {
       
       private final UUID $_uUID;
@@ -216,8 +221,6 @@ public class ObserverRole extends Behavior {
       return false;
     if (!java.util.Objects.equals(this.observerID, other.observerID))
       return false;
-    if (other.sensitivity != this.sensitivity)
-      return false;
     return super.equals(obj);
   }
   
@@ -229,7 +232,6 @@ public class ObserverRole extends Behavior {
     final int prime = 31;
     result = prime * result + java.util.Objects.hashCode(this.TOLDID);
     result = prime * result + java.util.Objects.hashCode(this.observerID);
-    result = prime * result + Integer.hashCode(this.sensitivity);
     return result;
   }
   

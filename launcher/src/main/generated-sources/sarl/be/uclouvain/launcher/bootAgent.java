@@ -6,7 +6,6 @@ import be.uclouvain.aptitude.agents.CommitSuicide;
 import be.uclouvain.aptitude.agents.Paraddis;
 import be.uclouvain.aptitude.agents.PlatformAgent;
 import be.uclouvain.launcher.GUI;
-import be.uclouvain.launcher.UDPSender;
 import be.uclouvain.organisation.platform.util.PlatformConfig;
 import io.sarl.core.AgentTask;
 import io.sarl.core.DefaultContextInteractions;
@@ -26,14 +25,12 @@ import io.sarl.lang.core.DynamicSkillProvider;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.UUID;
 import javafx.application.Application;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function0;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -44,8 +41,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlElementType(19)
 @SuppressWarnings("all")
 public class bootAgent extends Paraddis {
-  private final String junctionList = "MacqWoolridge";
-  
   private final DatagramSocket client = new Function0<DatagramSocket>() {
     @Override
     public DatagramSocket apply() {
@@ -57,8 +52,6 @@ public class bootAgent extends Paraddis {
       }
     }
   }.apply();
-  
-  private final UDPSender clientSender = new UDPSender();
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
@@ -126,7 +119,8 @@ public class bootAgent extends Paraddis {
               if ((data != null)) {
                 this.MessageAnalysis(data, packet.getAddress().getHostAddress());
               } else {
-                InputOutput.<String>println(("I received it NULLL" + data));
+                Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+                _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I received it NULLL" + data));
               }
               packet.setLength(buffer.length);
             }
@@ -222,15 +216,6 @@ public class bootAgent extends Paraddis {
   @Pure
   @SyntheticMember
   public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    bootAgent other = (bootAgent) obj;
-    if (!Objects.equals(this.junctionList, other.junctionList))
-      return false;
     return super.equals(obj);
   }
   
@@ -239,8 +224,6 @@ public class bootAgent extends Paraddis {
   @SyntheticMember
   public int hashCode() {
     int result = super.hashCode();
-    final int prime = 31;
-    result = prime * result + Objects.hashCode(this.junctionList);
     return result;
   }
   

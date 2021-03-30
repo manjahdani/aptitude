@@ -1,3 +1,10 @@
+/**
+ * @Name       : PlatformRole
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1
+ * @Date       : 22/03/2021
+ */
 package be.uclouvain.aptitude.agents;
 
 import be.uclouvain.aptitude.agents.AlgorithmNeeded;
@@ -39,6 +46,8 @@ public class TOLDAgent extends Paraddis {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     UUID _iD = this.getID();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(("TOLD-" + _iD));
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Ready to share my stored Knowledge.");
     this.AlgorithmDatabase.put("YOLO", "F:/aptitude/aptitude-agents/src/main/resources/config/test-YOLO.json");
     this.AlgorithmDatabase.put("TinyYOLO", "F:/aptitude/aptitude-agents/src/main/resources/config/test-TinyYOLO.json");
     this.AlgorithmDatabase.put("SORT", "F:/aptitude/aptitude-agents/src/main/resources/config/test-SORT.json");
@@ -55,11 +64,15 @@ public class TOLDAgent extends Paraddis {
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_tOLDRole);
   }
   
+  @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$AlgorithmJoinPlatform$1(final AlgorithmJoinPlatform occurrence) {
-    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     String _get = this.AlgorithmDatabase.get(occurrence.name);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I received Algorithm Join Platform" + _get));
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    String _get_1 = this.AlgorithmDatabase.get(occurrence.name);
     UUID _uUID = occurrence.getSource().getUUID();
-    AlgorithmNeeded _algorithmNeeded = new AlgorithmNeeded(occurrence.contextID, occurrence.defaultSpaceID, occurrence.name, occurrence.task, _get, _uUID);
+    AlgorithmNeeded _algorithmNeeded = new AlgorithmNeeded(occurrence.contextID, occurrence.defaultSpaceID, occurrence.name, occurrence.task, _get_1, _uUID);
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_algorithmNeeded);
   }
   

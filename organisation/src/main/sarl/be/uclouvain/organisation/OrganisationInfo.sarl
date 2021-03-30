@@ -13,9 +13,9 @@ import io.sarl.core.OpenEventSpace
 
 event OrganisationInfo {
 
-			/** 
-		 * The context joined 
-		 */
+	/** 
+	 * The context joined 
+	*/
 	val context : AgentContext
 
 	/** 
@@ -25,9 +25,8 @@ event OrganisationInfo {
 
 	/* 
 	 * Constructor
-	 * 
 	 * @param	ctxt	The context to join
-	 * @param	sid	The space in the context to join
+	 * @param	sid	    The space in the context to join
 	 */
 	new (ctxt : AgentContext, sid : OpenEventSpace) {
 		this.context = ctxt

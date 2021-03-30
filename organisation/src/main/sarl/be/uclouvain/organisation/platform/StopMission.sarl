@@ -5,14 +5,10 @@ package be.uclouvain.organisation.platform
 
 import java.util.UUID
 
-/** 
- * @author manjah
- * 
- */
+
 event StopMission {
 
 	val missionID : UUID
-
 	new(id : UUID) {
 		this.missionID = id
 	}

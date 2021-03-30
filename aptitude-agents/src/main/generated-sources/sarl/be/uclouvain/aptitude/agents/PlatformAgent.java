@@ -27,9 +27,6 @@ import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/**
- * @author manjah
- */
 @SarlSpecification("0.11")
 @SarlElementType(19)
 @SuppressWarnings("all")
@@ -59,6 +56,8 @@ public class PlatformAgent extends Paraddis {
       Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
       PlatformRole _platformRole = new PlatformRole(this);
       _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_platformRole);
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Ready to receive operating mission");
       Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawn(TOLDAgent.class);
     } else {

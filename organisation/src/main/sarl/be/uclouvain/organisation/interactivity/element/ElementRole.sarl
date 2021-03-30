@@ -8,7 +8,7 @@ package be.uclouvain.organisation.interactivity.element
  * 
  */
 behavior ElementRole {
-	uses ElementCapacity
+	
 
 	//@SuppressWarnings("discouraged_occurrence_readonly_use")
 	//on ElementInformation {

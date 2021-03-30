@@ -26,10 +26,10 @@ import be.uclouvain.aptitude.agents.PlatformAgent
 agent bootAgent extends Paraddis {
 	uses Lifecycle, Schedules, DefaultContextInteractions, Logging
 
-	val junctionList = "MacqWoolridge"
+	//val junctionList = "MacqWoolridge"
 
 	val client : DatagramSocket = new DatagramSocket(65000) // A client to listen requests
-	val clientSender = new UDPSender() // homeMade client to send UDP message
+	//val clientSender = new UDPSender() // homeMade client to send UDP message
 
 	on Initialize {
 		loggingName = "Boot" + "-" + this.ID
@@ -81,14 +81,13 @@ agent bootAgent extends Paraddis {
 				if (data !== null) {
 					MessageAnalysis(data, (packet.getAddress()).getHostAddress)
 				} else {
-					println("I received it NULLL" + data)
+					info("I received it NULLL" + data)
 				}
 				packet.setLength(buffer.length);
 			}
 		])
 
 	}
-
 	def synchronized disable() {
 		this.client.close()
 		task("Enable_Server").cancel

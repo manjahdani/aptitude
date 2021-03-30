@@ -1,3 +1,10 @@
+/**
+ * @Name       : PlatformRole
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1
+ * @Date       : 22/03/2021
+ */
 package be.uclouvain.aptitude.agents.user;
 
 import UDPMessages.CharacterData;
@@ -71,6 +78,7 @@ public class UserRole extends ElementRole {
     _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_USER_USERELEMENTCAPACITY$CALLER.setupPhysicalDevice(this.getCharacterList());
   }
   
+  @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$ElementInformation$1(final ElementInformation occurrence) {
     final UDP_Message_Base msg = occurrence.information;
     if ((msg instanceof UDP_Message_RequestSpawn)) {

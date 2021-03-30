@@ -19,15 +19,12 @@ class MissionData {
 		this.Location = location
 		this.Sensitivity = sensitivity
 	}
-
 	def getEntityID() {
 		return this.entityID
 	}
-
 	def getLocation() {
 		return this.Location
 	}
-
 	def getSensitivity() {
 		return this.Sensitivity
 	}

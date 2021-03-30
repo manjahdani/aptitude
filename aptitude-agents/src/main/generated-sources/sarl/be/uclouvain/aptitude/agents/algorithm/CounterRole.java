@@ -1,3 +1,10 @@
+/**
+ * @Name       : PlatformRole
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1
+ * @Date       : 22/03/2021
+ */
 package be.uclouvain.aptitude.agents.algorithm;
 
 import be.uclouvain.aptitude.agents.algorithm.BBoxes2DTrackResult;
@@ -26,7 +33,7 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * @author manjah
+ * The CounterRole is the behaviour that an agent Algorithm endorses upon a mission that requires the counting of Vehicles
  */
 @SarlSpecification("0.11")
 @SarlElementType(21)
@@ -51,17 +58,19 @@ public class CounterRole extends ObserverRole {
     this.<CountingSkill>setSkill(_countingSkill, ObserverCapacity.class);
   }
   
+  @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$MissionSensitivity$1(final MissionSensitivity occurrence) {
-    this.sensitivity = occurrence.s;
-    final String Observer = this.availableObservers.get(((this.intensityMap.get(Integer.valueOf(this.sensitivity))) == null ? 0 : (this.intensityMap.get(Integer.valueOf(this.sensitivity))).intValue()));
+    this.sensitivity.set(occurrence.s);
+    final String Observer = this.availableObservers.get(((this.intensityMap.get(Integer.valueOf(this.sensitivity.get()))) == null ? 0 : (this.intensityMap.get(Integer.valueOf(this.sensitivity.get()))).intValue()));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("Counter Mission Sensitivity" + Integer.valueOf(this.sensitivity)) + "Selected Observer : ") + Observer));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Come here : " + Observer));
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     AlgorithmJoinPlatform _algorithmJoinPlatform = new AlgorithmJoinPlatform(this.PlatformContext, this.TOLDSpace, Observer, "Tracker");
     _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.TOLDSpace, _algorithmJoinPlatform);
     this.start = System.currentTimeMillis();
   }
   
+  @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$BBoxes2DTrackResult$2(final BBoxes2DTrackResult occurrence) {
     int _dimWidth = occurrence.bboxes2DTrack.getDimWidth();
     double ratio_width = (1920.0 / _dimWidth);
@@ -99,7 +108,7 @@ public class CounterRole extends ObserverRole {
     boolean _isLastFrame = occurrence.bboxes2DTrack.isLastFrame();
     if (_isLastFrame) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("That was it! ");
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("That was it!");
       long _currentTimeMillis = System.currentTimeMillis();
       final long totalTime = ((_currentTimeMillis - this.start) / 1000);
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
@@ -109,6 +118,8 @@ public class CounterRole extends ObserverRole {
       int _frameNumber = occurrence.bboxes2DTrack.getFrameNumber();
       String _string_1 = Long.valueOf((_frameNumber / totalTime)).toString();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("Average FPS : " + _string_1));
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3.info("I will transfer my perception to the Analyst");
       ObserverCapacity _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY$CALLER_1 = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY$CALLER();
       _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY$CALLER_1.displayPerception();
     }

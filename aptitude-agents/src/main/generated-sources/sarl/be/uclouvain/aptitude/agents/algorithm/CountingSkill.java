@@ -36,6 +36,7 @@ public class CountingSkill extends Skill implements ObserverCapacity {
     this.countingLines.put("B", _countingLine_1);
   }
   
+  @Pure
   public void Signal2Perception(final ArrayList<BBoxes2D> boundingBoxes) {
     for (final BBoxes2D bb : boundingBoxes) {
       Set<String> _keySet = this.countingLines.keySet();

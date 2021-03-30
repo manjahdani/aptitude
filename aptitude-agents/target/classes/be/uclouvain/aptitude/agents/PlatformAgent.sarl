@@ -16,10 +16,7 @@ import be.uclouvain.organisation.platform.util.PlatformConfig
 import be.uclouvain.organisation.platform.PlatformRole
 import be.uclouvain.aptitude.agents.ui.UserInterface
 
-/** 
- * @author manjah
- * 
- */
+
 agent PlatformAgent extends Paraddis {
 
 	uses Logging, Behaviors, InnerContextAccess, Lifecycle
@@ -50,6 +47,7 @@ agent PlatformAgent extends Paraddis {
 		}
 		if (platformConfig.getLevel > 0) {
 			registerBehavior(new PlatformRole(this))
+			info("Ready to receive operating mission")
 			spawn(TOLDAgent) 		// Only first layer wouldn't have a unity server, as it doesn't need to have physical representation
 		} else {
 			//setSkill(new WorldSkill(WorldConfig), WorldCapacity)

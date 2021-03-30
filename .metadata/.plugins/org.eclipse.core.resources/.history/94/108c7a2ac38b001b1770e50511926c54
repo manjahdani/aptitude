@@ -1,0 +1,39 @@
+/** 
+ * @author: Dani Manjah
+ * @date  : 22/03/2021 
+ */
+package be.uclouvain.organisation.told.entity
+
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.lang.core.AgentContext
+import io.sarl.lang.core.EventSpace
+
+/** 
+ * The concept-generic role of Entity seeks and update knowledge to : 
+ * 
+ * - Update a decision-making policy upon occurrence of events
+ *  	-(closing a street after accidents, auto-blocking mechanisms in case) 
+ *  
+ * - Improve its knowledge by accessing ground truth data (for weight update) 
+ * The Entity seeks and update knowledge to 
+ *  - Update its policy according to events happening (A client closing streets after high risks of accidents, a machine auto-blocking itself in case of intrusion, …) 
+ * 	- Improve its knowledge by accessing ground truth data (An algorithm updating its parameters after retraining on the augmented dataset) 
+ * The Entity could do that by accessing the local or the global TOLD. 
+ * 
+ * 
+ */
+behavior EntityRole {
+	uses DefaultContextInteractions
+
+	
+	protected var BaseContext : AgentContext // 
+	protected var BaseSpace : EventSpace
+
+	on Initialize {
+		synchronized(BaseContext)
+		BaseContext = getDefaultContext
+		synchronized(BaseSpace)
+		BaseSpace = getDefaultSpace
+	}
+}

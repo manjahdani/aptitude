@@ -1,8 +1,14 @@
+/**
+ * @Name       : TOLDRole
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1
+ * @Date       : 22/03/2021
+ */
 package be.uclouvain.organisation.told;
 
 import be.uclouvain.organisation.OrganisationInfo;
 import io.sarl.core.Behaviors;
-import io.sarl.core.Logging;
 import io.sarl.core.MemberJoined;
 import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
@@ -18,35 +24,26 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * @author manjah
+ * Trusted Observations and Learning Database is a database aiming to achieve two goals.
+ * 
+ *  - Storing the information communicated by a platform.
+ * 
+ *  - Contains ground truth signals dedicated to learning.
  */
 @SarlSpecification("0.11")
 @SarlElementType(21)
 @SuppressWarnings("all")
 public class TOLDRole extends Behavior {
-  private OpenEventSpace WorldSpace;
+  private OpenEventSpace PlatformSpace;
   
+  @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$OrganisationInfo$0(final OrganisationInfo occurrence) {
-    this.WorldSpace = occurrence.spaceID;
+    this.PlatformSpace = occurrence.spaceID;
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    this.WorldSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    this.PlatformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
   }
   
   private void $behaviorUnit$MemberJoined$1(final MemberJoined occurrence) {
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(Logging.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_LOGGING;
-  
-  @SyntheticMember
-  @Pure
-  private Logging $CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = $getSkill(Logging.class);
-    }
-    return $castSkill(Logging.class, this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
   }
   
   @Extension

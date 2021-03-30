@@ -1,3 +1,10 @@
+/**
+ * @Name       : Entity
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1
+ * @Date       : 22/03/2021
+ */
 package be.uclouvain.organisation.told.entity;
 
 import io.sarl.core.DefaultContextInteractions;
@@ -17,19 +24,23 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * @author manjah
+ * The concept-generic role of Entity seeks knowledge to update :
+ * 
+ * - Decision-making policy upon occurrence of events
+ *  	-(closing a street after accidents, auto-blocking mechanisms in case)
+ * 
+ * - The model it uses to describe the world :
+ * 		- eg. Retraining a model after new ground truth data
  */
 @SarlSpecification("0.11")
 @SarlElementType(21)
 @SuppressWarnings("all")
 public class EntityRole extends Behavior {
-  /**
-   * The field of perception of the Agent that is VISIBLE.
-   */
   protected AgentContext BaseContext;
   
   protected EventSpace BaseSpace;
   
+  @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
     this.BaseContext = _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext();
@@ -51,9 +62,6 @@ public class EntityRole extends Behavior {
     return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
   }
   
-  /**
-   * Receiving this event, the behavior has to update its fields of perception.
-   */
   @SyntheticMember
   @PerceptGuardEvaluator
   private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {

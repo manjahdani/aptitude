@@ -1,3 +1,10 @@
+/**
+ * @Name       : PlatformRole
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1
+ * @Date       : 22/03/2021
+ */
 package be.uclouvain.aptitude.agents.user;
 
 import be.uclouvain.aptitude.agents.Paraddis;
@@ -7,8 +14,6 @@ import be.uclouvain.aptitude.agents.user.UserSkill;
 import be.uclouvain.organisation.interactivity.element.ElementCapacity;
 import io.sarl.core.Behaviors;
 import io.sarl.core.Initialize;
-import io.sarl.core.InnerContextAccess;
-import io.sarl.core.Lifecycle;
 import io.sarl.core.Logging;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
@@ -28,7 +33,11 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * @author manjah
+ * The Holon User represents an agent that want to use/used the system.
+ * A User could a be a group of user.
+ * We established that in order to interact with the system, each User owns User Interface in order to provide input to the system and receives output.
+ * The agent User keep tracks of the records of the user(s) and is responsible, of updating the universe and manage the in/out of virtual and real users.
+ * It is also responsible of establishing the connection between the virtual/real user and the system. It endorses the roles of Element and their associated capacities.
  */
 @SarlSpecification("0.11")
 @SarlElementType(19)
@@ -77,34 +86,6 @@ public class User extends Paraddis {
       this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS = $getSkill(Behaviors.class);
     }
     return $castSkill(Behaviors.class, this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS);
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(Lifecycle.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_LIFECYCLE;
-  
-  @SyntheticMember
-  @Pure
-  private Lifecycle $CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE == null || this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE = $getSkill(Lifecycle.class);
-    }
-    return $castSkill(Lifecycle.class, this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE);
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(InnerContextAccess.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS;
-  
-  @SyntheticMember
-  @Pure
-  private InnerContextAccess $CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS == null || this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS = $getSkill(InnerContextAccess.class);
-    }
-    return $castSkill(InnerContextAccess.class, this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS);
   }
   
   @SyntheticMember

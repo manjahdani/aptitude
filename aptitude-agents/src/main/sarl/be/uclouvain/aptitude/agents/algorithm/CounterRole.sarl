@@ -1,5 +1,9 @@
 /** 
- * 
+ * @Name       : PlatformRole
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1 
+ * @Date       : 22/03/2021 
  */
 package be.uclouvain.aptitude.agents.algorithm
 
@@ -15,10 +19,10 @@ import java.util.ArrayList
 import java.util.TreeMap
 
 /** 
- * @author manjah
- * 
+ * The CounterRole is the behaviour that an agent Algorithm endorses upon a mission that requires the counting of Vehicles
  */
 behavior CounterRole extends ObserverRole {
+	
 	uses Logging, ExternalContextAccess, ObserverCapacity
 
 	var start : long
@@ -39,15 +43,17 @@ behavior CounterRole extends ObserverRole {
 	
 	}
 
+	@SuppressWarnings("potential_field_synchronization_problem")
 	on MissionSensitivity {
 
-		sensitivity=occurrence.s
-		val Observer = availableObservers.get(intensityMap.get(sensitivity))
-		info("Counter Mission Sensitivity" + sensitivity + "Selected Observer : " + Observer)
+		sensitivity.set(occurrence.s)
+		val Observer = availableObservers.get(intensityMap.get(sensitivity.get))
+		info("Come here : " + Observer)
 		emit(TOLDSpace, new AlgorithmJoinPlatform(PlatformContext, TOLDSpace, Observer, "Tracker"))
 		this.start = System.currentTimeMillis()
 	}
 
+	@SuppressWarnings("potential_field_synchronization_problem")
 	on BBoxes2DTrackResult {
 		
 		var ratio_width = 1920.0 / occurrence.bboxes2DTrack.dimWidth
@@ -74,20 +80,17 @@ behavior CounterRole extends ObserverRole {
 
 			ObjectToBeAnalyzed.add(ObjectPresentInframe.get(globalID))
 		}
-		Signal2Perception(new ArrayList(ObjectToBeAnalyzed))
+		
+		Signal2Perception(new ArrayList(ObjectToBeAnalyzed)) // Activate its capacity to interpret a perception 
+		
 		if (occurrence.bboxes2DTrack.lastFrame) {
-			info("That was it! " )
+			info("That was it!" )
 			val totalTime = (((System.currentTimeMillis() - this.start) / 1000))
 			info("It took " + totalTime.toString + " seconds")
 			info("Average FPS : " + (occurrence.bboxes2DTrack.frameNumber / totalTime).toString)
+			info("I will transfer my perception to the Analyst")
 			displayPerception
 		}
 	}
-
-	// def has_crossed_counting_line(bbox, line){
-	// } 
-	
-	
-
 }
 

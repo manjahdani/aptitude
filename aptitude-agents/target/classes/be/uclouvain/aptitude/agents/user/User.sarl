@@ -1,5 +1,9 @@
 /** 
- * 
+ * @Name       : PlatformRole
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1 
+ * @Date       : 22/03/2021 
  */
 package be.uclouvain.aptitude.agents.user
 
@@ -7,8 +11,6 @@ import be.uclouvain.aptitude.agents.Paraddis
 import be.uclouvain.organisation.interactivity.element.ElementCapacity
 import io.sarl.core.Behaviors
 import io.sarl.core.Initialize
-import io.sarl.core.InnerContextAccess
-import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.lang.core.EventSpace
 import java.util.ArrayList
@@ -16,11 +18,15 @@ import java.util.TreeMap
 import java.util.UUID
 
 /** 
- * @author manjah
- * 
- */
+ * The Holon User represents an agent that want to use/used the system. 
+ * A User could a be a group of user. 
+ * We established that in order to interact with the system, each User owns User Interface in order to provide input to the system and receives output. 
+ * The agent User keep tracks of the records of the user(s) and is responsible, of updating the universe and manage the in/out of virtual and real users. 
+ * It is also responsible of establishing the connection between the virtual/real user and the system. It endorses the roles of Element and their associated capacities. 
+ * */
+
 agent User extends Paraddis{
-	uses Logging, Behaviors, Lifecycle, InnerContextAccess
+	uses Logging, Behaviors
 	
 	on Initialize {
 		loggingName = "UserInterface-" + this.ID
@@ -29,8 +35,5 @@ agent User extends Paraddis{
 			new UserSkill(occurrence.parameters.get(2).toString), UserElementCapacity,ElementCapacity)
 		registerBehavior(new UserRole(this), occurrence.parameters.get(0) as TreeMap<UUID, EventSpace>,
 			occurrence.parameters.get(1) as ArrayList<UUID>)
-			
-			//spawnInContext(Expert, innerContext, occurrence.parameters.get(0) as TreeMap<UUID, EventSpace>, occurrence.parameters.get(1) as ArrayList<UUID>)	
-		
 	}
 }
