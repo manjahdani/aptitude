@@ -27,9 +27,6 @@ import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/**
- * @author manjah
- */
 @SarlSpecification("0.11")
 @SarlElementType(19)
 @SuppressWarnings("all")

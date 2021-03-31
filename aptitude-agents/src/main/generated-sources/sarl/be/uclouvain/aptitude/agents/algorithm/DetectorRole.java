@@ -1,16 +1,17 @@
 package be.uclouvain.aptitude.agents.algorithm;
 
 import be.uclouvain.aptitude.agents.algorithm.BBoxes2DResult;
-import be.uclouvain.aptitude.agents.algorithm.Detection;
 import be.uclouvain.aptitude.agents.algorithm.DetectionImpl;
 import be.uclouvain.aptitude.agents.algorithm.PartnerDetectionFound;
+import be.uclouvain.aptitude.agents.algorithm.PythonTwinObserverAccess;
+import be.uclouvain.organisation.platform.LeavePlatform;
 import be.uclouvain.organisation.platform.ObserverRole;
-import be.uclouvain.organisation.told.LeavePlatform;
 import com.google.common.base.Objects;
 import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
 import io.sarl.core.Logging;
+import io.sarl.core.Schedules;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
@@ -27,13 +28,11 @@ import java.util.Collection;
 import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-/**
- * @author manjah
- */
 @SarlSpecification("0.11")
 @SarlElementType(21)
 @SuppressWarnings("all")
@@ -49,24 +48,25 @@ public class DetectorRole extends ObserverRole {
       FileReader _fileReader = new FileReader(configPathDetector);
       Object _parse = parser.parse(_fileReader);
       JSONObject jsonDetector = ((JSONObject) _parse);
-      Detection _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_DETECTION$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_DETECTION$CALLER();
-      _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_DETECTION$CALLER.requestDetector(jsonDetector);
+      PythonTwinObserverAccess _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER();
+      _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER.ActivateAccess(jsonDetector);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
   }
   
+  @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$PartnerDetectionFound$1(final PartnerDetectionFound occurrence) {
-    try {
-      this.partnerDetectionName = occurrence.partnerName;
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Detection partner found: " + this.partnerDetectionName));
-      Thread.sleep(2000);
-      Detection _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_DETECTION$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_DETECTION$CALLER();
-      _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_DETECTION$CALLER.sendAction(1);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    this.partnerDetectionName = occurrence.partnerName;
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Detection partner found: " + this.partnerDetectionName));
+    Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+    Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+    final Procedure1<Agent> _function = (Agent it) -> {
+      PythonTwinObserverAccess _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER();
+      _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER.UpdateStreamAccess(1);
+    };
+    _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER.in(_$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1.task("wait"), 2000, _function);
   }
   
   private void $behaviorUnit$BBoxes2DResult$2(final BBoxes2DResult occurrence) {
@@ -107,8 +107,8 @@ public class DetectorRole extends ObserverRole {
   private void $behaviorUnit$LeavePlatform$4(final LeavePlatform occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Observer Leaving");
-    Detection _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_DETECTION$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_DETECTION$CALLER();
-    _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_DETECTION$CALLER.sendAction(4);
+    PythonTwinObserverAccess _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER();
+    _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER.UpdateStreamAccess(4);
   }
   
   @Extension
@@ -126,17 +126,17 @@ public class DetectorRole extends ObserverRole {
   }
   
   @Extension
-  @ImportedCapacityFeature(Detection.class)
+  @ImportedCapacityFeature(PythonTwinObserverAccess.class)
   @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_DETECTION;
+  private transient AtomicSkillReference $CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS;
   
   @SyntheticMember
   @Pure
-  private Detection $CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_DETECTION$CALLER() {
-    if (this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_DETECTION == null || this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_DETECTION.get() == null) {
-      this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_DETECTION = $getSkill(Detection.class);
+  private PythonTwinObserverAccess $CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER() {
+    if (this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS == null || this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS.get() == null) {
+      this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS = $getSkill(PythonTwinObserverAccess.class);
     }
-    return $castSkill(Detection.class, this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_DETECTION);
+    return $castSkill(PythonTwinObserverAccess.class, this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS);
   }
   
   @Extension
@@ -151,6 +151,20 @@ public class DetectorRole extends ObserverRole {
       this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);
     }
     return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
+  }
+  
+  @Extension
+  @ImportedCapacityFeature(Schedules.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_SCHEDULES;
+  
+  @SyntheticMember
+  @Pure
+  private Schedules $CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES == null || this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES = $getSkill(Schedules.class);
+    }
+    return $castSkill(Schedules.class, this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES);
   }
   
   @SyntheticMember

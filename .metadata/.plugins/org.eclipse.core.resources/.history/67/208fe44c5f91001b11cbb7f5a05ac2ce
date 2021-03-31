@@ -1,0 +1,62 @@
+package be.uclouvain.aptitude.agents.algorithm
+
+import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DMessage
+import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DTrackMessage
+import be.uclouvain.aptitude.agents.algorithm.messages.BaseMessage
+import be.uclouvain.aptitude.agents.algorithm.messages.RequestMessage
+import com.hazelcast.util.UuidUtil
+import io.sarl.core.AgentTask
+import io.sarl.core.Behaviors
+import io.sarl.core.Schedules
+
+
+skill TrackingImpl extends PythonAccess implements Tracking {
+	uses Behaviors, Schedules
+
+
+
+	def install {
+		topicRequestSub = CommunicationManager.instance.subscribeTopic("request", this)
+	}
+
+	def uninstall {
+		if (topicRequestSub !== null) {
+			CommunicationManager.instance.unsubscribeTopic(topicRequestSub)
+			topicRequestSub = null
+		}
+		if (topicTrackingSub !== null) {
+			CommunicationManager.instance.unsubscribeTopic(topicTrackingSub)
+			topicTrackingSub = null
+		}
+	}
+
+
+
+	def update(m : BaseMessage) {
+		if (m instanceof BBoxes2DTrackMessage) {
+			wake(new BBoxes2DTrackResult(m))
+		} else if (m instanceof RequestMessage) {
+			onRequestMessage(m)
+		}
+	}
+
+	private def onRequestMessage(message : RequestMessage) {
+		if (message.ack && message.requestID == this.pendingRequestID) {
+			requestTask.cancel
+			CommunicationManager.instance.unsubscribeTopic(topicRequestSub)
+			topicRequestSub = null
+			val topicName = "tracking_" + owner.ID.toString + "_" + message.clientName
+			topicTrackingSub = CommunicationManager.instance.subscribeTopic(topicName, this)
+			wake(new PartnerTrackingFound(message.clientName))
+		}
+	}
+
+	def getTrack(detectionMessage : BBoxes2DMessage) {
+		CommunicationManager.instance.publishMessage(topicTrackingSub, detectionMessage)
+	}
+	def disableDataAcquisition(o : Object) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+}
+

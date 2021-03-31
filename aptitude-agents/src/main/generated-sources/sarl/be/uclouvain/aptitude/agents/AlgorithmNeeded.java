@@ -1,5 +1,5 @@
 /**
- * @Name       : PlatformRole
+ * @Name       : TOLDAgent
  * @Project    : APTITUDE
  * @Author     : Dani Manjah
  * @Version    : V.0.1

@@ -1,0 +1,78 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.agents.algorithm
+
+import be.uclouvain.aptitude.agents.algorithm.PythonTwinAlgorithm
+import be.uclouvain.aptitude.agents.algorithm.messages.BaseMessage
+import io.sarl.core.Logging
+import io.sarl.core.AgentTask
+import org.json.simple.JSONObject
+import com.hazelcast.util.UuidUtil
+import be.uclouvain.aptitude.agents.algorithm.messages.RequestMessage
+import io.sarl.core.Schedules
+import be.uclouvain.aptitude.agents.algorithm.messages.ActionMessage
+
+/** 
+ * @author manjah
+ * 
+ */
+abstract skill PythonAccess implements PythonTwinAlgorithm {
+	uses Logging, Schedules
+
+	protected var topicRequestSub : String
+	
+	protected var topicSignalAcquisition : String
+
+	protected var pendingRequestID : String
+	protected var requestTask : AgentTask
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	def install {
+		topicRequestSub = CommunicationManager.instance.subscribeTopic("request", this)
+	}
+
+	def prepareUninstallation {
+		// Function invoked when the skill is preparing to be uninstalled from the owner, but before the owner is destroyed.
+		// You should put all the resource release statements that should be executed before the owner is destroyed.
+		info("Preparing the uninstallation of the skill")
+	}
+
+	def uninstall {
+//		
+			if (topicRequestSub !== null) {
+				CommunicationManager.instance.unsubscribeTopic(topicRequestSub)
+				topicRequestSub = null
+			}
+			if (topicSignalAcquisition !== null) {
+				CommunicationManager.instance.unsubscribeTopic(topicSignalAcquisition)
+			topicSignalAcquisition = null
+			}
+		
+	}
+
+	def enableDataAcquisition(o : Object) {
+		var jsonConfig = o as JSONObject
+		this.pendingRequestID = UuidUtil.newSecureUuidString
+		this.requestTask = every(1000) [
+			info("Tracking partner not found, send discovery message")
+			var requestMessage = new RequestMessage()
+			requestMessage.requestID = this.pendingRequestID
+			requestMessage.agentID = owner.ID.toString
+			requestMessage.jsonConfig = jsonConfig.toString
+			CommunicationManager.instance.publishMessage(topicRequestSub, requestMessage)
+		]
+	}
+
+	override update(m : BaseMessage) {
+		// TODO Auto-generated code.
+	}
+
+	def disableDataAcquisition(o : Object) {
+		var actionID = o as Integer
+		info("Send action: " + actionID)
+		var actionMessage = new ActionMessage()
+		actionMessage.actionID = actionID
+		CommunicationManager.instance.publishMessage(topicSignalAcquisition, actionMessage)
+	}
+}

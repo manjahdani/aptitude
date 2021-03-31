@@ -4,7 +4,7 @@
 package be.uclouvain.aptitude.agents.algorithm
 
 import be.uclouvain.organisation.platform.ObserverRole
-import be.uclouvain.organisation.told.LeavePlatform
+import be.uclouvain.organisation.platform.LeavePlatform
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
@@ -12,13 +12,14 @@ import io.sarl.core.Logging
 import java.io.FileReader
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
+import io.sarl.core.Schedules
 
 /** 
- * @author manjah
+ *
  * 
  */
 behavior DetectorRole extends ObserverRole {
-	uses Logging, Detection, DefaultContextInteractions
+	uses Logging, PythonTwinObserverAccess, DefaultContextInteractions, Schedules
 
 	var partnerDetectionName : String
 
@@ -28,25 +29,21 @@ behavior DetectorRole extends ObserverRole {
 		var parser = new JSONParser(); // occurrence.parameters.get(0).toString
 		var configPathDetector = occurrence.parameters.get(0).toString
 		var jsonDetector = parser.parse(new FileReader(configPathDetector)) as JSONObject;
-		requestDetector(jsonDetector)
+		ActivateAccess(jsonDetector)
 	}
 	
+	@SuppressWarnings("potential_field_synchronization_problem")
 	on PartnerDetectionFound {
 		
 		this.partnerDetectionName = occurrence.partnerName
 		info("Detection partner found: " + this.partnerDetectionName)
-		Thread.sleep(2000)
-		sendAction(1) // PLAY
-		
-
-	// Thread.sleep(10000)
-	// sendAction(2) // PAUSE
-	// Thread.sleep(5000)
-	// this.start -= 5000
-	// sendAction(3) 	// RESUME
-}
+		task("wait").in(2000) [
+			UpdateStreamAccess(1) // PLAY
+		]
+		}
 
 	on BBoxes2DResult{
+		
 		emit(new BBoxes2DResult(occurrence.bboxes2D))[it.UUID == observerID]
 
 		 //println("***********************")
@@ -69,15 +66,13 @@ behavior DetectorRole extends ObserverRole {
 	}
 
 	on Destroy {
-		// Event trigger when the behavior is destroyed from the system.
-		// You should put all the resource releasing statements in this block of code.
 		info("The behavior was stopped.")
 	}
 
 	on LeavePlatform {
 		// join(BaseContext.ID, BaseSpace.spaceID.ID)
 		info("Observer Leaving")
-		sendAction(4)
+		UpdateStreamAccess(4)
 		//leave(PlatformID)
 	}
 }

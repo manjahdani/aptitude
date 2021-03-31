@@ -1,9 +1,9 @@
 package be.uclouvain.organisation.platform;
 
 import be.uclouvain.organisation.OrganisationInfo;
+import be.uclouvain.organisation.platform.AlgorithmJoinPlatform;
 import be.uclouvain.organisation.platform.MissionSensitivity;
 import be.uclouvain.organisation.platform.SensititvityRequest;
-import be.uclouvain.organisation.told.AlgorithmJoinPlatform;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
@@ -70,6 +70,7 @@ public class AnalystRole extends Behavior {
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("As an expert I will start the mission of Vehicle Counting with the sensitivity:  " + _get_1));
   }
   
+  @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$OrganisationInfo$1(final OrganisationInfo occurrence) {
     this.PlatformContext = occurrence.context;
     this.PlatformID = occurrence.getSource().getUUID();

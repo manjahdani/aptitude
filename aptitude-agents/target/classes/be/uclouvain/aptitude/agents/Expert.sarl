@@ -52,7 +52,7 @@ agent Expert extends Paraddis {
 		PlatformlistenersSpaceIDs.get(PlatformID).emit(new AddEntity(getDefaultSpace(), occurrence.missionData.sensitivity))[it.UUID == PlatformID]
 	}
 
-	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	@SuppressWarnings("potential_field_synchronization_problem", "discouraged_occurrence_readonly_use")
 	on StopMission {
 		info("Received Stop Mission")
 		val PlatformID = MissionList.get(occurrence.missionID)

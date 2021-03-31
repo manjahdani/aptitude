@@ -14,7 +14,7 @@ event ElementInformation {
 	 * The information. 
 	 * The {@code Object} type allows to store every kind of data. As it is the {@code Agent }(and not the {@code Behavior}) that has to process the
      * data, it is not necessary for the organisation to know the kind of exchanged data.
-		 */
+	 */
 	val information : UDP_Message_Base
 	/** 
 	 * Constructor

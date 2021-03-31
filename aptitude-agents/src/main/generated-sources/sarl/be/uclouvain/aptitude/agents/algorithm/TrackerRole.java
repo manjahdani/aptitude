@@ -3,12 +3,12 @@ package be.uclouvain.aptitude.agents.algorithm;
 import be.uclouvain.aptitude.agents.algorithm.BBoxes2DResult;
 import be.uclouvain.aptitude.agents.algorithm.BBoxes2DTrackResult;
 import be.uclouvain.aptitude.agents.algorithm.PartnerTrackingFound;
-import be.uclouvain.aptitude.agents.algorithm.Tracking;
+import be.uclouvain.aptitude.agents.algorithm.PythonTwinObserverAccess;
 import be.uclouvain.aptitude.agents.algorithm.TrackingImpl;
+import be.uclouvain.organisation.platform.AlgorithmJoinPlatform;
+import be.uclouvain.organisation.platform.LeavePlatform;
 import be.uclouvain.organisation.platform.MissionSensitivity;
 import be.uclouvain.organisation.platform.ObserverRole;
-import be.uclouvain.organisation.told.AlgorithmJoinPlatform;
-import be.uclouvain.organisation.told.LeavePlatform;
 import com.google.common.base.Objects;
 import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Destroy;
@@ -69,8 +69,8 @@ public class TrackerRole extends ObserverRole {
       FileReader _fileReader = new FileReader(configPathTracker);
       Object _parse = parser.parse(_fileReader);
       JSONObject jsonTracker = ((JSONObject) _parse);
-      Tracking _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_TRACKING$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_TRACKING$CALLER();
-      _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_TRACKING$CALLER.requestTracker(jsonTracker);
+      PythonTwinObserverAccess _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER();
+      _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER.ActivateAccess(jsonTracker);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -135,8 +135,8 @@ public class TrackerRole extends ObserverRole {
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$BBoxes2DResult$6(final BBoxes2DResult occurrence) {
-    Tracking _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_TRACKING$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_TRACKING$CALLER();
-    _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_TRACKING$CALLER.getTrack(occurrence.bboxes2D);
+    PythonTwinObserverAccess _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER();
+    _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER.Signal2Perception(occurrence.bboxes2D);
   }
   
   @Extension
@@ -154,17 +154,17 @@ public class TrackerRole extends ObserverRole {
   }
   
   @Extension
-  @ImportedCapacityFeature(Tracking.class)
+  @ImportedCapacityFeature(PythonTwinObserverAccess.class)
   @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_TRACKING;
+  private transient AtomicSkillReference $CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS;
   
   @SyntheticMember
   @Pure
-  private Tracking $CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_TRACKING$CALLER() {
-    if (this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_TRACKING == null || this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_TRACKING.get() == null) {
-      this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_TRACKING = $getSkill(Tracking.class);
+  private PythonTwinObserverAccess $CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER() {
+    if (this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS == null || this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS.get() == null) {
+      this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS = $getSkill(PythonTwinObserverAccess.class);
     }
-    return $castSkill(Tracking.class, this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_TRACKING);
+    return $castSkill(PythonTwinObserverAccess.class, this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_PYTHONTWINOBSERVERACCESS);
   }
   
   @Extension

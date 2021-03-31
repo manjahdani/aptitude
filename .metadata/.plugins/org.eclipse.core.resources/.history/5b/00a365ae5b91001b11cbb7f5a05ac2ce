@@ -1,0 +1,22 @@
+package be.uclouvain.aptitude.agents.algorithm
+
+
+import org.json.simple.JSONObject
+
+import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DMessage
+
+//capacity Tracking extends Observer {
+
+//	def requestTracker(jsonConfig : JSONObject)
+
+	//def getTrack(detection : BBoxes2DMessage)
+
+//}
+
+capacity Tracking extends VirtualSensor {
+
+	def requestTracker(jsonConfig : JSONObject)
+
+	def getTrack(detection : BBoxes2DMessage)
+
+}

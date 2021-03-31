@@ -105,7 +105,7 @@ public class Expert extends Paraddis {
     _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(_get, _addEntity, _function);
   }
   
-  @SuppressWarnings("discouraged_occurrence_readonly_use")
+  @SuppressWarnings({ "potential_field_synchronization_problem", "discouraged_occurrence_readonly_use" })
   private void $behaviorUnit$StopMission$2(final StopMission occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Received Stop Mission");

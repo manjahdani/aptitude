@@ -1,0 +1,62 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.agents.algorithm
+
+import be.uclouvain.aptitude.agents.algorithm.messages.ActionMessage
+import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DMessage
+import be.uclouvain.aptitude.agents.algorithm.messages.BaseMessage
+import be.uclouvain.aptitude.agents.algorithm.messages.RequestMessage
+import io.sarl.core.Behaviors
+import io.sarl.core.Logging
+import io.sarl.core.Schedules
+
+
+skill DetectionImpl extends PythonAccess{
+	uses Logging, Behaviors, Schedules
+
+
+	var topicDetectionSub : String
+	
+//	def uninstall {
+//		if (topicRequestSub !== null) {
+//			CommunicationManager.instance.unsubscribeTopic(topicRequestSub)
+//			topicRequestSub = null
+//		}
+//		if (topicDetectionSub !== null){
+//			CommunicationManager.instance.unsubscribeTopic(topicDetectionSub)
+//			topicDetectionSub = null		
+//		}
+//	}
+
+	def disableDataAcquisition(o : Object) {
+		var actionID = o as Integer
+		info("Send action: " + actionID)
+		var actionMessage = new ActionMessage()
+		actionMessage.actionID = actionID
+		CommunicationManager.instance.publishMessage(topicDetectionSub, actionMessage)
+	}
+
+	def update(m : BaseMessage) {
+		if (m instanceof BBoxes2DMessage) {
+			wake(new BBoxes2DResult(m))
+		} else if (m instanceof RequestMessage) {
+			onRequestMessage(m)
+		} else if (m instanceof ActionMessage) {
+			if (m.ack){
+				info("Ack action " + m.actionID.toString)
+			}
+		}
+	}
+
+	private def onRequestMessage(message : RequestMessage) {
+		if (message.ack && message.requestID == this.pendingRequestID) {
+			requestTask.cancel
+			CommunicationManager.instance.unsubscribeTopic(topicRequestSub)
+			topicRequestSub = null
+			val topicName = "detection_" + owner.ID.toString + "_" + message.clientName
+			topicDetectionSub = CommunicationManager.instance.subscribeTopic(topicName, this)
+			wake(new PartnerDetectionFound(message.clientName))
+		}
+	}
+}

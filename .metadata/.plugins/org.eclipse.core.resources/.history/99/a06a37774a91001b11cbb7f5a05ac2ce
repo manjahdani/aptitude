@@ -1,0 +1,39 @@
+/** 
+ * @Name       : Events
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1 
+ * @Date       : 22/03/2021 
+ */
+package be.uclouvain.organisation.told
+
+import io.sarl.lang.core.AgentContext
+import io.sarl.core.OpenEventSpace
+
+/** 
+ * The event (-X)JoinPlatform invites the receiver to join a Context 
+ */
+event JoinPlatform{
+	val contextID : AgentContext // The destination context  
+	val defaultSpaceID : OpenEventSpace // The defaultSpace 
+	
+	new (context : AgentContext, openSpace : OpenEventSpace) {
+		this.contextID = context
+		this.defaultSpaceID = openSpace
+	}
+}
+
+/** 
+ * The event (-X)JoinPlatform invites the receiver (an Algorithm) to join a Context 
+ */
+ 
+event AlgorithmJoinPlatform extends JoinPlatform {
+	
+	val name : String
+	val task : String
+	new (context : AgentContext, openSpace : OpenEventSpace, n : String, t : String) {
+		super(context,openSpace)
+		this.name = n
+		this.task = t
+	}
+}

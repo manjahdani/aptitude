@@ -7,26 +7,24 @@
  */
 package be.uclouvain.organisation.platform
 
+import be.uclouvain.organisation.OrganisationInfo
 import be.uclouvain.organisation.told.AddEntity
 import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
-import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
 import java.util.UUID
-import be.uclouvain.organisation.OrganisationInfo
-import io.sarl.core.DefaultContextInteractions
-import be.uclouvain.organisation.told.LeavePlatform
 
 /** 
  * Platform concept-roles manages the resources. 
  *   
  */
 behavior PlatformRole {
-	uses Behaviors, InnerContextAccess, ExternalContextAccess, Logging, DefaultContextInteractions, PlatformCapacity
+	uses Behaviors, InnerContextAccess, ExternalContextAccess, DefaultContextInteractions
 
 	protected var PlatformInteractivitySpace : OpenEventSpace
 	protected var PlatformTOLDSpace : OpenEventSpace

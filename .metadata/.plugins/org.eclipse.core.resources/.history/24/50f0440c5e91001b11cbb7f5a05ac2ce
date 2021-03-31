@@ -1,0 +1,15 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+/** 
+ * @author manjah
+ * 
+ */
+capacity SensorCapacity {
+	
+	def enableDataAcquisition(o : Object)
+	
+	def disableDataAcquisition(o: ObjectP)
+}

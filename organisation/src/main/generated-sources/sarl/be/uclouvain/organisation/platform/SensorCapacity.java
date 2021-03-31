@@ -12,9 +12,9 @@ import io.sarl.lang.core.Capacity;
 @SarlElementType(20)
 @SuppressWarnings("all")
 public interface SensorCapacity extends Capacity {
-  public abstract void enableDataAcquisition();
+  public abstract void enableDataAcquisition(final Object o);
   
-  public abstract void disableDataAcquisition();
+  public abstract void disableDataAcquisition(final Object o);
   
   /**
    * @ExcludeFromApidoc
@@ -24,19 +24,19 @@ public interface SensorCapacity extends Capacity {
       super(capacity, caller);
     }
     
-    public void enableDataAcquisition() {
+    public void enableDataAcquisition(final Object o) {
       try {
         ensureCallerInLocalThread();
-        this.capacity.enableDataAcquisition();
+        this.capacity.enableDataAcquisition(o);
       } finally {
         resetCallerInLocalThread();
       }
     }
     
-    public void disableDataAcquisition() {
+    public void disableDataAcquisition(final Object o) {
       try {
         ensureCallerInLocalThread();
-        this.capacity.disableDataAcquisition();
+        this.capacity.disableDataAcquisition(o);
       } finally {
         resetCallerInLocalThread();
       }

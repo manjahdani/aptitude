@@ -1,5 +1,5 @@
 /** 
- * @Name       : PlatformRole
+ * @Name       : TOLDAgent
  * @Project    : APTITUDE
  * @Author     : Dani Manjah
  * @Version    : V.0.1 
@@ -8,7 +8,7 @@
 package be.uclouvain.aptitude.agents
 
 import be.uclouvain.aptitude.agents.algorithm.Algorithm
-import be.uclouvain.organisation.told.AlgorithmJoinPlatform
+import be.uclouvain.organisation.platform.AlgorithmJoinPlatform
 import be.uclouvain.organisation.told.TOLDRole
 import io.sarl.core.Behaviors
 import io.sarl.core.Initialize
@@ -21,7 +21,7 @@ import java.util.HashMap
 import java.util.UUID
 
 /** 
- * @author manjah
+ * 
  * 
  */
 agent TOLDAgent extends Paraddis {
@@ -75,7 +75,7 @@ class AlgorithmInfo{
 	}
 }
 
-event AlgorithmNeeded{
+event AlgorithmNeeded {
 	val contextID : AgentContext
 	val DefaultSpaceID : OpenEventSpace
 	val name : String

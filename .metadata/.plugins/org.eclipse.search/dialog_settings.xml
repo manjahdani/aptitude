@@ -24,7 +24,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="StopMission"/>
+			<item key="textPattern" value="OrganisationInfo"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -39,7 +39,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Come here : Vehicle Counter"/>
+			<item key="textPattern" value="JoinPlatform"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -51,7 +51,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="getTrack"/>
+			<item key="textPattern" value="StopMission"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -63,7 +63,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Detection partner not found, send discovery message"/>
+			<item key="textPattern" value="Come here : Vehicle Counter"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -75,7 +75,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Tracking partner not found, send discovery message"/>
+			<item key="textPattern" value="getTrack"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -87,7 +87,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Observer Role started witch config"/>
+			<item key="textPattern" value="Detection partner not found, send discovery message"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -99,7 +99,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="As an expert I will start the mission of Vehicle Counting with the sensitivity"/>
+			<item key="textPattern" value="Tracking partner not found, send discovery message"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -111,7 +111,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Expert agent was started"/>
+			<item key="textPattern" value="Observer Role started witch config"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -123,7 +123,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Algorithm level"/>
+			<item key="textPattern" value="As an expert I will start the mission of Vehicle Counting with the sensitivity"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -135,7 +135,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Counted at frame"/>
+			<item key="textPattern" value="Expert agent was started"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -147,7 +147,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Counted at frame 194 and"/>
+			<item key="textPattern" value="Algorithm level"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -159,7 +159,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Observer Role started"/>
+			<item key="textPattern" value="Counted at frame"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>

@@ -16,7 +16,7 @@ import com.hazelcast.nio.serialization.IdentifiedDataSerializable
 import java.util.HashMap
 
 import be.uclouvain.aptitude.agents.algorithm.messages.ActionMessage
-import be.uclouvain.aptitude.agents.algorithm.Observer
+
 import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DMessage
 import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DTrackMessage
 import be.uclouvain.aptitude.agents.algorithm.messages.BaseMessage
@@ -78,7 +78,7 @@ class CommunicationManager{
 		return hzInstance
 	}
 
-	def subscribeTopic(topicName : String, observer : Observer) {
+	def subscribeTopic(topicName : String, observer : PythonTwinObserverAccess) {
 		val topic = getHzInstance.getTopic(topicName)
 		val subscribtionID : String = topic.addMessageListener(new MessageListener<BaseMessage>(){
 			def onMessage(m : Message<BaseMessage>) {

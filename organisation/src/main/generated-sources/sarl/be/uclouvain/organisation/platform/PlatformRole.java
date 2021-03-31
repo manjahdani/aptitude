@@ -9,17 +9,15 @@ package be.uclouvain.organisation.platform;
 
 import be.uclouvain.organisation.OrganisationInfo;
 import be.uclouvain.organisation.platform.AuthorizationToJoin;
-import be.uclouvain.organisation.platform.PlatformCapacity;
+import be.uclouvain.organisation.platform.LeavePlatform;
 import be.uclouvain.organisation.platform.StopMission;
 import be.uclouvain.organisation.told.AddEntity;
-import be.uclouvain.organisation.told.LeavePlatform;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.Initialize;
 import io.sarl.core.InnerContextAccess;
-import io.sarl.core.Logging;
 import io.sarl.core.MemberJoined;
 import io.sarl.core.OpenEventSpace;
 import io.sarl.core.OpenEventSpaceSpecification;
@@ -245,20 +243,6 @@ public class PlatformRole extends Behavior {
   }
   
   @Extension
-  @ImportedCapacityFeature(Logging.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_LOGGING;
-  
-  @SyntheticMember
-  @Pure
-  private Logging $CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = $getSkill(Logging.class);
-    }
-    return $castSkill(Logging.class, this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
-  }
-  
-  @Extension
   @ImportedCapacityFeature(DefaultContextInteractions.class)
   @SyntheticMember
   private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS;
@@ -270,20 +254,6 @@ public class PlatformRole extends Behavior {
       this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);
     }
     return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(PlatformCapacity.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY;
-  
-  @SyntheticMember
-  @Pure
-  private PlatformCapacity $CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY$CALLER() {
-    if (this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY == null || this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY.get() == null) {
-      this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY = $getSkill(PlatformCapacity.class);
-    }
-    return $castSkill(PlatformCapacity.class, this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY);
   }
   
   @SyntheticMember

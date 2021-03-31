@@ -19,10 +19,11 @@ import javafx.stage.Stage
 import UDPMessages.UDP_Message_StopSimulation
 
 
+@SuppressWarnings("forbidden_reference")
 class GUI extends Application {
 	var clientSender = new UDPSender()
 
-	@SuppressWarnings("forbidden_reference")
+	@SuppressWarnings("forbidden_reference", "forbidden_reference", "forbidden_reference")
 	protected def doApplicationStart(arg0 : Stage) : FXMLLoader {
 		arg0.setTitle("Application");
 		var btn = new Button();

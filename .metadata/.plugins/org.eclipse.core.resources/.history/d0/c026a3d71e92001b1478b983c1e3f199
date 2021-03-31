@@ -1,0 +1,15 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.agents.algorithm
+
+
+capacity ObserverCapacity {
+	
+	def Signal2Perception(signal : Object)
+}
+
+capacity CounterObserverCapacity extends ObserverCapacity {
+
+	def DisplayPerception 
+}

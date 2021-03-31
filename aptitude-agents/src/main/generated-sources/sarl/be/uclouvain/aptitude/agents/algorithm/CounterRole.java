@@ -9,12 +9,12 @@ package be.uclouvain.aptitude.agents.algorithm;
 
 import be.uclouvain.aptitude.agents.algorithm.BBoxes2DTrackResult;
 import be.uclouvain.aptitude.agents.algorithm.CountingSkill;
-import be.uclouvain.aptitude.agents.algorithm.ObserverCapacity;
 import be.uclouvain.aptitude.agents.algorithm.util.BBOX;
 import be.uclouvain.aptitude.agents.algorithm.util.BBoxes2D;
+import be.uclouvain.organisation.platform.AlgorithmJoinPlatform;
+import be.uclouvain.organisation.platform.CounterObserverCapacity;
 import be.uclouvain.organisation.platform.MissionSensitivity;
 import be.uclouvain.organisation.platform.ObserverRole;
-import be.uclouvain.organisation.told.AlgorithmJoinPlatform;
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.Initialize;
 import io.sarl.core.Logging;
@@ -55,7 +55,7 @@ public class CounterRole extends ObserverRole {
     this.intensityMap.put(Integer.valueOf(2), Integer.valueOf(1));
     this.intensityMap.put(Integer.valueOf(3), Integer.valueOf(0));
     CountingSkill _countingSkill = new CountingSkill();
-    this.<CountingSkill>setSkill(_countingSkill, ObserverCapacity.class);
+    this.<CountingSkill>setSkill(_countingSkill, CounterObserverCapacity.class);
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
@@ -102,9 +102,9 @@ public class CounterRole extends ObserverRole {
         this.ObjectToBeAnalyzed.add(this.ObjectPresentInframe.get(Integer.valueOf(globalID)));
       }
     }
-    ObserverCapacity _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY$CALLER();
+    CounterObserverCapacity _$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY$CALLER();
     ArrayList<BBoxes2D> _arrayList = new ArrayList<BBoxes2D>(this.ObjectToBeAnalyzed);
-    _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY$CALLER.Signal2Perception(_arrayList);
+    _$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY$CALLER.Signal2Perception(_arrayList);
     boolean _isLastFrame = occurrence.bboxes2DTrack.isLastFrame();
     if (_isLastFrame) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
@@ -120,8 +120,8 @@ public class CounterRole extends ObserverRole {
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("Average FPS : " + _string_1));
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3.info("I will transfer my perception to the Analyst");
-      ObserverCapacity _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY$CALLER_1 = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY$CALLER();
-      _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY$CALLER_1.displayPerception();
+      CounterObserverCapacity _$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY$CALLER_1 = this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY$CALLER();
+      _$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY$CALLER_1.DisplayPerception();
     }
   }
   
@@ -154,17 +154,17 @@ public class CounterRole extends ObserverRole {
   }
   
   @Extension
-  @ImportedCapacityFeature(ObserverCapacity.class)
+  @ImportedCapacityFeature(CounterObserverCapacity.class)
   @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY;
+  private transient AtomicSkillReference $CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY;
   
   @SyntheticMember
   @Pure
-  private ObserverCapacity $CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY$CALLER() {
-    if (this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY == null || this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY.get() == null) {
-      this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY = $getSkill(ObserverCapacity.class);
+  private CounterObserverCapacity $CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY$CALLER() {
+    if (this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY == null || this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY.get() == null) {
+      this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY = $getSkill(CounterObserverCapacity.class);
     }
-    return $castSkill(ObserverCapacity.class, this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_ALGORITHM_OBSERVERCAPACITY);
+    return $castSkill(CounterObserverCapacity.class, this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY);
   }
   
   @SyntheticMember

@@ -1,0 +1,20 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.agents.algorithm
+
+import be.uclouvain.aptitude.agents.algorithm.messages.BaseMessage
+
+/** 
+ * @author samelson
+ * 
+ */
+capacity PythonTwinAccess {
+
+	def enableDataAcquisition(o : Object)
+
+	def disableDataAcquisition(o : Object)
+	
+	def update(m : BaseMessage)
+	
+}

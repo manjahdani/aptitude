@@ -1,6 +1,6 @@
 package be.uclouvain.aptitude.agents.algorithm;
 
-import be.uclouvain.aptitude.agents.algorithm.Observer;
+import be.uclouvain.aptitude.agents.algorithm.PythonTwinObserverAccess;
 import be.uclouvain.aptitude.agents.algorithm.messages.ActionMessage;
 import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DMessage;
 import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DTrackMessage;
@@ -75,7 +75,7 @@ public class CommunicationManager {
     return CommunicationManager.hzInstance;
   }
   
-  public String subscribeTopic(final String topicName, final Observer observer) {
+  public String subscribeTopic(final String topicName, final PythonTwinObserverAccess observer) {
     abstract class __CommunicationManager_0 implements MessageListener<BaseMessage> {
       public abstract void onMessage(final Message<BaseMessage> m);
     }

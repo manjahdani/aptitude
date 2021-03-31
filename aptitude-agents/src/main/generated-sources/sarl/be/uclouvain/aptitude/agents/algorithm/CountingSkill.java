@@ -1,9 +1,9 @@
 package be.uclouvain.aptitude.agents.algorithm;
 
-import be.uclouvain.aptitude.agents.algorithm.ObserverCapacity;
 import be.uclouvain.aptitude.agents.algorithm.util.BBOX;
 import be.uclouvain.aptitude.agents.algorithm.util.BBoxes2D;
 import be.uclouvain.aptitude.agents.algorithm.util.countingLine;
+import be.uclouvain.organisation.platform.CounterObserverCapacity;
 import io.sarl.core.Logging;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.SarlElementType;
@@ -20,13 +20,10 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/**
- * @author manjah
- */
 @SarlSpecification("0.11")
 @SarlElementType(22)
 @SuppressWarnings("all")
-public class CountingSkill extends Skill implements ObserverCapacity {
+public class CountingSkill extends Skill implements CounterObserverCapacity {
   private final TreeMap<String, countingLine> countingLines = new TreeMap<String, countingLine>();
   
   public void install() {
@@ -37,7 +34,8 @@ public class CountingSkill extends Skill implements ObserverCapacity {
   }
   
   @Pure
-  public void Signal2Perception(final ArrayList<BBoxes2D> boundingBoxes) {
+  public void Signal2Perception(final Object signal) {
+    ArrayList<BBoxes2D> boundingBoxes = ((ArrayList<BBoxes2D>) signal);
     for (final BBoxes2D bb : boundingBoxes) {
       Set<String> _keySet = this.countingLines.keySet();
       for (final String counting_line : _keySet) {
@@ -156,7 +154,7 @@ public class CountingSkill extends Skill implements ObserverCapacity {
     return false;
   }
   
-  public void displayPerception() {
+  public void DisplayPerception() {
     Set<String> _keySet = this.countingLines.keySet();
     for (final String counting_line : _keySet) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();

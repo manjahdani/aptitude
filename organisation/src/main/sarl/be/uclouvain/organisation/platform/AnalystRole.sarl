@@ -4,7 +4,7 @@
 package be.uclouvain.organisation.platform
 
 import be.uclouvain.organisation.OrganisationInfo
-import be.uclouvain.organisation.told.AlgorithmJoinPlatform
+import be.uclouvain.organisation.platform.AlgorithmJoinPlatform
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
@@ -44,6 +44,7 @@ behavior AnalystRole {
 		info("As an expert I will start the mission of Vehicle Counting with the sensitivity:  " + availableObservers.get(Sensitivity.get))
 	}
 
+	@SuppressWarnings("potential_field_synchronization_problem")
 	on OrganisationInfo {
 		//info("Joining the Platform organisation: " + occurrence.spaceID + " (" + occurrence.context + ").")
 		PlatformContext = occurrence.context

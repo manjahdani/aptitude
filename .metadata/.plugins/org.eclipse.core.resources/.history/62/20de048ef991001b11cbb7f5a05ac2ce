@@ -1,0 +1,7 @@
+package be.uclouvain.aptitude.agents.algorithm
+
+import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DMessage
+
+capacity Tracking extends PythonTwinAccess {
+	def getTrack(detection : BBoxes2DMessage)
+}

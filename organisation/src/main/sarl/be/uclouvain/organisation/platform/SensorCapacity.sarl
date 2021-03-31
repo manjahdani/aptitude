@@ -8,6 +8,8 @@ package be.uclouvain.organisation.platform
  * 
  */
 capacity SensorCapacity {
-	def enableDataAcquisition()
-	def disableDataAcquisition()
+	
+	def enableDataAcquisition(o : Object)
+	
+	def disableDataAcquisition(o: Object)
 }

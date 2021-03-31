@@ -1,5 +1,5 @@
 /**
- * @Name       : PlatformRole
+ * @Name       : TOLDAgent
  * @Project    : APTITUDE
  * @Author     : Dani Manjah
  * @Version    : V.0.1
@@ -10,7 +10,7 @@ package be.uclouvain.aptitude.agents;
 import be.uclouvain.aptitude.agents.AlgorithmNeeded;
 import be.uclouvain.aptitude.agents.Paraddis;
 import be.uclouvain.aptitude.agents.algorithm.Algorithm;
-import be.uclouvain.organisation.told.AlgorithmJoinPlatform;
+import be.uclouvain.organisation.platform.AlgorithmJoinPlatform;
 import be.uclouvain.organisation.told.TOLDRole;
 import io.sarl.core.Behaviors;
 import io.sarl.core.Initialize;
@@ -33,9 +33,6 @@ import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/**
- * @author manjah
- */
 @SarlSpecification("0.11")
 @SarlElementType(19)
 @SuppressWarnings("all")

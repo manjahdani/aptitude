@@ -11,19 +11,20 @@ import be.uclouvain.aptitude.agents.algorithm.util.BBOX
 import be.uclouvain.aptitude.agents.algorithm.util.BBoxes2D
 import be.uclouvain.organisation.platform.MissionSensitivity
 import be.uclouvain.organisation.platform.ObserverRole
-import be.uclouvain.organisation.told.AlgorithmJoinPlatform
+import be.uclouvain.organisation.platform.AlgorithmJoinPlatform
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.TreeMap
+import be.uclouvain.organisation.platform.CounterObserverCapacity
 
 /** 
  * The CounterRole is the behaviour that an agent Algorithm endorses upon a mission that requires the counting of Vehicles
  */
 behavior CounterRole extends ObserverRole {
 	
-	uses Logging, ExternalContextAccess, ObserverCapacity
+	uses Logging, ExternalContextAccess, CounterObserverCapacity
 
 	var start : long
 	val availableObservers = newArrayList("SORT", "DeepSORT")
@@ -39,7 +40,7 @@ behavior CounterRole extends ObserverRole {
 		intensityMap.put(1, 0)
 		intensityMap.put(2, 1)
 		intensityMap.put(3, 0)
-		setSkill(new CountingSkill,ObserverCapacity)
+		setSkill(new CountingSkill,CounterObserverCapacity)
 	
 	}
 
@@ -89,7 +90,7 @@ behavior CounterRole extends ObserverRole {
 			info("It took " + totalTime.toString + " seconds")
 			info("Average FPS : " + (occurrence.bboxes2DTrack.frameNumber / totalTime).toString)
 			info("I will transfer my perception to the Analyst")
-			displayPerception
+			DisplayPerception
 		}
 	}
 }

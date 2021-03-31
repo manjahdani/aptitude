@@ -10,23 +10,27 @@ import io.sarl.core.Logging
 import java.util.ArrayList
 import org.arakhne.afc.math.geometry.d2.d.Point2d
 import java.util.TreeMap
+import be.uclouvain.organisation.platform.CounterObserverCapacity
 
 /** 
- * @author manjah
+ * 
  * 
  */
-skill CountingSkill implements ObserverCapacity {
+skill CountingSkill implements CounterObserverCapacity {
 	uses Logging
 	
 	val countingLines : TreeMap<String, countingLine> = new TreeMap<String, countingLine>;
+	
 	def install {
 		countingLines.put("A", new countingLine(1235, 700, 309, 664, 1)) // ObjectCounter
 		countingLines.put("B", new countingLine(1477, 324, 1676, 310, -1))
 		// countingLines.put("B", new countingLine(1531, 392, 1775, 376, -1)) // ObjectCounter
 	}
 
-	@Pure def Signal2Perception(boundingBoxes : ArrayList<BBoxes2D>) {
-
+	@Pure def Signal2Perception(signal : Object) {
+		
+		var boundingBoxes = signal as ArrayList<BBoxes2D>
+		
 		for (bb : boundingBoxes) {
 			for (counting_line : countingLines.keySet
 			) {
@@ -47,9 +51,7 @@ skill CountingSkill implements ObserverCapacity {
 							//nDir.getX + "," + nDir.getY + ")" + " orientation:" + orientation)
 					}
 				}
-			}
-		}
-
+			}}
 	}
 
 	def has_crossed_counting_line(b : BBOX, cl : countingLine) {
@@ -120,7 +122,7 @@ skill CountingSkill implements ObserverCapacity {
 		return false
 	}
 	
-	def displayPerception {
+	def DisplayPerception {
 		for (counting_line : countingLines.keySet)
 			 {
 				info( counting_line +" : " + countingLines.get(counting_line).IncrementCounts())

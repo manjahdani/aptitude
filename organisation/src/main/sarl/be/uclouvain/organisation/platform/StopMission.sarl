@@ -9,6 +9,7 @@ import java.util.UUID
 event StopMission {
 
 	val missionID : UUID
+	
 	new(id : UUID) {
 		this.missionID = id
 	}

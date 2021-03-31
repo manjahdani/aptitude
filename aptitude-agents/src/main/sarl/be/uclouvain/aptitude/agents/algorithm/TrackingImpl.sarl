@@ -1,51 +1,28 @@
 package be.uclouvain.aptitude.agents.algorithm
 
-import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DMessage
 import be.uclouvain.aptitude.agents.algorithm.messages.BBoxes2DTrackMessage
 import be.uclouvain.aptitude.agents.algorithm.messages.BaseMessage
 import be.uclouvain.aptitude.agents.algorithm.messages.RequestMessage
-import com.hazelcast.util.UuidUtil
-import io.sarl.core.AgentTask
 import io.sarl.core.Behaviors
 import io.sarl.core.Schedules
-import org.json.simple.JSONObject
 
-skill TrackingImpl implements Tracking {
+skill TrackingImpl extends PythonAccess {
 	uses Behaviors, Schedules
 
-	var topicRequestSub : String
-	var topicTrackingSub : String
+//	protected var topicTrackingSub : String
 
-	var pendingRequestID : String
-	var requestTask : AgentTask
 
-	def install {
-		topicRequestSub = CommunicationManager.instance.subscribeTopic("request", this)
-	}
 
-	def uninstall {
-		if (topicRequestSub !== null) {
-			CommunicationManager.instance.unsubscribeTopic(topicRequestSub)
-			topicRequestSub = null
-		}
-		if (topicTrackingSub !== null) {
-			CommunicationManager.instance.unsubscribeTopic(topicTrackingSub)
-			topicTrackingSub = null
-		}
-	}
-
-	def requestTracker(jsonConfig : JSONObject) {
-		this.pendingRequestID = UuidUtil.newSecureUuidString
-		this.requestTask = every(1000) [
-			//info("Tracking partner not found, send discovery message")
-			var requestMessage = new RequestMessage()
-			requestMessage.requestID = this.pendingRequestID
-			requestMessage.agentID = owner.ID.toString
-			requestMessage.jsonConfig = jsonConfig.toString
-			CommunicationManager.instance.publishMessage(topicRequestSub, requestMessage)
-		]
-	}
-
+//	def uninstall {
+//		if (topicRequestSub !== null) {
+//			CommunicationManager.instance.unsubscribeTopic(topicRequestSub)
+//			topicRequestSub = null
+//		}
+//		if (topicTrackingSub !== null) {
+//			CommunicationManager.instance.unsubscribeTopic(topicTrackingSub)
+//			topicTrackingSub = null
+//		}
+//	}
 	def update(m : BaseMessage) {
 		if (m instanceof BBoxes2DTrackMessage) {
 			wake(new BBoxes2DTrackResult(m))
@@ -60,14 +37,13 @@ skill TrackingImpl implements Tracking {
 			CommunicationManager.instance.unsubscribeTopic(topicRequestSub)
 			topicRequestSub = null
 			val topicName = "tracking_" + owner.ID.toString + "_" + message.clientName
-			topicTrackingSub = CommunicationManager.instance.subscribeTopic(topicName, this)
+			topicSignalAcquisition = CommunicationManager.instance.subscribeTopic(topicName, this)
 			wake(new PartnerTrackingFound(message.clientName))
 		}
 	}
 
-	def getTrack(detectionMessage : BBoxes2DMessage) {
-		CommunicationManager.instance.publishMessage(topicTrackingSub, detectionMessage)
-	}
-	
+//	def getTrack(detectionMessage : BBoxes2DMessage) {
+//		CommunicationManager.instance.publishMessage(topicSignalAcquisition, detectionMessage)
+//	}	
 }
 
