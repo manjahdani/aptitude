@@ -8,11 +8,9 @@
 package be.uclouvain.aptitude.agents;
 
 import be.uclouvain.aptitude.agents.Paraddis;
-import be.uclouvain.organisation.platform.AnalystRole;
-import be.uclouvain.organisation.platform.AuthorizationToJoin;
 import be.uclouvain.organisation.platform.NewMission;
 import be.uclouvain.organisation.platform.StopMission;
-import be.uclouvain.organisation.told.AddEntity;
+import be.uclouvain.organisation.told.AddMission;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
@@ -77,7 +75,7 @@ public class Expert extends Paraddis {
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
     EventSpace _defaultSpace = _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultSpace();
     int _sensitivity = occurrence.missionData.getSensitivity();
-    AddEntity _addEntity = new AddEntity(_defaultSpace, _sensitivity);
+    AddMission _addMission = new AddMission(_defaultSpace, _sensitivity);
     class $SerializableClosureProxy implements Scope<Address> {
       
       private final UUID PlatformID;
@@ -102,7 +100,7 @@ public class Expert extends Paraddis {
         return new SerializableProxy($SerializableClosureProxy.class, PlatformID);
       }
     };
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(_get, _addEntity, _function);
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(_get, _addMission, _function);
   }
   
   @SuppressWarnings({ "potential_field_synchronization_problem", "discouraged_occurrence_readonly_use" })
@@ -140,13 +138,14 @@ public class Expert extends Paraddis {
     _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(_get, _stopMission, _function);
   }
   
-  @SuppressWarnings("discouraged_occurrence_readonly_use")
-  private void $behaviorUnit$AuthorizationToJoin$3(final AuthorizationToJoin occurrence) {
-    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    AnalystRole _analystRole = new AnalystRole(this);
-    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_analystRole, Integer.valueOf(occurrence.sensitivity));
-    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.join(occurrence.contextID.getID(), occurrence.defaultSpaceID.getSpaceID().getID());
+  private void $behaviorUnit$void$3(final /* AuthorizationToJoin */Object occurrence) {
+    throw new Error("Unresolved compilation problems:"
+      + "\nsensitivity cannot be resolved"
+      + "\ncontextID cannot be resolved"
+      + "\ngetID cannot be resolved"
+      + "\ndefaultSpaceID cannot be resolved"
+      + "\ngetSpaceID cannot be resolved"
+      + "\ngetID cannot be resolved");
   }
   
   @Extension
@@ -223,10 +222,9 @@ public class Expert extends Paraddis {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$AuthorizationToJoin(final AuthorizationToJoin occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
-    assert occurrence != null;
-    assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AuthorizationToJoin$3(occurrence));
+  private void $guardEvaluator$void(final /* AuthorizationToJoin */Object occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    throw new Error("Unresolved compilation problems:"
+      + "\nAuthorizationToJoin cannot be resolved to a type.");
   }
   
   @SyntheticMember

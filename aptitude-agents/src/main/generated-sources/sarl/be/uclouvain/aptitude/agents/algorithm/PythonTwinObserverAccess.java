@@ -7,9 +7,6 @@ import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.core.AgentTrait;
 import org.json.simple.JSONObject;
 
-/**
- * @author samelson
- */
 @SarlSpecification("0.11")
 @SarlElementType(20)
 @SuppressWarnings("all")

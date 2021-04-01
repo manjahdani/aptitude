@@ -10,13 +10,13 @@ import io.sarl.lang.core.EventSpace
  * 
  */
 
-event AddEntity {
+event AddMission {
 
 	val SourceEventSpace : EventSpace
-	val entityData : int
+	val MissionData : int
 
-	new(sourceEventSpace : EventSpace, data : int) {
+	new(sourceEventSpace : EventSpace, missionData : int) {
 		this.SourceEventSpace = sourceEventSpace
-		this.entityData = data
+		this.MissionData = missionData
 	}
 }

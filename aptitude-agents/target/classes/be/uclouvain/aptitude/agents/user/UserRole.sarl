@@ -36,21 +36,19 @@ behavior UserRole extends ElementRole {
 	
 	val entityList : TreeMap<UUID, CharacterData> = new TreeMap<UUID, CharacterData>
 	val AVAILABLE_MODELS = 4;
-	val characterType = newArrayList(1, 2, 3, 0)
+	val ExpertType = newArrayList(1, 2, 3, 0)
 
 	on Initialize {
 		for (var i = 0; i < AVAILABLE_MODELS; i++){
 			val id = UUID.randomUUID
-			entityList.put(id, new CharacterData(id.toString, characterType.get(i), 0, -1))
+			entityList.put(id, new CharacterData(id.toString, ExpertType.get(i), 0, -1))
 			spawnInContextWithID(Expert,id, innerContext, occurrence.parameters.get(0) as TreeMap<UUID, EventSpace>,
 				occurrence.parameters.get(1) as ArrayList<UUID>)
 		}
 		
-			setupPhysicalDevice(getCharacterList)
+			setupPhysicalDevice(getExpertTypeList)
 			
 			}
-			
-			
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on ElementInformation {
 		
@@ -60,16 +58,16 @@ behavior UserRole extends ElementRole {
 			val entityID = UUID.fromString(msg.actorUID)
 			wake(new NewMission(getDefaultSpace, new MissionData(entityID,msg.sceneID, entityList.get(entityID).evolution)))[it.UUID==entityID]
 			entityList.get(entityID).screenID = msg.sceneID
-			updateBehavior(getCharacterList)
+			updateBehavior(getExpertTypeList)
 			}
 			else if (msg instanceof UDP_Message_RequestWithdraw) {
 			var MissionID = UUID.fromString(msg.actorUID)
 			entityList.get(MissionID).screenID = -1
 			wake(new StopMission(MissionID))
-			updateBehavior(getCharacterList)
+			updateBehavior(getExpertTypeList)
 		}
 	}
-	def getCharacterList {
+	def getExpertTypeList {
 		var characterList : CharacterData[] = newArrayOfSize(20)
 		var i = 0;
 		for (id : entityList.keySet) {
@@ -82,17 +80,4 @@ behavior UserRole extends ElementRole {
 	def getEntityList : TreeMap<UUID, CharacterData> {
 		return this.entityList
 	}
-}
-
-
-//	on AuthorizationToJoin {
-// wake(new JoinWorld(occurrence.contextID, occurrence.defaultSpaceID))[it.UUID == occurrence.entityID]
-//		}
-//	on MemberJoined {
-// if (occurrence.agentType == "be.uclouvain.world_elements.Pedestrian") {
-// if (getEntityList.get(occurrence.agentID).screenID !== -1) {
-// getEntityList.get(occurrence.agentID).screenID = -1
-// updateBehavior}}
-// }
-// val characterType = newArrayList(1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-// 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)  
+} 

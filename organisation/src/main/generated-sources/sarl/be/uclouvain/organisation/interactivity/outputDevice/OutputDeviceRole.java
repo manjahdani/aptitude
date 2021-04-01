@@ -21,6 +21,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlElementType(21)
 @SuppressWarnings("all")
 public class OutputDeviceRole extends Behavior {
+  @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$OutputMsg$0(final OutputMsg occurrence) {
     OutputDeviceCapacity _$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_INTERACTIVITY_OUTPUTDEVICE_OUTPUTDEVICECAPACITY$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_INTERACTIVITY_OUTPUTDEVICE_OUTPUTDEVICECAPACITY$CALLER();
     _$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_INTERACTIVITY_OUTPUTDEVICE_OUTPUTDEVICECAPACITY$CALLER.outputConversion(occurrence.getSource().getUUID(), occurrence.Information);

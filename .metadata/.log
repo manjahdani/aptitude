@@ -7220,3 +7220,1149 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64
 
 !ENTRY io.sarl.lang.ui 4 0 2021-03-31 14:45:15.892
 !MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/algorithm/CountingSkill.sarl. Reconciliation of the editor is forced.
+!SESSION 2021-03-31 14:47:03.605 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_211
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_GB
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:06:55.961
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:06:56.032
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:06:56.067
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:06:56.641
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:06:56.684
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:06:57.885
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:07:03.121
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:07:03.522
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:07:03.572
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:07:03.652
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:07:06.642
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/user/UserRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:32:51.040
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:32:51.097
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:32:55.398
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:32:55.400
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:32:55.401
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:32:55.454
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:00.615
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:00.618
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:00.618
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:00.672
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:01.473
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:01.476
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:01.476
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:01.529
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:05.139
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:05.142
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:05.143
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:05.195
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:06.626
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:06.628
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:06.629
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:06.682
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:13.014
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:13.017
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:13.017
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:13.081
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:16.776
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:16.778
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:16.779
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:16.834
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:18.808
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:18.810
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:18.811
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:18.864
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:31.394
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:31.398
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:31.398
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:31.452
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:32.459
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:32.462
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:32.463
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:32.520
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:34.355
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:34.409
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:35.097
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:35.101
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:35.104
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:35.144
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:35.481
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:35.534
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:36.113
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:33:36.180
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:34:02.172
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:30.242
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:30.281
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:31.914
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:31.952
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:35.182
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:35.224
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:37.040
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:37.083
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:40.728
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:40.765
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:43.561
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:43.600
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:45.551
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:45.599
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:46.804
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:46.851
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:48.568
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:48.603
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:50.094
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:50.133
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:51.275
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:51.314
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:53.103
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:53.145
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:54.594
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:36:54.633
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:37:06.488
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:37:06.522
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:37:09.460
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:37:09.463
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:37:16.109
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:37:16.118
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:37:17.816
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:37:17.827
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:37:23.603
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:37:23.613
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:37:27.885
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:37:27.935
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:37:28.589
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:37:28.599
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:40:46.071
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:40:46.109
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:40:47.074
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:40:47.115
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:40:59.070
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:40:59.108
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:41:00.646
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:41:00.682
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:41:04.792
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:41:04.831
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:41:06.084
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:41:06.127
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:41:08.029
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:41:08.068
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:41:16.472
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:41:16.477
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:43:38.787
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:43:38.825
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:43:39.534
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:43:39.568
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:43:40.101
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:43:40.131
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:43:42.499
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:43:42.537
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:43:43.218
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:43:43.258
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:43:59.099
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:43:59.138
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:00.248
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:00.285
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:01.679
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:01.716
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:39.777
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:39.820
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:41.639
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:41.678
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:44.778
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:44.816
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:47.652
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:47.690
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:48.314
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:48.353
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:50.669
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:50.706
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:51.486
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:51.523
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:52.104
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:52.142
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:56.576
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:44:56.609
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:01.550
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:01.588
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:03.881
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:03.923
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:06.945
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:06.983
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:10.190
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:10.228
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:11.164
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:11.201
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:12.250
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:12.298
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:15.099
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:15.140
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:15.914
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:15.948
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:17.508
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:17.553
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:19.123
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:19.161
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:20.054
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:20.091
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:20.649
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:20.688
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:25.086
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:25.128
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:27.954
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:27.994
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:28.764
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:28.803
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:31.103
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:31.143
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:34.656
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:34.696
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:42.614
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:42.648
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:43.918
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:43.955
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:45.242
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:45.280
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:46.724
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:46.770
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:52.971
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:53.007
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:54.317
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:54.352
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:56.134
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:56.169
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:59.336
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:45:59.375
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:01.392
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:01.435
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:06.340
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:06.377
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:08.611
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:08.656
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:10.705
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:10.761
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:13.562
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:13.600
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:14.215
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:14.254
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:16.126
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:16.158
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:17.194
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:17.234
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:17.796
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:17.835
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:20.552
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:20.597
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:21.434
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:21.475
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:23.564
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:23.600
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:36.009
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:36.049
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:40.616
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:40.654
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:43.067
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:43.101
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:45.074
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:45.110
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:48.829
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:48.867
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:54.900
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:46:54.938
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:47:33.251
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:47:33.291
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:47:35.115
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:47:35.154
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:47:45.528
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:47:45.566
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:47:46.754
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:47:46.794
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:47:51.208
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:47:51.242
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:47:53.001
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:47:53.037
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:47:53.818
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:47:53.858
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:47:55.150
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:47:55.189
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:08.370
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:08.411
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:09.849
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:09.891
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:11.002
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:11.037
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:12.328
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:12.366
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:28.525
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:28.563
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:33.632
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:33.666
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:36.854
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:36.894
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:41.962
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:42.001
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:43.545
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:43.580
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:44.629
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:44.666
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:46.065
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:46.107
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:50.226
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:50.269
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:52.295
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:52.334
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:53.668
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:53.707
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:55.135
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:55.174
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:55.744
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:55.783
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:59.796
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:48:59.839
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:49:07.294
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:49:07.298
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:49:33.896
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:49:33.899
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:49:38.708
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:49:38.711
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:49:40.358
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:49:40.361
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:49:45.810
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:49:45.813
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:49:46.998
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:49:47.000
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:49:57.443
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:49:57.445
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:23.594
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:23.600
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:25.964
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:25.966
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:35.032
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:35.035
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:42.972
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:42.975
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:44.713
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:44.720
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:45.302
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:45.305
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:48.053
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:48.060
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:49.934
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:49.937
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:53.956
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:53.959
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:55.606
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:50:55.609
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:51:01.187
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:51:01.191
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:51:38.226
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:51:38.229
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:51:46.204
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:51:46.206
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:51:48.215
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:51:48.218
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:02.528
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:02.531
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:03.425
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:03.428
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:09.946
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:09.948
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:11.988
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:11.990
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:16.864
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:16.867
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:20.185
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:20.187
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:22.455
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:22.458
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:23.316
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:23.319
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:25.571
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:25.582
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:29.702
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:29.705
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:31.071
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:31.074
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:32.776
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:32.779
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:34.131
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:34.134
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:39.870
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:52:39.872
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:57:29.507
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:57:29.559
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:57:30.212
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:57:30.215
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:58:35.585
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:58:35.589
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:58:35.646
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:58:38.139
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:58:38.190
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:58:39.266
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:58:39.312
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:58:39.901
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:58:39.905
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:58:39.906
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:58:39.965
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:58:40.219
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:58:40.271
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:58:40.891
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 15:58:40.942
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-03-31 17:16:45.723
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/aptitude-agents/src/main/sarl/be/uclouvain/aptitude/agents/Expert.sarl. Reconciliation of the editor is forced.

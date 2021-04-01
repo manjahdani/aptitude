@@ -54,6 +54,7 @@ behavior AnalystRole {
 		info("Come here : Vehicle Counter")
 		emit(TOLDSpace, new AlgorithmJoinPlatform(occurrence.context,occurrence.spaceID,"APTITUDE","Counter"))
 	}
+	@SuppressWarnings("potential_field_synchronization_problem")
 	on SensititvityRequest{
 		info("Thank you for joining the mission. Please use the following sensitivity : " + availableObservers.get(Sensitivity.get))
 		emit(PlatformContext.defaultSpace, new MissionSensitivity(Sensitivity.get)

@@ -7,10 +7,7 @@ import be.uclouvain.aptitude.agents.algorithm.messages.BaseMessage
 import org.json.simple.JSONObject
 import be.uclouvain.organisation.platform.ObserverCapacity
 
-/** 
- * @author samelson
- * 
- */
+
 capacity PythonTwinObserverAccess extends ObserverCapacity{
 
 	def ActivateAccess(j : JSONObject)

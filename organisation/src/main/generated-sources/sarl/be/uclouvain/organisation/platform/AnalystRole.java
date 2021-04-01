@@ -84,6 +84,7 @@ public class AnalystRole extends Behavior {
     _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.TOLDSpace, _algorithmJoinPlatform);
   }
   
+  @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$SensititvityRequest$2(final SensititvityRequest occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     String _get = this.availableObservers.get(this.Sensitivity.get());

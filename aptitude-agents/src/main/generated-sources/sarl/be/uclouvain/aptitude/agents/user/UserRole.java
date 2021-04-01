@@ -56,14 +56,14 @@ public class UserRole extends ElementRole {
   
   private final int AVAILABLE_MODELS = 4;
   
-  private final ArrayList<Integer> characterType = CollectionLiterals.<Integer>newArrayList(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3), Integer.valueOf(0));
+  private final ArrayList<Integer> ExpertType = CollectionLiterals.<Integer>newArrayList(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3), Integer.valueOf(0));
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     for (int i = 0; (i < this.AVAILABLE_MODELS); i++) {
       {
         final UUID id = UUID.randomUUID();
         String _string = id.toString();
-        Integer _get = this.characterType.get(i);
+        Integer _get = this.ExpertType.get(i);
         CharacterData _characterData = new CharacterData(_string, ((_get) == null ? 0 : (_get).intValue()), 0, (-1));
         this.entityList.put(id, _characterData);
         Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
@@ -75,7 +75,7 @@ public class UserRole extends ElementRole {
       }
     }
     UserElementCapacity _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_USER_USERELEMENTCAPACITY$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_USER_USERELEMENTCAPACITY$CALLER();
-    _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_USER_USERELEMENTCAPACITY$CALLER.setupPhysicalDevice(this.getCharacterList());
+    _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_USER_USERELEMENTCAPACITY$CALLER.setupPhysicalDevice(this.getExpertTypeList());
   }
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
@@ -116,7 +116,7 @@ public class UserRole extends ElementRole {
       CharacterData _get = this.entityList.get(entityID);
       _get.screenID = ((UDP_Message_RequestSpawn)msg).sceneID;
       UserElementCapacity _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_USER_USERELEMENTCAPACITY$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_USER_USERELEMENTCAPACITY$CALLER();
-      _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_USER_USERELEMENTCAPACITY$CALLER.updateBehavior(this.getCharacterList());
+      _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_USER_USERELEMENTCAPACITY$CALLER.updateBehavior(this.getExpertTypeList());
     } else {
       if ((msg instanceof UDP_Message_RequestWithdraw)) {
         UUID MissionID = UUID.fromString(((UDP_Message_RequestWithdraw)msg).actorUID);
@@ -126,13 +126,13 @@ public class UserRole extends ElementRole {
         StopMission _stopMission = new StopMission(MissionID);
         _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.wake(_stopMission);
         UserElementCapacity _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_USER_USERELEMENTCAPACITY$CALLER_1 = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_USER_USERELEMENTCAPACITY$CALLER();
-        _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_USER_USERELEMENTCAPACITY$CALLER_1.updateBehavior(this.getCharacterList());
+        _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_AGENTS_USER_USERELEMENTCAPACITY$CALLER_1.updateBehavior(this.getExpertTypeList());
       }
     }
   }
   
   @Pure
-  public CharacterData[] getCharacterList() {
+  public CharacterData[] getExpertTypeList() {
     CharacterData[] characterList = new CharacterData[20];
     int i = 0;
     Set<UUID> _keySet = this.entityList.keySet();

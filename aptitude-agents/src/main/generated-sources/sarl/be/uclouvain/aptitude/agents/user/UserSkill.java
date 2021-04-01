@@ -30,9 +30,6 @@ import java.util.Objects;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/**
- * @author manjah
- */
 @SarlSpecification("0.11")
 @SarlElementType(22)
 @SuppressWarnings("all")

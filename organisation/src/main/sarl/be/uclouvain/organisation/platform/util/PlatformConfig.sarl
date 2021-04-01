@@ -30,7 +30,6 @@ class PlatformConfig {
 	}
 
 	def addSubPlatform(wc : PlatformConfig) : void {
-		// FIXME verify dimensions
 		this.subPlatformConfig.add(wc)
 	}
 

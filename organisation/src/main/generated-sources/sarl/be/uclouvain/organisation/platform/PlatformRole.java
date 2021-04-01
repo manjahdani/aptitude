@@ -8,10 +8,8 @@
 package be.uclouvain.organisation.platform;
 
 import be.uclouvain.organisation.OrganisationInfo;
-import be.uclouvain.organisation.platform.AuthorizationToJoin;
 import be.uclouvain.organisation.platform.LeavePlatform;
 import be.uclouvain.organisation.platform.StopMission;
-import be.uclouvain.organisation.told.AddEntity;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
@@ -31,7 +29,6 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.Behavior;
-import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.util.SerializableProxy;
 import java.io.ObjectStreamException;
@@ -68,40 +65,15 @@ public class PlatformRole extends Behavior {
   }
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
-  private void $behaviorUnit$AddEntity$2(final AddEntity occurrence) {
-    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-    AgentContext _innerContext = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext();
-    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-    EventSpace _defaultSpace = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1.getInnerContext().getDefaultSpace();
-    UUID _uUID = occurrence.getSource().getUUID();
-    AuthorizationToJoin _authorizationToJoin = new AuthorizationToJoin(_innerContext, ((OpenEventSpace) _defaultSpace), _uUID, occurrence.entityData);
-    class $SerializableClosureProxy implements Scope<Address> {
-      
-      private final UUID $_uUID;
-      
-      public $SerializableClosureProxy(final UUID $_uUID) {
-        this.$_uUID = $_uUID;
-      }
-      
-      @Override
-      public boolean matches(final Address it) {
-        UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, $_uUID);
-      }
-    }
-    final Scope<Address> _function = new Scope<Address>() {
-      @Override
-      public boolean matches(final Address it) {
-        UUID _uUID = it.getUUID();
-        UUID _uUID_1 = occurrence.getSource().getUUID();
-        return Objects.equal(_uUID, _uUID_1);
-      }
-      private Object writeReplace() throws ObjectStreamException {
-        return new SerializableProxy($SerializableClosureProxy.class, occurrence.getSource().getUUID());
-      }
-    };
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(occurrence.SourceEventSpace, _authorizationToJoin, _function);
+  private void $behaviorUnit$void$2(final /* AddEntity */Object occurrence) {
+    throw new Error("Unresolved compilation problems:"
+      + "\nAuthorizationToJoin cannot be resolved."
+      + "\nSourceEventSpace cannot be resolved"
+      + "\nsource cannot be resolved"
+      + "\ngetUUID cannot be resolved"
+      + "\nentityData cannot be resolved"
+      + "\nsource cannot be resolved"
+      + "\ngetUUID cannot be resolved");
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
@@ -267,18 +239,17 @@ public class PlatformRole extends Behavior {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$StopMission(final StopMission occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
-    assert occurrence != null;
-    assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$StopMission$4(occurrence));
+  private void $guardEvaluator$void(final /* AddEntity */Object occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    throw new Error("Unresolved compilation problems:"
+      + "\nAddEntity cannot be resolved to a type.");
   }
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$AddEntity(final AddEntity occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+  private void $guardEvaluator$StopMission(final StopMission occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AddEntity$2(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$StopMission$4(occurrence));
   }
   
   @SyntheticMember

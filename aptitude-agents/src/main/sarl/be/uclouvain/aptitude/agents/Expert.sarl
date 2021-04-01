@@ -10,7 +10,6 @@ package be.uclouvain.aptitude.agents
 import be.uclouvain.organisation.platform.AnalystRole
 import be.uclouvain.organisation.platform.AuthorizationToJoin
 import be.uclouvain.organisation.platform.StopMission
-import be.uclouvain.organisation.told.AddEntity
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
@@ -21,6 +20,7 @@ import java.util.ArrayList
 import java.util.TreeMap
 import java.util.UUID
 import be.uclouvain.organisation.platform.NewMission
+import be.uclouvain.organisation.told.AddMission
 
 /** 
  * The expert receives the requirements of the client and translates them into a mission.
@@ -30,9 +30,11 @@ import be.uclouvain.organisation.platform.NewMission
  */
 agent Expert extends Paraddis {
 	
-	uses Logging, Behaviors, ExternalContextAccess,DefaultContextInteractions
+	uses Logging, Behaviors, ExternalContextAccess, DefaultContextInteractions
+	
 	var PlatformlistenersSpaceIDs : TreeMap<UUID, EventSpace>
 	var platformList : ArrayList<UUID>
+	
 	val MissionList = new TreeMap<UUID,UUID> // The different Mission its responsible of
 	
 	
@@ -49,7 +51,7 @@ agent Expert extends Paraddis {
 		//val PlatformSpace = platformlistenersSpaceIDs.get(PlatformID)
 		// MissionList.put(occurrence.missionData.entityID, PlatformSpace)
 		MissionList.put(occurrence.missionData.entityID, PlatformID)
-		PlatformlistenersSpaceIDs.get(PlatformID).emit(new AddEntity(getDefaultSpace(), occurrence.missionData.sensitivity))[it.UUID == PlatformID]
+		PlatformlistenersSpaceIDs.get(PlatformID).emit(new AddMission(getDefaultSpace(), occurrence.missionData.sensitivity))[it.UUID == PlatformID]
 	}
 
 	@SuppressWarnings("potential_field_synchronization_problem", "discouraged_occurrence_readonly_use")
@@ -59,7 +61,7 @@ agent Expert extends Paraddis {
 		PlatformlistenersSpaceIDs.get(PlatformID).emit(new StopMission(occurrence.missionID))[it.UUID==PlatformID]
 		
 	}
-	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	//@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on AuthorizationToJoin {
 		registerBehavior(new AnalystRole(this), occurrence.sensitivity)
 		join(occurrence.contextID.getID, occurrence.defaultSpaceID.getSpaceID.getID)

@@ -33,6 +33,7 @@ agent bootAgent extends Paraddis {
 
 	on Initialize {
 		loggingName = "Boot" + "-" + this.ID
+		info("Universe started")
 		setAgentsReady()
 		enableInputStream()
 		task("Application-Launcher").execute[Application::launch(GUI, " ")]

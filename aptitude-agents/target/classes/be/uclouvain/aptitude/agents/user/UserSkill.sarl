@@ -21,7 +21,7 @@ import be.uclouvain.organisation.interactivity.outputDevice.OutputMsg
 import io.sarl.core.DefaultContextInteractions
 
 /** 
- * @author manjah
+ * 
  * 
  */
 skill UserSkill implements UserElementCapacity {
@@ -49,7 +49,7 @@ skill UserSkill implements UserElementCapacity {
 	}
 	
 	def InformationAnalysis(msg : UDP_Message_Base) {
-		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		
 	}
 
 	def setupPhysicalDevice(cd : CharacterData[]) {
