@@ -6,7 +6,13 @@ import io.sarl.lang.core.AgentTrait;
 import io.sarl.lang.core.Capacity;
 
 /**
- * @author manjah
+ * Provide tools to acquire the signal
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  */
 @SarlSpecification("0.11")
 @SarlElementType(20)

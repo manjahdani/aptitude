@@ -10,7 +10,26 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * @author manjah
+ * Generic event to provide
+ * The source is usually the Holon that is the organisation
+ * 
+ * <h4>For an Agent</h4>
+ * This event by each holon that joined context
+ * 
+ * <h4>For a Behavior</h4>
+ * Multiple behaviors
+ * 
+ * <h4>For a Skill</h4>
+ * No skill receives this event.
+ * 
+ * <h4>For Agent Members</h4>
+ * The member agents does not receive @TODO "It's not clear, I do think that the sub-members should get it.
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  */
 @SarlSpecification("0.11")
 @SarlElementType(15)
@@ -22,7 +41,7 @@ public class OrganisationInfo extends Event {
   public final AgentContext context;
   
   /**
-   * The space used for the communication
+   * A private space used for the communication
    */
   public final OpenEventSpace spaceID;
   

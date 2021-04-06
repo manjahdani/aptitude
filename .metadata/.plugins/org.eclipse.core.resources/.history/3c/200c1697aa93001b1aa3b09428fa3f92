@@ -1,0 +1,54 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation
+
+import io.sarl.lang.core.AgentContext
+import io.sarl.core.OpenEventSpace
+
+/** 
+ * Generic event to provide  
+ * The source is usually the Holon that is the organisation
+ * 
+ * <h4>For an Agent</h4>
+ * This event by each holon that joined context
+ * 
+ * <h4>For a Behavior</h4>
+ * Multiple behaviors
+ * 
+ * <h4>For a Skill</h4>
+ * No skill receives this event.
+ * 
+ * <h4>For Agent Members</h4>
+ * The member agents do not receive this event from the parent agent because they are not yet created when the agent is spawned.@TODO "It's not clear, I do think that the sub-members should get it. 
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ */
+
+event OrganisationInfo {
+
+	/** 
+	 * The context joined 
+	 */
+	val context : AgentContext
+
+	/** 
+	 * The space used for the communication
+	 */
+	val spaceID : OpenEventSpace // UUID
+
+	/* 
+	 * Constructor
+	 * @param	ctxt	The context to join
+	 * @param	sid	    The space in the context to join
+	 */
+	new (ctxt : AgentContext, sid : OpenEventSpace) {
+		this.context = ctxt
+		this.spaceID = sid
+	}
+
+}

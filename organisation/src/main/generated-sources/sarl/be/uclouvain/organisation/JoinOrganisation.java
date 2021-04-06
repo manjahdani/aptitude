@@ -1,10 +1,3 @@
-/**
- * @Name       : Events
- * @Project    : APTITUDE
- * @Author     : Dani Manjah
- * @Version    : V.0.1
- * @Date       : 22/03/2021
- */
 package be.uclouvain.organisation;
 
 import io.sarl.core.OpenEventSpace;
@@ -17,7 +10,26 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * The event (-X)Join(-Organisation) is a generic event invites the receiver to join a Context
+ * Generic event to invites the receiver to join an organisation context
+ * The source is usually the Holon that is the organisation
+ * 
+ * <h4>For an Agent</h4>
+ * This event is received by the holon that previously requested to join the context .
+ * 
+ * <h4>For a Behavior</h4>
+ * Multiple behaviors
+ * 
+ * <h4>For a Skill</h4>
+ * No skill receives this event.
+ * 
+ * <h4>For Agent Members</h4>
+ * The member agents do not receive this event from the parent agent because they are not yet created when the agent is spawned.@TODO "It's not clear, I do think that the sub-members should get it.
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  */
 @SarlSpecification("0.11")
 @SarlElementType(15)

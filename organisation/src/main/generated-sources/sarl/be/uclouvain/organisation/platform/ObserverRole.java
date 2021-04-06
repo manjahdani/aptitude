@@ -1,10 +1,3 @@
-/**
- * @Name       : ObserverRole
- * @Project    : APTITUDE
- * @Author     : Dani Manjah
- * @Version    : V.0.1
- * @Date       : 22/03/2021
- */
 package be.uclouvain.organisation.platform;
 
 import be.uclouvain.organisation.OrganisationInfo;
@@ -36,6 +29,29 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+/**
+ * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it.
+ * Observers are distinct if they process a different Signal or use another Model or both .
+ * 
+ * It Becomes a multi-layer concept if it involves several entities observing the same target(data).
+ * A possible Holonic configuration could have the following layers :
+ * 
+ * 			- Multiple Sensors at different location analysing the same scene
+ *          - Multiple Algorithms with different beliefs analysing the same signal.
+ * 
+ * Example : let's take a junction equipped with three cameras (C_1  ,C_2,C_3) aiming to provide a list of the cars in the scene.
+ * The cameras dispose two algorithms models (M_1 ,M_2). Let us assume, that C_1  uses M_1and M_2 to process the data while others only use M_1.
+ * You have four Observers (O_1,O_2,O_3,O_4) = (C_1 M_1; C_1 M_2; C_2 M_1; C_3 M_1).
+ * A stable and scalable approach would consider two supplementary Observers to gather this as a Holonic system.
+ * On the one hand an Observer O_5 concatenating the perceptions of O_1, O_2 and on the other hand, a sixth Observer for the perceptions of O_5 O_3 O_4.
+ * Notice that Observers O_1and O_2 became Signals for O_5, becoming itself a signal for O_6.
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ */
 @SarlSpecification("0.11")
 @SarlElementType(21)
 @SuppressWarnings("all")

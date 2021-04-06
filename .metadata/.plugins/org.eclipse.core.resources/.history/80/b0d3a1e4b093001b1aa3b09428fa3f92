@@ -1,0 +1,49 @@
+
+package be.uclouvain.organisation.interactivity.outputDevice
+
+import UDPMessages.UDP_Message_Base
+
+/** 
+ * Encapsulates the data to send over a channel for external devices   
+ * 
+ * The source is an ElementRole
+ * 
+ * @TODO : to precise
+ * <h4>For an Agent</h4>
+ * This event is received by the agent's requesting to join another holon context.
+ * 
+ * <h4>For a Behavior</h4>
+ * Each Behavior instance that needs to communicate with an organisation that is not in the base_organisation (AnalystRole,...)  
+ * 
+ * <h4>For a Skill</h4>
+ * No skill receives this event.
+ * 
+ * <h4>For Agent Members</h4>
+ * The member agents do not receive this event from the parent agent because they are not yet created when the agent is spawned.@TODO "It's not clear, I do think that the sub-members should get it. 
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ */
+event OutputMsg {
+
+	/** 
+	 * The information. 
+	 * The {@code Object} type allows to store every kind of data. As it is the {@code Agent }(and not the {@code Behavior}) that has to process the
+	 * data, it is not necessary for the organisation to know the kind of exchanged data.
+	 */
+	
+	val Information : UDP_Message_Base // @TODO : shouldn't be object ? 
+
+	/** 
+	 * Constructor
+	 * 
+	 * @param	info	The information to store
+	 */
+	new(info : UDP_Message_Base) {
+		this.Information = info
+	}
+
+}

@@ -15,31 +15,51 @@ import java.util.UUID
  * This event is received by the agent's requesting to join another holon context.
  * 
  * <h4>For a Behavior</h4>
- * Each Behavior instance within the agent receives this event when it is registered for the first time.
+ * Each Behavior instance that needs to communicate with an organisation that is not in the base_organisation (AnalystRole,...)  
  * 
  * <h4>For a Skill</h4>
  * No skill receives this event.
  * 
  * <h4>For Agent Members</h4>
- * The member agents do not receive this event from the parent agent because they are not yet created when the agent is spawned.
+ * The member agents do not receive this event from the parent agent because they are not yet created when the agent is spawned.@TODO "It's not clear, I do think that the sub-members should get it. 
  * 
  * @author $Author: manjahdani$
  * @version $0.1$
  * @date $31/03/2021$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  */
 
 event AuthorizationToJoin {
 
+	/** 
+	  * The context of the holon that fired the event    
+	  */
 	val contextID : AgentContext
+
+	/** 
+	 * The context of the holon that fired the event    
+	 */
 	val defaultSpaceID : OpenEventSpace
+	
 	val entityID : UUID
 	val sensitivity : Integer
 
-	new (context : AgentContext, Space : OpenEventSpace, id : UUID, sensitivity : Integer) {
-		this.contextID = context
-		this.defaultSpaceID = Space
+	/** 
+	 * The accepted sensitivity     
+	 */
+
+	/* 
+	 * Constructor
+	 * @param	ctxt	The context to join
+	 * @param	sid	    The space in the context to join
+	 * 
+	 * @TODO Develop an abstract version
+	 */
+
+	new (ctxt : AgentContext, sid : OpenEventSpace, id : UUID, sensitivity : Integer) {
+		this.contextID = ctxt
+		this.defaultSpaceID = sid
 		this.entityID = id
 		this.sensitivity=sensitivity
 	}

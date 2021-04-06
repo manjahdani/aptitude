@@ -7,9 +7,17 @@ import java.util.UUID
 import UDPMessages.UDP_Message_Base
 
 /** 
- * @author manjah
+ * Provide the tools to translate and transmit data for external systems.  	
+ *	
+ * @author $Author: manjahdani$
+ * @version $0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  * 
  */
 capacity OutputDeviceCapacity {
+	
+	//Prepare the data received by the Element role to send them to an external system
 	def outputConversion(idSender : UUID, info : UDP_Message_Base)
 }

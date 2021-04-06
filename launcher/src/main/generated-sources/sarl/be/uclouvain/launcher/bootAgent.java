@@ -2,9 +2,9 @@ package be.uclouvain.launcher;
 
 import UDPMessages.MessageDeserializer;
 import UDPMessages.UDP_Message_Base;
-import be.uclouvain.aptitude.agents.CommitSuicide;
-import be.uclouvain.aptitude.agents.Paraddis;
-import be.uclouvain.aptitude.agents.PlatformAgent;
+import be.uclouvain.aptitude.surveillance.CommitSuicide;
+import be.uclouvain.aptitude.surveillance.Paraddis;
+import be.uclouvain.aptitude.surveillance.PlatformAgent;
 import be.uclouvain.launcher.GUI;
 import be.uclouvain.organisation.platform.util.PlatformConfig;
 import io.sarl.core.AgentTask;

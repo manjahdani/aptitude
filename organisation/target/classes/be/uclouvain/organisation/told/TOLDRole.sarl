@@ -1,9 +1,5 @@
 /** 
- * @Name       : TOLDRole
- * @Project    : APTITUDE
- * @Author     : Dani Manjah
- * @Version    : V.0.1 
- * @Date       : 22/03/2021 
+ *
  */
 package be.uclouvain.organisation.told
 
@@ -19,21 +15,30 @@ import io.sarl.core.OpenEventSpace
  * 
  *  - Contains ground truth signals dedicated to learning.
  * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ * 
  */
 behavior TOLDRole {
+	
 	uses Behaviors
 	
+	/*
+	 * The platform register the context of a platform 
+	 */
 	var PlatformSpace : OpenEventSpace
 	
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on OrganisationInfo {
 		//info("Me TOLD I am going to listen to Platform")
-
 		PlatformSpace = occurrence.spaceID
 		PlatformSpace.register(asEventListener)
-		//info("Me TOLD I am going to listen to WorldSpace")
+
 	}
-	on MemberJoined{
+	on MemberJoined {
 		//info("I noticed" + occurrence.agentType)
 	}
 }

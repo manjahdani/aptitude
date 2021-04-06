@@ -4,7 +4,13 @@
 package be.uclouvain.organisation.interactivity.outputDevice
 
 /** 
- * @author manjah
+ * The role is the interface between an internal agent and an external device	
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  * 
  */
 behavior OutputDeviceRole {

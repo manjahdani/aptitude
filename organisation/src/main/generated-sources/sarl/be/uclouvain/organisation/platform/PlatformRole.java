@@ -1,13 +1,8 @@
-/**
- * @Name       : PlatformRole
- * @Project    : APTITUDE
- * @Author     : Dani Manjah
- * @Version    : V.0.1
- * @Date       : 22/03/2021
- */
 package be.uclouvain.organisation.platform;
 
+import be.uclouvain.organisation.AuthorizationToJoin;
 import be.uclouvain.organisation.OrganisationInfo;
+import be.uclouvain.organisation.platform.AddMission;
 import be.uclouvain.organisation.platform.LeavePlatform;
 import be.uclouvain.organisation.platform.StopMission;
 import com.google.common.base.Objects;
@@ -29,6 +24,7 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.Behavior;
+import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.util.SerializableProxy;
 import java.io.ObjectStreamException;
@@ -38,46 +34,67 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * Platform concept-roles manages the resources.
+ * Ensures the management of the associated resources (computational and sensors) of a Location
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  */
 @SarlSpecification("0.11")
 @SarlElementType(21)
 @SuppressWarnings("all")
 public class PlatformRole extends Behavior {
-  protected OpenEventSpace PlatformInteractivitySpace;
-  
   protected OpenEventSpace PlatformTOLDSpace;
   
-  private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
-  }
-  
   @SuppressWarnings("potential_field_synchronization_problem")
-  private void $behaviorUnit$Initialize$1(final Initialize occurrence) {
+  private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-    this.PlatformInteractivitySpace = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, 
-      UUID.randomUUID());
+    this.PlatformTOLDSpace = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, UUID.randomUUID());
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    this.PlatformInteractivitySpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
-    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-    this.PlatformTOLDSpace = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1.getInnerContext().<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, UUID.randomUUID());
-    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    this.PlatformTOLDSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.asEventListener());
+    this.PlatformTOLDSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
   }
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
-  private void $behaviorUnit$void$2(final /* AddEntity */Object occurrence) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nAuthorizationToJoin cannot be resolved."
-      + "\nSourceEventSpace cannot be resolved"
-      + "\nsource cannot be resolved"
-      + "\ngetUUID cannot be resolved"
-      + "\nentityData cannot be resolved"
-      + "\nsource cannot be resolved"
-      + "\ngetUUID cannot be resolved");
+  private void $behaviorUnit$AddMission$1(final AddMission occurrence) {
+    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
+    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+    AgentContext _innerContext = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext();
+    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+    EventSpace _defaultSpace = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1.getInnerContext().getDefaultSpace();
+    UUID _uUID = occurrence.getSource().getUUID();
+    AuthorizationToJoin _authorizationToJoin = new AuthorizationToJoin(_innerContext, ((OpenEventSpace) _defaultSpace), _uUID, Integer.valueOf(occurrence.MissionData));
+    class $SerializableClosureProxy implements Scope<Address> {
+      
+      private final UUID $_uUID;
+      
+      public $SerializableClosureProxy(final UUID $_uUID) {
+        this.$_uUID = $_uUID;
+      }
+      
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, $_uUID);
+      }
+    }
+    final Scope<Address> _function = new Scope<Address>() {
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        UUID _uUID_1 = occurrence.getSource().getUUID();
+        return Objects.equal(_uUID, _uUID_1);
+      }
+      private Object writeReplace() throws ObjectStreamException {
+        return new SerializableProxy($SerializableClosureProxy.class, occurrence.getSource().getUUID());
+      }
+    };
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(occurrence.SourceEventSpace, _authorizationToJoin, _function);
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
-  private void $behaviorUnit$MemberJoined$3(final MemberJoined occurrence) {
+  private void $behaviorUnit$MemberJoined$2(final MemberJoined occurrence) {
     boolean _equals = Objects.equal(occurrence.agentType, "be.uclouvain.aptitude.agents.TOLDAgent");
     if (_equals) {
       DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
@@ -142,7 +159,7 @@ public class PlatformRole extends Behavior {
     }
   }
   
-  private void $behaviorUnit$StopMission$4(final StopMission occurrence) {
+  private void $behaviorUnit$StopMission$3(final StopMission occurrence) {
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     LeavePlatform _leavePlatform = new LeavePlatform();
     class $SerializableClosureProxy implements Scope<Address> {
@@ -234,14 +251,6 @@ public class PlatformRole extends Behavior {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$0(occurrence));
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$1(occurrence));
-  }
-  
-  @SyntheticMember
-  @PerceptGuardEvaluator
-  private void $guardEvaluator$void(final /* AddEntity */Object occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nAddEntity cannot be resolved to a type.");
   }
   
   @SyntheticMember
@@ -249,7 +258,15 @@ public class PlatformRole extends Behavior {
   private void $guardEvaluator$StopMission(final StopMission occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$StopMission$4(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$StopMission$3(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$AddMission(final AddMission occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AddMission$1(occurrence));
   }
   
   @SyntheticMember
@@ -257,7 +274,7 @@ public class PlatformRole extends Behavior {
   private void $guardEvaluator$MemberJoined(final MemberJoined occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$MemberJoined$3(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$MemberJoined$2(occurrence));
   }
   
   @Override

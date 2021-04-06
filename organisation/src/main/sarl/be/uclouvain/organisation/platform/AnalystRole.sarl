@@ -45,6 +45,9 @@ behavior AnalystRole {
 	}
 
 	@SuppressWarnings("potential_field_synchronization_problem")
+	// @TODO : we have to setup the communication channel such that the experts asks to the defaultContext an algorithm and an instance answered it. 
+	// @TODO : Maybe create a space for every kind of "TASKS" like DETECTOR and so on. It would make more sens instead of communicating to everybody
+	// That you want a detector! 
 	on OrganisationInfo {
 		//info("Joining the Platform organisation: " + occurrence.spaceID + " (" + occurrence.context + ").")
 		PlatformContext = occurrence.context

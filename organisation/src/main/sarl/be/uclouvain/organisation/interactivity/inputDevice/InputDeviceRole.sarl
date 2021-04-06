@@ -11,8 +11,13 @@ import be.uclouvain.organisation.interactivity.element.ElementInformation
 
 
 /** 
- * @author manjah
- * 
+ * Interface collecting and distributing to the appropriate Element the external data fed to the system (A mobile app, a connected device).
+ *  
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  */
 behavior InputDeviceRole {
 	uses DefaultContextInteractions, InputDeviceCapacity

@@ -1,10 +1,3 @@
-/**
- * @Name       : Entity
- * @Project    : APTITUDE
- * @Author     : Dani Manjah
- * @Version    : V.0.1
- * @Date       : 22/03/2021
- */
 package be.uclouvain.organisation.told.entity;
 
 import io.sarl.core.DefaultContextInteractions;
@@ -31,11 +24,22 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * 
  * - The model it uses to describe the world :
  * 		- eg. Retraining a model after new ground truth data
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  */
 @SarlSpecification("0.11")
 @SarlElementType(21)
 @SuppressWarnings("all")
 public class EntityRole extends Behavior {
+  /**
+   * The entity register the initial base
+   * @TODO : The entity does not need to have a BaseContext ? It does not make sens it only has to know the context of current TOLD.
+   * The approach is therefore not scalable
+   */
   protected AgentContext BaseContext;
   
   protected EventSpace BaseSpace;

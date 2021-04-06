@@ -1,10 +1,3 @@
-/**
- * @Name       : TOLDRole
- * @Project    : APTITUDE
- * @Author     : Dani Manjah
- * @Version    : V.0.1
- * @Date       : 22/03/2021
- */
 package be.uclouvain.organisation.told;
 
 import be.uclouvain.organisation.OrganisationInfo;
@@ -29,11 +22,20 @@ import org.eclipse.xtext.xbase.lib.Pure;
  *  - Storing the information communicated by a platform.
  * 
  *  - Contains ground truth signals dedicated to learning.
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  */
 @SarlSpecification("0.11")
 @SarlElementType(21)
 @SuppressWarnings("all")
 public class TOLDRole extends Behavior {
+  /**
+   * The platform register the context of a platform
+   */
   private OpenEventSpace PlatformSpace;
   
   @SuppressWarnings("potential_field_synchronization_problem")

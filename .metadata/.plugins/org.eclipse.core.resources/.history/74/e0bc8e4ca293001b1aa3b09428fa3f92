@@ -1,0 +1,52 @@
+package be.uclouvain.aptitude.surveillance.algorithm.messages
+
+import com.hazelcast.nio.ObjectDataInput
+import java.io.IOException
+import com.hazelcast.nio.ObjectDataOutput
+import org.eclipse.xtend.lib.annotations.Accessors
+import be.uclouvain.aptitude.agents.algorithm.messages.BaseMessage
+
+/** 
+ * @author samelson
+ * 
+ */
+class RequestMessage extends BaseMessage {
+
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var requestID : String
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var agentID : String
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var clientName : String
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var jsonConfig : String
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var update : boolean
+
+	val FACTORY_ID = 1
+	val CLASS_ID = 10
+
+	def getFactoryId : int {
+		FACTORY_ID
+	}
+
+	def getId : int {
+		CLASS_ID
+	}
+
+	def readData(odi : ObjectDataInput) throws IOException {
+		super.readData(odi)
+
+		this.requestID = odi.readUTF()
+		this.agentID = odi.readUTF()
+		this.clientName = odi.readUTF()
+		this.jsonConfig = odi.readUTF()
+		this.update = odi.readBoolean()
+	}
+
+	def writeData(odo : ObjectDataOutput) throws IOException {
+		super.writeData(odo)
+
+		odo.writeUTF(requestID)
+		odo.writeUTF(agentID)
+		odo.writeUTF(clientName)
+		odo.writeUTF(jsonConfig)
+		odo.writeBoolean(update)
+	}
+
+}

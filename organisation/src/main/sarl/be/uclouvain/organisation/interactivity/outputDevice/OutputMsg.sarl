@@ -1,27 +1,46 @@
-/** 
- * 
- */
+
 package be.uclouvain.organisation.interactivity.outputDevice
 
 import UDPMessages.UDP_Message_Base
 
 /** 
- * @author manjah
+ * Encapsulates the data to send over a channel for external devices   
  * 
+ * The source is an ElementRole
+ * 
+ * 
+ * <h4>For an Agent</h4>
+ * This event is not received by a particular agent
+ * 
+ * <h4>For a Behavior</h4>
+ * The OutputDeviceRole  
+ * 
+ * <h4>For a Skill</h4>
+ * No skill receives this event.
+ * 
+ * <h4>For Agent Members</h4>
+ * It is not necessary
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  */
 event OutputMsg {
 
-			/** 
-		 * The information. 
-		 * The {@code Object} type allows to store every kind of data. As it is the {@code Agent }(and not the {@code Behavior}) that has to process the
-		 * data, it is not necessary for the organisation to know the kind of exchanged data.
-		 */
-	val Information : UDP_Message_Base
+	/** 
+	 * The information. 
+	 * The {@code Object} type allows to store every kind of data. As it is the {@code Agent }(and not the {@code Behavior}) that has to process the
+	 * data, it is not necessary for the organisation to know the kind of exchanged data.
+	 */
+	
+	val Information : UDP_Message_Base // @TODO : shouldn't be object ? 
 
 	/** 
 	 * Constructor
 	 * 
-	 * @param	info	The information to store
+	 * @param	info the information to store
 	 */
 	new(info : UDP_Message_Base) {
 		this.Information = info

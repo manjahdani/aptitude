@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename package &apos;be.uclouvain.aptitude.agents&apos; to &apos;be.uclouvain.aptitude.surveillance&apos;&#x0D;&#x0A;- Original project: &apos;surveillance&apos;&#x0D;&#x0A;- Original element: &apos;surveillance/src/main/sarl/be.uclouvain.aptitude.agents&apos;&#x0D;&#x0A;- Renamed element: &apos;surveillance/src/main/sarl/be.uclouvain.aptitude.surveillance&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings&#x0D;&#x0A;- Rename subpackages of the package" description="Rename package &apos;be.uclouvain.aptitude.agents&apos;" flags="589830" hierarchical="true" id="org.eclipse.jdt.ui.rename.package" input="/src\/main\/sarl&lt;be.uclouvain.aptitude.agents" name="be.uclouvain.aptitude.surveillance" qualified="false" references="true" stamp="1617360864876" textual="false" version="1.0"/>
+</session>

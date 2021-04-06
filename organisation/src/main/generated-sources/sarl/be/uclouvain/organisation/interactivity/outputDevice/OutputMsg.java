@@ -9,7 +9,28 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * @author manjah
+ * Encapsulates the data to send over a channel for external devices
+ * 
+ * The source is an ElementRole
+ * 
+ * 
+ * <h4>For an Agent</h4>
+ * This event is not received by a particular agent
+ * 
+ * <h4>For a Behavior</h4>
+ * The OutputDeviceRole
+ * 
+ * <h4>For a Skill</h4>
+ * No skill receives this event.
+ * 
+ * <h4>For Agent Members</h4>
+ * It is not necessary
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  */
 @SarlSpecification("0.11")
 @SarlElementType(15)
@@ -25,7 +46,7 @@ public class OutputMsg extends Event {
   /**
    * Constructor
    * 
-   * @param	info	The information to store
+   * @param	info the information to store
    */
   public OutputMsg(final UDP_Message_Base info) {
     this.Information = info;

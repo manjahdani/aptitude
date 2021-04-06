@@ -6,8 +6,9 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value=" 2c38fb7f-f363-4f6e-877b-110b1f07cc77"/>
+		<item key="selection" value="PlatformInteractivitySpace"/>
 		<list key="findhistory">
+			<item value="PlatformInteractivitySpace"/>
 			<item value=" 2c38fb7f-f363-4f6e-877b-110b1f07cc77"/>
 			<item value="Come here : Vehicle Counter"/>
 			<item value="double"/>
@@ -22,7 +23,6 @@
 			<item value="Counted Horizontally at the frame 307 at : A"/>
 			<item value="Counted Horizontally at the frame 307 at : B"/>
 			<item value="getEntityList"/>
-			<item value="characterList"/>
 		</list>
 		<list key="replacehistory">
 		</list>

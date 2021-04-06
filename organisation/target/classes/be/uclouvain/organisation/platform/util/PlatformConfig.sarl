@@ -5,12 +5,14 @@ import java.util.concurrent.atomic.AtomicInteger
 import java.util.Collections
 import java.util.List
 
-/** 
- * 
- */
+
 
 /** 
- * @author manjah
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  * 
  */
 class PlatformConfig {

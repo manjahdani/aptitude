@@ -9,7 +9,27 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * @author manjah
+ * Encapsulates the data
+ * 
+ * The source is an InputDeviceRole or another ElementRole
+ * 
+ * <h4>For an Agent</h4>
+ * This event is not received by a particular agent
+ * 
+ * <h4>For a Behavior</h4>
+ * The ElementRole
+ * 
+ * <h4>For a Skill</h4>
+ * No skill receives this event.
+ * 
+ * <h4>For Agent Members</h4>
+ * N.A
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  */
 @SarlSpecification("0.11")
 @SarlElementType(15)

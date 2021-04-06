@@ -1,10 +1,3 @@
-/**
- * @Name       : Events
- * @Project    : APTITUDE
- * @Author     : Dani Manjah
- * @Version    : V.0.1
- * @Date       : 22/03/2021
- */
 package be.uclouvain.organisation.platform;
 
 import be.uclouvain.organisation.JoinOrganisation;

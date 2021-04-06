@@ -15,7 +15,12 @@ import UDPMessages.MessageDeserializer
 import UDPMessages.UDP_Message_Base
 
 /** 
- * @author manjah
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  * 
  */
 abstract skill InputSkill implements InputDeviceCapacity {
@@ -50,6 +55,7 @@ abstract skill InputSkill implements InputDeviceCapacity {
 	}
 
 	def synchronized uninstall {
+		
 	}
 
 	def synchronized DisableInputStream {

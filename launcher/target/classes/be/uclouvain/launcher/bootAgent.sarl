@@ -15,9 +15,9 @@ import io.sarl.core.Schedules
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import javafx.application.Application
-import be.uclouvain.aptitude.agents.CommitSuicide
-import be.uclouvain.aptitude.agents.Paraddis
-import be.uclouvain.aptitude.agents.PlatformAgent
+import be.uclouvain.aptitude.surveillance.Paraddis
+import be.uclouvain.aptitude.surveillance.CommitSuicide
+import be.uclouvain.aptitude.surveillance.PlatformAgent
 
 /** 
  * @author manjah

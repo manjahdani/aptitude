@@ -8,7 +8,13 @@ import io.sarl.lang.core.Capacity;
 import java.util.UUID;
 
 /**
- * @author manjah
+ * Provide the tools to translate and transmit data for external systems.
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  */
 @FunctionalInterface
 @SarlSpecification("0.11")
