@@ -4,12 +4,14 @@
 package be.uclouvain.organisation.platform
 
 /** 
+ * @TODO : Ensure that the resources are respected with the interactions (Maybe need clarifications) 
  * 
  * @author $Author: manjahdani$
  * @version $0.0.1$
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
+ * 
  */
 capacity PlatformCapacity {
 
@@ -20,6 +22,9 @@ capacity PlatformCapacity {
 
 	/** 
 	 * Verifies if the different information provided to the {@code WorldRole} respect the rules of the World.
+	 * 
+	 * @param : @TODO to clarify
 	 */
+
 	def RuleManagement(InfoRule : Object) : boolean
 }

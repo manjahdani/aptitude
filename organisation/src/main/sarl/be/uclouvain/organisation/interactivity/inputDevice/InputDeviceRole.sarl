@@ -3,12 +3,9 @@
  */
 package be.uclouvain.organisation.interactivity.inputDevice
 
-import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Destroy
-import io.sarl.core.Initialize
-import be.uclouvain.organisation.interactivity.inputDevice.DataAcquisition
 import be.uclouvain.organisation.interactivity.element.ElementInformation
-
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
 
 /** 
  * Interface collecting and distributing to the appropriate Element the external data fed to the system (A mobile app, a connected device).
@@ -24,9 +21,6 @@ behavior InputDeviceRole {
 
 	on Initialize {
 		EnableInputStream()
-	}
-	on Destroy {
-		DisableInputStream()
 	}
 	on DataAcquisition {
 		emit(new ElementInformation(occurrence.data))[it.UUID == occurrence.elementID]

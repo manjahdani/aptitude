@@ -1,0 +1,103 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.interactivity.inputDevice
+
+import io.sarl.core.Schedules
+import io.sarl.lang.core.EventSpace
+import java.io.IOException
+import java.net.DatagramPacket
+import java.net.DatagramSocket
+import java.net.SocketException
+import java.util.TreeMap
+import java.util.UUID
+import UDPMessages.MessageDeserializer
+import UDPMessages.UDP_Message_Base
+import io.sarl.core.Logging
+
+/** 
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ * 
+ */
+abstract skill InputSkill implements InputDeviceCapacity {
+	uses Schedules,Logging
+
+	val client : DatagramSocket;
+	protected var listenersSpaceIDs : TreeMap<UUID, EventSpace>
+
+	protected var serverRunning : boolean = true;
+	var parser = new MessageDeserializer();
+
+	def synchronized EnableInputStream() {
+		val Enable_Server = task("Enable_Server")
+		Enable_Server.execute([
+			try {
+				while (!client.isClosed) { // !isCanceled(Enable_Server) &&
+					var buffer = newByteArrayOfSize(8192);
+					var packet = new DatagramPacket(buffer, buffer.length);
+					if (!client.isClosed)
+					{
+					info(client.isClosed)
+					client.receive(packet);}
+					var message = new String(packet.getData(), packet.getOffset(), packet.getLength());
+					var data = parser.Deserialize(message); // To change, it seems weird, there's a conflict between this and the role of an element
+					MessageAnalysis(data, packet.getAddress().getHostAddress);
+					packet.setLength(buffer.length);
+				}
+				//client.close();
+			} catch (e : SocketException) {
+				info("I noticed the problem there")
+				e.printStackTrace();
+			} catch (e : IOException) {
+				e.printStackTrace();
+			}
+		])
+	}
+	
+	
+	def uninstall {
+		
+		info("Uninstalled-------------------------")
+		// @TODO : Is it possible to use DisableInputStreamHere ? 
+	}
+
+	def prepareUninstallation {
+		DisableInputStream
+	}
+
+	def synchronized DisableInputStream {
+		
+		
+		try {
+			this.client.close()
+			task("Enable_Server").cancel
+		}catch (e : SocketException) {
+			info("I noticed the problem here")
+				e.printStackTrace();
+		
+		info(
+			"Closing stream 2 ---------------------" +
+				"isConnected : " + this.client.isConnected + "isClosed : " + this.client.isClosed)
+		
+	}
+	}
+	abstract def MessageAnalysis(data : UDP_Message_Base, IPaddrs : String)
+
+	new (p : int) {
+		this.client = new DatagramSocket(p)
+	}
+
+	new (p : int, subWorldSpaceIDs : TreeMap<UUID, EventSpace>) {
+		this.client = new DatagramSocket(p)
+		this.listenersSpaceIDs = subWorldSpaceIDs
+	}
+
+	new (server : DatagramSocket) {
+		this.client = server
+	}
+}

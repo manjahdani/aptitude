@@ -6,23 +6,23 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="PlatformInteractivitySpace"/>
+		<item key="selection" value="72e43"/>
 		<list key="findhistory">
-			<item value="PlatformInteractivitySpace"/>
-			<item value=" 2c38fb7f-f363-4f6e-877b-110b1f07cc77"/>
-			<item value="Come here : Vehicle Counter"/>
-			<item value="double"/>
-			<item value="As an expert I will start the mission of Vehicle Counting with the sensitivity"/>
-			<item value="Received SRequest"/>
-			<item value="Platform"/>
-			<item value="I receive a JoinPlatform"/>
-			<item value="Counted Horizontally"/>
-			<item value="130"/>
-			<item value="151"/>
-			<item value="Counted Horizontally at the frame"/>
-			<item value="Counted Horizontally at the frame 307 at : A"/>
-			<item value="Counted Horizontally at the frame 307 at : B"/>
-			<item value="getEntityList"/>
+			<item value="72e43"/>
+			<item value="Closing stream 1 ---------------------"/>
+			<item value="I noticed the problem here"/>
+			<item value="I was there"/>
+			<item value="I was there ---------------------------------------------------------"/>
+			<item value="UserInterface"/>
+			<item value="UserInterface-"/>
+			<item value="I have sub-agents"/>
+			<item value="7b6e9e7-7a4c-42e8-9d13-c4b8a2dbc94"/>
+			<item value="1b72d8fa-828f-400e-aec6-1688ce180b5f"/>
+			<item value="false1b72d8fa-828f-400e-aec6-1688ce180b5f"/>
+			<item value="b7b6e9e7-7a4c-42e8-9d13-c4b8a2dbc949"/>
+			<item value="a636af65-942e-422d-9a1d-f2a11cb7fadd"/>
+			<item value="true"/>
+			<item value="false"/>
 		</list>
 		<list key="replacehistory">
 		</list>

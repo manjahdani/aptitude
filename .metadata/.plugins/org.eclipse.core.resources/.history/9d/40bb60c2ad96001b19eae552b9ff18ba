@@ -1,0 +1,25 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+/** 
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ */
+capacity PlatformCapacity {
+
+	/** 
+	  * Verifies if some conditions in the World have changed.
+	*/
+	def ConditionActivation()
+
+	/** 
+	 * Verifies if the different information provided to the {@code WorldRole} respect the rules of the World.
+	 */
+	def RuleManagement(InfoRule : Object) : boolean
+}

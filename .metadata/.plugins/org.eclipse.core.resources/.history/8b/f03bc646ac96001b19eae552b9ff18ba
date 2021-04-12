@@ -1,0 +1,38 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+/** 
+ * Provide tools to intepret a signal    
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ */
+capacity ObserverCapacity {
+
+	/** 
+	 * Gather the signals before the pre-processing.
+	 * 
+	 * @param an Object that represents a particular signal. The object must be specified according to the problem.   
+	 * @return: an array of perceptions  
+	 * 
+	 */ 
+	 def Signal2Perception(signal : Object)
+}
+
+
+//@TODO this is non-sens ? why create such a specific capacity for that at least not the way we use it ? Maybe it is the analyst ? Or at least provide another name if we want it to be an Observer Capacity
+// As it is mainly a debug option... 
+capacity CounterObserverCapacity extends ObserverCapacity {
+
+	/** 
+	 * The capacity is able to display  
+	 *
+	 * */	
+
+	def DisplayPerception 
+}

@@ -45,10 +45,10 @@ public class TOLDAgent extends Paraddis {
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(("TOLD-" + _iD));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Ready to share my stored Knowledge.");
-    this.AlgorithmDatabase.put("YOLO", "F:/aptitude/aptitude-agents/src/main/resources/config/test-YOLO.json");
-    this.AlgorithmDatabase.put("TinyYOLO", "F:/aptitude/aptitude-agents/src/main/resources/config/test-TinyYOLO.json");
-    this.AlgorithmDatabase.put("SORT", "F:/aptitude/aptitude-agents/src/main/resources/config/test-SORT.json");
-    this.AlgorithmDatabase.put("DeepSORT", "F:/aptitude/aptitude-agents/src/main/resources/config/test-DeepSORT.json");
+    this.AlgorithmDatabase.put("YOLO", "F:/aptitude/surveillance/src/main/resources/config/test-YOLO.json");
+    this.AlgorithmDatabase.put("TinyYOLO", "F:/aptitude/surveillance/src/main/resources/config/test-TinyYOLO.json");
+    this.AlgorithmDatabase.put("SORT", "F:/aptitude/surveillance/src/main/resources/config/test-SORT.json");
+    this.AlgorithmDatabase.put("DeepSORT", "F:/aptitude/surveillance/src/main/resources/config/test-DeepSORT.json");
     this.AlgorithmDatabase.put("APTITUDE", "NoneForTheMoment");
     Set<String> _keySet = this.AlgorithmDatabase.keySet();
     for (final String name : _keySet) {

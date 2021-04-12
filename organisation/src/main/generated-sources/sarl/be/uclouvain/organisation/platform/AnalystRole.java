@@ -34,7 +34,19 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * @author manjah
+ * An Analyst receives perceptions and translates those into Insights.
+ * For example, the Analyst  upon the reception of a list of cars and
+ * their position could extrapolate if those cars entered or exited an Area and raise the Event according to it.
+ * 
+ * We advise Analysts specializing to one scenario; consequently, you need two Analysts to perform the counting of vehicles and detect traffic offenses.
+ * However, those Analysts could use the same Observer if they rely on those perceptions.
+ * Therefore, we advise an Analyst rely on one and only one Observer (itself composed of other Observers).
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  */
 @SarlSpecification("0.11")
 @SarlElementType(21)
@@ -56,6 +68,8 @@ public class AnalystRole extends Behavior {
    * Receiving this event, the behavior has to update its fields of perception.
    */
   private final ArrayList<String> availableObservers = CollectionLiterals.<String>newArrayList("Extremely Careful", "Speed, Speed, Speed ", " I over-trust my tracker", "Balanced");
+  
+  private UUID myObserver;
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
@@ -89,6 +103,7 @@ public class AnalystRole extends Behavior {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     String _get = this.availableObservers.get(this.Sensitivity.get());
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Thank you for joining the mission. Please use the following sensitivity : " + _get));
+    this.myObserver = occurrence.getSource().getUUID();
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     int _get_1 = this.Sensitivity.get();
     MissionSensitivity _missionSensitivity = new MissionSensitivity(_get_1);
@@ -213,6 +228,8 @@ public class AnalystRole extends Behavior {
     AnalystRole other = (AnalystRole) obj;
     if (!java.util.Objects.equals(this.PlatformID, other.PlatformID))
       return false;
+    if (!java.util.Objects.equals(this.myObserver, other.myObserver))
+      return false;
     return super.equals(obj);
   }
   
@@ -223,6 +240,7 @@ public class AnalystRole extends Behavior {
     int result = super.hashCode();
     final int prime = 31;
     result = prime * result + java.util.Objects.hashCode(this.PlatformID);
+    result = prime * result + java.util.Objects.hashCode(this.myObserver);
     return result;
   }
   

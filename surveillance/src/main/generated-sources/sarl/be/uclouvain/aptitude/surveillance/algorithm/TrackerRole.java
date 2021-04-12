@@ -4,7 +4,7 @@ import be.uclouvain.aptitude.surveillance.algorithm.BBoxes2DResult;
 import be.uclouvain.aptitude.surveillance.algorithm.BBoxes2DTrackResult;
 import be.uclouvain.aptitude.surveillance.algorithm.PartnerTrackingFound;
 import be.uclouvain.aptitude.surveillance.algorithm.PythonTwinObserverAccess;
-import be.uclouvain.aptitude.surveillance.algorithm.TrackingImpl;
+import be.uclouvain.aptitude.surveillance.algorithm.TrackerPythonTwin;
 import be.uclouvain.organisation.platform.AlgorithmJoinPlatform;
 import be.uclouvain.organisation.platform.LeavePlatform;
 import be.uclouvain.organisation.platform.MissionSensitivity;
@@ -40,7 +40,18 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 /**
- * @author manjah
+ * @TODO : IMPROVEMENT : the Hazelcast only need to send the frame number and the ids
+ * @TODO : Will it make sens ?
+ * @TODO : Any Observer would transmit the read-only pointer to the memory space
+ * that contains the information requested upon approved request from another.
+ * 
+ * It does make sens to have a certain window of information in memory and the
+ * other one stored in a database. Therefore,
+ *  the database with a certain window
+ * in situ and otherwise stored in TOLD
+ * We need to find a way such that the information is synchronized before potential fusion
+ * 
+ * Now does the
  */
 @SarlSpecification("0.11")
 @SarlElementType(21)
@@ -62,8 +73,8 @@ public class TrackerRole extends ObserverRole {
       this.intensityMap.put(Integer.valueOf(1), Integer.valueOf(0));
       this.intensityMap.put(Integer.valueOf(2), Integer.valueOf(0));
       this.intensityMap.put(Integer.valueOf(3), Integer.valueOf(1));
-      TrackingImpl _trackingImpl = new TrackingImpl();
-      this.<TrackingImpl>setSkill(_trackingImpl);
+      TrackerPythonTwin _trackerPythonTwin = new TrackerPythonTwin();
+      this.<TrackerPythonTwin>setSkill(_trackerPythonTwin);
       JSONParser parser = new JSONParser();
       String configPathTracker = occurrence.parameters[0].toString();
       FileReader _fileReader = new FileReader(configPathTracker);
@@ -91,6 +102,8 @@ public class TrackerRole extends ObserverRole {
   private void $behaviorUnit$LeavePlatform$3(final LeavePlatform occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("ObserverTrackerLeaving");
+    PythonTwinObserverAccess _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER();
+    _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER.UpdateStreamAccess(4);
   }
   
   private void $behaviorUnit$MissionSensitivity$4(final MissionSensitivity occurrence) {

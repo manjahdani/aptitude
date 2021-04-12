@@ -1,10 +1,3 @@
-/**
- * @Name       : PlatformRole
- * @Project    : APTITUDE
- * @Author     : Dani Manjah
- * @Version    : V.0.1
- * @Date       : 22/03/2021
- */
 package be.uclouvain.aptitude.surveillance.user;
 
 import UDPMessages.CharacterData;
@@ -46,7 +39,13 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * @author manjah
+ * @TODO : provide a description
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $Surveillance$
  */
 @SarlSpecification("0.11")
 @SarlElementType(21)
@@ -54,16 +53,16 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class UserRole extends ElementRole {
   private final TreeMap<UUID, CharacterData> entityList = new TreeMap<UUID, CharacterData>();
   
-  private final int AVAILABLE_MODELS = 4;
+  private final int AVAILABLE_EXPERTS = 4;
   
-  private final ArrayList<Integer> ExpertType = CollectionLiterals.<Integer>newArrayList(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3), Integer.valueOf(0));
+  private final ArrayList<Integer> EXPERTISE_DEGREE = CollectionLiterals.<Integer>newArrayList(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3), Integer.valueOf(0));
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
-    for (int i = 0; (i < this.AVAILABLE_MODELS); i++) {
+    for (int i = 0; (i < this.AVAILABLE_EXPERTS); i++) {
       {
         final UUID id = UUID.randomUUID();
         String _string = id.toString();
-        Integer _get = this.ExpertType.get(i);
+        Integer _get = this.EXPERTISE_DEGREE.get(i);
         CharacterData _characterData = new CharacterData(_string, ((_get) == null ? 0 : (_get).intValue()), 0, (-1));
         this.entityList.put(id, _characterData);
         Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
@@ -124,7 +123,31 @@ public class UserRole extends ElementRole {
         _get_1.screenID = (-1);
         Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
         StopMission _stopMission = new StopMission(MissionID);
-        _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.wake(_stopMission);
+        class $SerializableClosureProxy_1 implements Scope<Address> {
+          
+          private final UUID MissionID;
+          
+          public $SerializableClosureProxy_1(final UUID MissionID) {
+            this.MissionID = MissionID;
+          }
+          
+          @Override
+          public boolean matches(final Address it) {
+            UUID _uUID = it.getUUID();
+            return Objects.equal(_uUID, MissionID);
+          }
+        }
+        final Scope<Address> _function_1 = new Scope<Address>() {
+          @Override
+          public boolean matches(final Address it) {
+            UUID _uUID = it.getUUID();
+            return Objects.equal(_uUID, MissionID);
+          }
+          private Object writeReplace() throws ObjectStreamException {
+            return new SerializableProxy($SerializableClosureProxy_1.class, MissionID);
+          }
+        };
+        _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.wake(_stopMission, _function_1);
         UserElementCapacity _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_USER_USERELEMENTCAPACITY$CALLER_1 = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_USER_USERELEMENTCAPACITY$CALLER();
         _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_USER_USERELEMENTCAPACITY$CALLER_1.updateBehavior(this.getExpertTypeList());
       }
@@ -248,7 +271,7 @@ public class UserRole extends ElementRole {
     if (getClass() != obj.getClass())
       return false;
     UserRole other = (UserRole) obj;
-    if (other.AVAILABLE_MODELS != this.AVAILABLE_MODELS)
+    if (other.AVAILABLE_EXPERTS != this.AVAILABLE_EXPERTS)
       return false;
     return super.equals(obj);
   }
@@ -259,7 +282,7 @@ public class UserRole extends ElementRole {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
-    result = prime * result + Integer.hashCode(this.AVAILABLE_MODELS);
+    result = prime * result + Integer.hashCode(this.AVAILABLE_EXPERTS);
     return result;
   }
   

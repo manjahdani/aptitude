@@ -20,8 +20,12 @@ import be.uclouvain.aptitude.surveillance.CommitSuicide
 import be.uclouvain.aptitude.surveillance.PlatformAgent
 
 /** 
- * @author manjah
  * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  */
 agent bootAgent extends Paraddis {
 	uses Lifecycle, Schedules, DefaultContextInteractions, Logging

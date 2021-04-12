@@ -27,6 +27,24 @@ import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+/**
+ * Agent with a set of tasks (Goals) and a model (Belief).
+ * It bases its computations on a Belief, otherwise a model defined by parameters.
+ * Each agent owns the intrinsic desire to achieve its Goal and become better at it.
+ * 
+ * Algorithms are firstly classified according to the Goals ((Detector, Tracker, Vehicle Counter, Offense Detector…)) and secondly their belief.
+ * 
+ * There will exists as many internal space discussions as there is tasks.
+ * 
+ * Initially the algorithm, it exists in the realm of TOLD and within a Holon could exist infinite combination of models and parameters.
+ * 
+ * @TODO : Must be somewhere else
+ * The algorithm becomes operational when joining a Platform. However, the instance does not join another context but rather provide a replicate.
+ * The instance may due to local interactions, evolve to be better than to the original at this specific task and Location.
+ * When that happens, the replicate may choose to adapt its belief accordingly and communicate to the original the decision.
+ * If the latest follows, it universally and automatically suggests to child instances the modification.
+ * They now share a new belief. In the case, it does not follow, the replicate will become a new Holon in the realm of TOLD and becomes a distinct entity
+ */
 @SarlSpecification("0.11")
 @SarlElementType(19)
 @SuppressWarnings("all")

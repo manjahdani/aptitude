@@ -42,9 +42,6 @@ skill DeviceNetworkManagerSkill extends InputSkill {
 	def install {
 
 		WorldList.addAll(worldlistenersSpaceIDs.keySet())
-			// for (k : worldlistenersSpaceIDs.keySet()) {
-			// WorldList.add(k)
-		// }
 	}
 
 	def MessageAnalysis(data : UDP_Message_Base, IPadrss : String) {

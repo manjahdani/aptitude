@@ -6,6 +6,8 @@ import io.sarl.lang.core.AgentTrait;
 import io.sarl.lang.core.Capacity;
 
 /**
+ * @TODO : Ensure that the resources are respected with the interactions (Maybe need clarifications)
+ * 
  * @author $Author: manjahdani$
  * @version $0.0.1$
  * @date $31/03/2021$
@@ -23,6 +25,8 @@ public interface PlatformCapacity extends Capacity {
   
   /**
    * Verifies if the different information provided to the {@code WorldRole} respect the rules of the World.
+   * 
+   * @param : @TODO to clarify
    */
   public abstract boolean RuleManagement(final Object InfoRule);
   

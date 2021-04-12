@@ -45,7 +45,7 @@ public class ElementInformation extends Event {
   /**
    * Constructor
    * 
-   * @param	info	The information to store
+   * @param	info 	The information to store
    */
   public ElementInformation(final UDP_Message_Base info) {
     this.information = info;

@@ -1,0 +1,20 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+/** 
+ * Provide tools to acquire the signal   
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ */
+capacity SensorCapacity {
+	
+	def enableDataAcquisition(o : Object)
+	
+	def disableDataAcquisition(o: Object)
+}

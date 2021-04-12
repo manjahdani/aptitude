@@ -33,7 +33,7 @@ behavior TOLDRole {
 	
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on OrganisationInfo {
-		//info("Me TOLD I am going to listen to Platform")
+		//info("Me TOLD I am going to listen to Platform" + occurrence.spaceID)
 		PlatformSpace = occurrence.spaceID
 		PlatformSpace.register(asEventListener)
 

@@ -14,7 +14,15 @@ package be.uclouvain.organisation.platform
  */
 capacity SensorCapacity {
 	
-	def enableDataAcquisition(o : Object)
-	
-	def disableDataAcquisition(o: Object)
+	/**
+	 * Gather the signals before the pre-processing.
+	 *  
+	 * @return : an object Signal  
+	 * */ 
+	def enableDataAcquisition()
+
+	/**
+	 * shut the stream.
+	 */
+	def disableDataAcquisition()
 }

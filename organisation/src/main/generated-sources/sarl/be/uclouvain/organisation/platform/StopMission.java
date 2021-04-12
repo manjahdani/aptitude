@@ -28,7 +28,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * The member agents do not receive this event from the parent agent because they are not yet created when the agent is spawned.@TODO "It's not clear, I do think that the sub-members should get it.
  * 
  * @author $Author: manjahdani$
- * @version $0.1$
+ * @version $0.0.1$
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
@@ -37,10 +37,10 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlElementType(15)
 @SuppressWarnings("all")
 public class StopMission extends Event {
-  public final UUID missionID;
+  public final UUID expertID;
   
   public StopMission(final UUID id) {
-    this.missionID = id;
+    this.expertID = id;
   }
   
   @Override
@@ -54,7 +54,7 @@ public class StopMission extends Event {
     if (getClass() != obj.getClass())
       return false;
     StopMission other = (StopMission) obj;
-    if (!Objects.equals(this.missionID, other.missionID))
+    if (!Objects.equals(this.expertID, other.expertID))
       return false;
     return super.equals(obj);
   }
@@ -65,7 +65,7 @@ public class StopMission extends Event {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
-    result = prime * result + Objects.hashCode(this.missionID);
+    result = prime * result + Objects.hashCode(this.expertID);
     return result;
   }
   
@@ -76,9 +76,9 @@ public class StopMission extends Event {
   @Pure
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
-    builder.add("missionID", this.missionID);
+    builder.add("expertID", this.expertID);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = 3946469804L;
+  private static final long serialVersionUID = 767301322L;
 }

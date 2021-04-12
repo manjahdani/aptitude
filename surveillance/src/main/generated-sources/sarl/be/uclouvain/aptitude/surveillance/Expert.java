@@ -45,7 +45,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @version $0.1$
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
- * @mavenartifactid $organisation$
+ * @mavenartifactid $surveillance$
  */
 @SarlSpecification("0.11")
 @SarlElementType(19)
@@ -111,10 +111,10 @@ public class Expert extends Paraddis {
   private void $behaviorUnit$StopMission$2(final StopMission occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Received Stop Mission");
-    final UUID PlatformID = this.MissionList.get(occurrence.missionID);
+    final UUID PlatformID = this.MissionList.get(occurrence.expertID);
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     EventSpace _get = this.PlatformlistenersSpaceIDs.get(PlatformID);
-    StopMission _stopMission = new StopMission(occurrence.missionID);
+    StopMission _stopMission = new StopMission(occurrence.expertID);
     class $SerializableClosureProxy implements Scope<Address> {
       
       private final UUID PlatformID;

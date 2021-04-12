@@ -12,6 +12,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * The event (Algorithm)JoinPlatform invites the receiver (an Algorithm) to join a Context
+ * 
+ * @TODO : make sure it makes sens.
  */
 @SarlSpecification("0.11")
 @SarlElementType(15)

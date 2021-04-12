@@ -11,6 +11,7 @@ import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.Initialize;
 import io.sarl.core.InnerContextAccess;
+import io.sarl.core.Logging;
 import io.sarl.core.MemberJoined;
 import io.sarl.core.OpenEventSpace;
 import io.sarl.core.OpenEventSpaceSpecification;
@@ -95,7 +96,7 @@ public class PlatformRole extends Behavior {
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$MemberJoined$2(final MemberJoined occurrence) {
-    boolean _equals = Objects.equal(occurrence.agentType, "be.uclouvain.aptitude.agents.TOLDAgent");
+    boolean _equals = Objects.equal(occurrence.agentType, "be.uclouvain.aptitude.surveillance.TOLDAgent");
     if (_equals) {
       DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
       DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
@@ -160,33 +161,11 @@ public class PlatformRole extends Behavior {
   }
   
   private void $behaviorUnit$StopMission$3(final StopMission occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((" I received a Stop Misson" + occurrence.expertID));
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     LeavePlatform _leavePlatform = new LeavePlatform();
-    class $SerializableClosureProxy implements Scope<Address> {
-      
-      private final UUID $_missionID;
-      
-      public $SerializableClosureProxy(final UUID $_missionID) {
-        this.$_missionID = $_missionID;
-      }
-      
-      @Override
-      public boolean matches(final Address it) {
-        UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, $_missionID);
-      }
-    }
-    final Scope<Address> _function = new Scope<Address>() {
-      @Override
-      public boolean matches(final Address it) {
-        UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, occurrence.missionID);
-      }
-      private Object writeReplace() throws ObjectStreamException {
-        return new SerializableProxy($SerializableClosureProxy.class, occurrence.missionID);
-      }
-    };
-    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_leavePlatform, _function);
+    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_leavePlatform);
   }
   
   @Extension
@@ -243,6 +222,20 @@ public class PlatformRole extends Behavior {
       this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);
     }
     return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
+  }
+  
+  @Extension
+  @ImportedCapacityFeature(Logging.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_LOGGING;
+  
+  @SyntheticMember
+  @Pure
+  private Logging $CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = $getSkill(Logging.class);
+    }
+    return $castSkill(Logging.class, this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
   }
   
   @SyntheticMember

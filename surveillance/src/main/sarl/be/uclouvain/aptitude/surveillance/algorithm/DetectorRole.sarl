@@ -25,7 +25,7 @@ behavior DetectorRole extends ObserverRole {
 
 
 	on Initialize {
-		setSkill(new DetectionImpl)
+		setSkill(new DetectorPythonTwin)
 		var parser = new JSONParser(); // occurrence.parameters.get(0).toString
 		var configPathDetector = occurrence.parameters.get(0).toString
 		var jsonDetector = parser.parse(new FileReader(configPathDetector)) as JSONObject;
@@ -71,7 +71,7 @@ behavior DetectorRole extends ObserverRole {
 
 	on LeavePlatform {
 		// join(BaseContext.ID, BaseSpace.spaceID.ID)
-		info("Observer Leaving")
+		info("Detector Leaving")
 		UpdateStreamAccess(4)
 		//leave(PlatformID)
 	}

@@ -1,7 +1,7 @@
 package be.uclouvain.aptitude.surveillance.algorithm;
 
 import be.uclouvain.aptitude.surveillance.algorithm.BBoxes2DResult;
-import be.uclouvain.aptitude.surveillance.algorithm.DetectionImpl;
+import be.uclouvain.aptitude.surveillance.algorithm.DetectorPythonTwin;
 import be.uclouvain.aptitude.surveillance.algorithm.PartnerDetectionFound;
 import be.uclouvain.aptitude.surveillance.algorithm.PythonTwinObserverAccess;
 import be.uclouvain.organisation.platform.LeavePlatform;
@@ -41,8 +41,8 @@ public class DetectorRole extends ObserverRole {
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     try {
-      DetectionImpl _detectionImpl = new DetectionImpl();
-      this.<DetectionImpl>setSkill(_detectionImpl);
+      DetectorPythonTwin _detectorPythonTwin = new DetectorPythonTwin();
+      this.<DetectorPythonTwin>setSkill(_detectorPythonTwin);
       JSONParser parser = new JSONParser();
       String configPathDetector = occurrence.parameters[0].toString();
       FileReader _fileReader = new FileReader(configPathDetector);
@@ -106,7 +106,7 @@ public class DetectorRole extends ObserverRole {
   
   private void $behaviorUnit$LeavePlatform$4(final LeavePlatform occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Observer Leaving");
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Detector Leaving");
     PythonTwinObserverAccess _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER();
     _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER.UpdateStreamAccess(4);
   }

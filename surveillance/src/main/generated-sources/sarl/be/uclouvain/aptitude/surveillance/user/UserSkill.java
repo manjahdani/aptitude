@@ -1,10 +1,3 @@
-/**
- * @Name       : PlatformRole
- * @Project    : APTITUDE
- * @Author     : Dani Manjah
- * @Version    : V.0.1
- * @Date       : 22/03/2021
- */
 package be.uclouvain.aptitude.surveillance.user;
 
 import UDPMessages.ActorStats;
@@ -30,6 +23,9 @@ import java.util.Objects;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+/**
+ * @TODO : The objects will represents the mission ?
+ */
 @SarlSpecification("0.11")
 @SarlElementType(22)
 @SuppressWarnings("all")

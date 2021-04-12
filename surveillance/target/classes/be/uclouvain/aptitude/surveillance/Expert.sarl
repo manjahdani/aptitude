@@ -27,7 +27,7 @@ import be.uclouvain.organisation.platform.AddMission
  * @version $0.1$
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
- * @mavenartifactid $organisation$
+ * @mavenartifactid $surveillance$
  */ 
 
 agent Expert extends Paraddis {
@@ -59,9 +59,8 @@ agent Expert extends Paraddis {
 	@SuppressWarnings("potential_field_synchronization_problem", "discouraged_occurrence_readonly_use")
 	on StopMission {
 		info("Received Stop Mission")
-		val PlatformID = MissionList.get(occurrence.missionID)
-		PlatformlistenersSpaceIDs.get(PlatformID).emit(new StopMission(occurrence.missionID))[it.UUID==PlatformID]
-		
+		val PlatformID = MissionList.get(occurrence.expertID) //@TODO : The experts may be on hold at this point
+		PlatformlistenersSpaceIDs.get(PlatformID).emit(new StopMission(occurrence.expertID))[it.UUID==PlatformID]
 	}
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on AuthorizationToJoin {

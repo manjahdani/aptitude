@@ -50,7 +50,7 @@ abstract skill PythonAccess implements PythonTwinObserverAccess {
 	def ActivateAccess(jsonConfig : JSONObject) {
 		this.pendingRequestID = UuidUtil.newSecureUuidString
 		this.requestTask = every(1000) [
-			info("Tracking partner not found, send discovery message")
+			info("Python partner not found, send discovery message")
 			var requestMessage = new RequestMessage()
 			requestMessage.requestID = this.pendingRequestID
 			requestMessage.agentID = owner.ID.toString
@@ -61,8 +61,8 @@ abstract skill PythonAccess implements PythonTwinObserverAccess {
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	def UpdateStreamAccess(actionID : int) {
-		info("Send action: " + actionID)
-		var actionMessage = new ActionMessage()
+		info("I am sending the action: " + actionID)
+		var actionMessage = new ActionMessage() //@TODO : Strange way of doing it
 		actionMessage.actionID = actionID
 		CommunicationManager.instance.publishMessage(topicSignalAcquisition, actionMessage)
 	}

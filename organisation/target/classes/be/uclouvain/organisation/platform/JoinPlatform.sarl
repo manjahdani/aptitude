@@ -7,7 +7,9 @@ import io.sarl.core.OpenEventSpace
 import be.uclouvain.organisation.JoinOrganisation
 
 /** 
- * The event (Algorithm)JoinPlatform invites the receiver (an Algorithm) to join a Context 
+ * The event (Algorithm)JoinPlatform invites the receiver (an Algorithm) to join a Context
+ * 
+ * @TODO : make sure it makes sens.  
  */
 event AlgorithmJoinPlatform extends JoinOrganisation {
 	

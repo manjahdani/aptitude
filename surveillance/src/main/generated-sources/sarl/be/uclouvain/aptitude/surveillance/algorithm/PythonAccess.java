@@ -62,7 +62,7 @@ public abstract class PythonAccess extends Skill implements PythonTwinObserverAc
     Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
     final Procedure1<Agent> _function = (Agent it) -> {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Tracking partner not found, send discovery message");
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Python partner not found, send discovery message");
       RequestMessage requestMessage = new RequestMessage();
       requestMessage.setRequestID(this.pendingRequestID);
       requestMessage.setAgentID(this.getOwner().getID().toString());
@@ -75,7 +75,7 @@ public abstract class PythonAccess extends Skill implements PythonTwinObserverAc
   @SuppressWarnings("potential_field_synchronization_problem")
   public void UpdateStreamAccess(final int actionID) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Send action: " + Integer.valueOf(actionID)));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I am sending the action: " + Integer.valueOf(actionID)));
     ActionMessage actionMessage = new ActionMessage();
     actionMessage.setActionID(actionID);
     CommunicationManager.getInstance().publishMessage(this.topicSignalAcquisition, actionMessage);

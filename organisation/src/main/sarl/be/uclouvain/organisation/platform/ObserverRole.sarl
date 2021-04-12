@@ -12,6 +12,7 @@ import io.sarl.core.Behaviors
 import io.sarl.lang.core.AgentContext
 import io.sarl.core.DefaultContextInteractions
 import java.util.concurrent.atomic.AtomicInteger
+import io.sarl.core.ExternalContextAccess
 
 /** 
  * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 
@@ -39,7 +40,7 @@ import java.util.concurrent.atomic.AtomicInteger
  
 behavior ObserverRole {
 	
-	uses Logging, Behaviors, DefaultContextInteractions
+	uses Logging, Behaviors, DefaultContextInteractions, ExternalContextAccess
 
 	protected var TOLDSpace : OpenEventSpace
 	protected var TOLDID : UUID
@@ -58,7 +59,7 @@ behavior ObserverRole {
 	}
 
 	@SuppressWarnings("potential_field_synchronization_problem")
-	on OrganisationInfo {
+	on OrganisationInfo  { //@TODO One should distinguish the organisations... 
 		//info("Joining the Platform organisation: " + occurrence.spaceID + " (" + occurrence.context + ").")
 		PlatformContext = occurrence.context
 		TOLDID = occurrence.source.getUUID
@@ -73,11 +74,19 @@ behavior ObserverRole {
 		emit(new MissionSensitivity(sensitivity.get)
 		)[it.UUID == occurrence.source.UUID]
 	}
+
+	on StopMission {
+		if (occurrence.source.UUID == observerID) {
+			info("I received the StopMission")
+			emit(new StopMission(occurrence.expertID))
+			emit(new LeavePlatform)[it==me]
+		}
+	}
 	
-	
-	//	on LeavePlatform {
-//		// join(BaseContext.ID, BaseSpace.spaceID.ID)
-//		info("ObserverLeaving")
-//		leave(PlatformID)
-//	}
+		@SuppressWarnings("potential_field_synchronization_problem")
+		on LeavePlatform {
+		//join(BaseContext.ID, BaseSpace.spaceID.ID)
+		info("ObserverLeaving")
+		//leave(PlatformContext.ID)
+	}
 }

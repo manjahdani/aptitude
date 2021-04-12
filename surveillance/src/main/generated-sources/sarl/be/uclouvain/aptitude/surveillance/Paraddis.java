@@ -1,8 +1,8 @@
 package be.uclouvain.aptitude.surveillance;
 
 import be.uclouvain.aptitude.surveillance.CommitSuicide;
+import com.google.common.base.Objects;
 import io.sarl.core.AgentTask;
-import io.sarl.core.Behaviors;
 import io.sarl.core.Destroy;
 import io.sarl.core.InnerContextAccess;
 import io.sarl.core.Lifecycle;
@@ -13,12 +13,15 @@ import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
+import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.DynamicSkillProvider;
+import io.sarl.lang.core.Scope;
+import io.sarl.lang.util.SerializableProxy;
+import java.io.ObjectStreamException;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListSet;
 import javax.inject.Inject;
@@ -38,6 +41,58 @@ public class Paraddis extends Agent {
   }
   
   private void $behaviorUnit$CommitSuicide$1(final CommitSuicide occurrence) {
+    if ((this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER().hasMemberAgent() && (!this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER().getActiveTasks().contains("wait-task")))) {
+      Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+      final AgentTask waitTask = _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER.task("wait-task");
+      Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+      final Procedure1<Agent> _function = (Agent it) -> {
+        InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+        boolean _hasMemberAgent = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.hasMemberAgent();
+        if ((!_hasMemberAgent)) {
+          this.CancelTasks();
+          Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+          _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_2.cancel(waitTask);
+          Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+          _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.killMe();
+        } else {
+          InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+          CommitSuicide _commitSuicide = new CommitSuicide();
+          class $SerializableClosureProxy implements Scope<Address> {
+            
+            private final Paraddis $_Paraddis;
+            
+            public $SerializableClosureProxy(final Paraddis $_Paraddis) {
+              this.$_Paraddis = $_Paraddis;
+            }
+            
+            @Override
+            public boolean matches(final Address it) {
+              boolean _isMe = (it != null && $_Paraddis.getID().equals(it.getUUID()));
+              return (!Objects.equal(it, Boolean.valueOf(_isMe)));
+            }
+          }
+          final Scope<Address> _function_1 = new Scope<Address>() {
+            @Override
+            public boolean matches(final Address it) {
+              boolean _isMe = (it != null && Paraddis.this.getID().equals(it.getUUID()));
+              return (!Objects.equal(it, Boolean.valueOf(_isMe)));
+            }
+            private Object writeReplace() throws ObjectStreamException {
+              return new SerializableProxy($SerializableClosureProxy.class, Paraddis.this);
+            }
+          };
+          _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1.getInnerContext().getDefaultSpace().emit(this.getID(), _commitSuicide, _function_1);
+        }
+      };
+      _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1.every(waitTask, 2000, _function);
+    } else {
+      this.CancelTasks();
+      Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.killMe();
+    }
+  }
+  
+  protected void CancelTasks() {
     Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
     boolean _isEmpty = _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER.getActiveTasks().isEmpty();
     if ((!_isEmpty)) {
@@ -48,31 +103,6 @@ public class Paraddis extends Agent {
         Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
         _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_2.cancel(_$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_3.task(e));
       }
-    }
-    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-    boolean _hasMemberAgent = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.hasMemberAgent();
-    if (_hasMemberAgent) {
-      Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_4 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
-      final AgentTask waitTask = _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_4.task("wait-task");
-      Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_5 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
-      final Procedure1<Agent> _function = (Agent it) -> {
-        InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-        boolean _hasMemberAgent_1 = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1.hasMemberAgent();
-        if ((!_hasMemberAgent_1)) {
-          Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_6 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
-          _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_6.cancel(waitTask);
-          Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-          _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.killMe();
-        } else {
-          Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-          CommitSuicide _commitSuicide = new CommitSuicide();
-          _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_commitSuicide);
-        }
-      };
-      _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_5.every(waitTask, 1000, _function);
-    } else {
-      Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.killMe();
     }
   }
   
@@ -132,20 +162,6 @@ public class Paraddis extends Agent {
     return $castSkill(Schedules.class, this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES);
   }
   
-  @Extension
-  @ImportedCapacityFeature(Behaviors.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_BEHAVIORS;
-  
-  @SyntheticMember
-  @Pure
-  private Behaviors $CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS == null || this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS = $getSkill(Behaviors.class);
-    }
-    return $castSkill(Behaviors.class, this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS);
-  }
-  
   @SyntheticMember
   @PerceptGuardEvaluator
   private void $guardEvaluator$CommitSuicide(final CommitSuicide occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
@@ -173,7 +189,7 @@ public class Paraddis extends Agent {
     if (getClass() != obj.getClass())
       return false;
     Paraddis other = (Paraddis) obj;
-    if (!Objects.equals(this.AgentType, other.AgentType))
+    if (!java.util.Objects.equals(this.AgentType, other.AgentType))
       return false;
     return super.equals(obj);
   }
@@ -184,7 +200,7 @@ public class Paraddis extends Agent {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
-    result = prime * result + Objects.hashCode(this.AgentType);
+    result = prime * result + java.util.Objects.hashCode(this.AgentType);
     return result;
   }
   

@@ -8,6 +8,7 @@ import be.uclouvain.organisation.interactivity.inputDevice.InputDeviceRole;
 import be.uclouvain.organisation.interactivity.outputDevice.OutputDeviceCapacity;
 import be.uclouvain.organisation.interactivity.outputDevice.OutputDeviceRole;
 import io.sarl.core.Behaviors;
+import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
 import io.sarl.core.Logging;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
@@ -26,9 +27,6 @@ import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/**
- * @author manjah
- */
 @SarlSpecification("0.11")
 @SarlElementType(19)
 @SuppressWarnings("all")
@@ -41,7 +39,7 @@ public class UserInterface extends Paraddis {
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Ready to receive external inputs");
     Object _get = occurrence.parameters[0];
     DeviceNetworkManagerSkill _deviceNetworkManagerSkill = new DeviceNetworkManagerSkill(65001, ((TreeMap<UUID, EventSpace>) _get));
-    final DeviceNetworkManagerSkill s = this.<DeviceNetworkManagerSkill>setSkill(_deviceNetworkManagerSkill, 
+    DeviceNetworkManagerSkill s = this.<DeviceNetworkManagerSkill>setSkill(_deviceNetworkManagerSkill, 
       InputDeviceCapacity.class);
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     InputDeviceRole _inputDeviceRole = new InputDeviceRole(this);
@@ -52,6 +50,11 @@ public class UserInterface extends Paraddis {
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     OutputDeviceRole _outputDeviceRole = new OutputDeviceRole(this);
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.registerBehavior(_outputDeviceRole);
+  }
+  
+  private void $behaviorUnit$Destroy$1(final Destroy occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The agent is destroyed");
   }
   
   @Extension
@@ -88,6 +91,14 @@ public class UserInterface extends Paraddis {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$0(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$Destroy(final Destroy occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Destroy$1(occurrence));
   }
   
   @SyntheticMember

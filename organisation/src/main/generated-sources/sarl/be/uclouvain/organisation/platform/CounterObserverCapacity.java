@@ -9,6 +9,9 @@ import io.sarl.lang.core.AgentTrait;
 @SarlElementType(20)
 @SuppressWarnings("all")
 public interface CounterObserverCapacity extends ObserverCapacity {
+  /**
+   * The capacity is able to display
+   */
   public abstract void DisplayPerception();
   
   /**

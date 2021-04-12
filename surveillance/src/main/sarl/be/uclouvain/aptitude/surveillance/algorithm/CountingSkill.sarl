@@ -14,9 +14,16 @@ import be.uclouvain.aptitude.surveillance.algorithm.util.countingLine
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxes2D
 
 /** 
+ * @TODO: write a description
  * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
  * 
  */
+
 skill CountingSkill implements CounterObserverCapacity {
 	uses Logging
 	

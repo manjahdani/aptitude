@@ -25,7 +25,7 @@ import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
  * @mavenartifactid $surveillance$
  */ 
 agent TOLDAgent extends Paraddis {
-	uses Logging, Lifecycle, InnerContextAccess,Behaviors
+	uses Logging, Lifecycle, InnerContextAccess, Behaviors
 
  	val AlgorithmDatabase : HashMap<String, String> = new HashMap<String,String>
  	
@@ -34,10 +34,10 @@ agent TOLDAgent extends Paraddis {
 		loggingName = "TOLD-" + this.ID
 		info("Ready to share my stored Knowledge.")
 		
-		AlgorithmDatabase.put("YOLO", "F:/aptitude/aptitude-agents/src/main/resources/config/test-YOLO.json")
-		AlgorithmDatabase.put("TinyYOLO","F:/aptitude/aptitude-agents/src/main/resources/config/test-TinyYOLO.json")
-		AlgorithmDatabase.put("SORT", "F:/aptitude/aptitude-agents/src/main/resources/config/test-SORT.json")
-		AlgorithmDatabase.put("DeepSORT", "F:/aptitude/aptitude-agents/src/main/resources/config/test-DeepSORT.json")
+		AlgorithmDatabase.put("YOLO", "F:/aptitude/surveillance/src/main/resources/config/test-YOLO.json")
+		AlgorithmDatabase.put("TinyYOLO", "F:/aptitude/surveillance/src/main/resources/config/test-TinyYOLO.json")
+		AlgorithmDatabase.put("SORT", "F:/aptitude/surveillance/src/main/resources/config/test-SORT.json")
+		AlgorithmDatabase.put("DeepSORT", "F:/aptitude/surveillance/src/main/resources/config/test-DeepSORT.json")
 		AlgorithmDatabase.put("APTITUDE","NoneForTheMoment")
 		
 		for(name : AlgorithmDatabase.keySet){

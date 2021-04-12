@@ -18,7 +18,18 @@ import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 
 /** 
- * @author manjah
+ * @TODO : IMPROVEMENT : the Hazelcast only need to send the frame number and the ids  
+ * @TODO : Will it make sens ? 
+ * @TODO : Any Observer would transmit the read-only pointer to the memory space
+ * that contains the information requested upon approved request from another. 
+ * 
+ * It does make sens to have a certain window of information in memory and the 
+ * other one stored in a database. Therefore, 
+ *  the database with a certain window 
+ * in situ and otherwise stored in TOLD
+ * We need to find a way such that the information is synchronized before potential fusion 
+ * 
+ * Now does the
  * 
  */
 behavior TrackerRole extends ObserverRole {
@@ -36,7 +47,7 @@ behavior TrackerRole extends ObserverRole {
 		intensityMap.put(1, 0)
 		intensityMap.put(2, 0)
 		intensityMap.put(3, 1)
-		setSkill(new TrackingImpl)
+		setSkill(new TrackerPythonTwin)
 		var parser = new JSONParser(); 
 		var configPathTracker = occurrence.parameters.get(0).toString
 		var jsonTracker = parser.parse(new FileReader(configPathTracker)) as JSONObject;
@@ -55,7 +66,7 @@ behavior TrackerRole extends ObserverRole {
 	on LeavePlatform {
 		// join(BaseContext.ID, BaseSpace.spaceID.ID)
 		info("ObserverTrackerLeaving")
-		// sendAction(4)
+		UpdateStreamAccess(4)
 			// leave(PlatformID)
 	}
 

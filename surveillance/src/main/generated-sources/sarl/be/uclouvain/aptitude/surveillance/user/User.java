@@ -1,10 +1,3 @@
-/**
- * @Name       : PlatformRole
- * @Project    : APTITUDE
- * @Author     : Dani Manjah
- * @Version    : V.0.1
- * @Date       : 22/03/2021
- */
 package be.uclouvain.aptitude.surveillance.user;
 
 import be.uclouvain.aptitude.surveillance.Paraddis;
@@ -38,6 +31,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * We established that in order to interact with the system, each User owns User Interface in order to provide input to the system and receives output.
  * The agent User keep tracks of the records of the user(s) and is responsible, of updating the universe and manage the in/out of virtual and real users.
  * It is also responsible of establishing the connection between the virtual/real user and the system. It endorses the roles of Element and their associated capacities.
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
  */
 @SarlSpecification("0.11")
 @SarlElementType(19)
@@ -46,7 +45,7 @@ public class User extends Paraddis {
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     UUID _iD = this.getID();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(("UserInterface-" + _iD));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(("User" + _iD));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("agent started.");
     String _string = occurrence.parameters[2].toString();

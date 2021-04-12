@@ -10,6 +10,7 @@ package be.uclouvain.organisation.interactivity.inputDevice
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
+ * 
  */
 capacity InputDeviceCapacity {
 	

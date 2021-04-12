@@ -1,0 +1,41 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm
+
+
+import io.sarl.core.Behaviors
+import io.sarl.core.Logging
+import io.sarl.core.Schedules
+import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DMessage
+import be.uclouvain.aptitude.surveillance.algorithm.messages.BaseMessage
+import be.uclouvain.aptitude.surveillance.algorithm.messages.RequestMessage
+import be.uclouvain.aptitude.surveillance.algorithm.messages.ActionMessage
+
+skill DetectorPythonTwin extends PythonAccess {
+	
+	uses Logging, Behaviors, Schedules
+
+	def update(m : BaseMessage) {
+		if (m instanceof BBoxes2DMessage) {
+			wake(new BBoxes2DResult(m))
+		} else if (m instanceof RequestMessage) {
+			onRequestMessage(m)
+		} else if (m instanceof ActionMessage) {
+			if (m.ack){
+				info("Ack action " + m.actionID.toString)
+			}
+		}
+	}
+
+	private def onRequestMessage(message : RequestMessage) {
+		if (message.ack && message.requestID == this.pendingRequestID) {
+			requestTask.cancel
+			CommunicationManager.instance.unsubscribeTopic(topicRequestSub)
+			topicRequestSub = null
+			val topicName = "detection_" + owner.ID.toString + "_" + message.clientName
+			topicSignalAcquisition = CommunicationManager.instance.subscribeTopic(topicName, this)
+			wake(new PartnerDetectionFound(message.clientName))
+		}
+	}
+}

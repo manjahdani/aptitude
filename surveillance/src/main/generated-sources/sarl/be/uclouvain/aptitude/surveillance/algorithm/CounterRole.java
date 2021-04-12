@@ -33,7 +33,14 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * The CounterRole is the behaviour that an agent Algorithm endorses upon a mission that requires the counting of Vehicles
+ * The CounterRole is a behaviour that an agent Algorithm endorses upon a mission to count vehicles
+ * 
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
  */
 @SarlSpecification("0.11")
 @SarlElementType(21)
