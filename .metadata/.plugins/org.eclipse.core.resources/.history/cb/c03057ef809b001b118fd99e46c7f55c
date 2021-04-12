@@ -7,7 +7,6 @@ import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DTrackMessag
 import be.uclouvain.aptitude.surveillance.algorithm.messages.RequestMessage
 
 skill TrackerPythonTwin extends PythonAccess {
-	
 	uses Behaviors, Schedules
 
 	def update(m : BaseMessage) {
