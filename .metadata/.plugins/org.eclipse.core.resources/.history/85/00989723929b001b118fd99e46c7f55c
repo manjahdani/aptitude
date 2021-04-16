@@ -1,0 +1,55 @@
+package be.uclouvain.organisation.told
+
+import io.sarl.core.Logging
+import java.util.HashMap
+import java.util.UUID
+
+/** 
+ * @TODO : Descrribe
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ * 
+ */
+skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
+	uses Logging
+
+	val Database : HashMap<UUID, Object> = new HashMap<UUID, Object>
+	
+	def install {
+		// Function invoked when the skill is installed in the owner.
+		// You should put all the initialization statements in this block of code.
+		info("Installing the skill")
+	}
+
+	def prepareUninstallation {
+		// Function invoked when the skill is preparing to be uninstalled from the owner, but before the owner is destroyed.
+		// You should put all the resource release statements that should be executed before the owner is destroyed.
+		info("Preparing the uninstallation of the skill")
+	}
+
+	def uninstall {
+		// Function invoked when the skill is uninstalled from the owner, and after the owner is destroyed.
+		// You should put all the resource release statements in this block of code.
+		info("Uninstalling the skill")
+	}
+
+	override delete(key : UUID) {
+		Database.remove(key)
+	}
+
+	def create(id : UUID, data : Object){
+		Database.put(id, data)
+	}
+
+	def read(key:UUID) : Object {
+		return Database.get(key)
+	}
+
+	override update(id : UUID, data : Object) {
+		// TODO Auto-generated code.
+	}
+}

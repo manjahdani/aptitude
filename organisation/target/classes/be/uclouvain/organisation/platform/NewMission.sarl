@@ -4,7 +4,6 @@
 package be.uclouvain.organisation.platform
 
 import be.uclouvain.organisation.platform.util.MissionData
-import io.sarl.lang.core.EventSpace
 
 /** 
  * Request to perform a New Mission 
@@ -23,19 +22,18 @@ import io.sarl.lang.core.EventSpace
  * The member agents do not receive this event from the parent agent because they are not yet created when the agent is spawned.@TODO "It's not clear, I do think that the sub-members should get it. 
  * 
  * @author $Author: manjahdani$
- * @version $0.1$
+ * @version $0.0.1$
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
  */
-event NewMission{
+event newMission{
 
-	val SourceEventSpace : EventSpace
-	val missionData : MissionData
+	val Mission : MissionData
 
-	new(sourceEventSpace : EventSpace, data : MissionData) {
-		this.SourceEventSpace = sourceEventSpace
-		this.missionData = data
+	new(data : MissionData) {
+
+		this.Mission = data
 	}
 }
 

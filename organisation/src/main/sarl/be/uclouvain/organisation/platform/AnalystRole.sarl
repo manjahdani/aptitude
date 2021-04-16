@@ -3,8 +3,11 @@
  */
 package be.uclouvain.organisation.platform
 
-import be.uclouvain.organisation.OrganisationInfo
-import be.uclouvain.organisation.platform.AlgorithmJoinPlatform
+import be.uclouvain.organisation.AuthorizationToJoin
+import be.uclouvain.organisation.LocalDatabaseRequest
+import be.uclouvain.organisation.PlatformOrganisationInfo
+import be.uclouvain.organisation.TOLDOrganisationInfo
+import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
@@ -15,6 +18,7 @@ import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.EventSpace
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger
+import be.uclouvain.organisation.platform.util.MissionData
 
 /** 
  * 
@@ -27,8 +31,8 @@ import java.util.concurrent.atomic.AtomicInteger
  * Therefore, we advise an Analyst rely on one and only one Observer (itself composed of other Observers). 
  * 
  * @author $Author: manjahdani$
- * @version $0.0.1$
- * @date $31/03/2021$
+ * @version $0.0.2$
+ * @date $16/04/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
  */
@@ -40,8 +44,12 @@ behavior AnalystRole {
 	protected var BaseSpace : EventSpace
 	
 	protected var PlatformContext : AgentContext
+	protected var PlatformSpace : OpenEventSpace //Private channel 
+	
+	protected var TOLDContext : AgentContext
 	protected var TOLDSpace : OpenEventSpace
-	protected var PlatformID : UUID
+
+	protected var MissionSpace : OpenEventSpace
 	
 	val Sensitivity = new AtomicInteger()
 	/** 
@@ -54,22 +62,34 @@ behavior AnalystRole {
 	on Initialize {
 		BaseContext = getDefaultContext
 		BaseSpace = getDefaultSpace
-		Sensitivity.set(occurrence.parameters.get(0) as Integer)
+		Sensitivity.set((occurrence.parameters.get(0) as MissionData).sensitivity)
 		info("As an expert I will start the mission of Vehicle Counting with the sensitivity:  " + availableObservers.get(Sensitivity.get))
 	}
 
 	@SuppressWarnings("potential_field_synchronization_problem")
-	// @TODO : we have to setup the communication channel such that the experts asks to the defaultContext an algorithm and an instance answered it. 
-	// @TODO : Maybe create a space for every kind of "TASKS" like DETECTOR and so on. It would make more sens instead of communicating to everybody
-	// That you want a detector! 
-	on OrganisationInfo {
+	
+	// @FIXME There are global behavior organisational Behavior
+	on PlatformOrganisationInfo {
 		//info("Joining the Platform organisation: " + occurrence.spaceID + " (" + occurrence.context + ").")
 		PlatformContext = occurrence.context
-		PlatformID = occurrence.source.getUUID
+		PlatformSpace = occurrence.spaceID
+		PlatformSpace.register(asEventListener)
+		info("Come here : Vehicle Counter")
+		PlatformSpace.emit(new LocalDatabaseRequest)[it.UUID == PlatformContext.ID]
+		PlatformSpace.emit(new AddAlgorithm(MissionSpace, new AlgorithmInfo("APTITUDE", "COUNTER")))
+	}
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on AuthorizationToJoin {
+		MissionSpace = occurrence.defaultSpaceID;
+		MissionSpace.register(asEventListener)
+		
+	}
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on TOLDOrganisationInfo{
+		TOLDContext = occurrence.context
 		TOLDSpace = occurrence.spaceID
 		TOLDSpace.register(asEventListener)
-		info("Come here : Vehicle Counter")
-		emit(TOLDSpace, new AlgorithmJoinPlatform(occurrence.context,occurrence.spaceID,"APTITUDE","Counter"))
+		
 	}
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on SensititvityRequest{

@@ -6,6 +6,16 @@ import be.uclouvain.aptitude.surveillance.algorithm.messages.BaseMessage
 import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DTrackMessage
 import be.uclouvain.aptitude.surveillance.algorithm.messages.RequestMessage
 
+/** 
+ * @TODO: write a description
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
+ * 
+ */
 skill TrackerPythonTwin extends PythonAccess {
 	
 	uses Behaviors, Schedules

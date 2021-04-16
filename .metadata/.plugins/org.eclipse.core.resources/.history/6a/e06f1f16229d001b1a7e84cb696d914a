@@ -1,0 +1,68 @@
+package be.uclouvain.organisation.told
+
+import be.uclouvain.organisation.OrganisationInfo
+import be.uclouvain.organisation.TOLDOrganisationInfo
+import io.sarl.core.Behaviors
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.MemberJoined
+import io.sarl.core.MemberLeft
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.OpenEventSpaceSpecification
+import java.util.TreeMap
+import java.util.UUID
+import io.sarl.core.Logging
+import be.uclouvain.organisation.PlatformOrganisationInfo
+
+/** 
+ * Trusted Observations and Learning Database is a database aiming to achieve two goals. 
+ * 
+ *  - Storing the information communicated by a platform.  
+ * 
+ *  - Contains ground truth signals dedicated to learning.
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ * 
+ */
+behavior TOLDRole {
+	
+	uses Behaviors, AccessDatabaseCapacity, InnerContextAccess,Logging
+	
+	var PlatformTOLDSpace : OpenEventSpace
+	
+	val Listeners : TreeMap<UUID,OpenEventSpace> = new TreeMap<UUID,OpenEventSpace>
+	/*
+	 * The platform register the context of a platform 
+	 */	
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on PlatformOrganisationInfo {
+		//info("Me TOLD I am going to listen to Platform" + occurrence.spaceID)
+		PlatformTOLDSpace = occurrence.spaceID
+		PlatformTOLDSpace.register(asEventListener)
+	}
+	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	on AddEntry{
+		create(occurrence.key, occurrence.data)
+	}
+	on DeleteEntry{
+		delete(occurrence.key)
+	}
+	
+	/*
+	 * Send if available the stored data about it. 
+	 */
+	on MemberJoined {
+		val MemberID = occurrence.agentID; 
+		Listeners.put(MemberID,innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID))
+		wake(new TOLDOrganisationInfo(innerContext, Listeners.get(MemberID), read(MemberID)))[it.UUID==MemberID]
+		Listeners.get(MemberID).register(asEventListener)
+		//info("I noticed" + occurrence.agentType)
+	}
+	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	on MemberLeft{
+		Listeners.remove(occurrence.agentID)
+	}
+}

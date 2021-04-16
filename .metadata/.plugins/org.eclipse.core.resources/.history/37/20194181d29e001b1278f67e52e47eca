@@ -1,0 +1,65 @@
+package be.uclouvain.organisation.told
+
+import io.sarl.core.Logging
+import java.util.HashMap
+import java.util.UUID
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+
+/** 
+ * @TODO : Descrribe
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ * 
+ */
+skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
+	uses Logging
+
+	protected val Database : HashMap<UUID, Object> = new HashMap<UUID, Object> // UUID has been chosen to ensure privacy @TODO : Develop
+	
+	def install {
+		Database.put(UUID.randomUUID,
+			new AlgorithmInfo("YOLO", "F:/aptitude/surveillance/src/main/resources/config/test-YOLO.json", "DETECTOR"))
+		Database.put(UUID.randomUUID,
+			new AlgorithmInfo("TinyYOLO", "F:/aptitude/surveillance/src/main/resources/config/test-TinyYOLO.json",
+			"DETECTOR"))
+		Database.put(UUID.randomUUID,new AlgorithmInfo("SORT", "F:/aptitude/surveillance/src/main/resources/config/test-SORT.json", "TRACKER"))
+		Database.put(UUID.randomUUID,new AlgorithmInfo("DeepSORT", "F:/aptitude/surveillance/src/main/resources/config/test-DeepSORT.json","TRACKER"))
+		Database.put(UUID.randomUUID,new AlgorithmInfo("APTITUDE", "NoneForTheMoment","COUNTER"))
+		Database.put(UUID.randomUUID,"a")
+	}
+
+	def prepareUninstallation {
+		// Function invoked when the skill is preparing to be uninstalled from the owner, but before the owner is destroyed.
+		// You should put all the resource release statements that should be executed before the owner is destroyed.
+		info("Preparing the uninstallation of the skill")
+	}
+
+	def uninstall {
+		// Function invoked when the skill is uninstalled from the owner, and after the owner is destroyed.
+		// You should put all the resource release statements in this block of code.
+		info("Uninstalling the skill")
+	}
+
+	override delete(key : UUID) {
+		Database.remove(key)
+	}
+
+	def create(id : UUID, data : Object){
+		Database.put(id, data)
+	}
+
+	def read(key:UUID) : Object {
+		return Database.get(key)
+	}
+	
+	def getDatabase{
+		return this.Database
+	}
+	override update(id : UUID, data : Object) {
+		// TODO Auto-generated code.
+	}
+}

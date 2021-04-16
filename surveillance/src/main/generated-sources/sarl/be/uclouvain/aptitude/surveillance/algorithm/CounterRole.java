@@ -11,10 +11,12 @@ import be.uclouvain.aptitude.surveillance.algorithm.BBoxes2DTrackResult;
 import be.uclouvain.aptitude.surveillance.algorithm.CountingSkill;
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBOX;
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxes2D;
-import be.uclouvain.organisation.platform.AlgorithmJoinPlatform;
+import be.uclouvain.organisation.platform.AddAlgorithm;
 import be.uclouvain.organisation.platform.CounterObserverCapacity;
 import be.uclouvain.organisation.platform.MissionSensitivity;
 import be.uclouvain.organisation.platform.ObserverRole;
+import be.uclouvain.organisation.told.util.AlgorithmInfo;
+import com.google.common.base.Objects;
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.Initialize;
 import io.sarl.core.Logging;
@@ -23,11 +25,16 @@ import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
+import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AtomicSkillReference;
+import io.sarl.lang.core.Scope;
+import io.sarl.lang.util.SerializableProxy;
+import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeMap;
+import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -37,8 +44,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * 
  * 
  * @author $Author: manjahdani$
- * @version $0.0.1$
- * @date $31/03/2021$
+ * @version $0.0.2$
+ * @date $16/04/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $surveillance$
  */
@@ -68,13 +75,39 @@ public class CounterRole extends ObserverRole {
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$MissionSensitivity$1(final MissionSensitivity occurrence) {
     this.sensitivity.set(occurrence.s);
-    final String Observer = this.availableObservers.get(((this.intensityMap.get(Integer.valueOf(this.sensitivity.get()))) == null ? 0 : (this.intensityMap.get(Integer.valueOf(this.sensitivity.get()))).intValue()));
+    final String ObserverName = this.availableObservers.get(((this.intensityMap.get(Integer.valueOf(this.sensitivity.get()))) == null ? 0 : (this.intensityMap.get(Integer.valueOf(this.sensitivity.get()))).intValue()));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Come here : " + Observer));
-    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    AlgorithmJoinPlatform _algorithmJoinPlatform = new AlgorithmJoinPlatform(this.PlatformContext, this.TOLDSpace, Observer, "Tracker");
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.TOLDSpace, _algorithmJoinPlatform);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Come here : " + ObserverName));
     this.start = System.currentTimeMillis();
+    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
+    AlgorithmInfo _algorithmInfo = new AlgorithmInfo(ObserverName, "TRACKER");
+    AddAlgorithm _addAlgorithm = new AddAlgorithm(this.MissionSpace, _algorithmInfo);
+    class $SerializableClosureProxy implements Scope<Address> {
+      
+      private final UUID $_iD_1;
+      
+      public $SerializableClosureProxy(final UUID $_iD_1) {
+        this.$_iD_1 = $_iD_1;
+      }
+      
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, $_iD_1);
+      }
+    }
+    final Scope<Address> _function = new Scope<Address>() {
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        UUID _iD = CounterRole.this.PlatformContext.getID();
+        return Objects.equal(_uUID, _iD);
+      }
+      private Object writeReplace() throws ObjectStreamException {
+        return new SerializableProxy($SerializableClosureProxy.class, CounterRole.this.PlatformContext.getID());
+      }
+    };
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.PlatformSpace, _addAlgorithm, _function);
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")

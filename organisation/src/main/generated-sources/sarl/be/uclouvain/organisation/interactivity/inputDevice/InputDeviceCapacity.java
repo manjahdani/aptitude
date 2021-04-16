@@ -6,6 +6,8 @@ import io.sarl.lang.core.AgentTrait;
 import io.sarl.lang.core.Capacity;
 
 /**
+ * @TODO : comment
+ * 
  * @author $Author: manjahdani$
  * @version $0.0.1$
  * @date $31/03/2021$

@@ -9,7 +9,13 @@ import java.util.ArrayList
 import org.arakhne.afc.math.geometry.d2.d.Vector2d
 
 /** 
- * @author manjah
+ * @TODO: write a description
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
  * 
  */
 class countingLine {

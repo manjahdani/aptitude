@@ -25,7 +25,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * @TODO : clarify ?
  * 
  * @author $Author: manjahdani$
- * @version $0.1$
+ * @version $0.0.1$
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$

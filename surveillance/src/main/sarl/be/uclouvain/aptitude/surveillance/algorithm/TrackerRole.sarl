@@ -1,25 +1,22 @@
 
 package be.uclouvain.aptitude.surveillance.algorithm
 
+import be.uclouvain.organisation.platform.LeavePlatform
 import be.uclouvain.organisation.platform.MissionSensitivity
 import be.uclouvain.organisation.platform.ObserverRole
-import be.uclouvain.organisation.platform.AlgorithmJoinPlatform
-import be.uclouvain.organisation.platform.LeavePlatform
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Destroy
-import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
-import io.sarl.core.OpenEventSpace
 import java.io.FileReader
 import java.util.TreeMap
-import java.util.UUID
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
+import be.uclouvain.organisation.platform.AddAlgorithm
+import be.uclouvain.organisation.told.util.AlgorithmInfo
 
 /** 
- * @TODO : IMPROVEMENT : the Hazelcast only need to send the frame number and the ids  
- * @TODO : Will it make sens ? 
+ * @FIXME : IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
  * @TODO : Any Observer would transmit the read-only pointer to the memory space
  * that contains the information requested upon approved request from another. 
  * 
@@ -28,20 +25,25 @@ import org.json.simple.parser.JSONParser
  *  the database with a certain window 
  * in situ and otherwise stored in TOLD
  * We need to find a way such that the information is synchronized before potential fusion 
+ *
  * 
- * Now does the
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.2$
+ * @date $16/04/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
  * 
  */
 behavior TrackerRole extends ObserverRole {
-	uses Logging, PythonTwinObserverAccess, ExternalContextAccess, DefaultContextInteractions
+	uses Logging, PythonTwinObserverAccess, DefaultContextInteractions
 
 	var partnerTrackingName : String
 
-	protected var PlatformSpace : OpenEventSpace
-	protected var PlatformID : UUID
+
 	val intensityMap = new TreeMap<Integer, Integer> 
 	
-	val availableObservers = newArrayList("TinyYOLO", "YOLO")
+	val availableObservers = newArrayList("TinyYOLO", "YOLO") //@FIXME should be given by the Analyst which makes it configurable ? 
 	on Initialize {
 		intensityMap.put(0, 1)
 		intensityMap.put(1, 0)
@@ -72,9 +74,10 @@ behavior TrackerRole extends ObserverRole {
 
 	on MissionSensitivity {
 		sensitivity.set(occurrence.s)
-		val Observer = availableObservers.get(intensityMap.get(sensitivity.get))
-		info("Come here : " + Observer)
-		emit(TOLDSpace, new AlgorithmJoinPlatform(PlatformContext, TOLDSpace, Observer, "Detector"))
+		val ObserverName = availableObservers.get(intensityMap.get(sensitivity.get))
+		info("Come here : " + ObserverName)
+
+		PlatformSpace.emit(this.ID,new AddAlgorithm(MissionSpace, new AlgorithmInfo(ObserverName, "DETECTOR")))[it.UUID == PlatformContext.ID]
 	}
 
 	on BBoxes2DTrackResult {

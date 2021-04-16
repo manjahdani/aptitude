@@ -8,6 +8,8 @@ import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
+ * @TODO : to comment
+ * 
  * @author $Author: manjahdani$
  * @version $0.0.1$
  * @date $31/03/2021$
@@ -18,21 +20,29 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlElementType(10)
 @SuppressWarnings("all")
 public class MissionData {
-  private final UUID entityID;
+  private final UUID MissionID;
+  
+  private final UUID ExpertID;
   
   private final int Location;
   
   private final int Sensitivity;
   
-  public MissionData(final UUID id, final int location, final int sensitivity) {
-    this.entityID = id;
+  public MissionData(final UUID missionID, final UUID expertID, final int location, final int sensitivity) {
+    this.MissionID = missionID;
+    this.ExpertID = expertID;
     this.Location = location;
     this.Sensitivity = sensitivity;
   }
   
   @Pure
-  public UUID getEntityID() {
-    return this.entityID;
+  public UUID getMissionID() {
+    return this.MissionID;
+  }
+  
+  @Pure
+  public UUID getExpertID() {
+    return this.ExpertID;
   }
   
   @Pure
@@ -56,7 +66,9 @@ public class MissionData {
     if (getClass() != obj.getClass())
       return false;
     MissionData other = (MissionData) obj;
-    if (!Objects.equals(this.entityID, other.entityID))
+    if (!Objects.equals(this.MissionID, other.MissionID))
+      return false;
+    if (!Objects.equals(this.ExpertID, other.ExpertID))
       return false;
     if (other.Location != this.Location)
       return false;
@@ -71,7 +83,8 @@ public class MissionData {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
-    result = prime * result + Objects.hashCode(this.entityID);
+    result = prime * result + Objects.hashCode(this.MissionID);
+    result = prime * result + Objects.hashCode(this.ExpertID);
     result = prime * result + Integer.hashCode(this.Location);
     result = prime * result + Integer.hashCode(this.Sensitivity);
     return result;

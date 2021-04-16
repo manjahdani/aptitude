@@ -52,3 +52,14 @@ event OrganisationInfo {
 	}
 
 }
+
+event TOLDOrganisationInfo extends OrganisationInfo {
+	
+	val StoredData : Object
+	new (ctxt : AgentContext, sid : OpenEventSpace, data : Object ) {
+		super(ctxt,sid)
+		this.StoredData = data
+	}
+}
+event PlatformOrganisationInfo extends OrganisationInfo
+event InteractivittyOrganisationInfo extends OrganisationInfo

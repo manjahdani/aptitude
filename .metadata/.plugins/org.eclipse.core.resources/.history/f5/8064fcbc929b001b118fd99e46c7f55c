@@ -1,0 +1,33 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.told
+
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+ 
+event Entry {
+	
+	val key : UUID
+
+	new (k : UUID) {
+		this.key = k;
+	}
+}
+
+event DataEntry extends Entry {
+	val data : Object
+	new (k : UUID, d : Object) {
+		super(k);
+		this.data = d
+	}
+}
+
+
+event AddEntry extends DataEntry
+
+event DeleteEntry extends Entry

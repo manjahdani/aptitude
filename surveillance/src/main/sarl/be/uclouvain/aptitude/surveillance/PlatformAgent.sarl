@@ -18,9 +18,12 @@ import be.uclouvain.aptitude.surveillance.ui.UserInterface
 
 /**
  * 
+ * @FIXME It is not clear whether for sub-platforms the agent should play the role of TOLD as well ? 
+ * Or do we need, another agent ??? The way we do it, is quite unclear... Because, it reveils the 
+ * 
  * 
  * @author $Author: manjahdani$
- * @version $0.1$
+ * @version $0.0.1$
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
@@ -44,11 +47,11 @@ agent PlatformAgent extends Paraddis {
 		if (platformConfig.getLevel > 0) {
 			registerBehavior(new PlatformRole(this))
 			info("Ready to receive operating mission")
-			spawn(TOLDAgent) 		// Only first layer wouldn't have a unity server, as it doesn't need to have physical representation
+			spawn(TOLDAgent) 		// @FIXME IT is not clear !!! 
 		} else {
 			//setSkill(new WorldSkill(WorldConfig), WorldCapacity)
 			//registerBehavior(new WorldRole(this))
-			spawn(UserInterface, subPlatformSpaceIDs)
+			spawn(UserInterface, subPlatformSpaceIDs) //@FIXME it is okay, to pass this argument? One needs to check.  
 		}
 	}
 

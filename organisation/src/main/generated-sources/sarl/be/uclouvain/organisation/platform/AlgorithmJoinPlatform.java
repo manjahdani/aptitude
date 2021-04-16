@@ -7,6 +7,7 @@ import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.AgentContext;
 import java.util.Objects;
+import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -14,6 +15,14 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * The event (Algorithm)JoinPlatform invites the receiver (an Algorithm) to join a Context
  * 
  * @TODO : make sure it makes sens.
+ * 
+ * 
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.2$
+ * @date $16/04/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  */
 @SarlSpecification("0.11")
 @SarlElementType(15)
@@ -23,10 +32,13 @@ public class AlgorithmJoinPlatform extends JoinOrganisation {
   
   public String task;
   
-  public AlgorithmJoinPlatform(final AgentContext context, final OpenEventSpace openSpace, final String n, final String t) {
+  public UUID sourceID;
+  
+  public AlgorithmJoinPlatform(final AgentContext context, final OpenEventSpace openSpace, final String n, final String t, final UUID sourceID) {
     super(context, openSpace);
     this.name = n;
     this.task = t;
+    this.sourceID = sourceID;
   }
   
   @Override
@@ -44,6 +56,8 @@ public class AlgorithmJoinPlatform extends JoinOrganisation {
       return false;
     if (!Objects.equals(this.task, other.task))
       return false;
+    if (!Objects.equals(this.sourceID, other.sourceID))
+      return false;
     return super.equals(obj);
   }
   
@@ -55,6 +69,7 @@ public class AlgorithmJoinPlatform extends JoinOrganisation {
     final int prime = 31;
     result = prime * result + Objects.hashCode(this.name);
     result = prime * result + Objects.hashCode(this.task);
+    result = prime * result + Objects.hashCode(this.sourceID);
     return result;
   }
   
@@ -67,8 +82,9 @@ public class AlgorithmJoinPlatform extends JoinOrganisation {
     super.toString(builder);
     builder.add("name", this.name);
     builder.add("task", this.task);
+    builder.add("sourceID", this.sourceID);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = 1073358739L;
+  private static final long serialVersionUID = 3650862763L;
 }

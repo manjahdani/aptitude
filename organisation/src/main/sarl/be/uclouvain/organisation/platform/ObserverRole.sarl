@@ -2,17 +2,17 @@
  */
 package be.uclouvain.organisation.platform
 
+import be.uclouvain.organisation.PlatformOrganisationInfo
+import be.uclouvain.organisation.TOLDOrganisationInfo
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
-import java.util.UUID
 import io.sarl.core.OpenEventSpace
-import be.uclouvain.organisation.OrganisationInfo
-import io.sarl.core.Behaviors
 import io.sarl.lang.core.AgentContext
-import io.sarl.core.DefaultContextInteractions
+import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger
-import io.sarl.core.ExternalContextAccess
 
 /** 
  * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 
@@ -32,26 +32,34 @@ import io.sarl.core.ExternalContextAccess
  * Notice that Observers O_1and O_2 became Signals for O_5, becoming itself a signal for O_6. 
  * 
  * @author $Author: manjahdani$
- * @version $0.1$
- * @date $31/03/2021$
+ * @version $0.0.2$
+ * @date $16/04/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
  */
  
 behavior ObserverRole {
 	
-	uses Logging, Behaviors, DefaultContextInteractions, ExternalContextAccess
+	uses Logging, Behaviors, DefaultContextInteractions
 
 	protected var TOLDSpace : OpenEventSpace
-	protected var TOLDID : UUID
+	protected var TOLDContext : AgentContext
+	
+	protected var PlatformSpace : OpenEventSpace
 	protected var PlatformContext : AgentContext
-
+	
 	protected var observerID : UUID
 	protected var sensitivity = new AtomicInteger()
 	
+	protected var MissionSpace : OpenEventSpace
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on Initialize {
-		observerID = occurrence.parameters.get(1) as UUID
+		MissionSpace = occurrence.parameters.get(1) as OpenEventSpace
+		MissionSpace.register(asEventListener)
+		observerID = occurrence.parameters.get(2) as UUID
+		info("Received Mission Space")
+		info(observerID)
+		
 	}
 
 	on Destroy {
@@ -59,22 +67,29 @@ behavior ObserverRole {
 	}
 
 	@SuppressWarnings("potential_field_synchronization_problem")
-	on OrganisationInfo  { //@TODO One should distinguish the organisations... 
-		//info("Joining the Platform organisation: " + occurrence.spaceID + " (" + occurrence.context + ").")
+	on PlatformOrganisationInfo  { 
 		PlatformContext = occurrence.context
-		TOLDID = occurrence.source.getUUID
+		PlatformSpace = occurrence.spaceID
+		PlatformSpace.register(asEventListener)
+		MissionSpace.emit(this.ID, new SensititvityRequest)[it.UUID == observerID] // Put here because it seems that the change is not fast enough between initalize and here.. anyway no big deal
+	}
+	
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on TOLDOrganisationInfo {
+		TOLDContext = occurrence.context
 		TOLDSpace = occurrence.spaceID
 		TOLDSpace.register(asEventListener)
-		emit(new SensititvityRequest)[it.UUID==observerID]
 	}
 
+	@SuppressWarnings("potential_field_synchronization_problem")
 	on SensititvityRequest {
 		info("Thank you for joining the mission. Please use the following sensitivity" + sensitivity.get)
 		//info("I received A Sensititivy Request" + occurrence.source.UUID)
-		emit(new MissionSensitivity(sensitivity.get)
+		MissionSpace.emit(this.ID,new MissionSensitivity(sensitivity.get)
 		)[it.UUID == occurrence.source.UUID]
 	}
 
+	@SuppressWarnings("potential_field_synchronization_problem")
 	on StopMission {
 		if (occurrence.source.UUID == observerID) {
 			info("I received the StopMission")

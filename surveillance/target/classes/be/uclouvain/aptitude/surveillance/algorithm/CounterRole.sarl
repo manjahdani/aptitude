@@ -7,26 +7,26 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm
 
-
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBOX
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxes2D
+import be.uclouvain.organisation.platform.AddAlgorithm
+import be.uclouvain.organisation.platform.CounterObserverCapacity
 import be.uclouvain.organisation.platform.MissionSensitivity
 import be.uclouvain.organisation.platform.ObserverRole
-import be.uclouvain.organisation.platform.AlgorithmJoinPlatform
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.TreeMap
-import be.uclouvain.organisation.platform.CounterObserverCapacity
-import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxes2D
-import be.uclouvain.aptitude.surveillance.algorithm.util.BBOX
+import be.uclouvain.organisation.told.util.AlgorithmInfo
 
 /** 
  * The CounterRole is a behaviour that an agent Algorithm endorses upon a mission to count vehicles
  * 
  * 
  * @author $Author: manjahdani$
- * @version $0.0.1$
- * @date $31/03/2021$
+ * @version $0.0.2$
+ * @date $16/04/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $surveillance$
  * 
@@ -44,6 +44,7 @@ behavior CounterRole extends ObserverRole {
 	val ObjectPresentInframe = new TreeMap<Integer, BBoxes2D>
 	val ObjectToBeAnalyzed = new ArrayList<BBoxes2D>;
 	
+	
 	// end
 	on Initialize {
 		intensityMap.put(0, 1)
@@ -56,12 +57,11 @@ behavior CounterRole extends ObserverRole {
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on MissionSensitivity {
-
 		sensitivity.set(occurrence.s)
-		val Observer = availableObservers.get(intensityMap.get(sensitivity.get))
-		info("Come here : " + Observer)
-		emit(TOLDSpace, new AlgorithmJoinPlatform(PlatformContext, TOLDSpace, Observer, "Tracker"))
+		val ObserverName = availableObservers.get(intensityMap.get(sensitivity.get))
+		info("Come here : " + ObserverName)
 		this.start = System.currentTimeMillis()
+		PlatformSpace.emit(new AddAlgorithm(MissionSpace,new AlgorithmInfo(ObserverName,"TRACKER")))[it.UUID==PlatformContext.ID]
 	}
 
 	@SuppressWarnings("potential_field_synchronization_problem")

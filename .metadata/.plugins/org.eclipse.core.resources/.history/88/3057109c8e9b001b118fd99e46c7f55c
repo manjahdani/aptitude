@@ -1,0 +1,20 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.told
+
+/** 
+ * @author manjah
+ * 
+ */
+event AddEntry {
+	
+	val key : String
+	val data : Object
+	
+	new (k : String, d : Object)
+	{
+		this.key=k;
+		this.data = d
+	}
+}

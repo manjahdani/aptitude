@@ -12,19 +12,26 @@ import io.sarl.core.Behaviors
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
+import io.sarl.core.OpenEventSpace
 import io.sarl.lang.core.EventSpace
 import java.util.TreeMap
 import java.util.UUID
 
 /** 
- *
+ * @TODO: write a description
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
  * 
  */
 agent UserInterface extends Paraddis {
 	uses Logging, Behaviors
+
+	protected var TOLDInteractivitySpace : OpenEventSpace
 	
-
-
 	on Initialize {
 		loggingName = "UserInterface-" + this.ID
 		info("Ready to receive external inputs")	
@@ -34,9 +41,6 @@ agent UserInterface extends Paraddis {
 		setSkill(new MobileOutputSkill(s.getMobileAddress), OutputDeviceCapacity)
 		registerBehavior(new OutputDeviceRole(this))
 		}
-//	on CommitSuicide {
-//		killMe
-//	}
 	on Destroy{
 		info("The agent is destroyed")
 	}

@@ -8,6 +8,7 @@ import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
+import be.uclouvain.organisation.Hello
 
 /** 
  * The agent gives global trait to agents. 
@@ -55,7 +56,7 @@ agent Paraddis {
 		// synchronized (AgentType)
 			info("agent was stopped.")
 	}
-
+	
 	on CommitSuicide {
 
 		/* 
@@ -89,5 +90,8 @@ agent Paraddis {
 				//info("task in progress" + e)
 				task(e).cancel}}
 				//info("Done cancelling " + getActiveTasks)}
+	}
+	on Hello[!occurrence.fromMe]{
+		info("I received Hello")
 	}
 }

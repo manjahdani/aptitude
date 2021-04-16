@@ -1,9 +1,14 @@
 package be.uclouvain.organisation.platform;
 
-import be.uclouvain.organisation.OrganisationInfo;
-import be.uclouvain.organisation.platform.AlgorithmJoinPlatform;
+import be.uclouvain.organisation.AuthorizationToJoin;
+import be.uclouvain.organisation.LocalDatabaseRequest;
+import be.uclouvain.organisation.PlatformOrganisationInfo;
+import be.uclouvain.organisation.TOLDOrganisationInfo;
+import be.uclouvain.organisation.platform.AddAlgorithm;
 import be.uclouvain.organisation.platform.MissionSensitivity;
 import be.uclouvain.organisation.platform.SensititvityRequest;
+import be.uclouvain.organisation.platform.util.MissionData;
+import be.uclouvain.organisation.told.util.AlgorithmInfo;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
@@ -43,8 +48,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * Therefore, we advise an Analyst rely on one and only one Observer (itself composed of other Observers).
  * 
  * @author $Author: manjahdani$
- * @version $0.0.1$
- * @date $31/03/2021$
+ * @version $0.0.2$
+ * @date $16/04/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
  */
@@ -58,9 +63,13 @@ public class AnalystRole extends Behavior {
   
   protected AgentContext PlatformContext;
   
+  protected OpenEventSpace PlatformSpace;
+  
+  protected AgentContext TOLDContext;
+  
   protected OpenEventSpace TOLDSpace;
   
-  protected UUID PlatformID;
+  protected OpenEventSpace MissionSpace;
   
   private final AtomicInteger Sensitivity = new AtomicInteger();
   
@@ -78,28 +87,71 @@ public class AnalystRole extends Behavior {
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
     this.BaseSpace = _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1.getDefaultSpace();
     Object _get = occurrence.parameters[0];
-    this.Sensitivity.set(((((Integer) _get)) == null ? 0 : (((Integer) _get)).intValue()));
+    this.Sensitivity.set(((MissionData) _get).getSensitivity());
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     String _get_1 = this.availableObservers.get(this.Sensitivity.get());
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("As an expert I will start the mission of Vehicle Counting with the sensitivity:  " + _get_1));
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
-  private void $behaviorUnit$OrganisationInfo$1(final OrganisationInfo occurrence) {
+  private void $behaviorUnit$PlatformOrganisationInfo$1(final PlatformOrganisationInfo occurrence) {
     this.PlatformContext = occurrence.context;
-    this.PlatformID = occurrence.getSource().getUUID();
-    this.TOLDSpace = occurrence.spaceID;
+    this.PlatformSpace = occurrence.spaceID;
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    this.TOLDSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    this.PlatformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Come here : Vehicle Counter");
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    AlgorithmJoinPlatform _algorithmJoinPlatform = new AlgorithmJoinPlatform(occurrence.context, occurrence.spaceID, "APTITUDE", "Counter");
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.TOLDSpace, _algorithmJoinPlatform);
+    LocalDatabaseRequest _localDatabaseRequest = new LocalDatabaseRequest();
+    class $SerializableClosureProxy implements Scope<Address> {
+      
+      private final UUID $_iD_1;
+      
+      public $SerializableClosureProxy(final UUID $_iD_1) {
+        this.$_iD_1 = $_iD_1;
+      }
+      
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, $_iD_1);
+      }
+    }
+    final Scope<Address> _function = new Scope<Address>() {
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        UUID _iD = AnalystRole.this.PlatformContext.getID();
+        return Objects.equal(_uUID, _iD);
+      }
+      private Object writeReplace() throws ObjectStreamException {
+        return new SerializableProxy($SerializableClosureProxy.class, AnalystRole.this.PlatformContext.getID());
+      }
+    };
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.PlatformSpace, _localDatabaseRequest, _function);
+    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
+    AlgorithmInfo _algorithmInfo = new AlgorithmInfo("APTITUDE", "COUNTER");
+    AddAlgorithm _addAlgorithm = new AddAlgorithm(this.MissionSpace, _algorithmInfo);
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER_1.emit(this.PlatformSpace, _addAlgorithm);
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
-  private void $behaviorUnit$SensititvityRequest$2(final SensititvityRequest occurrence) {
+  private void $behaviorUnit$AuthorizationToJoin$2(final AuthorizationToJoin occurrence) {
+    this.MissionSpace = occurrence.defaultSpaceID;
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    this.MissionSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+  }
+  
+  @SuppressWarnings("potential_field_synchronization_problem")
+  private void $behaviorUnit$TOLDOrganisationInfo$3(final TOLDOrganisationInfo occurrence) {
+    this.TOLDContext = occurrence.context;
+    this.TOLDSpace = occurrence.spaceID;
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    this.TOLDSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+  }
+  
+  @SuppressWarnings("potential_field_synchronization_problem")
+  private void $behaviorUnit$SensititvityRequest$4(final SensititvityRequest occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     String _get = this.availableObservers.get(this.Sensitivity.get());
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Thank you for joining the mission. Please use the following sensitivity : " + _get));
@@ -201,10 +253,18 @@ public class AnalystRole extends Behavior {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$OrganisationInfo(final OrganisationInfo occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+  private void $guardEvaluator$AuthorizationToJoin(final AuthorizationToJoin occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$OrganisationInfo$1(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AuthorizationToJoin$2(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$PlatformOrganisationInfo(final PlatformOrganisationInfo occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$PlatformOrganisationInfo$1(occurrence));
   }
   
   @SyntheticMember
@@ -212,7 +272,15 @@ public class AnalystRole extends Behavior {
   private void $guardEvaluator$SensititvityRequest(final SensititvityRequest occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$SensititvityRequest$2(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$SensititvityRequest$4(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$TOLDOrganisationInfo(final TOLDOrganisationInfo occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$TOLDOrganisationInfo$3(occurrence));
   }
   
   @Override
@@ -226,8 +294,6 @@ public class AnalystRole extends Behavior {
     if (getClass() != obj.getClass())
       return false;
     AnalystRole other = (AnalystRole) obj;
-    if (!java.util.Objects.equals(this.PlatformID, other.PlatformID))
-      return false;
     if (!java.util.Objects.equals(this.myObserver, other.myObserver))
       return false;
     return super.equals(obj);
@@ -239,7 +305,6 @@ public class AnalystRole extends Behavior {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
-    result = prime * result + java.util.Objects.hashCode(this.PlatformID);
     result = prime * result + java.util.Objects.hashCode(this.myObserver);
     return result;
   }

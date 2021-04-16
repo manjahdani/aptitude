@@ -4,6 +4,7 @@ import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.core.AgentTrait;
 import io.sarl.lang.core.Capacity;
+import java.util.UUID;
 
 /**
  * Provide tools to access an (internal-external) database
@@ -18,13 +19,13 @@ import io.sarl.lang.core.Capacity;
 @SarlElementType(20)
 @SuppressWarnings("all")
 public interface AccessDatabaseCapacity extends Capacity {
-  public abstract void read();
+  public abstract Object read(final UUID key);
   
-  public abstract void create();
+  public abstract void create(final UUID key, final Object data);
   
-  public abstract void update();
+  public abstract void update(final UUID key, final Object data);
   
-  public abstract void delete();
+  public abstract void delete(final UUID key);
   
   /**
    * @ExcludeFromApidoc
@@ -34,37 +35,37 @@ public interface AccessDatabaseCapacity extends Capacity {
       super(capacity, caller);
     }
     
-    public void read() {
+    public Object read(final UUID key) {
       try {
         ensureCallerInLocalThread();
-        this.capacity.read();
+        return this.capacity.read(key);
       } finally {
         resetCallerInLocalThread();
       }
     }
     
-    public void create() {
+    public void create(final UUID key, final Object data) {
       try {
         ensureCallerInLocalThread();
-        this.capacity.create();
+        this.capacity.create(key, data);
       } finally {
         resetCallerInLocalThread();
       }
     }
     
-    public void update() {
+    public void update(final UUID key, final Object data) {
       try {
         ensureCallerInLocalThread();
-        this.capacity.update();
+        this.capacity.update(key, data);
       } finally {
         resetCallerInLocalThread();
       }
     }
     
-    public void delete() {
+    public void delete(final UUID key) {
       try {
         ensureCallerInLocalThread();
-        this.capacity.delete();
+        this.capacity.delete(key);
       } finally {
         resetCallerInLocalThread();
       }

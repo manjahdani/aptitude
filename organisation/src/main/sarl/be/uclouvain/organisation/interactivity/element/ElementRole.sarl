@@ -4,7 +4,14 @@
 package be.uclouvain.organisation.interactivity.element
 
 /** 
- * @author manjah
+ * 
+ * @TODO : comment  
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  * 
  */
 behavior ElementRole {

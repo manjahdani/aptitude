@@ -24,7 +24,6 @@ import be.uclouvain.aptitude.surveillance.Paraddis
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $surveillance$
  * 
- * 
  * */
 
 agent User extends Paraddis{

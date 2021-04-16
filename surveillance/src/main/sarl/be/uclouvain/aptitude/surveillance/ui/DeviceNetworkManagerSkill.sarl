@@ -25,7 +25,13 @@ import java.util.UUID
 import be.uclouvain.aptitude.surveillance.user.User
 
 /** 
- * @author manjah
+ * @TODO: write a description
+ * 
+ * @author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
  * 
  */
 skill DeviceNetworkManagerSkill extends InputSkill {

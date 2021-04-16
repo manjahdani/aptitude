@@ -1,0 +1,70 @@
+/** 
+ *
+ */
+package be.uclouvain.organisation.told
+
+import be.uclouvain.organisation.OrganisationInfo
+import io.sarl.core.Behaviors
+import io.sarl.core.MemberJoined
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.Initialize
+import java.util.HashMap
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+
+/** 
+ * Trusted Observations and Learning Database is a database aiming to achieve two goals. 
+ * 
+ *  - Storing the information communicated by a platform.  
+ * 
+ *  - Contains ground truth signals dedicated to learning.
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ * 
+ */
+behavior TOLDRole {
+	
+	uses Behaviors, AccessDatabaseCapacity
+	
+
+	var PlatformSpace : OpenEventSpace
+
+	on Initialize {
+		
+		AlgorithmDatabase.put("YOLO", new AlgorithmInfo("YOLO", "F:/aptitude/surveillance/src/main/resources/config/test-YOLO.json","Detector"))
+//		AlgorithmDatabase.put("TinyYOLO", "F:/aptitude/surveillance/src/main/resources/config/test-TinyYOLO.json")
+//		AlgorithmDatabase.put("SORT", "F:/aptitude/surveillance/src/main/resources/config/test-SORT.json")
+//		AlgorithmDatabase.put("DeepSORT", "F:/aptitude/surveillance/src/main/resources/config/test-DeepSORT.json")
+//		AlgorithmDatabase.put("APTITUDE", "NoneForTheMoment")
+	}
+
+
+
+	/*
+	 * The platform register the context of a platform 
+	 */	
+
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on OrganisationInfo {
+		//info("Me TOLD I am going to listen to Platform" + occurrence.spaceID)
+		PlatformSpace = occurrence.spaceID
+		PlatformSpace.register(asEventListener)
+
+	}
+	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	on AddEntry{
+		create(occurrence.key, occurrence.data)
+	}
+	on MemberJoined {
+		//info("I noticed" + occurrence.agentType)
+	}
+}
+
+event AddInfo{
+	
+}
+

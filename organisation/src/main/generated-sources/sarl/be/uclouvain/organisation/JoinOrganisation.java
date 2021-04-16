@@ -26,7 +26,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * The member agents do not receive this event from the parent agent because they are not yet created when the agent is spawned.@TODO "It's not clear, I do think that the sub-members should get it.
  * 
  * @author $Author: manjahdani$
- * @version $0.1$
+ * @version $0.0.1$
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$

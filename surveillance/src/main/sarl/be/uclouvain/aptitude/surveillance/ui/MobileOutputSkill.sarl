@@ -9,7 +9,13 @@ import java.util.TreeMap
 import java.util.UUID
 
 /** 
- * @author manjah
+ * @TODO: write a description
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
  * 
  */
 skill MobileOutputSkill implements OutputDeviceCapacity {

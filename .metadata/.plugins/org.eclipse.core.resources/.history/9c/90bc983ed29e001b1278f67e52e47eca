@@ -1,0 +1,23 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import io.sarl.core.OpenEventSpace
+
+/** 
+ * @author manjah
+ * 
+ */
+event AddAlgorithm {
+	
+	var MissionSpace : OpenEventSpace
+	var info : AlgorithmInfo
+	
+	new (ospace : OpenEventSpace, d : AlgorithmInfo){
+		this.MissionSpace = ospace
+		this.info=d 
+	}
+}
+

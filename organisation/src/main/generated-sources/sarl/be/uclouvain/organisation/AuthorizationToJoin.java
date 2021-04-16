@@ -1,5 +1,6 @@
 package be.uclouvain.organisation;
 
+import be.uclouvain.organisation.platform.util.MissionData;
 import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
@@ -28,7 +29,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * The member agents do not receive this event from the parent agent because they are not yet created when the agent is spawned.@TODO "It's not clear, I do think that the sub-members should get it.
  * 
  * @author $Author: manjahdani$
- * @version $0.1$
+ * @version $0.0.1$
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
@@ -49,20 +50,27 @@ public class AuthorizationToJoin extends Event {
   
   public final UUID entityID;
   
-  public final Integer sensitivity;
+  public final MissionData missionData;
   
   /**
    * Constructor
    * @param	ctxt	The context to join
    * @param	sid	    The space in the context to join
    * 
-   * @TODO Develop an abstract version
+   * @FIXME : Develop an generic version
    */
-  public AuthorizationToJoin(final AgentContext ctxt, final OpenEventSpace sid, final UUID id, final Integer sensitivity) {
+  public AuthorizationToJoin(final AgentContext ctxt, final OpenEventSpace sid, final UUID id) {
     this.contextID = ctxt;
     this.defaultSpaceID = sid;
     this.entityID = id;
-    this.sensitivity = sensitivity;
+    this.missionData = null;
+  }
+  
+  public AuthorizationToJoin(final AgentContext ctxt, final OpenEventSpace sid, final UUID id, final MissionData missionData) {
+    this.contextID = ctxt;
+    this.defaultSpaceID = sid;
+    this.entityID = id;
+    this.missionData = missionData;
   }
   
   @Override
@@ -78,13 +86,6 @@ public class AuthorizationToJoin extends Event {
     AuthorizationToJoin other = (AuthorizationToJoin) obj;
     if (!Objects.equals(this.entityID, other.entityID))
       return false;
-    if (other.sensitivity == null) {
-      if (this.sensitivity != null)
-        return false;
-    } else if (this.sensitivity == null)
-      return false;
-    if (other.sensitivity != null && other.sensitivity.intValue() != this.sensitivity.intValue())
-      return false;
     return super.equals(obj);
   }
   
@@ -95,7 +96,6 @@ public class AuthorizationToJoin extends Event {
     int result = super.hashCode();
     final int prime = 31;
     result = prime * result + Objects.hashCode(this.entityID);
-    result = prime * result + Objects.hashCode(this.sensitivity);
     return result;
   }
   
@@ -109,9 +109,9 @@ public class AuthorizationToJoin extends Event {
     builder.add("contextID", this.contextID);
     builder.add("defaultSpaceID", this.defaultSpaceID);
     builder.add("entityID", this.entityID);
-    builder.add("sensitivity", this.sensitivity);
+    builder.add("missionData", this.missionData);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = -4420426610L;
+  private static final long serialVersionUID = 872707217L;
 }

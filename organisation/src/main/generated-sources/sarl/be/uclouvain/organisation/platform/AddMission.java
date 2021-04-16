@@ -1,9 +1,10 @@
 package be.uclouvain.organisation.platform;
 
+import be.uclouvain.organisation.AddMember;
+import be.uclouvain.organisation.platform.util.MissionData;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
-import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventSpace;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -33,13 +34,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlSpecification("0.11")
 @SarlElementType(15)
 @SuppressWarnings("all")
-public class AddMission extends Event {
-  public final EventSpace SourceEventSpace;
+public class AddMission extends AddMember {
+  public final MissionData MissionData;
   
-  public final int MissionData;
-  
-  public AddMission(final EventSpace sourceEventSpace, final int missionData) {
-    this.SourceEventSpace = sourceEventSpace;
+  public AddMission(final EventSpace sourceEventSpace, final MissionData missionData) {
+    super(sourceEventSpace);
     this.MissionData = missionData;
   }
   
@@ -47,15 +46,6 @@ public class AddMission extends Event {
   @Pure
   @SyntheticMember
   public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    AddMission other = (AddMission) obj;
-    if (other.MissionData != this.MissionData)
-      return false;
     return super.equals(obj);
   }
   
@@ -64,8 +54,6 @@ public class AddMission extends Event {
   @SyntheticMember
   public int hashCode() {
     int result = super.hashCode();
-    final int prime = 31;
-    result = prime * result + Integer.hashCode(this.MissionData);
     return result;
   }
   
@@ -76,10 +64,9 @@ public class AddMission extends Event {
   @Pure
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
-    builder.add("SourceEventSpace", this.SourceEventSpace);
     builder.add("MissionData", this.MissionData);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = 1960911026L;
+  private static final long serialVersionUID = -889105359L;
 }

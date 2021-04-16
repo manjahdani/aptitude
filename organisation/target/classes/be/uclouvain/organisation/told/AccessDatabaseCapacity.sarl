@@ -3,6 +3,8 @@
  */
 package be.uclouvain.organisation.told
 
+import java.util.UUID
+
 /** 
  * Provide tools to access an (internal-external) database 
  * 
@@ -15,8 +17,8 @@ package be.uclouvain.organisation.told
  
 capacity AccessDatabaseCapacity {
 	
-	def read()   // enables the access to an entry in a database 
-	def create() // enables the creation an entry in a database 
-	def update() // enables the update of an entry in a database 
-	def delete() // enables the deletion of an entry in a database	 
+	def read(key:UUID) : Object    // enables the access to an entry in a database 
+	def create(key : UUID, data : Object) // enables the creation an entry in a database 
+	def update(key : UUID, data : Object) // enables the update of an entry in a database
+	def delete(key:UUID) // enables the deletion of an entry in a database	 
 }

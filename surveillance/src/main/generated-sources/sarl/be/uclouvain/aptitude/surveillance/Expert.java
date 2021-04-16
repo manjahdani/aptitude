@@ -4,8 +4,9 @@ import be.uclouvain.aptitude.surveillance.Paraddis;
 import be.uclouvain.organisation.AuthorizationToJoin;
 import be.uclouvain.organisation.platform.AddMission;
 import be.uclouvain.organisation.platform.AnalystRole;
-import be.uclouvain.organisation.platform.NewMission;
 import be.uclouvain.organisation.platform.StopMission;
+import be.uclouvain.organisation.platform.newMission;
+import be.uclouvain.organisation.told.entity.EntityRole;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
@@ -40,10 +41,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * 
  * @TODO : It is strange that the sensitivity is sent. Maybe its best that platform creates a space where they could discuss
  * @TODO : Maybe expert or probably platform creates a space (a channel between them) for the discussion
+ * @FIXME : Verify the need of TreeMap
+ * 
  * 
  * @author $Author: manjahdani$
- * @version $0.1$
- * @date $31/03/2021$
+ * @version $0.0.2$
+ * @date $16/04/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $surveillance$
  */
@@ -66,20 +69,25 @@ public class Expert extends Paraddis {
     this.PlatformlistenersSpaceIDs = ((TreeMap<UUID, EventSpace>) _get);
     Object _get_1 = occurrence.parameters[1];
     this.platformList = ((ArrayList<UUID>) _get_1);
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    EntityRole _entityRole = new EntityRole(this);
+    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_entityRole);
   }
   
   @SuppressWarnings({ "potential_field_synchronization_problem", "discouraged_occurrence_readonly_use" })
-  private void $behaviorUnit$NewMission$1(final NewMission occurrence) {
+  private void $behaviorUnit$newMission$1(final newMission occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("I have a new mission");
-    final UUID PlatformID = this.platformList.get(occurrence.missionData.getLocation());
-    this.MissionList.put(occurrence.missionData.getEntityID(), PlatformID);
+    final UUID PlatformID = this.platformList.get(occurrence.Mission.getLocation());
+    this.MissionList.put(occurrence.Mission.getMissionID(), PlatformID);
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    AnalystRole _analystRole = new AnalystRole(this);
+    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_analystRole, occurrence.Mission);
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     EventSpace _get = this.PlatformlistenersSpaceIDs.get(PlatformID);
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
     EventSpace _defaultSpace = _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultSpace();
-    int _sensitivity = occurrence.missionData.getSensitivity();
-    AddMission _addMission = new AddMission(_defaultSpace, _sensitivity);
+    AddMission _addMission = new AddMission(_defaultSpace, occurrence.Mission);
     class $SerializableClosureProxy implements Scope<Address> {
       
       private final UUID PlatformID;
@@ -144,11 +152,8 @@ public class Expert extends Paraddis {
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$AuthorizationToJoin$3(final AuthorizationToJoin occurrence) {
-    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    AnalystRole _analystRole = new AnalystRole(this);
-    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_analystRole, occurrence.sensitivity);
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.join(occurrence.contextID.getID(), occurrence.defaultSpaceID.getSpaceID().getID());
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.join(occurrence.contextID.getID(), occurrence.contextID.getDefaultSpace().getSpaceID().getID());
   }
   
   @Extension
@@ -233,10 +238,10 @@ public class Expert extends Paraddis {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$NewMission(final NewMission occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+  private void $guardEvaluator$newMission(final newMission occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$NewMission$1(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$newMission$1(occurrence));
   }
   
   @Override

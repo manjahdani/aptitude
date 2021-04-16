@@ -35,7 +35,7 @@ event OutputMsg {
 	 * data, it is not necessary for the organisation to know the kind of exchanged data.
 	 */
 	
-	val Information : UDP_Message_Base // @TODO : shouldn't be object ? 
+	val Information : UDP_Message_Base // @FIXME : shouldn't be object ? 
 
 	/** 
 	 * Constructor

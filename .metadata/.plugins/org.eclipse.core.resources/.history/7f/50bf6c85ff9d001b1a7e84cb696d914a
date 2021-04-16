@@ -1,0 +1,43 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform.util
+
+import java.util.UUID
+
+/** 
+ * @TODO : to comment
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ */
+class MissionData {
+	
+	val MissionID : UUID
+	val ExpertID : UUID
+	val Location : int
+	val Sensitivity : int
+
+	new (missionID : UUID, expertID : UUID, location : int, sensitivity : int) {
+		this.MissionID=missionID
+		this.ExpertID = expertID
+		this.Location = location
+		this.Sensitivity = sensitivity
+	}
+	
+	def getMissionID{
+		return this.MissionID
+	}
+	def getExpertID() {
+		return this.ExpertID
+	}
+	def getLocation() {
+		return this.Location
+	}
+	def getSensitivity() {
+		return this.Sensitivity
+	}
+}

@@ -6,35 +6,34 @@ package be.uclouvain.aptitude.surveillance.user
 import UDPMessages.CharacterData
 import UDPMessages.UDP_Message_RequestSpawn
 import UDPMessages.UDP_Message_RequestWithdraw
+import be.uclouvain.aptitude.surveillance.Expert
 import be.uclouvain.organisation.interactivity.element.ElementInformation
 import be.uclouvain.organisation.interactivity.element.ElementRole
-import be.uclouvain.organisation.platform.NewMission
 import be.uclouvain.organisation.platform.StopMission
+import be.uclouvain.organisation.platform.newMission
 import be.uclouvain.organisation.platform.util.MissionData
 import io.sarl.core.Behaviors
-import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
-import java.util.TreeMap
-import java.util.UUID
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.lang.core.EventSpace
 import java.util.ArrayList
-import be.uclouvain.aptitude.surveillance.Expert
+import java.util.TreeMap
+import java.util.UUID
 
 /** 
  * @TODO : provide a description
  * 
  * @author $Author: manjahdani$
- * @version $0.1$
- * @date $31/03/2021$
+ * @version $0.0.2$
+ * @date $16/04/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $Surveillance$
  * 
  */
 behavior UserRole extends ElementRole {
 
-	uses Behaviors, UserElementCapacity, DefaultContextInteractions,InnerContextAccess,Lifecycle
+	uses Behaviors, UserElementCapacity,InnerContextAccess,Lifecycle
 	
 	val entityList : TreeMap<UUID, CharacterData> = new TreeMap<UUID, CharacterData>
 	val AVAILABLE_EXPERTS = 4; //
@@ -58,7 +57,10 @@ behavior UserRole extends ElementRole {
 		if (msg instanceof UDP_Message_RequestSpawn) {
 			
 			val entityID = UUID.fromString(msg.actorUID)
-			wake(new NewMission(getDefaultSpace, new MissionData(entityID,msg.sceneID, entityList.get(entityID).evolution)))[it.UUID==entityID]
+			
+			wake(new newMission(new MissionData(UUID.randomUUID,entityID, msg.sceneID, entityList.get(entityID).evolution))) [
+				it.UUID == entityID
+			]
 			entityList.get(entityID).screenID = msg.sceneID
 			updateBehavior(getExpertTypeList)
 			}

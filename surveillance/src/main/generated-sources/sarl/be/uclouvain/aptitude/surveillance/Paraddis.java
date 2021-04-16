@@ -1,6 +1,7 @@
 package be.uclouvain.aptitude.surveillance;
 
 import be.uclouvain.aptitude.surveillance.CommitSuicide;
+import be.uclouvain.organisation.Hello;
 import com.google.common.base.Objects;
 import io.sarl.core.AgentTask;
 import io.sarl.core.Destroy;
@@ -106,6 +107,18 @@ public class Paraddis extends Agent {
     }
   }
   
+  private void $behaviorUnit$Hello$2(final Hello occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("I received Hello");
+  }
+  
+  @SyntheticMember
+  @Pure
+  private boolean $behaviorUnitGuard$Hello$2(final Hello it, final Hello occurrence) {
+    boolean _isFromMe = (occurrence != null && this.getID().equals(occurrence.getSource().getUUID()));
+    return (!_isFromMe);
+  }
+  
   @Extension
   @ImportedCapacityFeature(Lifecycle.class)
   @SyntheticMember
@@ -160,6 +173,16 @@ public class Paraddis extends Agent {
       this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES = $getSkill(Schedules.class);
     }
     return $castSkill(Schedules.class, this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES);
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$Hello(final Hello occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    if ($behaviorUnitGuard$Hello$2(occurrence, occurrence)) {
+      ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Hello$2(occurrence));
+    }
   }
   
   @SyntheticMember

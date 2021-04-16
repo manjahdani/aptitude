@@ -15,7 +15,13 @@ import org.json.simple.parser.JSONParser
 import io.sarl.core.Schedules
 
 /** 
- *
+ * @TODO: write a description
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
  * 
  */
 behavior DetectorRole extends ObserverRole {
@@ -26,7 +32,7 @@ behavior DetectorRole extends ObserverRole {
 
 	on Initialize {
 		setSkill(new DetectorPythonTwin)
-		var parser = new JSONParser(); // occurrence.parameters.get(0).toString
+		var parser = new JSONParser();
 		var configPathDetector = occurrence.parameters.get(0).toString
 		var jsonDetector = parser.parse(new FileReader(configPathDetector)) as JSONObject;
 		ActivateAccess(jsonDetector)

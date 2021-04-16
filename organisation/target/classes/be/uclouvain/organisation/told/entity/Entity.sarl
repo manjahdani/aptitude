@@ -2,10 +2,10 @@
  */
 package be.uclouvain.organisation.told.entity
 
-import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Initialize
+import be.uclouvain.organisation.TOLDOrganisationInfo
+import io.sarl.core.Behaviors
+import io.sarl.core.OpenEventSpace
 import io.sarl.lang.core.AgentContext
-import io.sarl.lang.core.EventSpace
 
 /** 
  * The concept-generic role of Entity seeks knowledge to update : 
@@ -23,21 +23,22 @@ import io.sarl.lang.core.EventSpace
  * @mavenartifactid $organisation$
  */
 behavior EntityRole {
-	uses DefaultContextInteractions
-
+	
+	uses Behaviors
 	/*
 	 * The entity register the initial base
 	 * @TODO : The entity does not need to have a BaseContext ? It does not make sens it only has to know the context of current TOLD. 
 	 * The approach is therefore not scalable 
 	 */
 	
-	protected var BaseContext : AgentContext 
-	protected var BaseSpace : EventSpace
+	protected var TOLDContext : AgentContext 
+	protected var TOLDSpace : OpenEventSpace
+
 
 	@SuppressWarnings("potential_field_synchronization_problem")
-	on Initialize {
-
-		BaseContext = getDefaultContext
-		BaseSpace = getDefaultSpace
+	on TOLDOrganisationInfo {
+		TOLDContext = occurrence.context
+		TOLDSpace = occurrence.spaceID
+		TOLDSpace.register(asEventListener)
 	}
 }

@@ -8,12 +8,16 @@
 		<item key="DIALOG_HEIGHT" value="439"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
 		<list key="ShowViewDialog.STORE_EXPANDED_CATEGORIES_ID">
+			<item value="General"/>
 			<item value="Ant"/>
 			<item value="Debug"/>
 			<item value="Java"/>
 			<item value="Java Browsing"/>
 			<item value="Maven"/>
 			<item value="SARL"/>
+			<item value="Team"/>
+			<item value="XML"/>
+			<item value="Xtend"/>
 		</list>
 	</section>
 </section>

@@ -28,8 +28,12 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
+ * @FIXME It is not clear whether for sub-platforms the agent should play the role of TOLD as well ?
+ * Or do we need, another agent ??? The way we do it, is quite unclear... Because, it reveils the
+ * 
+ * 
  * @author $Author: manjahdani$
- * @version $0.1$
+ * @version $0.0.1$
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$

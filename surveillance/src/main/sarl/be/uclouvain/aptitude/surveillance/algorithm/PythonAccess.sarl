@@ -14,7 +14,13 @@ import be.uclouvain.aptitude.surveillance.algorithm.messages.RequestMessage
 import be.uclouvain.aptitude.surveillance.algorithm.messages.BaseMessage
 
 /** 
+ * @TODO: write a description
  * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
  * 
  */
 abstract skill PythonAccess implements PythonTwinObserverAccess {

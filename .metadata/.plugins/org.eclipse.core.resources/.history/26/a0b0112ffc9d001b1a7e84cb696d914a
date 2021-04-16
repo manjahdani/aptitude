@@ -1,0 +1,30 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm
+
+import io.sarl.lang.core.AgentContext
+import io.sarl.core.OpenEventSpace
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+event AlgorithmNeeded {
+	val contextID : AgentContext
+	val SpaceID : OpenEventSpace
+	val name : String
+	val task : String
+	val belief : String
+	val dest : UUID
+
+	new (context : AgentContext, Space : OpenEventSpace, n : String, t : String, bel : String, d : UUID) {
+		this.contextID = context
+		this.SpaceID = Space
+		this.task = t;
+		this.belief = bel;
+		this.name = n
+		this.dest = d
+	}
+}

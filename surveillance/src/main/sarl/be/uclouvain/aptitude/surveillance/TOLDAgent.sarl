@@ -3,23 +3,32 @@
  */
 package be.uclouvain.aptitude.surveillance
 
-
-import be.uclouvain.organisation.platform.AlgorithmJoinPlatform
+import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
+import be.uclouvain.organisation.PlatformOrganisationInfo
+import be.uclouvain.organisation.told.AccessDatabaseCapacity
 import be.uclouvain.organisation.told.TOLDRole
+import be.uclouvain.organisation.told.VirtualDatabaseSkill
+import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
-import io.sarl.lang.core.AgentContext
+import java.util.ArrayList
 import java.util.HashMap
 import java.util.UUID
-import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
 
 /** 
+ * 
+ * The agent TOLD keeps record of current and past knowledge. 
+ * The size of the database is a parameter and therefore we could have local TOLD 
+ * that communicates to a higher TOLD itself communicating to a bigger database. 
+ * The TOLD agent creates within its context spaces, as many agents as there are different tasks. 
+ * Therefore a space for Detectors, Trackers, Vehicle Counter and broadly speaking each class of algorithms.    
+ * 
  * @author $Author: manjahdani$
- * @version $0.1$
+ * @version $0.0.2$
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $surveillance$
@@ -27,68 +36,33 @@ import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
 agent TOLDAgent extends Paraddis {
 	uses Logging, Lifecycle, InnerContextAccess, Behaviors
 
- 	val AlgorithmDatabase : HashMap<String, String> = new HashMap<String,String>
- 	
+ 	val INIT_TASKS : ArrayList<String> = newArrayList("DETECTOR", "TRACKER", "COUNTER") // @parameters
+	var PlatformTOLDSpace : OpenEventSpace
+	var S : VirtualDatabaseSkill
+	@SuppressWarnings("potential_field_synchronization_problem")
 	on Initialize {
 		
 		loggingName = "TOLD-" + this.ID
 		info("Ready to share my stored Knowledge.")
+		S = setSkill(new VirtualDatabaseSkill, AccessDatabaseCapacity)
+		registerBehavior(new TOLDRole(this))
 		
-		AlgorithmDatabase.put("YOLO", "F:/aptitude/surveillance/src/main/resources/config/test-YOLO.json")
-		AlgorithmDatabase.put("TinyYOLO", "F:/aptitude/surveillance/src/main/resources/config/test-TinyYOLO.json")
-		AlgorithmDatabase.put("SORT", "F:/aptitude/surveillance/src/main/resources/config/test-SORT.json")
-		AlgorithmDatabase.put("DeepSORT", "F:/aptitude/surveillance/src/main/resources/config/test-DeepSORT.json")
-		AlgorithmDatabase.put("APTITUDE","NoneForTheMoment")
-		
-		for(name : AlgorithmDatabase.keySet){
-			spawnInContext(Algorithm,innerContext, 0, name)
-		}
-		registerBehavior(new TOLDRole(this))}
-	@SuppressWarnings("discouraged_occurrence_readonly_use")
-	on AlgorithmJoinPlatform {
-		info("I received Algorithm Join Platform" + AlgorithmDatabase.get(occurrence.name))
-		wake(new AlgorithmNeeded(occurrence.contextID,occurrence.defaultSpaceID, occurrence.name, occurrence.task, AlgorithmDatabase.get(occurrence.name), occurrence.source.UUID))
+	}
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on PlatformOrganisationInfo {
+		//info("Me TOLD I am going to listen to Platform" + occurrence.spaceID)
+		PlatformTOLDSpace = occurrence.spaceID
+		PlatformTOLDSpace.register(asEventListener)
+		var registeredAlgorithms : HashMap<UUID, AlgorithmInfo> = new HashMap(S.database.filter [ p1, p2 |
+			p2 instanceof AlgorithmInfo
+		]) // Make sure that we only consider the algorithmsINFO entries
+		for (t : INIT_TASKS) {
+			spawnInContext(Algorithm, innerContext, new AlgorithmInfo(t, "none", t),
+				new HashMap(registeredAlgorithms.filter[p1, p2|p2.task == t]), PlatformTOLDSpace) 	// provide the level 0, the task and the list of existing agents that supports the task
+			}
 	}
 }
 
-class AlgorithmInfo{
-	
-	val name : String
-	val belief : String
-	val task : String
-	
-	new (n:String,b:String,t:String)
-	{
-		this.name=n
-		this.belief=b
-		this.task = b
-	}
-	
-	def getName{
-		return this.name
-	}
-	def getBelief{
-		return this.belief;
-	}
-	def getTask{
-		return this.task;
-	}
-}
 
-event AlgorithmNeeded {
-	val contextID : AgentContext
-	val DefaultSpaceID : OpenEventSpace
-	val name : String
-	val task : String
-	val belief : String
-	val dest : UUID
 
-	new (context : AgentContext, Space : OpenEventSpace, n:  String,t : String, bel : String, d:UUID) {
-		this.contextID = context
-		this.DefaultSpaceID = Space
-		this.task = t; 
-		this.belief = bel;
-		this.name=n
-		this.dest=d
-	}
-}

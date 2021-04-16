@@ -1,0 +1,58 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.told.util
+
+/** 
+ * 
+ * 
+ * @TODO : Comments
+ */
+ 
+class AlgorithmInfo {
+
+	val name : String
+	var belief : String
+	val task : String
+	var level: int
+	
+	new (n : String, b : String, t : String, l : Integer) {
+		this.name = n
+		this.belief = b
+		this.task = t
+		this.level = l
+	}
+
+	new (n : String, b : String, t : String) {
+		this.name = n
+		this.belief = b
+		this.task = t
+		this.level = 0
+	}
+	
+	def setLevel(a : int) : void{
+		this.level=a
+	}
+	
+	def IncrementLevelAndGet : AlgorithmInfo{
+		this.level=level+1
+		return this
+	}
+	
+	def getLevel{
+		return this.level
+	}
+	
+	
+	def getName {
+		return this.name
+	}
+
+	def getBelief {
+		return this.belief;
+	}
+
+	def getTask {
+		return this.task;
+	}
+}

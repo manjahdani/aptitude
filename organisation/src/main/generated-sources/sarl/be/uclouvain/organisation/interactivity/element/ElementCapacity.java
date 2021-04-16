@@ -10,7 +10,7 @@ import io.sarl.lang.core.Capacity;
  * Provide the information to decode an external message and transmit to the appropriate role to take further action
  * 
  * @author $Author: manjahdani$
- * @version $0.1$
+ * @version $0.0.1$
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$

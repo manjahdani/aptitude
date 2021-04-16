@@ -8,12 +8,11 @@ import be.uclouvain.aptitude.surveillance.Expert;
 import be.uclouvain.aptitude.surveillance.user.UserElementCapacity;
 import be.uclouvain.organisation.interactivity.element.ElementInformation;
 import be.uclouvain.organisation.interactivity.element.ElementRole;
-import be.uclouvain.organisation.platform.NewMission;
 import be.uclouvain.organisation.platform.StopMission;
+import be.uclouvain.organisation.platform.newMission;
 import be.uclouvain.organisation.platform.util.MissionData;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
-import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Initialize;
 import io.sarl.core.InnerContextAccess;
 import io.sarl.core.Lifecycle;
@@ -42,8 +41,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @TODO : provide a description
  * 
  * @author $Author: manjahdani$
- * @version $0.1$
- * @date $31/03/2021$
+ * @version $0.0.2$
+ * @date $16/04/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $Surveillance$
  */
@@ -83,10 +82,9 @@ public class UserRole extends ElementRole {
     if ((msg instanceof UDP_Message_RequestSpawn)) {
       final UUID entityID = UUID.fromString(((UDP_Message_RequestSpawn)msg).actorUID);
       Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-      DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-      EventSpace _defaultSpace = _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultSpace();
-      MissionData _missionData = new MissionData(entityID, ((UDP_Message_RequestSpawn)msg).sceneID, this.entityList.get(entityID).evolution);
-      NewMission _newMission = new NewMission(_defaultSpace, _missionData);
+      UUID _randomUUID = UUID.randomUUID();
+      MissionData _missionData = new MissionData(_randomUUID, entityID, ((UDP_Message_RequestSpawn)msg).sceneID, this.entityList.get(entityID).evolution);
+      newMission _newMission = new newMission(_missionData);
       class $SerializableClosureProxy implements Scope<Address> {
         
         private final UUID entityID;
@@ -200,20 +198,6 @@ public class UserRole extends ElementRole {
       this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_USER_USERELEMENTCAPACITY = $getSkill(UserElementCapacity.class);
     }
     return $castSkill(UserElementCapacity.class, this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_USER_USERELEMENTCAPACITY);
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(DefaultContextInteractions.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS;
-  
-  @SyntheticMember
-  @Pure
-  private DefaultContextInteractions $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);
-    }
-    return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
   }
   
   @Extension

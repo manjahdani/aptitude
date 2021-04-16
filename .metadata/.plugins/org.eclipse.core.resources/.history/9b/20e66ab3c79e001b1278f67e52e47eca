@@ -1,0 +1,20 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+
+/** 
+ * @author manjah
+ * 
+ */
+event AddAlgorithm {
+	
+	var info : AlgorithmInfo
+	
+	new (d : AlgorithmInfo){
+		this.info=d 
+	}
+}
+

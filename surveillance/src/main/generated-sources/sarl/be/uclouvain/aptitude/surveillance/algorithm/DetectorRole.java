@@ -33,6 +33,15 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+/**
+ * @TODO: write a description
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
+ */
 @SarlSpecification("0.11")
 @SarlElementType(21)
 @SuppressWarnings("all")

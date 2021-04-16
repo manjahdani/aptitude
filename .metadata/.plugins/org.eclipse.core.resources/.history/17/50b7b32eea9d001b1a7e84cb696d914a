@@ -1,0 +1,98 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm
+
+import be.uclouvain.aptitude.surveillance.Paraddis
+import be.uclouvain.organisation.platform.AlgorithmJoinPlatform
+import be.uclouvain.organisation.told.entity.EntityRole
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import java.util.HashMap
+import java.util.UUID
+import io.sarl.core.InnerContextAccess
+
+/** 
+ * Agent with a set of tasks (Goals) and a model (Belief). 
+ * It bases its computations on a Belief, otherwise a model defined by parameters. 
+ * Each agent owns the intrinsic desire to achieve its Goal and become better at it. 
+ * 
+ * Algorithms are firstly classified according to the Goals ((Detector, Tracker, Vehicle Counter, Offense Detector…)) and secondly their belief.  
+ * 
+ * There will exists as many internal space discussions as there is tasks. 
+ * 
+ * Initially the algorithm, it exists in the realm of TOLD and within a Holon could exist infinite combination of models and parameters. 
+ * 
+ * @FIXME : Must be somewhere else
+ * The algorithm becomes operational when joining a Platform. However, the instance does not join another context but rather provide a replicate.
+ * The instance may due to local interactions, evolve to be better than to the original at this specific task and Location. 
+ * When that happens, the replicate may choose to adapt its belief accordingly and communicate to the original the decision. 
+ * If the latest follows, it universally and automatically suggests to child instances the modification. 
+ * They now share a new belief. In the case, it does not follow, the replicate will become a new Holon in the realm of TOLD and becomes a distinct entity
+ * 
+ * 
+ * @FIXME : The agent may change the belief but not the task. Maybe instead of IFs one should have a more scalable approach by creating specific
+ *  What I mean is we should have this algorithm extended and more specific goal-based name. Indeed, it will not be relevant to change the goal for now...  
+ * Second thoughts on 13/04. I am not very fond of this logic as it does not respect evolutionnary vision in addition. It does not bring 
+ * enough abstraction, bref while it could programming-wise convenient, it will just be a lack of effort in abstraction..)  
+ * 
+ * @TODO : draw the visual to show the holonic structure (it is not really holonical, actually it is)
+ * 
+ */
+@SuppressWarnings("potential_field_synchronization_problem")
+agent Algorithm extends Paraddis{
+	
+	uses Behaviors,Logging, Lifecycle, InnerContextAccess 
+	
+	var ADN : AlgorithmInfo = null; 
+
+	on Initialize {
+		ADN = occurrence.parameters.get(0) as AlgorithmInfo 
+		loggingName = "ALGORITHM-"+ ADN.name + "-"+ ADN.level +"-" + this.ID
+		
+		registerBehavior(new EntityRole(this))
+				
+		if(ADN.level==0){
+			var toSpawn = occurrence.parameters.get(1) as HashMap<UUID, AlgorithmInfo>
+			for (e : toSpawn.keySet) {
+				spawnInContextWithID(Algorithm, e, innerContext, toSpawn.get(e).IncrementLevelAndGet)}
+				}
+		
+		if(ADN.level>1){
+			info(" I am a copy of " + ADN.name)
+			switch(ADN.task){
+				case "COUNTER": {
+					registerBehavior(new CounterRole(this), ADN.belief, occurrence.parameters.get(1))
+				}
+				case "TRACKER": {
+					registerBehavior(new TrackerRole(this), ADN.belief, occurrence.parameters.get(1))
+				}
+				case "DETECTOR": {
+					registerBehavior(new DetectorRole(this), ADN.belief, occurrence.parameters.get(1))
+				}
+			}
+		 }
+		info("I believe in: " + ADN.name)
+		 
+	}
+	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	on AlgorithmNeeded {
+		if(occurrence.name == ADN.name)
+		{
+			info("One of my guy is needed " + occurrence.task + occurrence.belief)
+			spawnInContext(Algorithm, occurrence.contextID,(ADN.clone).IncrementLevelAndGet, occurrence.dest)
+			}
+		}
+
+	on AlgorithmJoinPlatform {
+		info("I received Algorithm Join Platform")
+		wake(
+			new AlgorithmNeeded(occurrence.contextID, occurrence.defaultSpaceID, occurrence.name, ADN.belief, occurrence.task, occurrence.source.UUID))
+	}
+}
+
+

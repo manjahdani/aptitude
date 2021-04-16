@@ -6,8 +6,9 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="72e43"/>
+		<item key="selection" value="Universe started"/>
 		<list key="findhistory">
+			<item value="Universe started"/>
 			<item value="72e43"/>
 			<item value="Closing stream 1 ---------------------"/>
 			<item value="I noticed the problem here"/>
@@ -22,7 +23,6 @@
 			<item value="b7b6e9e7-7a4c-42e8-9d13-c4b8a2dbc949"/>
 			<item value="a636af65-942e-422d-9a1d-f2a11cb7fadd"/>
 			<item value="true"/>
-			<item value="false"/>
 		</list>
 		<list key="replacehistory">
 		</list>

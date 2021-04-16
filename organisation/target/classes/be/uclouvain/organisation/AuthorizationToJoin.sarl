@@ -6,6 +6,7 @@ package be.uclouvain.organisation
 import io.sarl.lang.core.AgentContext
 import io.sarl.core.OpenEventSpace
 import java.util.UUID
+import be.uclouvain.organisation.platform.util.MissionData
 
 /** 
  * Positive answer to a request to join a context .
@@ -24,7 +25,7 @@ import java.util.UUID
  * The member agents do not receive this event from the parent agent because they are not yet created when the agent is spawned.@TODO "It's not clear, I do think that the sub-members should get it. 
  * 
  * @author $Author: manjahdani$
- * @version $0.1$
+ * @version $0.0.1$
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
@@ -43,7 +44,8 @@ event AuthorizationToJoin {
 	val defaultSpaceID : OpenEventSpace
 	
 	val entityID : UUID
-	val sensitivity : Integer
+	
+	val missionData : MissionData
 
 	/** 
 	 * The accepted sensitivity     
@@ -54,13 +56,18 @@ event AuthorizationToJoin {
 	 * @param	ctxt	The context to join
 	 * @param	sid	    The space in the context to join
 	 * 
-	 * @TODO Develop an abstract version
+	 * @FIXME : Develop an generic version
 	 */
-
-	new (ctxt : AgentContext, sid : OpenEventSpace, id : UUID, sensitivity : Integer) {
+	new(ctxt : AgentContext, sid : OpenEventSpace, id : UUID) {
 		this.contextID = ctxt
 		this.defaultSpaceID = sid
 		this.entityID = id
-		this.sensitivity=sensitivity
+		this.missionData = null
+	}
+	new (ctxt : AgentContext, sid : OpenEventSpace, id : UUID, missionData : MissionData) {
+		this.contextID = ctxt
+		this.defaultSpaceID = sid
+		this.entityID = id
+		this.missionData = missionData
 	}
 }

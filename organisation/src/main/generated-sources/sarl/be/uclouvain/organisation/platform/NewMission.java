@@ -5,7 +5,6 @@ import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Event;
-import io.sarl.lang.core.EventSpace;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -26,7 +25,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * The member agents do not receive this event from the parent agent because they are not yet created when the agent is spawned.@TODO "It's not clear, I do think that the sub-members should get it.
  * 
  * @author $Author: manjahdani$
- * @version $0.1$
+ * @version $0.0.1$
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
@@ -34,14 +33,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlSpecification("0.11")
 @SarlElementType(15)
 @SuppressWarnings("all")
-public class NewMission extends Event {
-  public final EventSpace SourceEventSpace;
+public class newMission extends Event {
+  public final MissionData Mission;
   
-  public final MissionData missionData;
-  
-  public NewMission(final EventSpace sourceEventSpace, final MissionData data) {
-    this.SourceEventSpace = sourceEventSpace;
-    this.missionData = data;
+  public newMission(final MissionData data) {
+    this.Mission = data;
   }
   
   @Override
@@ -60,16 +56,15 @@ public class NewMission extends Event {
   }
   
   /**
-   * Returns a String representation of the NewMission event's attributes only.
+   * Returns a String representation of the newMission event's attributes only.
    */
   @SyntheticMember
   @Pure
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
-    builder.add("SourceEventSpace", this.SourceEventSpace);
-    builder.add("missionData", this.missionData);
+    builder.add("Mission", this.Mission);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = 1758196146L;
+  private static final long serialVersionUID = 496002769L;
 }
