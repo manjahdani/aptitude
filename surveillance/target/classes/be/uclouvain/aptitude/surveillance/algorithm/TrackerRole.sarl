@@ -14,6 +14,12 @@ import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import be.uclouvain.organisation.platform.AddAlgorithm
 import be.uclouvain.organisation.told.util.AlgorithmInfo
+import java.io.FileWriter
+import java.util.LinkedList
+import java.util.Collections
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxes2D
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBOX
+import java.util.ArrayList
 
 /** 
  * @FIXME : IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -36,14 +42,20 @@ import be.uclouvain.organisation.told.util.AlgorithmInfo
  * 
  */
 behavior TrackerRole extends ObserverRole {
+	
 	uses Logging, PythonTwinObserverAccess, DefaultContextInteractions
 
 	var partnerTrackingName : String
 
 
-	val intensityMap = new TreeMap<Integer, Integer> 
-	
+	val intensityMap = new TreeMap<Integer, Integer>
+
+	var gt :FileWriter
 	val availableObservers = newArrayList("TinyYOLO", "YOLO") //@FIXME should be given by the Analyst which makes it configurable ? 
+	
+	var totalTrackerTime : long = 0
+	val dynamicTrackingMemory = Collections.synchronizedList(new LinkedList<ArrayList<BBoxes2D>>)
+	
 	on Initialize {
 		intensityMap.put(0, 1)
 		intensityMap.put(1, 0)
@@ -76,21 +88,49 @@ behavior TrackerRole extends ObserverRole {
 		sensitivity.set(occurrence.s)
 		val ObserverName = availableObservers.get(intensityMap.get(sensitivity.get))
 		info("Come here : " + ObserverName)
-
 		PlatformSpace.emit(this.ID,new AddAlgorithm(MissionSpace, new AlgorithmInfo(ObserverName, "DETECTOR")))[it.UUID == PlatformContext.ID]
 	}
 
 	on BBoxes2DTrackResult {
-		emit(new BBoxes2DTrackResult(occurrence.bboxes2DTrack))[it.UUID == observerID]
-		 //println("***********************")
-		 //println("* Tracking " + occurrence.bboxes2DTrack.frameNumber)
-		// println("*  " + occurrence.bboxes2DTrack.trackingTime)
-		// println("*  " + Arrays.toString(occurrence.bboxes2DTrack.globalIDs))
-		// println("*  " + Arrays.toString(occurrence.bboxes2DTrack.bboxes))
-		// println("*  " + Arrays.toString(occurrence.bboxes2DTrack.classIDs))
-		// println("*  " + Arrays.toString(occurrence.bboxes2DTrack.detConfs))
-		// println("*  " + occurrence.bboxes2DTrack.lastFrame)
-		// println("***********************")
+		//emit(new BBoxes2DTrackResult(occurrence.bboxes2DTrack))[it.UUID == observerID]
+		
+		var ratio_width = 1920.0 / occurrence.bboxes2DTrack.dimWidth
+		var ratio_height = 1080.0 / occurrence.bboxes2DTrack.dimHeight
+		var frameNumber = occurrence.bboxes2DTrack.frameNumber
+		
+		var tmp = newArrayList
+		
+		for (var i = 0; i < occurrence.bboxes2DTrack.numberObjects; i++) {
+			var X = occurrence.bboxes2DTrack.bboxes.get(4 * i) * ratio_width
+			var Y = occurrence.bboxes2DTrack.bboxes.get(4 * i + 1) * ratio_height
+			var W = occurrence.bboxes2DTrack.bboxes.get(4 * i + 2) * ratio_width
+			var H = occurrence.bboxes2DTrack.bboxes.get(4 * i + 3) * ratio_height
+			var classID = occurrence.bboxes2DTrack.classIDs.get(i)
+			var globalID = occurrence.bboxes2DTrack.globalIDs.get(i)
+			var conf = occurrence.bboxes2DTrack.detConfs.get(i)
+			
+			gt.write(
+				(frameNumber + 1).toString + "," + globalID.toString + "," + X.intValue.toString + "," + 
+				 Y.intValue.toString + "," + 
+				 W.intValue.toString + "," +
+				 H.intValue.toString + "," + 
+				 "-1" +
+				  "," + "-1" + "," + "-1" + "," + "-1" + "\n"
+			)
+
+			tmp.add(new BBoxes2D(new BBOX(X, Y, W, H), conf, globalID, classID, frameNumber))}
+			
+			dynamicTrackingMemory.add(frameNumber,tmp)
+		
+			 // println("***********************")
+			 // println("* Tracking " + occurrence.bboxes2DTrack.frameNumber)
+			 // println("*  " + occurrence.bboxes2DTrack.trackingTime)
+			 // println("*  " + Arrays.toString(occurrence.bboxes2DTrack.globalIDs))
+			 // println("*  " + Arrays.toString(occurrence.bboxes2DTrack.bboxes))
+			 // println("*  " + Arrays.toString(occurrence.bboxes2DTrack.classIDs))
+			 // println("*  " + Arrays.toString(occurrence.bboxes2DTrack.detConfs))
+			 // println("*  " + occurrence.bboxes2DTrack.lastFrame)
+			 // println("***********************")
 	}
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on BBoxes2DResult {

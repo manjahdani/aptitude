@@ -1,0 +1,118 @@
+/** 
+ * @Name       : PlatformRole
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1 
+ * @Date       : 22/03/2021 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm
+
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBOX
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxes2D
+import be.uclouvain.organisation.platform.AddAlgorithm
+import be.uclouvain.organisation.platform.CounterObserverCapacity
+import be.uclouvain.organisation.platform.MissionSensitivity
+import be.uclouvain.organisation.platform.ObserverRole
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import java.util.ArrayList
+import java.util.TreeMap
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import java.io.FileWriter; // Import the FileWriter class
+import java.io.IOException; // Import the IOException class to handle errors
+
+/** 
+ * The CounterRole is a behaviour that an agent Algorithm endorses upon a mission to count vehicles
+ * 
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.2$
+ * @date $16/04/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
+ * 
+ */
+
+behavior CounterRole extends ObserverRole {
+	
+	uses Logging, ExternalContextAccess, CounterObserverCapacity
+
+	var start : long
+	val availableObservers = newArrayList("SORT", "DeepSORT")
+	
+	val intensityMap = new TreeMap<Integer, Integer> 
+	
+	val ObjectPresentInframe = new TreeMap<Integer, BBoxes2D>
+	val ObjectToBeAnalyzed = new ArrayList<BBoxes2D>;
+	var gt = new FileWriter("F:\\Tests.txt")
+	
+	// end
+	on Initialize {
+		intensityMap.put(0, 1)
+		intensityMap.put(1, 0)
+		intensityMap.put(2, 1)
+		intensityMap.put(3, 0)
+		setSkill(new CountingSkill,CounterObserverCapacity)
+	
+	}
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on MissionSensitivity {
+		sensitivity.set(occurrence.s)
+		val ObserverName = availableObservers.get(intensityMap.get(sensitivity.get))
+		info("Come here : " + ObserverName)
+		this.start = System.currentTimeMillis()
+		PlatformSpace.emit(new AddAlgorithm(MissionSpace,new AlgorithmInfo(ObserverName,"TRACKER")))[it.UUID==PlatformContext.ID]
+	}
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on BBoxes2DTrackResult {
+		
+		var ratio_width = 1920.0 / occurrence.bboxes2DTrack.dimWidth
+		var ratio_height = 1080.0 / occurrence.bboxes2DTrack.dimHeight
+		var frameNumber = occurrence.bboxes2DTrack.frameNumber
+
+		ObjectToBeAnalyzed.clear
+
+		for (var i = 0; i < occurrence.bboxes2DTrack.numberObjects; i++) {
+			var X = occurrence.bboxes2DTrack.bboxes.get(4 * i) * ratio_width
+			var Y = occurrence.bboxes2DTrack.bboxes.get(4 * i + 1) * ratio_height
+			var W = occurrence.bboxes2DTrack.bboxes.get(4 * i + 2) * ratio_width
+			var H = occurrence.bboxes2DTrack.bboxes.get(4 * i + 3) * ratio_height
+			var classID = occurrence.bboxes2DTrack.classIDs.get(i)
+			var globalID = occurrence.bboxes2DTrack.globalIDs.get(i)
+			var conf = occurrence.bboxes2DTrack.detConfs.get(i)
+			
+			
+			if(frameNumber<100)
+			{
+			gt.write(frameNumber.toString + ","+ globalID.toString + "," + X.intValue.toString + "," + Y.intValue.toString + ","+ W.intValue.toString + ","+ H.intValue.toString + ","+ conf.floatValue.toString + ","+"-1" + "," + "-1" + "," + "-1" + "\n"
+			)
+			}
+			else{
+				gt.close
+			}
+			if (ObjectPresentInframe.containsKey(globalID)) {
+				ObjectPresentInframe.get(globalID).update(X, Y, W, H, classID, frameNumber, conf)
+			} else {
+				ObjectPresentInframe.put(globalID,
+					new BBoxes2D(new BBOX(X, Y, W, H), conf, globalID, classID, frameNumber))
+			}
+
+			ObjectToBeAnalyzed.add(ObjectPresentInframe.get(globalID))
+		}
+		
+		Signal2Perception(new ArrayList(ObjectToBeAnalyzed)) // Activate its capacity to interpret a perception 
+		
+		if (occurrence.bboxes2DTrack.lastFrame) {
+			info("That was it!" )
+			val totalTime = (((System.currentTimeMillis() - this.start) / 1000))
+			info("It took " + totalTime.toString + " seconds")
+			info("Average FPS : " + (occurrence.bboxes2DTrack.frameNumber / totalTime).toString)
+			info("I will transfer my perception to the Analyst")
+			DisplayPerception
+		}
+	}
+}
+

@@ -47,6 +47,7 @@ behavior PlatformRole {
 		//if (true) {
 			MissionsSpace.put(occurrence.MissionData.missionID, innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, occurrence.MissionData.missionID))
 			emit(occurrence.SourceEventSpace,
+				
 				new AuthorizationToJoin(innerContext,MissionsSpace.get(occurrence.MissionData.missionID),occurrence.source.getUUID, occurrence.MissionData))[it.UUID == occurrence.source.getUUID]
 	}
 	

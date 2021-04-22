@@ -3,7 +3,7 @@ package be.uclouvain.aptitude.surveillance.algorithm;
 import be.uclouvain.aptitude.surveillance.algorithm.BBoxes2DResult;
 import be.uclouvain.aptitude.surveillance.algorithm.CommunicationManager;
 import be.uclouvain.aptitude.surveillance.algorithm.PartnerDetectionFound;
-import be.uclouvain.aptitude.surveillance.algorithm.PythonAccess;
+import be.uclouvain.aptitude.surveillance.algorithm.PythonAccessObserver;
 import be.uclouvain.aptitude.surveillance.algorithm.messages.ActionMessage;
 import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DMessage;
 import be.uclouvain.aptitude.surveillance.algorithm.messages.BaseMessage;
@@ -34,7 +34,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlSpecification("0.11")
 @SarlElementType(22)
 @SuppressWarnings("all")
-public class DetectorPythonTwin extends PythonAccess implements Capacity {
+public class DetectorPythonTwin extends PythonAccessObserver implements Capacity {
   public void update(final BaseMessage m) {
     if ((m instanceof BBoxes2DMessage)) {
       Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();

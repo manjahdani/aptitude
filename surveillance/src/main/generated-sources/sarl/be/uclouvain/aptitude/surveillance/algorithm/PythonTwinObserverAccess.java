@@ -1,5 +1,6 @@
 package be.uclouvain.aptitude.surveillance.algorithm;
 
+import be.uclouvain.aptitude.surveillance.algorithm.PythonAccessCapacity;
 import be.uclouvain.aptitude.surveillance.algorithm.messages.BaseMessage;
 import be.uclouvain.organisation.platform.ObserverCapacity;
 import io.sarl.lang.annotation.SarlElementType;
@@ -19,12 +20,14 @@ import org.json.simple.JSONObject;
 @SarlSpecification("0.11")
 @SarlElementType(20)
 @SuppressWarnings("all")
-public interface PythonTwinObserverAccess extends ObserverCapacity {
+public interface PythonTwinObserverAccess extends ObserverCapacity, PythonAccessCapacity {
+  public abstract void UpdateStreamAccess(final int actionID, final int newFrameNumber);
+  
   public abstract void ActivateAccess(final JSONObject j);
   
-  public abstract void UpdateStreamAccess(final int a);
-  
   public abstract void update(final BaseMessage m);
+  
+  public abstract void UpdateStreamAccess(final int a);
   
   /**
    * @ExcludeFromApidoc
@@ -32,6 +35,15 @@ public interface PythonTwinObserverAccess extends ObserverCapacity {
   public static class ContextAwareCapacityWrapper<C extends PythonTwinObserverAccess> extends ObserverCapacity.ContextAwareCapacityWrapper<C> implements PythonTwinObserverAccess {
     public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {
       super(capacity, caller);
+    }
+    
+    public void UpdateStreamAccess(final int actionID, final int newFrameNumber) {
+      try {
+        ensureCallerInLocalThread();
+        this.capacity.UpdateStreamAccess(actionID, newFrameNumber);
+      } finally {
+        resetCallerInLocalThread();
+      }
     }
     
     public void ActivateAccess(final JSONObject j) {
@@ -43,19 +55,19 @@ public interface PythonTwinObserverAccess extends ObserverCapacity {
       }
     }
     
-    public void UpdateStreamAccess(final int a) {
+    public void update(final BaseMessage m) {
       try {
         ensureCallerInLocalThread();
-        this.capacity.UpdateStreamAccess(a);
+        this.capacity.update(m);
       } finally {
         resetCallerInLocalThread();
       }
     }
     
-    public void update(final BaseMessage m) {
+    public void UpdateStreamAccess(final int a) {
       try {
         ensureCallerInLocalThread();
-        this.capacity.update(m);
+        this.capacity.UpdateStreamAccess(a);
       } finally {
         resetCallerInLocalThread();
       }

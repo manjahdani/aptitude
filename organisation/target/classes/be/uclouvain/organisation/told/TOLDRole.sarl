@@ -50,8 +50,7 @@ behavior TOLDRole {
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on AddMember{
 		info("AddMember")
-		occurrence.SourceEventSpace.
-			emit(this.ID, new AuthorizationToJoin(innerContext, innerContext.getDefaultSpace as OpenEventSpace, occurrence.source.getUUID))
+		occurrence.SourceEventSpace.emit(this.ID, new AuthorizationToJoin(innerContext, innerContext.getDefaultSpace as OpenEventSpace, occurrence.source.getUUID))
 	}
 	on MemberJoined {
 		val MemberID = occurrence.agentID; 

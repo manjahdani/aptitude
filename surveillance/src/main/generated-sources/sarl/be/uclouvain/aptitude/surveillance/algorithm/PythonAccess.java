@@ -1,9 +1,8 @@
 package be.uclouvain.aptitude.surveillance.algorithm;
 
 import be.uclouvain.aptitude.surveillance.algorithm.CommunicationManager;
-import be.uclouvain.aptitude.surveillance.algorithm.PythonTwinObserverAccess;
+import be.uclouvain.aptitude.surveillance.algorithm.PythonAccessCapacity;
 import be.uclouvain.aptitude.surveillance.algorithm.messages.ActionMessage;
-import be.uclouvain.aptitude.surveillance.algorithm.messages.BaseMessage;
 import be.uclouvain.aptitude.surveillance.algorithm.messages.RequestMessage;
 import com.hazelcast.util.UuidUtil;
 import io.sarl.core.AgentTask;
@@ -34,7 +33,7 @@ import org.json.simple.JSONObject;
 @SarlSpecification("0.11")
 @SarlElementType(22)
 @SuppressWarnings("all")
-public abstract class PythonAccess extends Skill implements PythonTwinObserverAccess {
+public abstract class PythonAccess extends Skill implements PythonAccessCapacity {
   protected String topicRequestSub;
   
   protected String topicSignalAcquisition;
@@ -81,18 +80,27 @@ public abstract class PythonAccess extends Skill implements PythonTwinObserverAc
     this.requestTask = _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER.every(1000, _function);
   }
   
+  /**
+   * info("I am sending the action: " + actionID)
+   * var actionMessage = new ActionMessage() //@TODO : Strange way of doing it
+   * actionMessage.actionID = actionID
+   * 
+   * CommunicationManager.instance.publishMessage(topicSignalAcquisition, actionMessage)
+   */
   @SuppressWarnings("potential_field_synchronization_problem")
   public void UpdateStreamAccess(final int actionID) {
+    this.UpdateStreamAccess(actionID, (-1));
+  }
+  
+  public void UpdateStreamAccess(final int actionID, final int newFrameNumber) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I am sending the action: " + Integer.valueOf(actionID)));
     ActionMessage actionMessage = new ActionMessage();
     actionMessage.setActionID(actionID);
+    if ((newFrameNumber != (-1))) {
+      actionMessage.setNewFrameNumber(newFrameNumber);
+    }
     CommunicationManager.getInstance().publishMessage(this.topicSignalAcquisition, actionMessage);
-  }
-  
-  @SuppressWarnings("potential_field_synchronization_problem")
-  public void Signal2Perception(final Object detectionMessage) {
-    CommunicationManager.getInstance().publishMessage(this.topicSignalAcquisition, ((BaseMessage) detectionMessage));
   }
   
   @Extension

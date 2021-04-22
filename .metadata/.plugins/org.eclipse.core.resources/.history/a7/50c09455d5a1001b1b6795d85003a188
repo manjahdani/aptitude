@@ -1,0 +1,86 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm
+
+import be.uclouvain.aptitude.surveillance.algorithm.messages.BaseMessage
+import be.uclouvain.aptitude.surveillance.algorithm.messages.EvaluationMessage
+import be.uclouvain.aptitude.surveillance.algorithm.messages.RequestMessage
+import be.uclouvain.organisation.platform.ObserverCapacity
+import io.sarl.core.Behaviors
+import io.sarl.core.Schedules
+import org.json.simple.JSONObject
+import io.sarl.core.DefaultContextInteractions
+
+/** 
+ * @TODO: write a description
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
+ * 
+ */
+
+
+capacity PythonTwinObserverAccess extends ObserverCapacity, PythonAccessCapacity{
+
+	def UpdateStreamAccess(actionID : int, newFrameNumber : int);
+
+	def ActivateAccess(j : JSONObject)
+
+	def update(m : BaseMessage)
+
+	def UpdateStreamAccess(a : int) 	// @FIXME is it possible to implement it in a variadic function
+}
+
+capacity PythonAccessCapacity {
+	
+	def ActivateAccess(j : JSONObject)
+
+	def update(m : BaseMessage)
+	
+	def UpdateStreamAccess(a : int)
+}
+
+
+capacity Evaluation extends PythonAccessCapacity {
+
+	def sendEvaluationRequest(requestID : String, predictions : String, gts : String)
+}
+
+skill EvaluationImpl extends PythonAccess implements Evaluation {
+	
+	uses Behaviors,Schedules 
+	
+	def update(m : BaseMessage) {
+		if (m instanceof EvaluationMessage) {
+			if (m.ack) {
+				wake(new EvaluationResult(m))
+			}
+		} else if (m instanceof RequestMessage) {
+			onRequestMessage(m)
+		}
+	}
+
+	private def onRequestMessage(message : RequestMessage) {
+		if (message.ack && message.requestID == this.pendingRequestID) {
+			requestTask.cancel
+			CommunicationManager.instance.unsubscribeTopic(topicRequestSub)
+			topicRequestSub = null
+			val topicName = "evaluation_" + owner.ID.toString + "_" + message.clientName
+			topicSignalAcquisition = CommunicationManager.instance.subscribeTopic(topicName, this)
+			wake(new PartnerEvaluationFound(message.clientName))
+		}
+	}
+	def sendEvaluationRequest(requestID: String, predictions : String, gts : String) {
+		var evalMessage = new EvaluationMessage()
+		evalMessage.requestID = requestID
+		evalMessage.predictions = predictions
+		evalMessage.gts = gts
+		CommunicationManager.instance.publishMessage(topicSignalAcquisition, evalMessage)
+
+	}
+	
+}

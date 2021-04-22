@@ -1,0 +1,35 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+/** 
+ * Communicate the MissionSensitivity 
+ *   
+ * The source is an Observer or Analyst role 
+ * 
+ * <h4>For an Agent</h4>
+ * Algorithm
+ * 
+ * <h4>For a Behavior</h4>
+ * The receiver is an Observer role 
+ * 
+ * <h4>For a Skill</h4>
+ * No skill receives this event.
+ * 
+ * <h4>For Agent Members</h4>
+ * @TODO : clarify ? 
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ */
+event MissionSensitivity{
+	val s : int
+	
+	new(s:int){
+		this.s=s
+	}
+}

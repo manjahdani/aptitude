@@ -24,7 +24,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="One of my guy is needed none"/>
+			<item key="textPattern" value="I received evaluation"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -39,7 +39,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="AlgorithmJoinPlatform"/>
+			<item key="textPattern" value="Evaluation message received"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -51,7 +51,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="AddAlgorithm"/>
+			<item key="textPattern" value="Evaluation Sent to Python"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -63,7 +63,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="AnalystRole"/>
+			<item key="textPattern" value="Process is going on false"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -75,7 +75,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="NewMission"/>
+			<item key="textPattern" value="Signal2Perception"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -87,7 +87,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="AddMember"/>
+			<item key="textPattern" value="One of my guy is needed none"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -99,7 +99,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="LocalDatabaseRequest"/>
+			<item key="textPattern" value="AlgorithmJoinPlatform"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -111,7 +111,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="SensititvityRequest"/>
+			<item key="textPattern" value="AddAlgorithm"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -123,7 +123,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Come here : SORT"/>
+			<item key="textPattern" value="AnalystRole"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -135,7 +135,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Thank you for joining the mission. Please use the following sensitivity"/>
+			<item key="textPattern" value="NewMission"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -147,7 +147,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="setSkill"/>
+			<item key="textPattern" value="AddMember"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -159,7 +159,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="ElementInformation"/>
+			<item key="textPattern" value="LocalDatabaseRequest"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>

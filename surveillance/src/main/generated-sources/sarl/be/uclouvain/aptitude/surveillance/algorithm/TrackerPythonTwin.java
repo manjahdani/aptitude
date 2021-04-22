@@ -3,7 +3,7 @@ package be.uclouvain.aptitude.surveillance.algorithm;
 import be.uclouvain.aptitude.surveillance.algorithm.BBoxes2DTrackResult;
 import be.uclouvain.aptitude.surveillance.algorithm.CommunicationManager;
 import be.uclouvain.aptitude.surveillance.algorithm.PartnerTrackingFound;
-import be.uclouvain.aptitude.surveillance.algorithm.PythonAccess;
+import be.uclouvain.aptitude.surveillance.algorithm.PythonAccessObserver;
 import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DTrackMessage;
 import be.uclouvain.aptitude.surveillance.algorithm.messages.BaseMessage;
 import be.uclouvain.aptitude.surveillance.algorithm.messages.RequestMessage;
@@ -32,7 +32,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlSpecification("0.11")
 @SarlElementType(22)
 @SuppressWarnings("all")
-public class TrackerPythonTwin extends PythonAccess implements Capacity {
+public class TrackerPythonTwin extends PythonAccessObserver implements Capacity {
   public void update(final BaseMessage m) {
     if ((m instanceof BBoxes2DTrackMessage)) {
       Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();

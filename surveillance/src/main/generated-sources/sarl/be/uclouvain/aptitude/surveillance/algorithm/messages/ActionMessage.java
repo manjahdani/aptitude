@@ -25,12 +25,16 @@ public class ActionMessage extends BaseMessage {
    * STOP = 4
    * RESTART = 5
    * SEEK = 6
+   * KILL = 7
    */
   @Accessors({ AccessorType.PUBLIC_GETTER, AccessorType.PUBLIC_SETTER })
   private int actionID;
   
   @Accessors({ AccessorType.PUBLIC_GETTER, AccessorType.PUBLIC_SETTER })
   private int lastFrameNumber;
+  
+  @Accessors({ AccessorType.PUBLIC_GETTER, AccessorType.PUBLIC_SETTER })
+  private int newFrameNumber;
   
   private final int FACTORY_ID = 1;
   
@@ -48,12 +52,14 @@ public class ActionMessage extends BaseMessage {
     super.readData(odi);
     this.actionID = odi.readInt();
     this.lastFrameNumber = odi.readInt();
+    this.newFrameNumber = odi.readInt();
   }
   
   public void writeData(final ObjectDataOutput odo) throws IOException {
     super.writeData(odo);
     odo.writeInt(this.actionID);
     odo.writeInt(this.lastFrameNumber);
+    odo.writeInt(this.newFrameNumber);
   }
   
   @Override
@@ -71,6 +77,8 @@ public class ActionMessage extends BaseMessage {
       return false;
     if (other.lastFrameNumber != this.lastFrameNumber)
       return false;
+    if (other.newFrameNumber != this.newFrameNumber)
+      return false;
     if (other.FACTORY_ID != this.FACTORY_ID)
       return false;
     if (other.CLASS_ID != this.CLASS_ID)
@@ -86,6 +94,7 @@ public class ActionMessage extends BaseMessage {
     final int prime = 31;
     result = prime * result + Integer.hashCode(this.actionID);
     result = prime * result + Integer.hashCode(this.lastFrameNumber);
+    result = prime * result + Integer.hashCode(this.newFrameNumber);
     result = prime * result + Integer.hashCode(this.FACTORY_ID);
     result = prime * result + Integer.hashCode(this.CLASS_ID);
     return result;
@@ -112,5 +121,14 @@ public class ActionMessage extends BaseMessage {
   
   public void setLastFrameNumber(final int lastFrameNumber) {
     this.lastFrameNumber = lastFrameNumber;
+  }
+  
+  @Pure
+  public int getNewFrameNumber() {
+    return this.newFrameNumber;
+  }
+  
+  public void setNewFrameNumber(final int newFrameNumber) {
+    this.newFrameNumber = newFrameNumber;
   }
 }

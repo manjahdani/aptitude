@@ -1,0 +1,8 @@
+{
+    "Proc":{    
+        "Evaluator":{
+            "type": "MOT2DBBoxes"
+            "metrics": ["HOTA", "CLEAR", "Identity", "VACE", "Count"]
+        }
+    }
+}

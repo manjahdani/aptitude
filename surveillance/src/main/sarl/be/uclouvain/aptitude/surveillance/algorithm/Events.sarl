@@ -2,13 +2,14 @@ package be.uclouvain.aptitude.surveillance.algorithm
 
 import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DMessage
 import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DTrackMessage
+import be.uclouvain.aptitude.surveillance.algorithm.messages.EvaluationMessage
 
 event BBoxes2DResult {
-	
+
 	var bboxes2D : BBoxes2DMessage
-	
-	//TODO Create a BBoxes2D Object
-	new(message: BBoxes2DMessage) {
+
+	// TODO Create a BBoxes2D Object
+	new(message : BBoxes2DMessage) {
 		this.bboxes2D = message
 	}
 }
@@ -23,6 +24,13 @@ event BBoxes2DTrackResult {
 	}
 }
 
+event EvaluationResult {
+	var result : EvaluationMessage
+
+	new(message : EvaluationMessage) {
+		this.result = message
+	}
+}
 
 event PartnerDetectionFound {
 	var partnerName : String
@@ -33,6 +41,14 @@ event PartnerDetectionFound {
 }
 
 event PartnerTrackingFound {
+	var partnerName : String
+
+	new(partnerName : String) {
+		this.partnerName = partnerName
+	}
+}
+
+event PartnerEvaluationFound {
 	var partnerName : String
 
 	new(partnerName : String) {

@@ -1,0 +1,126 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm
+
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBOX
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxes2D
+import be.uclouvain.organisation.platform.AddAlgorithm
+import be.uclouvain.organisation.platform.CounterObserverCapacity
+import be.uclouvain.organisation.platform.MissionSensitivity
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import java.io.FileReader
+import java.io.FileWriter
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.ArrayList
+import java.util.TreeMap
+import java.util.UUID
+import org.json.simple.JSONObject
+import org.json.simple.parser.JSONParser
+import be.uclouvain.organisation.platform.ObserverRole
+import java.util.concurrent.atomic.AtomicInteger
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior CompetitiveCounterRole extends ObserverRole {
+	uses Logging, ExternalContextAccess, CounterObserverCapacity, Evaluation
+
+	var Comp_Duration : long
+
+	val AVAILABLE_OBSERVERS = newArrayList("SORT", "DeepSORT")
+	
+	
+		
+	
+	val ObjectPresentInframe = new TreeMap<Integer, BBoxes2D>
+	val ObjectToBeAnalyzed = new ArrayList<BBoxes2D>;
+
+	
+	
+	var EvaluationPartnerName : String;
+
+	// end
+on Initialize {
+
+		SENSITIVITY.add(new AtomicInteger(0))
+		SENSITIVITY.add(new AtomicInteger(1))
+		setSkill(new EvaluationImpl, Evaluation)
+		var configPath = "F:/aptitude/surveillance/src/main/resources/config/evalconfig.json"
+		var parser = new JSONParser();
+		var configPathEvaluator = configPath
+		var jsonEvaluator = parser.parse(new FileReader(configPathEvaluator)) as JSONObject;
+		ActivateAccess(jsonEvaluator)
+	}
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on PartnerEvaluationFound {
+		EvaluationPartnerName = occurrence.partnerName
+		info("I found my partner" + EvaluationPartnerName)
+		this.Comp_Duration = System.currentTimeMillis()
+	}
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on MissionSensitivity {
+		sensitivity.set(occurrence.s)
+		for (ObserverName : AVAILABLE_OBSERVERS) {
+			info("Come here : " + ObserverName)
+			PlatformSpace.emit(
+				new AddAlgorithm(MissionSpace,
+					new AlgorithmInfo(ObserverName, "TRACKER")))[it.UUID == PlatformContext.ID]
+		}
+
+	}
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on BBoxes2DTrackResult {
+			if (ObjectPresentInframe.containsKey(globalID)) {
+				ObjectPresentInframe.get(globalID).update(X, Y, W, H, classID, frameNumber, conf)
+			} else {
+				ObjectPresentInframe.put(globalID,
+					new BBoxes2D(new BBOX(X, Y, W, H), conf, globalID, classID, frameNumber))
+			}
+			ObjectToBeAnalyzed.add(ObjectPresentInframe.get(globalID))
+		}
+
+		
+		Signal2Perception(new ArrayList(ObjectToBeAnalyzed)) // Activate its capacity to interpret a perception
+		if (occurrence.bboxes2DTrack.lastFrame) {
+			info("That was it!")
+			val totalTime = (((System.currentTimeMillis() - this.start) / 1000))
+			info("It took " + totalTime.toString + " seconds")
+			info("Average FPS : " + (occurrence.bboxes2DTrack.frameNumber / totalTime).toString)
+			info("I will transfer my perception to the Analyst")
+			DisplayPerception
+			gt.close
+
+			info("Sending to evaluation")
+			var predFile = "F:/TinySort.txt"
+			var gtFile = "F:/gt.txt"
+			var predictions = new String(Files.readAllBytes(Paths.get(predFile)));
+			var gts = new String(Files.readAllBytes(Paths.get(gtFile)))
+			sendEvaluationRequest(UUID.randomUUID.toString, predictions, gts)
+		}
+	}
+
+	on EvaluationResult {
+		// time2 = System.currentTimeMillis()
+		// println(time2 - time1)
+		// println(time2 - time3)
+		info("Message Evaluation Received")
+		println("reqID \t" + occurrence.result.requestID)
+		println("HOTA \t" + occurrence.result.HOTA)
+		println("DetA \t" + occurrence.result.detA)
+		println("AssA \t" + occurrence.result.assA)
+		println("DetRe \t" + occurrence.result.detRe)
+		println("DetPr \t" + occurrence.result.detPr)
+		println("AssRe \t" + occurrence.result.assRe)
+		println("AssPr \t" + occurrence.result.assPr)
+		println("LocA \t" + occurrence.result.locA)
+	}
+}

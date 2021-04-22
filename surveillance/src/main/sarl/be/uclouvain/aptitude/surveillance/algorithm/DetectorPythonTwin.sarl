@@ -22,7 +22,7 @@ import be.uclouvain.aptitude.surveillance.algorithm.messages.ActionMessage
  * @mavenartifactid $surveillance$
  * 
  */
-skill DetectorPythonTwin extends PythonAccess {
+skill DetectorPythonTwin extends PythonAccessObserver {
 	
 	uses Logging, Behaviors, Schedules
 

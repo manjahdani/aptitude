@@ -29,8 +29,8 @@ behavior DetectorRole extends ObserverRole {
 
 	var partnerDetectionName : String
 
-
 	on Initialize {
+		
 		setSkill(new DetectorPythonTwin)
 		var parser = new JSONParser();
 		var configPathDetector = occurrence.parameters.get(0).toString
@@ -51,7 +51,6 @@ behavior DetectorRole extends ObserverRole {
 	on BBoxes2DResult{
 		
 		emit(new BBoxes2DResult(occurrence.bboxes2D))[it.UUID == observerID]
-
 		 //println("***********************")
 		//println("---- etectionD " + occurrence.bboxes2D.frameNumber)
 		// println("*  " + Arrays.toString(occurrence.bboxes2D.bboxes))

@@ -5,6 +5,8 @@ import be.uclouvain.aptitude.surveillance.algorithm.BBoxes2DTrackResult;
 import be.uclouvain.aptitude.surveillance.algorithm.PartnerTrackingFound;
 import be.uclouvain.aptitude.surveillance.algorithm.PythonTwinObserverAccess;
 import be.uclouvain.aptitude.surveillance.algorithm.TrackerPythonTwin;
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBOX;
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxes2D;
 import be.uclouvain.organisation.platform.AddAlgorithm;
 import be.uclouvain.organisation.platform.LeavePlatform;
 import be.uclouvain.organisation.platform.MissionSensitivity;
@@ -26,9 +28,13 @@ import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.util.SerializableProxy;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.TreeMap;
 import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
@@ -65,7 +71,13 @@ public class TrackerRole extends ObserverRole {
   
   private final TreeMap<Integer, Integer> intensityMap = new TreeMap<Integer, Integer>();
   
+  private FileWriter gt;
+  
   private final ArrayList<String> availableObservers = CollectionLiterals.<String>newArrayList("TinyYOLO", "YOLO");
+  
+  private long totalTrackerTime = 0;
+  
+  private final List<ArrayList<BBoxes2D>> dynamicTrackingMemory = Collections.<ArrayList<BBoxes2D>>synchronizedList(new LinkedList<ArrayList<BBoxes2D>>());
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     try {
@@ -142,33 +154,45 @@ public class TrackerRole extends ObserverRole {
   }
   
   private void $behaviorUnit$BBoxes2DTrackResult$5(final BBoxes2DTrackResult occurrence) {
-    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-    BBoxes2DTrackResult _bBoxes2DTrackResult = new BBoxes2DTrackResult(occurrence.bboxes2DTrack);
-    class $SerializableClosureProxy implements Scope<Address> {
-      
-      private final UUID $_observerID_1;
-      
-      public $SerializableClosureProxy(final UUID $_observerID_1) {
-        this.$_observerID_1 = $_observerID_1;
+    try {
+      int _dimWidth = occurrence.bboxes2DTrack.getDimWidth();
+      double ratio_width = (1920.0 / _dimWidth);
+      int _dimHeight = occurrence.bboxes2DTrack.getDimHeight();
+      double ratio_height = (1080.0 / _dimHeight);
+      int frameNumber = occurrence.bboxes2DTrack.getFrameNumber();
+      ArrayList<BBoxes2D> tmp = CollectionLiterals.<BBoxes2D>newArrayList();
+      for (int i = 0; (i < occurrence.bboxes2DTrack.getNumberObjects()); i++) {
+        {
+          int _get = occurrence.bboxes2DTrack.getBboxes()[(4 * i)];
+          double X = (_get * ratio_width);
+          int _get_1 = occurrence.bboxes2DTrack.getBboxes()[((4 * i) + 1)];
+          double Y = (_get_1 * ratio_height);
+          int _get_2 = occurrence.bboxes2DTrack.getBboxes()[((4 * i) + 2)];
+          double W = (_get_2 * ratio_width);
+          int _get_3 = occurrence.bboxes2DTrack.getBboxes()[((4 * i) + 3)];
+          double H = (_get_3 * ratio_height);
+          int classID = occurrence.bboxes2DTrack.getClassIDs()[i];
+          int globalID = occurrence.bboxes2DTrack.getGlobalIDs()[i];
+          double conf = occurrence.bboxes2DTrack.getDetConfs()[i];
+          String _string = Integer.valueOf((frameNumber + 1)).toString();
+          String _string_1 = Integer.valueOf(globalID).toString();
+          String _string_2 = Integer.valueOf(Double.valueOf(X).intValue()).toString();
+          String _string_3 = Integer.valueOf(Double.valueOf(Y).intValue()).toString();
+          String _string_4 = Integer.valueOf(Double.valueOf(W).intValue()).toString();
+          String _string_5 = Integer.valueOf(Double.valueOf(H).intValue()).toString();
+          this.gt.write(
+            (((((((((((((((((((_string + ",") + _string_1) + ",") + _string_2) + ",") + _string_3) + ",") + _string_4) + ",") + _string_5) + ",") + 
+              "-1") + 
+              ",") + "-1") + ",") + "-1") + ",") + "-1") + "\n"));
+          BBOX _bBOX = new BBOX(X, Y, W, H);
+          BBoxes2D _bBoxes2D = new BBoxes2D(_bBOX, conf, globalID, classID, frameNumber);
+          tmp.add(_bBoxes2D);
+        }
       }
-      
-      @Override
-      public boolean matches(final Address it) {
-        UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, $_observerID_1);
-      }
+      this.dynamicTrackingMemory.add(frameNumber, tmp);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
     }
-    final Scope<Address> _function = new Scope<Address>() {
-      @Override
-      public boolean matches(final Address it) {
-        UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, TrackerRole.this.observerID);
-      }
-      private Object writeReplace() throws ObjectStreamException {
-        return new SerializableProxy($SerializableClosureProxy.class, TrackerRole.this.observerID);
-      }
-    };
-    _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_bBoxes2DTrackResult, _function);
   }
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
@@ -288,6 +312,8 @@ public class TrackerRole extends ObserverRole {
     TrackerRole other = (TrackerRole) obj;
     if (!java.util.Objects.equals(this.partnerTrackingName, other.partnerTrackingName))
       return false;
+    if (other.totalTrackerTime != this.totalTrackerTime)
+      return false;
     return super.equals(obj);
   }
   
@@ -298,6 +324,7 @@ public class TrackerRole extends ObserverRole {
     int result = super.hashCode();
     final int prime = 31;
     result = prime * result + java.util.Objects.hashCode(this.partnerTrackingName);
+    result = prime * result + Long.hashCode(this.totalTrackerTime);
     return result;
   }
   

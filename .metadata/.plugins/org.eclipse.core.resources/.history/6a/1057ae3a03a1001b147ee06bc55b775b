@@ -1,0 +1,11 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.messages
+
+/** 
+ * @author manjah
+ * 
+ */
+class EvaluationMessage {
+}

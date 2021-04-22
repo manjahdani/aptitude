@@ -16,7 +16,7 @@ import be.uclouvain.aptitude.surveillance.algorithm.messages.RequestMessage
  * @mavenartifactid $surveillance$
  * 
  */
-skill TrackerPythonTwin extends PythonAccess {
+skill TrackerPythonTwin extends PythonAccessObserver {
 	
 	uses Behaviors, Schedules
 

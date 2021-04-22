@@ -51,6 +51,7 @@ behavior AnalystRole {
 
 	protected var MissionSpace : OpenEventSpace
 	
+	
 	val Sensitivity = new AtomicInteger()
 	/** 
 	 * Receiving this event, the behavior has to update its fields of perception.
@@ -65,7 +66,7 @@ behavior AnalystRole {
 		Sensitivity.set((occurrence.parameters.get(0) as MissionData).sensitivity)
 		info("As an expert I will start the mission of Vehicle Counting with the sensitivity:  " + availableObservers.get(Sensitivity.get))
 	}
-
+	
 	@SuppressWarnings("potential_field_synchronization_problem")
 	
 	// @FIXME There are global behavior organisational Behavior
@@ -89,7 +90,6 @@ behavior AnalystRole {
 		TOLDContext = occurrence.context
 		TOLDSpace = occurrence.spaceID
 		TOLDSpace.register(asEventListener)
-		
 	}
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on SensititvityRequest{

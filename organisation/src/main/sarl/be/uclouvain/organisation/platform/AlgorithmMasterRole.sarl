@@ -1,0 +1,21 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior MasterObserverRole extends ObserverRole {
+	uses Logging
+
+	val availableObservers = newArrayList("TinyYOLO", "YOLO")
+	
+	on Initialize {
+		
+	}
+}

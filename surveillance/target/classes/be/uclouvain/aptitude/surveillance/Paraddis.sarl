@@ -3,12 +3,12 @@
  */
 package be.uclouvain.aptitude.surveillance
 
+import be.uclouvain.organisation.Hello
 import io.sarl.core.Destroy
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
-import be.uclouvain.organisation.Hello
 
 /** 
  * The agent gives global trait to agents. 

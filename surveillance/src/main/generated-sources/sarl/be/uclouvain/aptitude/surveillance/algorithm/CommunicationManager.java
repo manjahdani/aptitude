@@ -1,10 +1,11 @@
 package be.uclouvain.aptitude.surveillance.algorithm;
 
-import be.uclouvain.aptitude.surveillance.algorithm.PythonTwinObserverAccess;
+import be.uclouvain.aptitude.surveillance.algorithm.PythonAccess;
 import be.uclouvain.aptitude.surveillance.algorithm.messages.ActionMessage;
 import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DMessage;
 import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DTrackMessage;
 import be.uclouvain.aptitude.surveillance.algorithm.messages.BaseMessage;
+import be.uclouvain.aptitude.surveillance.algorithm.messages.EvaluationMessage;
 import be.uclouvain.aptitude.surveillance.algorithm.messages.RequestMessage;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.SerializationConfig;
@@ -21,29 +22,37 @@ import java.util.HashMap;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+/**
+ * @author samelson
+ */
 @SarlSpecification("0.11")
 @SarlElementType(10)
 @SuppressWarnings("all")
 public class CommunicationManager {
   private static CommunicationManager instance;
   
-  private static HazelcastInstance hzInstance;
+  private HazelcastInstance hzInstance;
   
   private HashMap<String, ITopic<BaseMessage>> subscribtionTopic = CollectionLiterals.<String, ITopic<BaseMessage>>newHashMap();
   
   @Pure
   public static CommunicationManager getInstance() {
-    if ((CommunicationManager.instance == null)) {
-      CommunicationManager _communicationManager = new CommunicationManager();
-      CommunicationManager.instance = _communicationManager;
-      CommunicationManager.hzInstance = CommunicationManager.getHzInstance();
+    synchronized (CommunicationManager.class) {
+      if ((CommunicationManager.instance == null)) {
+        CommunicationManager _communicationManager = new CommunicationManager();
+        CommunicationManager.instance = _communicationManager;
+      }
+      return CommunicationManager.instance;
     }
-    return CommunicationManager.instance;
   }
   
-  @Pure
-  private static HazelcastInstance getHzInstance() {
-    if ((CommunicationManager.hzInstance == null)) {
+  private CommunicationManager() {
+    this.createHzInstance();
+  }
+  
+  private HazelcastInstance createHzInstance() {
+    HazelcastInstance _xblockexpression = null;
+    {
       Config hzConfig = new Config();
       SerializationConfig serialConfig = new SerializationConfig();
       final DataSerializableFactory _function = (int id) -> {
@@ -59,35 +68,40 @@ public class CommunicationManager {
               if ((id == 211)) {
                 return new BBoxes2DTrackMessage();
               } else {
-                return null;
+                if ((id == 30)) {
+                  return new EvaluationMessage();
+                } else {
+                  return null;
+                }
               }
             }
           }
         }
       };
-      serialConfig.addDataSerializableFactory(1, _function);
+      serialConfig.addDataSerializableFactory(
+        1, _function);
       hzConfig.setSerializationConfig(serialConfig);
       hzConfig.setProperty("hazelcast.rest.enabled", "true");
       hzConfig.getManagementCenterConfig().setEnabled(true);
       hzConfig.getManagementCenterConfig().setUrl("http://localhost:8080/hazelcast-mancenter/");
-      CommunicationManager.hzInstance = Hazelcast.newHazelcastInstance(hzConfig);
+      _xblockexpression = this.hzInstance = Hazelcast.newHazelcastInstance(hzConfig);
     }
-    return CommunicationManager.hzInstance;
+    return _xblockexpression;
   }
   
-  public String subscribeTopic(final String topicName, final PythonTwinObserverAccess observer) {
+  public String subscribeTopic(final String topicName, final PythonAccess observer) {
     abstract class __CommunicationManager_0 implements MessageListener<BaseMessage> {
       public abstract void onMessage(final Message<BaseMessage> m);
     }
     
-    final ITopic<BaseMessage> topic = CommunicationManager.getHzInstance().<BaseMessage>getTopic(topicName);
+    final ITopic<BaseMessage> topic = this.hzInstance.<BaseMessage>getTopic(topicName);
     __CommunicationManager_0 ___CommunicationManager_0 = new __CommunicationManager_0() {
       public void onMessage(final Message<BaseMessage> m) {
         observer.update(m.getMessageObject());
       }
     };
     final String subscribtionID = topic.addMessageListener(___CommunicationManager_0);
-    this.subscribtionTopic.put(subscribtionID, topic);
+    this.subscribtionTopic.put(subscribtionID.toString(), topic);
     return subscribtionID;
   }
   
@@ -95,6 +109,13 @@ public class CommunicationManager {
     boolean _xblockexpression = false;
     {
       final ITopic<BaseMessage> topic = this.subscribtionTopic.remove(subscribtionID);
+      class $AssertEvaluator$ {
+        final boolean $$result;
+        $AssertEvaluator$() {
+          this.$$result = (topic != null);
+        }
+      }
+      assert new $AssertEvaluator$().$$result;
       _xblockexpression = topic.removeMessageListener(subscribtionID);
     }
     return _xblockexpression;
@@ -102,6 +123,13 @@ public class CommunicationManager {
   
   public void publishMessage(final String topicSub, final BaseMessage message) {
     final ITopic<BaseMessage> topic = this.subscribtionTopic.get(topicSub);
+    class $AssertEvaluator$ {
+      final boolean $$result;
+      $AssertEvaluator$() {
+        this.$$result = (topic != null);
+      }
+    }
+    assert new $AssertEvaluator$().$$result;
     topic.publish(message);
   }
   
@@ -118,10 +146,5 @@ public class CommunicationManager {
   public int hashCode() {
     int result = super.hashCode();
     return result;
-  }
-  
-  @SyntheticMember
-  public CommunicationManager() {
-    super();
   }
 }
