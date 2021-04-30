@@ -1,0 +1,44 @@
+{
+	"Video":{
+		"path": "F:/data/S03C013/vdo.avi"
+	},
+    "Proc":{    
+        "Detector":{
+            "type": "BBoxes2DDetector"
+        },
+        "BBoxes2DDetector":{
+            "model_type": "YOLO",
+            "pref_implem": "cv2-DetectionModel",
+            "model_path": "F:/pythonToolbox/Models/yolov4-tiny-mio-11_best.weights",
+            "config_path": "F:/pythonToolbox/Models/yolov4-tiny-mio-11.cfg",
+            "input_width" : 416,
+            "input_height" : 416
+        },
+        "YOLO":{
+            "conf_thresh": 0.25, 
+            "nms_thresh": 0
+        },
+        "OpenCV":{
+            "GPU": true,
+            "half_precision": false
+        }
+    },
+    "Preproc":{
+        "border":{
+            "centered": false
+        },
+        "resize":{
+            "width" : 416,
+            "height": 416
+        },
+        "roi":{"path": "F:/data/S04C019/roi.jpg"
+        }
+    },
+    "Postproc":{
+        "nms": {
+            "pref_implem" : "Malisiewicz",
+            "nms_thresh" : 0.45
+        },
+        "max_height_percentage": 50
+    }
+}

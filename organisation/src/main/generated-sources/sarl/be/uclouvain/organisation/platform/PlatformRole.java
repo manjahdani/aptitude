@@ -2,14 +2,20 @@ package be.uclouvain.organisation.platform;
 
 import be.uclouvain.organisation.AddMember;
 import be.uclouvain.organisation.AuthorizationToJoin;
+import be.uclouvain.organisation.Identification;
 import be.uclouvain.organisation.LocalDatabaseRequest;
 import be.uclouvain.organisation.PlatformOrganisationInfo;
+import be.uclouvain.organisation.SignalID;
 import be.uclouvain.organisation.platform.AddAlgorithm;
 import be.uclouvain.organisation.platform.AddMission;
+import be.uclouvain.organisation.platform.AddObserver;
 import be.uclouvain.organisation.platform.AlgorithmJoinPlatform;
 import be.uclouvain.organisation.platform.LeavePlatform;
+import be.uclouvain.organisation.platform.MembershipRule;
+import be.uclouvain.organisation.platform.PlatformCapacity;
 import be.uclouvain.organisation.platform.StopMission;
 import com.google.common.base.Objects;
+import io.sarl.core.AgentTask;
 import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.ExternalContextAccess;
@@ -19,6 +25,7 @@ import io.sarl.core.Logging;
 import io.sarl.core.MemberJoined;
 import io.sarl.core.OpenEventSpace;
 import io.sarl.core.OpenEventSpaceSpecification;
+import io.sarl.core.Schedules;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
@@ -33,9 +40,14 @@ import io.sarl.lang.core.Scope;
 import io.sarl.lang.util.SerializableProxy;
 import java.io.ObjectStreamException;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -56,6 +68,10 @@ public class PlatformRole extends Behavior {
   private final TreeMap<UUID, OpenEventSpace> Listeners = new TreeMap<UUID, OpenEventSpace>();
   
   private final TreeMap<UUID, OpenEventSpace> MissionsSpace = new TreeMap<UUID, OpenEventSpace>();
+  
+  private final Map<String, UUID> Participants = Collections.<String, UUID>synchronizedMap(new TreeMap<String, UUID>());
+  
+  private final List<String> Request = Collections.<String>synchronizedList(new LinkedList<String>());
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
@@ -150,8 +166,6 @@ public class PlatformRole extends Behavior {
         this.PlatformTOLDSpace = this.Listeners.get(MemberID);
       }
     } else {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("I See a new friend : " + occurrence.agentType));
       Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
       InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
       AgentContext _innerContext_1 = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_2.getInnerContext();
@@ -193,8 +207,12 @@ public class PlatformRole extends Behavior {
     _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.PlatformTOLDSpace, _addMember);
   }
   
+  private void $behaviorUnit$Identification$4(final Identification occurrence) {
+    this.Participants.put(occurrence.name, occurrence.getSource().getUUID());
+  }
+  
   @SuppressWarnings("potential_field_synchronization_problem")
-  private void $behaviorUnit$AddAlgorithm$4(final AddAlgorithm occurrence) {
+  private void $behaviorUnit$AddAlgorithm$5(final AddAlgorithm occurrence) {
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
     AgentContext _innerContext = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext();
@@ -205,7 +223,83 @@ public class PlatformRole extends Behavior {
     _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.PlatformTOLDSpace, _algorithmJoinPlatform);
   }
   
-  private void $behaviorUnit$StopMission$5(final StopMission occurrence) {
+  @SuppressWarnings("potential_field_synchronization_problem")
+  private void $behaviorUnit$AddObserver$6(final AddObserver occurrence) {
+    String signal = occurrence.SignalProvider.getName();
+    String receiver = occurrence.SignalReceiver.getName();
+    PlatformCapacity _$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY$CALLER();
+    MembershipRule _membershipRule = new MembershipRule(signal, receiver);
+    boolean _RuleManagement = _$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY$CALLER.RuleManagement(_membershipRule);
+    if (_RuleManagement) {
+      synchronized (this) {
+        boolean _contains = this.Participants.keySet().contains(signal);
+        if ((!_contains)) {
+          boolean _contains_1 = this.Request.contains(signal);
+          if ((!_contains_1)) {
+            this.Request.add(signal);
+            ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
+            InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+            AgentContext _innerContext = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext();
+            String _task = occurrence.SignalProvider.getTask();
+            AlgorithmJoinPlatform _algorithmJoinPlatform = new AlgorithmJoinPlatform(_innerContext, signal, _task);
+            _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.PlatformTOLDSpace, _algorithmJoinPlatform);
+          }
+          this.waitfor(signal, occurrence.getSource().getUUID());
+        } else {
+          ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
+          OpenEventSpace _get = this.Listeners.get(occurrence.getSource().getUUID());
+          UUID _get_1 = this.Participants.get(occurrence.SignalProvider.getName());
+          SignalID _signalID = new SignalID(_get_1);
+          _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER_1.emit(_get, _signalID);
+        }
+      }
+    }
+  }
+  
+  public synchronized AgentTask waitfor(final String signal, final UUID dest) {
+    Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+    Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+    final Procedure1<Agent> _function = (Agent it) -> {
+      boolean _contains = this.Participants.keySet().contains(signal);
+      if (_contains) {
+        ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
+        OpenEventSpace _get = this.Listeners.get(dest);
+        UUID _get_1 = this.Participants.get(signal);
+        SignalID _signalID = new SignalID(_get_1);
+        class $SerializableClosureProxy implements Scope<Address> {
+          
+          private final UUID dest;
+          
+          public $SerializableClosureProxy(final UUID dest) {
+            this.dest = dest;
+          }
+          
+          @Override
+          public boolean matches(final Address it) {
+            UUID _uUID = it.getUUID();
+            return Objects.equal(_uUID, dest);
+          }
+        }
+        final Scope<Address> _function_1 = new Scope<Address>() {
+          @Override
+          public boolean matches(final Address it) {
+            UUID _uUID = it.getUUID();
+            return Objects.equal(_uUID, dest);
+          }
+          private Object writeReplace() throws ObjectStreamException {
+            return new SerializableProxy($SerializableClosureProxy.class, dest);
+          }
+        };
+        _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(_get, _signalID, _function_1);
+        Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+        Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_2.cancel(_$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_3.task("waitingfor".concat(signal).concat(dest.toString())));
+      }
+    };
+    return _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER.every(_$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1.task("waitingfor".concat(signal).concat(dest.toString())), 500, _function);
+  }
+  
+  private void $behaviorUnit$StopMission$7(final StopMission occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((" I received a Stop Misson" + occurrence.expertID));
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
@@ -283,6 +377,34 @@ public class PlatformRole extends Behavior {
     return $castSkill(Logging.class, this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
   }
   
+  @Extension
+  @ImportedCapacityFeature(PlatformCapacity.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY;
+  
+  @SyntheticMember
+  @Pure
+  private PlatformCapacity $CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY$CALLER() {
+    if (this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY == null || this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY.get() == null) {
+      this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY = $getSkill(PlatformCapacity.class);
+    }
+    return $castSkill(PlatformCapacity.class, this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY);
+  }
+  
+  @Extension
+  @ImportedCapacityFeature(Schedules.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_SCHEDULES;
+  
+  @SyntheticMember
+  @Pure
+  private Schedules $CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES == null || this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES = $getSkill(Schedules.class);
+    }
+    return $castSkill(Schedules.class, this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES);
+  }
+  
   @SyntheticMember
   @PerceptGuardEvaluator
   private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
@@ -301,10 +423,18 @@ public class PlatformRole extends Behavior {
   
   @SyntheticMember
   @PerceptGuardEvaluator
+  private void $guardEvaluator$AddObserver(final AddObserver occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AddObserver$6(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
   private void $guardEvaluator$StopMission(final StopMission occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$StopMission$5(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$StopMission$7(occurrence));
   }
   
   @SyntheticMember
@@ -320,7 +450,7 @@ public class PlatformRole extends Behavior {
   private void $guardEvaluator$AddAlgorithm(final AddAlgorithm occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AddAlgorithm$4(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AddAlgorithm$5(occurrence));
   }
   
   @SyntheticMember
@@ -329,6 +459,14 @@ public class PlatformRole extends Behavior {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$MemberJoined$2(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$Identification(final Identification occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Identification$4(occurrence));
   }
   
   @Override

@@ -3,6 +3,10 @@
  */
 package be.uclouvain.organisation.platform
 
+import java.util.ArrayList
+import java.util.LinkedList
+import java.util.List
+
 /** 
  * Communicate the MissionSensitivity 
  *   
@@ -27,8 +31,8 @@ package be.uclouvain.organisation.platform
  * @mavenartifactid $organisation$
  */
 event MissionSensitivity{
-	val s : int
-	new(s:int){
+	val s : LinkedList<Integer>
+	new(s : LinkedList<Integer>) {
 		this.s=s
 	}
 }

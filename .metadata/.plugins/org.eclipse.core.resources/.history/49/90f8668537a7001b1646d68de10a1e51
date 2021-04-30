@@ -1,0 +1,48 @@
+/** 
+ */
+package be.uclouvain.organisation.platform
+
+import io.sarl.lang.core.AgentContext
+import io.sarl.core.OpenEventSpace
+import be.uclouvain.organisation.JoinOrganisation
+import java.util.UUID
+
+/** 
+ * The event (Algorithm)JoinPlatform invites the receiver (an Algorithm) to join a Context
+ * 
+ * @TODO : make sure it makes sens.  
+ * 
+ * 
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.2$
+ * @date $16/04/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ */
+event AlgorithmJoinPlatform extends JoinOrganisation {
+	
+	var name : String // Name of the algorithm
+	var task : String // Which task will be done
+	var sourceID : UUID
+	new (context : AgentContext, openSpace : OpenEventSpace, n : String, t : String, sourceID : UUID) {
+		super(context,openSpace)
+		this.name = n
+		this.task = t
+		this.sourceID =sourceID
+	}
+
+	new (context : AgentContext, n : String, t : String, sourceID : UUID) {
+		super(context, null)
+		this.name = n
+		this.task = t
+		this.sourceID = sourceID
+	}
+
+	new (context : AgentContext, n : String, t : String) {
+		super(context, null)
+		this.name = n
+		this.task = t
+		this.sourceID = sourceID
+	}
+}

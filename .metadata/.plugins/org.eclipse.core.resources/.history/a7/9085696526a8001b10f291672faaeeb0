@@ -1,0 +1,103 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm
+
+import be.uclouvain.organisation.platform.LeavePlatform
+import be.uclouvain.organisation.platform.ObserverRole
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.core.Schedules
+import java.io.FileReader
+import org.json.simple.JSONObject
+import org.json.simple.parser.JSONParser
+
+/** 
+ * @TODO: write a description
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
+ * 
+ */
+behavior DetectorRole extends ObserverRole {
+	uses Logging, PythonTwinObserverAccess, Schedules
+
+	var partnerDetectionName : String
+
+	on Initialize {
+		
+		setSkill(new DetectorPythonTwin)
+		var parser = new JSONParser();
+		var configPathDetector =	ObserverADN.belief // occurrence.parameters.get(0).toString
+		var jsonDetector = parser.parse(new FileReader(configPathDetector)) as JSONObject;
+		ActivateAccess(jsonDetector)
+	}
+	
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on PartnerDetectionFound {
+		this.partnerDetectionName = occurrence.partnerName
+		info("Detection partner found: " + this.partnerDetectionName)
+		task("wait").in(2000) [
+			UpdateStreamAccess(1) // PLAY
+			]
+		}
+
+	on BBoxes2DResult {
+		
+		//info("Detector - frameNumber- lastframe " + occurrence.bboxes2D.frameNumber + occurrence.bboxes2D.lastFrame)
+		
+		
+		for (l : Listeners){
+			if(Listeners==null)
+			{
+				info("Listeners null" )
+			}
+			else if (MissionSpaceList == null)
+			{
+				info("MissionSpaceList null")
+			}
+			else if (occurrence.bboxes2D==null)
+			{
+				info("BB null")
+			}
+			else{
+
+				MissionSpaceList.get(l).emit(this.ID, new BBoxes2DResult(occurrence.bboxes2D))[it.UUID == l]
+			}
+		}	
+			
+		//emit(new BBoxes2DResult(occurrence.bboxes2D))[it.UUID == observerID]
+		 //println("***********************")
+		//println("---- etectionD " + occurrence.bboxes2D.frameNumber)
+		// println("*  " + Arrays.toString(occurrence.bboxes2D.bboxes))
+		// println("*  " + Arrays.toString(occurrence.bboxes2D.classIDs))
+		// println("*  " + Arrays.toString(occurrence.bboxes2D.detConfs))
+		// println("*  " + occurrence.bboxes2D.lastFrame)
+		// println("***********************")
+		// if (occurrence.bboxes2D.lastFrame) {
+							// info("That was it!")
+		// val totalTime = (((System.currentTimeMillis() - this.start) / 1000))
+		// info("It took " + totalTime.toString + " seconds")
+		// info("Average FPS : " + (occurrence.bboxes2D.frameNumber / totalTime).toString)
+		// }
+		// if (occurrence.bboxes2D.frameNumber != this.expectedFrame) {
+		// println("UNEXPECTED")
+		// }
+		// this.expectedFrame = occurrence.bboxes2D.frameNumber +1
+	}
+
+	on Destroy {
+		info("The behavior was stopped.")
+	}
+
+	on LeavePlatform {
+		// join(BaseContext.ID, BaseSpace.spaceID.ID)
+		info("Detector Leaving")
+		UpdateStreamAccess(4)
+		//leave(PlatformID)
+	}
+}

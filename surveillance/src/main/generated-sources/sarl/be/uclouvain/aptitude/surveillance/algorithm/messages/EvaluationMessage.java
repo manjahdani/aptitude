@@ -28,6 +28,9 @@ public class EvaluationMessage extends BaseMessage {
   @Accessors({ AccessorType.PUBLIC_GETTER, AccessorType.PUBLIC_SETTER })
   private String gts;
   
+  @Accessors({ AccessorType.PUBLIC_GETTER, AccessorType.PUBLIC_SETTER })
+  private int maxFrame;
+  
   /**
    * HOTA Metrics
    */
@@ -243,6 +246,7 @@ public class EvaluationMessage extends BaseMessage {
     this.requestID = odi.readUTF();
     this.predictions = odi.readUTF();
     this.gts = odi.readUTF();
+    this.maxFrame = odi.readInt();
     this.HOTA = odi.readDouble();
     this.DetA = odi.readDouble();
     this.AssA = odi.readDouble();
@@ -311,6 +315,7 @@ public class EvaluationMessage extends BaseMessage {
     odo.writeUTF(this.requestID);
     odo.writeUTF(this.predictions);
     odo.writeUTF(this.gts);
+    odo.writeInt(this.maxFrame);
     odo.writeDouble(this.HOTA);
     odo.writeDouble(this.DetA);
     odo.writeDouble(this.AssA);
@@ -390,6 +395,8 @@ public class EvaluationMessage extends BaseMessage {
     if (!Objects.equals(this.predictions, other.predictions))
       return false;
     if (!Objects.equals(this.gts, other.gts))
+      return false;
+    if (other.maxFrame != this.maxFrame)
       return false;
     if (Double.doubleToLongBits(other.HOTA) != Double.doubleToLongBits(this.HOTA))
       return false;
@@ -507,6 +514,7 @@ public class EvaluationMessage extends BaseMessage {
     result = prime * result + Objects.hashCode(this.requestID);
     result = prime * result + Objects.hashCode(this.predictions);
     result = prime * result + Objects.hashCode(this.gts);
+    result = prime * result + Integer.hashCode(this.maxFrame);
     result = prime * result + Double.hashCode(this.HOTA);
     result = prime * result + Double.hashCode(this.DetA);
     result = prime * result + Double.hashCode(this.AssA);
@@ -592,6 +600,15 @@ public class EvaluationMessage extends BaseMessage {
   
   public void setGts(final String gts) {
     this.gts = gts;
+  }
+  
+  @Pure
+  public int getMaxFrame() {
+    return this.maxFrame;
+  }
+  
+  public void setMaxFrame(final int maxFrame) {
+    this.maxFrame = maxFrame;
   }
   
   @Pure

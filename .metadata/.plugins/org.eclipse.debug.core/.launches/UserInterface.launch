@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="io.sarl.eclipse.debug.AgentLaunchConfigType">
 <stringAttribute key="io.sarl.eclipse.AGENT_NAME" value="be.uclouvain.aptitude.surveillance.ui.UserInterface"/>
+<booleanAttribute key="io.sarl.eclipse.EMBEDDED_SRE" value="false"/>
+<booleanAttribute key="io.sarl.eclipse.ENABLE_ASSERTIONS_DEBUG" value="true"/>
+<booleanAttribute key="io.sarl.eclipse.ENABLE_ASSERTIONS_RUN" value="false"/>
 <stringAttribute key="io.sarl.eclipse.ROOT_CONTEXT_ID_TYPE" value="DEFAULT_CONTEXT_ID"/>
 <stringAttribute key="io.sarl.eclipse.SARL_RUNTIME_ENVIRONMENT" value="io.janusproject.plugin.sre"/>
 <booleanAttribute key="io.sarl.eclipse.SHOW_LOG_INFO" value="true"/>

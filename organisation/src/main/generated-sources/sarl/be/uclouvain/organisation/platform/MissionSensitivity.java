@@ -4,6 +4,7 @@ import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Event;
+import java.util.LinkedList;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -34,9 +35,9 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlElementType(15)
 @SuppressWarnings("all")
 public class MissionSensitivity extends Event {
-  public final int s;
+  public final LinkedList<Integer> s;
   
-  public MissionSensitivity(final int s) {
+  public MissionSensitivity(final LinkedList<Integer> s) {
     this.s = s;
   }
   
@@ -44,15 +45,6 @@ public class MissionSensitivity extends Event {
   @Pure
   @SyntheticMember
   public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    MissionSensitivity other = (MissionSensitivity) obj;
-    if (other.s != this.s)
-      return false;
     return super.equals(obj);
   }
   
@@ -61,8 +53,6 @@ public class MissionSensitivity extends Event {
   @SyntheticMember
   public int hashCode() {
     int result = super.hashCode();
-    final int prime = 31;
-    result = prime * result + Integer.hashCode(this.s);
     return result;
   }
   
@@ -77,5 +67,5 @@ public class MissionSensitivity extends Event {
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = 591713528L;
+  private static final long serialVersionUID = 653283896L;
 }

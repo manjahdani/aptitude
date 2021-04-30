@@ -32,6 +32,7 @@ import io.sarl.lang.util.SerializableProxy;
 import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
@@ -154,11 +155,11 @@ public class AnalystRole extends Behavior {
   private void $behaviorUnit$SensititvityRequest$4(final SensititvityRequest occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     String _get = this.availableObservers.get(this.Sensitivity.get());
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Thank you for joining the mission. Please use the following sensitivity : " + _get));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("The user sensitivity is : " + _get));
     this.myObserver = occurrence.getSource().getUUID();
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    int _get_1 = this.Sensitivity.get();
-    MissionSensitivity _missionSensitivity = new MissionSensitivity(_get_1);
+    LinkedList<Integer> _newLinkedList = CollectionLiterals.<Integer>newLinkedList(Integer.valueOf(this.Sensitivity.get()));
+    MissionSensitivity _missionSensitivity = new MissionSensitivity(_newLinkedList);
     class $SerializableClosureProxy implements Scope<Address> {
       
       private final UUID $_uUID;

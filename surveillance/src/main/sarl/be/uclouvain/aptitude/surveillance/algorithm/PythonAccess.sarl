@@ -61,7 +61,7 @@ abstract skill PythonAccess implements PythonAccessCapacity {
 	def ActivateAccess(jsonConfig : JSONObject) {
 		this.pendingRequestID = UuidUtil.newSecureUuidString
 		this.requestTask = every(1000) [
-			info("Python partner not found, send discovery message")
+			//info("Python partner not found, send discovery message")
 			var requestMessage = new RequestMessage()
 			requestMessage.requestID = this.pendingRequestID
 			requestMessage.agentID = owner.ID.toString

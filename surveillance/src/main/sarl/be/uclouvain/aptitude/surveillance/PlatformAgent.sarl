@@ -15,6 +15,8 @@ import java.util.UUID
 import be.uclouvain.organisation.platform.util.PlatformConfig
 import be.uclouvain.organisation.platform.PlatformRole
 import be.uclouvain.aptitude.surveillance.ui.UserInterface
+import be.uclouvain.organisation.platform.PlatformSkill
+import be.uclouvain.organisation.platform.PlatformCapacity
 
 /**
  * 
@@ -45,6 +47,8 @@ agent PlatformAgent extends Paraddis {
 			subPlatformSpaceIDs.put(randomID, innerContext.getDefaultSpace)
 		}
 		if (platformConfig.getLevel > 0) {
+			
+			setSkill(new PlatformSkill(platformConfig), PlatformCapacity)
 			registerBehavior(new PlatformRole(this))
 			info("Ready to receive operating mission")
 			spawn(TOLDAgent) 		// @FIXME IT is not clear !!! 

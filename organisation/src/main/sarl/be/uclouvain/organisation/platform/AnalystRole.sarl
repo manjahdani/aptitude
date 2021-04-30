@@ -93,9 +93,9 @@ behavior AnalystRole {
 	}
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on SensititvityRequest{
-		info("Thank you for joining the mission. Please use the following sensitivity : " + availableObservers.get(Sensitivity.get))
+		info("The user sensitivity is : " + availableObservers.get(Sensitivity.get))
 		myObserver=occurrence.source.UUID
-		emit(PlatformContext.defaultSpace, new MissionSensitivity(Sensitivity.get)
+		emit(PlatformContext.defaultSpace, new MissionSensitivity(newLinkedList(Sensitivity.get))
 		)[it.UUID==occurrence.source.UUID]
 	}
 }

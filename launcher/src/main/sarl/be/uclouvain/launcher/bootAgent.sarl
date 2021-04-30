@@ -19,6 +19,7 @@ import be.uclouvain.aptitude.surveillance.Paraddis
 import be.uclouvain.aptitude.surveillance.CommitSuicide
 import be.uclouvain.aptitude.surveillance.PlatformAgent
 
+
 /** 
  * @TODO: The holarchy needs rethinking. 
  * 
@@ -42,8 +43,6 @@ agent bootAgent extends Paraddis {
 		setAgentsReady()
 		enableInputStream()
 		task("Application-Launcher").execute[Application::launch(GUI, " ")]
-		
-		
 	}
 	
 	//@FIXME We absolutely need to extend the Universe Concept. We need a global database.. with local d.b. Need Rethinking
@@ -90,7 +89,6 @@ agent bootAgent extends Paraddis {
 				packet.setLength(buffer.length);
 			}
 		])
-
 	}
 	def synchronized disable() {
 		this.client.close()

@@ -1,0 +1,23 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm
+
+/** 
+ * @author manjah
+ * 
+ */
+event LastFrame {
+	
+	var frameNumber : int
+	var pred_file_Path : String
+	var total_time_detection : long
+	var total_time_tracking : long 
+	new (f:int, p : String, total_time_detection : long, total_time_tracking:long)
+	{
+		this.frameNumber = f
+		this.pred_file_Path = p
+		this.total_time_detection = total_time_detection
+		this.total_time_tracking = total_time_tracking
+	}
+}

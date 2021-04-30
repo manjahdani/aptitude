@@ -73,24 +73,24 @@ agent Algorithm extends Paraddis{
 			for (e : toSpawn.keySet) {spawnInContextWithID(Algorithm, e, innerContext, toSpawn.get(e).IncrementLevelAndGet)}}
 		
 		if(ADN.level>1){
-			info(" My name is " + ADN.name + " I DO "+ ADN.task + " and my skills are : "+ ADN.belief)
+			//info(" My name is " + ADN.name + " I DO "+ ADN.task + " and my skills are : "+ ADN.belief)
 			switch(ADN.task){
 				case "COUNTER": {
-					registerBehavior(new CounterRole(this), ADN.belief, occurrence.parameters.get(1),
+					registerBehavior(new CompetitiveCounterRole(this), ADN, occurrence.parameters.get(1),
 						occurrence.parameters.get(2))
 				}
 				case "TRACKER": {
-					registerBehavior(new TrackerRole(this), ADN.belief, occurrence.parameters.get(1),
+					registerBehavior(new TrackerRole(this), ADN, occurrence.parameters.get(1),
 						occurrence.parameters.get(2))
 				}
 				case "DETECTOR": {
-					registerBehavior(new DetectorRole(this), ADN.belief, occurrence.parameters.get(1),
+					registerBehavior(new DetectorRole(this), ADN, occurrence.parameters.get(1),
 						occurrence.parameters.get(2))
 				}
 			}
 		 }
 		 else {
-			info("I believe in : " + ADN.name)
+			//info("I believe in : " + ADN.name)
 		 }
 		
 		 

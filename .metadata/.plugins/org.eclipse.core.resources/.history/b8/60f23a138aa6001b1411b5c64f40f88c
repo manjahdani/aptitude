@@ -1,0 +1,18 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm
+
+/** 
+ * @author manjah
+ * 
+ */
+event LastFrame{
+	var frameNumber : int
+	var pred_file_Path : String 
+	new (f:int, p : String)
+	{
+		this.frameNumber = f
+		this.pred_file_Path = p
+	}
+}

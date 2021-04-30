@@ -70,9 +70,6 @@ class BBoxes2D {
 	def update(X : double, Y : double, W : double, H : double, classID : int, frameNumber:int,conf:double){
 		
 		var newPos = new Point2d(X,Y)
-		
-		
-		
 		if (newPos.getDistance(curPos) > 15) {
 			
 			this.bbox.update(X,Y,W,H)

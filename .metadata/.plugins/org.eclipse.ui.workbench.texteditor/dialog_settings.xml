@@ -6,30 +6,30 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="Universe started"/>
+		<item key="selection" value="I am activating access"/>
 		<list key="findhistory">
+			<item value="I am activating access"/>
+			<item value="sarl"/>
+			<item value="sre"/>
+			<item value="3.8.1"/>
+			<item value="Received AddObserver from"/>
+			<item value="waiting for"/>
+			<item value="waiting for YOLO"/>
+			<item value="37c08826-2197-46af-b31c-2ed39583a1f1"/>
+			<item value="5155aea8-6dc5-41f9-a666-a370643bbb08"/>
+			<item value="0d7f595a-b4b8-4e1a-b32f-6ee3229f2b1c"/>
+			<item value="1eb5462f-b07d-484d-9c92-4662cec0e97b"/>
+			<item value="b2eaf6f0-6a46-4773-b7ee-afcf12adf0c7"/>
+			<item value="I See a new friend"/>
 			<item value="Universe started"/>
 			<item value="72e43"/>
-			<item value="Closing stream 1 ---------------------"/>
-			<item value="I noticed the problem here"/>
-			<item value="I was there"/>
-			<item value="I was there ---------------------------------------------------------"/>
-			<item value="UserInterface"/>
-			<item value="UserInterface-"/>
-			<item value="I have sub-agents"/>
-			<item value="7b6e9e7-7a4c-42e8-9d13-c4b8a2dbc94"/>
-			<item value="1b72d8fa-828f-400e-aec6-1688ce180b5f"/>
-			<item value="false1b72d8fa-828f-400e-aec6-1688ce180b5f"/>
-			<item value="b7b6e9e7-7a4c-42e8-9d13-c4b8a2dbc949"/>
-			<item value="a636af65-942e-422d-9a1d-f2a11cb7fadd"/>
-			<item value="true"/>
 		</list>
 		<list key="replacehistory">
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="826"/>
-		<item key="DIALOG_Y_ORIGIN" value="328"/>
+		<item key="DIALOG_X_ORIGIN" value="978"/>
+		<item key="DIALOG_Y_ORIGIN" value="148"/>
 		<item key="DIALOG_WIDTH" value="284"/>
 		<item key="DIALOG_HEIGHT" value="391"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>

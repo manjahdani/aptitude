@@ -7,10 +7,10 @@ import be.uclouvain.aptitude.surveillance.algorithm.PythonTwinObserverAccess;
 import be.uclouvain.organisation.platform.LeavePlatform;
 import be.uclouvain.organisation.platform.ObserverRole;
 import com.google.common.base.Objects;
-import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
 import io.sarl.core.Logging;
+import io.sarl.core.OpenEventSpace;
 import io.sarl.core.Schedules;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
@@ -53,7 +53,7 @@ public class DetectorRole extends ObserverRole {
       DetectorPythonTwin _detectorPythonTwin = new DetectorPythonTwin();
       this.<DetectorPythonTwin>setSkill(_detectorPythonTwin);
       JSONParser parser = new JSONParser();
-      String configPathDetector = occurrence.parameters[0].toString();
+      String configPathDetector = this.ObserverADN.getBelief();
       FileReader _fileReader = new FileReader(configPathDetector);
       Object _parse = parser.parse(_fileReader);
       JSONObject jsonDetector = ((JSONObject) _parse);
@@ -79,33 +79,60 @@ public class DetectorRole extends ObserverRole {
   }
   
   private void $behaviorUnit$BBoxes2DResult$2(final BBoxes2DResult occurrence) {
-    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-    BBoxes2DResult _bBoxes2DResult = new BBoxes2DResult(occurrence.bboxes2D);
-    class $SerializableClosureProxy implements Scope<Address> {
-      
-      private final UUID $_observerID_1;
-      
-      public $SerializableClosureProxy(final UUID $_observerID_1) {
-        this.$_observerID_1 = $_observerID_1;
-      }
-      
-      @Override
-      public boolean matches(final Address it) {
-        UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, $_observerID_1);
+    for (final UUID l : this.Listeners) {
+      boolean _equals = Objects.equal(this.Listeners, null);
+      if (_equals) {
+        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Listeners null");
+      } else {
+        boolean _equals_1 = Objects.equal(this.MissionSpaceList, null);
+        if (_equals_1) {
+          Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+          _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("MissionSpaceList null");
+        } else {
+          boolean _equals_2 = Objects.equal(occurrence.bboxes2D, null);
+          if (_equals_2) {
+            Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+            _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info("BB null");
+          } else {
+            OpenEventSpace _get = this.MissionSpaceList.get(l);
+            boolean _equals_3 = Objects.equal(_get, null);
+            if (_equals_3) {
+              Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+              _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3.info("MissionSpace null");
+            } else {
+              OpenEventSpace _get_1 = this.MissionSpaceList.get(l);
+              BBoxes2DResult _bBoxes2DResult = new BBoxes2DResult(occurrence.bboxes2D);
+              class $SerializableClosureProxy implements Scope<Address> {
+                
+                private final UUID l;
+                
+                public $SerializableClosureProxy(final UUID l) {
+                  this.l = l;
+                }
+                
+                @Override
+                public boolean matches(final Address it) {
+                  UUID _uUID = it.getUUID();
+                  return Objects.equal(_uUID, l);
+                }
+              }
+              final Scope<Address> _function = new Scope<Address>() {
+                @Override
+                public boolean matches(final Address it) {
+                  UUID _uUID = it.getUUID();
+                  return Objects.equal(_uUID, l);
+                }
+                private Object writeReplace() throws ObjectStreamException {
+                  return new SerializableProxy($SerializableClosureProxy.class, l);
+                }
+              };
+              _get_1.emit(this.getOwner().getID(), _bBoxes2DResult, _function);
+            }
+          }
+        }
       }
     }
-    final Scope<Address> _function = new Scope<Address>() {
-      @Override
-      public boolean matches(final Address it) {
-        UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, DetectorRole.this.observerID);
-      }
-      private Object writeReplace() throws ObjectStreamException {
-        return new SerializableProxy($SerializableClosureProxy.class, DetectorRole.this.observerID);
-      }
-    };
-    _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_bBoxes2DResult, _function);
   }
   
   private void $behaviorUnit$Destroy$3(final Destroy occurrence) {
@@ -146,20 +173,6 @@ public class DetectorRole extends ObserverRole {
       this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESS = $getSkill(PythonTwinObserverAccess.class);
     }
     return $castSkill(PythonTwinObserverAccess.class, this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESS);
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(DefaultContextInteractions.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS;
-  
-  @SyntheticMember
-  @Pure
-  private DefaultContextInteractions $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);
-    }
-    return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
   }
   
   @Extension

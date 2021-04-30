@@ -1,0 +1,40 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import be.uclouvain.organisation.platform.util.PlatformConfig
+import java.util.LinkedList
+
+/** 
+ * @author manjah
+ * 
+ */
+skill PlatformSkill implements PlatformCapacity {
+
+	protected val WC : PlatformConfig
+	
+	val ObserversList = new LinkedList<String> 
+	
+	new(wc : PlatformConfig) {
+		this.WC=wc
+	}
+
+	def RuleManagement(info : Object) : boolean {
+		if (info instanceof MembershipRule){
+			return ObserversList.contains(info.m1.concat(info.m2))
+		}
+		else {
+			throw new UnsupportedOperationException("Unknown Rule")
+		}
+
+	}
+
+	def getPlatformConfig : PlatformConfig {
+		return this.WC
+	}
+
+	override ConditionActivation {
+		// TODO Auto-generated code.
+	}
+}

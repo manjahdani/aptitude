@@ -1,6 +1,6 @@
 {
 	"Video":{
-		"path": "F:/data/s01c03.avi"
+		"path": "F:/data/S05C016/vdo.avi"
 	},
     "Proc":{    
         "Tracker":{
@@ -17,7 +17,6 @@
             "iou_thresh": 0.7,
             "max_cosine_dist": 0.3,
             "nn_budget": null,
-
             "avg_det_conf": true,
             "avg_det_conf_thresh": 0.25,
             "most_common_class": true
@@ -32,7 +31,9 @@
             "width" : 416,
             "height": 416
         },
-        "roi":{}
+        "roi":{
+            "path": "F:/data/S05C016/roi.jpg"
+        }
     },
     "Postproc":{}
 }

@@ -11,6 +11,8 @@ import io.sarl.lang.core.AgentTrait;
 public interface Evaluation extends PythonAccessCapacity {
   public abstract void sendEvaluationRequest(final String requestID, final String predictions, final String gts);
   
+  public abstract void sendEvaluationRequest(final String requestID, final String predictions, final String gts, final int maxFrame);
+  
   /**
    * @ExcludeFromApidoc
    */
@@ -23,6 +25,15 @@ public interface Evaluation extends PythonAccessCapacity {
       try {
         ensureCallerInLocalThread();
         this.capacity.sendEvaluationRequest(requestID, predictions, gts);
+      } finally {
+        resetCallerInLocalThread();
+      }
+    }
+    
+    public void sendEvaluationRequest(final String requestID, final String predictions, final String gts, final int maxFrame) {
+      try {
+        ensureCallerInLocalThread();
+        this.capacity.sendEvaluationRequest(requestID, predictions, gts, maxFrame);
       } finally {
         resetCallerInLocalThread();
       }

@@ -18,7 +18,8 @@ class EvaluationMessage extends BaseMessage {
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var requestID : String
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var predictions : String
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var gts : String
-
+	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var maxFrame : int
+	
 	/* HOTA Metrics
 	 */
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER) var HOTA : double
@@ -112,7 +113,8 @@ class EvaluationMessage extends BaseMessage {
 		this.requestID = odi.readUTF()
 		this.predictions = odi.readUTF()
 		this.gts = odi.readUTF()
-
+		this.maxFrame = odi.readInt()
+		
 		this.HOTA = odi.readDouble()
 		this.DetA = odi.readDouble()
 		this.AssA = odi.readDouble()
@@ -186,7 +188,8 @@ class EvaluationMessage extends BaseMessage {
 		odo.writeUTF(requestID)
 		odo.writeUTF(predictions)
 		odo.writeUTF(gts)
-
+		odo.writeInt(maxFrame)
+		
 		odo.writeDouble(HOTA)
 		odo.writeDouble(DetA)
 		odo.writeDouble(AssA)

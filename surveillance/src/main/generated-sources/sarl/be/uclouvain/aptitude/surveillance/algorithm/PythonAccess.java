@@ -69,8 +69,6 @@ public abstract class PythonAccess extends Skill implements PythonAccessCapacity
     this.pendingRequestID = UuidUtil.newSecureUuidString();
     Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
     final Procedure1<Agent> _function = (Agent it) -> {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Python partner not found, send discovery message");
       RequestMessage requestMessage = new RequestMessage();
       requestMessage.setRequestID(this.pendingRequestID);
       requestMessage.setAgentID(this.getOwner().getID().toString());

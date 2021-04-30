@@ -2,7 +2,7 @@ package be.uclouvain.aptitude.surveillance.algorithm;
 
 import be.uclouvain.aptitude.surveillance.Paraddis;
 import be.uclouvain.aptitude.surveillance.algorithm.AlgorithmNeeded;
-import be.uclouvain.aptitude.surveillance.algorithm.CounterRole;
+import be.uclouvain.aptitude.surveillance.algorithm.CompetitiveCounterRole;
 import be.uclouvain.aptitude.surveillance.algorithm.DetectorRole;
 import be.uclouvain.aptitude.surveillance.algorithm.TrackerRole;
 import be.uclouvain.organisation.AuthorizationToJoin;
@@ -100,38 +100,30 @@ public class Algorithm extends Paraddis {
     }
     int _level_2 = this.ADN.getLevel();
     if ((_level_2 > 1)) {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      String _name_1 = this.ADN.getName();
       String _task = this.ADN.getTask();
-      String _belief = this.ADN.getBelief();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info((((((" My name is " + _name_1) + " I DO ") + _task) + " and my skills are : ") + _belief));
-      String _task_1 = this.ADN.getTask();
-      if (_task_1 != null) {
-        switch (_task_1) {
+      if (_task != null) {
+        switch (_task) {
           case "COUNTER":
             Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-            CounterRole _counterRole = new CounterRole(this);
-            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_2.registerBehavior(_counterRole, this.ADN.getBelief(), occurrence.parameters[1], 
+            CompetitiveCounterRole _competitiveCounterRole = new CompetitiveCounterRole(this);
+            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_2.registerBehavior(_competitiveCounterRole, this.ADN, occurrence.parameters[1], 
               occurrence.parameters[2]);
             break;
           case "TRACKER":
             Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
             TrackerRole _trackerRole = new TrackerRole(this);
-            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_3.registerBehavior(_trackerRole, this.ADN.getBelief(), occurrence.parameters[1], 
+            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_3.registerBehavior(_trackerRole, this.ADN, occurrence.parameters[1], 
               occurrence.parameters[2]);
             break;
           case "DETECTOR":
             Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_4 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
             DetectorRole _detectorRole = new DetectorRole(this);
-            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_4.registerBehavior(_detectorRole, this.ADN.getBelief(), occurrence.parameters[1], 
+            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_4.registerBehavior(_detectorRole, this.ADN, occurrence.parameters[1], 
               occurrence.parameters[2]);
             break;
         }
       }
     } else {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      String _name_2 = this.ADN.getName();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("I believe in : " + _name_2));
     }
   }
   

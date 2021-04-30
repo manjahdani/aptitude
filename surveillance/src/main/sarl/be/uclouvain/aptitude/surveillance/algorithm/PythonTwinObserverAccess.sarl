@@ -48,6 +48,8 @@ capacity PythonAccessCapacity {
 capacity Evaluation extends PythonAccessCapacity {
 
 	def sendEvaluationRequest(requestID : String, predictions : String, gts : String)
+
+	def sendEvaluationRequest(requestID : String, predictions : String, gts : String, maxFrame : int)
 }
 
 skill EvaluationImpl extends PythonAccess implements Evaluation {
@@ -74,13 +76,22 @@ skill EvaluationImpl extends PythonAccess implements Evaluation {
 			wake(new PartnerEvaluationFound(message.clientName))
 		}
 	}
-	def sendEvaluationRequest(requestID: String, predictions : String, gts : String) {
+	def sendEvaluationRequest(requestID : String, predictions : String, gts : String) {
+		
+		sendEvaluationRequest(requestID, predictions, gts, -1)
+
+	}
+
+	def sendEvaluationRequest(requestID : String, predictions : String, gts : String, maxFrame : int) {
 		var evalMessage = new EvaluationMessage()
 		evalMessage.requestID = requestID
 		evalMessage.predictions = predictions
 		evalMessage.gts = gts
+		if (maxFrame != -1) {
+			evalMessage.maxFrame = maxFrame
+		}
 		CommunicationManager.instance.publishMessage(topicSignalAcquisition, evalMessage)
-
 	}
+	
 	
 }

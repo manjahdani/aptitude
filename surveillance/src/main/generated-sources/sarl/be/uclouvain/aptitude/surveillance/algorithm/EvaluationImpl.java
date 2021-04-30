@@ -57,10 +57,17 @@ public class EvaluationImpl extends PythonAccess implements Evaluation {
   }
   
   public void sendEvaluationRequest(final String requestID, final String predictions, final String gts) {
+    this.sendEvaluationRequest(requestID, predictions, gts, (-1));
+  }
+  
+  public void sendEvaluationRequest(final String requestID, final String predictions, final String gts, final int maxFrame) {
     EvaluationMessage evalMessage = new EvaluationMessage();
     evalMessage.setRequestID(requestID);
     evalMessage.setPredictions(predictions);
     evalMessage.setGts(gts);
+    if ((maxFrame != (-1))) {
+      evalMessage.setMaxFrame(maxFrame);
+    }
     CommunicationManager.getInstance().publishMessage(this.topicSignalAcquisition, evalMessage);
   }
   

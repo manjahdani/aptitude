@@ -28,3 +28,17 @@ event AddAlgorithm {
 	}
 }
 
+event AddObserver {
+
+	var MissionSpace   : OpenEventSpace
+	var SignalProvider : AlgorithmInfo // @FIXME not general
+	var SignalReceiver : AlgorithmInfo
+	
+	new (ospace : OpenEventSpace, s : AlgorithmInfo, r : AlgorithmInfo) {
+		this.MissionSpace = ospace
+		this.SignalProvider = s
+		this.SignalReceiver = r 
+	}
+}
+
+

@@ -3,7 +3,9 @@ package be.uclouvain.aptitude.surveillance;
 import be.uclouvain.aptitude.surveillance.Paraddis;
 import be.uclouvain.aptitude.surveillance.TOLDAgent;
 import be.uclouvain.aptitude.surveillance.ui.UserInterface;
+import be.uclouvain.organisation.platform.PlatformCapacity;
 import be.uclouvain.organisation.platform.PlatformRole;
+import be.uclouvain.organisation.platform.PlatformSkill;
 import be.uclouvain.organisation.platform.util.PlatformConfig;
 import io.sarl.core.Behaviors;
 import io.sarl.core.Initialize;
@@ -64,6 +66,8 @@ public class PlatformAgent extends Paraddis {
     }
     int _level_1 = platformConfig.getLevel();
     if ((_level_1 > 0)) {
+      PlatformSkill _platformSkill = new PlatformSkill(platformConfig);
+      this.<PlatformSkill>setSkill(_platformSkill, PlatformCapacity.class);
       Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
       PlatformRole _platformRole = new PlatformRole(this);
       _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_platformRole);

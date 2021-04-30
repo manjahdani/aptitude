@@ -1,6 +1,6 @@
 {
 	"Video":{
-		"path": "F:/data/s01c03.avi"
+		"path": "F:/data/S05C016/vdo.avi"
 	},
     "Proc":{    
         "Detector":{
@@ -31,7 +31,8 @@
             "width" : 416,
             "height": 416
         },
-        "roi":{}
+        "roi":{"path": "F:/data/S05C016/roi.jpg"
+        }
     },
     "Postproc":{
         "nms": {
