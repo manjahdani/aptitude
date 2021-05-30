@@ -56,7 +56,8 @@ behavior AnalystRole {
 	/** 
 	 * Receiving this event, the behavior has to update its fields of perception.
 	 */
-	val availableObservers = newArrayList("Extremely Careful", "Speed, Speed, Speed ", " I over-trust my tracker", "Balanced")
+	val availableObservers = newArrayList("Extremely Careful", "Speed, Speed, Speed ", "Speed, Speed, Speed ",
+		"Balanced")
 	
 	var myObserver : UUID
 	@SuppressWarnings("potential_field_synchronization_problem")
@@ -75,7 +76,7 @@ behavior AnalystRole {
 		PlatformContext = occurrence.context
 		PlatformSpace = occurrence.spaceID
 		PlatformSpace.register(asEventListener)
-		info("Come here : Vehicle Counter")
+		//info("Come here : Vehicle Counter")
 		PlatformSpace.emit(new LocalDatabaseRequest)[it.UUID == PlatformContext.ID]
 		PlatformSpace.emit(new AddAlgorithm(MissionSpace, new AlgorithmInfo("APTITUDE", "COUNTER")))
 	}

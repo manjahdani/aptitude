@@ -33,7 +33,7 @@ skill DetectorPythonTwin extends PythonAccessObserver {
 			onRequestMessage(m)
 		} else if (m instanceof ActionMessage) {
 			if (m.ack){
-				info("Ack action " + m.actionID.toString)
+				//info("Ack action " + m.actionID.toString)
 			}
 		}
 	}

@@ -6,23 +6,23 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="I am activating access"/>
+		<item key="selection" value="jfx"/>
 		<list key="findhistory">
+			<item value="jfx"/>
+			<item value="5.2"/>
+			<item value="spring"/>
+			<item value="srping"/>
+			<item value="RELEASE"/>
+			<item value="Identified"/>
+			<item value="1.8"/>
+			<item value="37043475-6b51-4cef-8acd-e8394f49cf4f"/>
+			<item value="Detector Leaving"/>
+			<item value="8d70abd0-3157-4a6e-aada-c06458948673"/>
+			<item value="7f39fb9b-e85a-4321-8ab6-ae5be857efa3"/>
+			<item value="UpdateStreamAccess"/>
 			<item value="I am activating access"/>
 			<item value="sarl"/>
 			<item value="sre"/>
-			<item value="3.8.1"/>
-			<item value="Received AddObserver from"/>
-			<item value="waiting for"/>
-			<item value="waiting for YOLO"/>
-			<item value="37c08826-2197-46af-b31c-2ed39583a1f1"/>
-			<item value="5155aea8-6dc5-41f9-a666-a370643bbb08"/>
-			<item value="0d7f595a-b4b8-4e1a-b32f-6ee3229f2b1c"/>
-			<item value="1eb5462f-b07d-484d-9c92-4662cec0e97b"/>
-			<item value="b2eaf6f0-6a46-4773-b7ee-afcf12adf0c7"/>
-			<item value="I See a new friend"/>
-			<item value="Universe started"/>
-			<item value="72e43"/>
 		</list>
 		<list key="replacehistory">
 		</list>

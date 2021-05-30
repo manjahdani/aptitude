@@ -6,15 +6,14 @@
 	<groupId>be.uclouvain.aptitude</groupId>
 	<artifactId>launcher</artifactId>
 	<version>0.0.1</version>
-
 	<properties>
 		<sarl.version>0.11.0</sarl.version>
-		<target.jdk.version>1.8</target.jdk.version>
+		<target.jdk.version>11</target.jdk.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<dependencies>
-		<dependency>
+	<dependencies>		
+ 		<dependency>
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.maven.sdk</artifactId>
 			<version>${sarl.version}</version>
@@ -24,8 +23,17 @@
 			<artifactId>be.uclouvain.aptitude.surveillance</artifactId>
 			<version>0.0.1</version>
 		</dependency>
+			<dependency>
+			  <groupId>org.openjfx</groupId>
+			  <artifactId>javafx-controls</artifactId>
+			  <version>15.0.1</version>
+			</dependency>
+		<dependency>
+		    <groupId>org.openjfx</groupId>
+		    <artifactId>javafx-fxml</artifactId>
+		    <version>15.0.1</version>
+		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>

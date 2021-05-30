@@ -22,6 +22,7 @@ import java.util.Collections
 import java.util.LinkedList
 import java.util.TreeMap
 import java.util.UUID
+import io.sarl.core.MemberLeft
 
 /** 
  * Ensures the management of the associated resources (computational and sensors) of a Location 
@@ -70,7 +71,7 @@ behavior PlatformRole {
 			emit(new PlatformOrganisationInfo(innerContext, Listeners.get(MemberID)))[it.UUID == MemberID]
 			if(occurrence.agentType.contains("TOLD"))
 			{
-				info("I met TOLD")
+				//info("I met TOLD")
 				PlatformTOLDSpace=Listeners.get(MemberID)
 			}
 		}
@@ -86,6 +87,7 @@ behavior PlatformRole {
 	on Identification{
 		Participants.put(occurrence.name, occurrence.source.UUID)
 	}
+
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on AddAlgorithm {
 			PlatformTOLDSpace.emit(

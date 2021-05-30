@@ -31,7 +31,7 @@ agent User extends Paraddis{
 	
 	on Initialize {
 		loggingName = "User" + this.ID
-		info("agent started.")
+		//info("agent started.")
 		setSkill(
 			new UserSkill(occurrence.parameters.get(2).toString), UserElementCapacity,ElementCapacity)
 		registerBehavior(new UserRole(this), occurrence.parameters.get(0) as TreeMap<UUID, EventSpace>,

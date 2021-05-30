@@ -52,7 +52,7 @@ agent Expert extends Paraddis {
 	}
 	@SuppressWarnings("potential_field_synchronization_problem", "discouraged_occurrence_readonly_use")
 	on newMission {
-		info("I have a new mission")
+		//info("I have a new mission")
 		val PlatformID = platformList.get(occurrence.Mission.location);
 		//val PlatformSpace = platformlistenersSpaceIDs.get(PlatformID)
 		// MissionList.put(occurrence.missionData.entityID, PlatformSpace)

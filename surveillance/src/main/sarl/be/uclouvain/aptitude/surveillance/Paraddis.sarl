@@ -54,7 +54,7 @@ agent Paraddis {
 	//}
 	on Destroy {
 		// synchronized (AgentType)
-			info("agent was stopped.")
+			//info("agent was stopped.")
 	}
 	
 	on CommitSuicide {

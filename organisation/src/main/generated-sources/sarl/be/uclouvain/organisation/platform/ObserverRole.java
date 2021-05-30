@@ -111,8 +111,6 @@ public class ObserverRole extends Behavior {
   }
   
   private void $behaviorUnit$Destroy$1(final Destroy occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The behavior was stopped.");
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
@@ -191,9 +189,6 @@ public class ObserverRole extends Behavior {
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$SensititvityRequest$4(final SensititvityRequest occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    UUID _uUID = occurrence.getSource().getUUID();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("Thank you: " + _uUID) + "  Use the following sensitivity") + this.sensitivity));
     final Function2<UUID, OpenEventSpace, Boolean> _function = (UUID p1, OpenEventSpace p2) -> {
       SpaceID _spaceID = p2.getSpaceID();
       SpaceID _spaceID_1 = occurrence.getSource().getSpaceID();
@@ -288,8 +283,6 @@ public class ObserverRole extends Behavior {
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$LeavePlatform$7(final LeavePlatform occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("ObserverLeaving");
   }
   
   @Extension

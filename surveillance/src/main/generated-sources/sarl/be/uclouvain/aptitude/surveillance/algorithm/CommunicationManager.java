@@ -7,6 +7,7 @@ import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DTrackMessag
 import be.uclouvain.aptitude.surveillance.algorithm.messages.BaseMessage;
 import be.uclouvain.aptitude.surveillance.algorithm.messages.EvaluationMessage;
 import be.uclouvain.aptitude.surveillance.algorithm.messages.RequestMessage;
+import be.uclouvain.aptitude.surveillance.ui.DisplayMessage;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.SerializationConfig;
 import com.hazelcast.core.Hazelcast;
@@ -71,7 +72,11 @@ public class CommunicationManager {
                 if ((id == 30)) {
                   return new EvaluationMessage();
                 } else {
-                  return null;
+                  if ((id == 91)) {
+                    return new DisplayMessage();
+                  } else {
+                    return null;
+                  }
                 }
               }
             }

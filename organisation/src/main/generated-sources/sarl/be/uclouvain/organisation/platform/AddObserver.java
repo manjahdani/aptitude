@@ -19,6 +19,8 @@ public class AddObserver extends Event {
   
   public AlgorithmInfo SignalReceiver;
   
+  public int flag;
+  
   public AddObserver(final OpenEventSpace ospace, final AlgorithmInfo s, final AlgorithmInfo r) {
     this.MissionSpace = ospace;
     this.SignalProvider = s;
@@ -29,6 +31,15 @@ public class AddObserver extends Event {
   @Pure
   @SyntheticMember
   public boolean equals(final Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    AddObserver other = (AddObserver) obj;
+    if (other.flag != this.flag)
+      return false;
     return super.equals(obj);
   }
   
@@ -37,6 +48,8 @@ public class AddObserver extends Event {
   @SyntheticMember
   public int hashCode() {
     int result = super.hashCode();
+    final int prime = 31;
+    result = prime * result + Integer.hashCode(this.flag);
     return result;
   }
   
@@ -50,8 +63,9 @@ public class AddObserver extends Event {
     builder.add("MissionSpace", this.MissionSpace);
     builder.add("SignalProvider", this.SignalProvider);
     builder.add("SignalReceiver", this.SignalReceiver);
+    builder.add("flag", this.flag);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = -39056951L;
+  private static final long serialVersionUID = -35806940L;
 }

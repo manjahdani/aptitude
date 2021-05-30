@@ -12,6 +12,7 @@ import io.sarl.core.Schedules
 import java.io.FileReader
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
+import io.sarl.core.DefaultContextInteractions
 
 /** 
  * @TODO: write a description
@@ -24,7 +25,7 @@ import org.json.simple.parser.JSONParser
  * 
  */
 behavior DetectorRole extends ObserverRole {
-	uses Logging, PythonTwinObserverAccess, Schedules
+	uses Logging, PythonTwinObserverAccess, Schedules,DefaultContextInteractions
 
 	var partnerDetectionName : String
 
@@ -40,7 +41,7 @@ behavior DetectorRole extends ObserverRole {
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on PartnerDetectionFound {
 		this.partnerDetectionName = occurrence.partnerName
-		info("Detection partner found: " + this.partnerDetectionName)
+		//info("Detection partner found: " + this.partnerDetectionName)
 		task("wait").in(2000) [
 			UpdateStreamAccess(1) // PLAY
 			]
@@ -72,7 +73,10 @@ behavior DetectorRole extends ObserverRole {
 
 				MissionSpaceList.get(l).emit(this.ID, new BBoxes2DResult(occurrence.bboxes2D))[it.UUID == l]
 			}
-		}	
+		}
+		
+		
+	
 			
 		//emit(new BBoxes2DResult(occurrence.bboxes2D))[it.UUID == observerID]
 		 //println("***********************")
@@ -94,14 +98,31 @@ behavior DetectorRole extends ObserverRole {
 		// this.expectedFrame = occurrence.bboxes2D.frameNumber +1
 	}
 
+	on RestartDetector[occurrence.bel==ObserverADN.name]{
+		
+		info("Restarting")
+		MissionSpaceList.put(occurrence.source.UUID,MissionSpaceList.get(Listeners.get(0)))
+		Listeners.clear
+		Listeners.add(occurrence.source.UUID)
+		//UpdateStreamAccess(3)
+		UpdateStreamAccess(5)
+		UpdateStreamAccess(1)
+	}
 	on Destroy {
 		info("The behavior was stopped.")
 	}
 
 	on LeavePlatform {
 		// join(BaseContext.ID, BaseSpace.spaceID.ID)
-		info("Detector Leaving")
+		//info("Detector Leaving")
 		UpdateStreamAccess(4)
 		//leave(PlatformID)
 	}
+}
+event RestartDetector{
+	
+	var bel : String
+	new (a : String){
+		this.bel = a
+}
 }

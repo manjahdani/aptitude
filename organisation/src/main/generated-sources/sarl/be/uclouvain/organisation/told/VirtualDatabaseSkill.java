@@ -51,8 +51,6 @@ public class VirtualDatabaseSkill extends Skill implements AccessDatabaseCapacit
   }
   
   public void prepareUninstallation() {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Preparing the uninstallation of the skill");
   }
   
   public void uninstall() {

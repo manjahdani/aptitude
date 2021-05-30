@@ -1,0 +1,54 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.ui
+
+import be.uclouvain.aptitude.surveillance.ui.DisplayCapacity
+import io.sarl.core.Logging
+import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DTrackMessage
+import be.uclouvain.aptitude.surveillance.algorithm.CommunicationManager
+import io.sarl.core.AgentTask
+import be.uclouvain.aptitude.surveillance.algorithm.messages.BaseMessage
+import be.uclouvain.aptitude.surveillance.algorithm.PythonAccess
+
+/** 
+ * @author manjah
+ * 
+ */
+skill DisplaySkill extends PythonAccess implements DisplayCapacity {
+	uses Logging
+
+	var topicDisplaySub : String
+
+	var pendingRequestID : String
+	var requestTask : AgentTask
+
+	override def install {
+		topicDisplaySub = CommunicationManager.instance.subscribeTopic("display", this)
+	}
+
+	override def uninstall {
+		if (topicDisplaySub !== null) {
+			CommunicationManager.instance.unsubscribeTopic(topicDisplaySub)
+			topicDisplaySub = null
+		}
+	}
+
+	def sendDisplayMessage(bboxes2dTrack : BBoxes2DTrackMessage, streamID : String, streamPath : String, roi : String,
+		countingLines : int[], counts : int[], observer : String, sensitivity : int) {
+		var displayMessage = new DisplayMessage(bboxes2dTrack)
+		displayMessage.streamID = streamID
+		displayMessage.streamPath = streamPath
+		displayMessage.countingLines = countingLines
+		displayMessage.counts = counts
+		displayMessage.observer = observer
+		displayMessage.sensitivity = sensitivity
+		if (roi !== null)
+			displayMessage.roiPath = roi
+		CommunicationManager.instance.publishMessage(topicDisplaySub, displayMessage)
+	}
+
+	def update(m : BaseMessage) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+}

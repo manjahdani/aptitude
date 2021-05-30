@@ -37,8 +37,6 @@ public class Paraddis extends Agent {
   protected String AgentType = "Unknown";
   
   private void $behaviorUnit$Destroy$0(final Destroy occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("agent was stopped.");
   }
   
   private void $behaviorUnit$CommitSuicide$1(final CommitSuicide occurrence) {

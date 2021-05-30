@@ -77,7 +77,8 @@ public class AnalystRole extends Behavior {
   /**
    * Receiving this event, the behavior has to update its fields of perception.
    */
-  private final ArrayList<String> availableObservers = CollectionLiterals.<String>newArrayList("Extremely Careful", "Speed, Speed, Speed ", " I over-trust my tracker", "Balanced");
+  private final ArrayList<String> availableObservers = CollectionLiterals.<String>newArrayList("Extremely Careful", "Speed, Speed, Speed ", "Speed, Speed, Speed ", 
+    "Balanced");
   
   private UUID myObserver;
   
@@ -100,8 +101,6 @@ public class AnalystRole extends Behavior {
     this.PlatformSpace = occurrence.spaceID;
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     this.PlatformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Come here : Vehicle Counter");
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     LocalDatabaseRequest _localDatabaseRequest = new LocalDatabaseRequest();
     class $SerializableClosureProxy implements Scope<Address> {

@@ -4,11 +4,9 @@ import be.uclouvain.aptitude.surveillance.algorithm.messages.EvaluationMessage;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
-import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -19,6 +17,8 @@ public class CompetitionResults {
   private UUID CompetitorID;
   
   private String CompetitorBelief;
+  
+  private int Frame;
   
   private double DetectionTime;
   
@@ -72,11 +72,27 @@ public class CompetitionResults {
     return _xblockexpression;
   }
   
-  public CompetitionResults(final UUID id, final String s, final double ts, final double tt) {
+  public CompetitionResults(final UUID id, final String s, final double ts, final double tt, final int f) {
     this.CompetitorID = id;
     this.CompetitorBelief = s;
     this.DetectionTime = ts;
     this.TrackingTime = tt;
+    this.Frame = f;
+  }
+  
+  @Pure
+  public UUID getCompetitorID() {
+    return this.CompetitorID;
+  }
+  
+  @Pure
+  public String getBelief() {
+    return this.CompetitorBelief;
+  }
+  
+  @Pure
+  public int getFrame() {
+    return this.Frame;
   }
   
   @Pure
@@ -197,13 +213,10 @@ public class CompetitionResults {
   }
   
   public void EvaluationPrint() {
-    InputOutput.<String>println(this.CompetitorID.toString());
     InputOutput.<String>println(this.CompetitorBelief);
     System.out.printf(Locale.FRANCE, "%-10.4f%n", Double.valueOf(this.HOTA));
     System.out.printf(Locale.FRANCE, "%-10.4f%n", Double.valueOf(this.DetectionTime));
     System.out.printf(Locale.FRANCE, "%-10.4f%n", Double.valueOf(this.TrackingTime));
-    String _string = ((List<Double>)Conversions.doWrapArray(this.HOTA_Array)).toString();
-    InputOutput.<String>println(("HOTA_ARRAY" + _string));
     System.out.format("***********************");
   }
   
@@ -221,6 +234,8 @@ public class CompetitionResults {
     if (!Objects.equals(this.CompetitorID, other.CompetitorID))
       return false;
     if (!Objects.equals(this.CompetitorBelief, other.CompetitorBelief))
+      return false;
+    if (other.Frame != this.Frame)
       return false;
     if (Double.doubleToLongBits(other.DetectionTime) != Double.doubleToLongBits(this.DetectionTime))
       return false;
@@ -257,6 +272,7 @@ public class CompetitionResults {
     final int prime = 31;
     result = prime * result + Objects.hashCode(this.CompetitorID);
     result = prime * result + Objects.hashCode(this.CompetitorBelief);
+    result = prime * result + Integer.hashCode(this.Frame);
     result = prime * result + Double.hashCode(this.DetectionTime);
     result = prime * result + Double.hashCode(this.TrackingTime);
     result = prime * result + Double.hashCode(this.HOTA);

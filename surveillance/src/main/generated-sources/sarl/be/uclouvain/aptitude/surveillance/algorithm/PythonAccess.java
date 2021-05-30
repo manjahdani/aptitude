@@ -91,8 +91,6 @@ public abstract class PythonAccess extends Skill implements PythonAccessCapacity
   }
   
   public void UpdateStreamAccess(final int actionID, final int newFrameNumber) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I am sending the action: " + Integer.valueOf(actionID)));
     ActionMessage actionMessage = new ActionMessage();
     actionMessage.setActionID(actionID);
     if ((newFrameNumber != (-1))) {

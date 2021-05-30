@@ -2,6 +2,7 @@
  */
 package be.uclouvain.organisation.platform
 
+import be.uclouvain.organisation.Identification
 import be.uclouvain.organisation.PlatformOrganisationInfo
 import be.uclouvain.organisation.TOLDOrganisationInfo
 import be.uclouvain.organisation.told.util.AlgorithmInfo
@@ -12,12 +13,10 @@ import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import io.sarl.lang.core.AgentContext
-import java.util.LinkedList
-import java.util.UUID
-import java.util.TreeMap
-import be.uclouvain.organisation.Identification
-import java.util.List
 import java.util.Collections
+import java.util.LinkedList
+import java.util.TreeMap
+import java.util.UUID
 
 /** 
  * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 
@@ -77,7 +76,7 @@ behavior ObserverRole {
 	}
 
 	on Destroy {
-		info("The behavior was stopped.")
+		//info("The behavior was stopped.")
 	}
 
 	@SuppressWarnings("potential_field_synchronization_problem")
@@ -103,7 +102,7 @@ behavior ObserverRole {
 	on SensititvityRequest {
 
 		// info("I received A Sensititivy Request" + occurrence.source.UUID)
-		info("Thank you: " + occurrence.source.UUID + "  Use the following sensitivity" + sensitivity)
+		//info("Thank you: " + occurrence.source.UUID + "  Use the following sensitivity" + sensitivity)
 		var MissionSpace = (MissionSpaceList.filter[p1, p2|p2.spaceID == occurrence.source.spaceID]).values.get(0)
 		var s = isMaster? sensitivity:newLinkedList(sensitivity.pop)
 		MissionSpace.emit(this.ID, new MissionSensitivity(s))[it.UUID == occurrence.source.UUID]
@@ -131,7 +130,7 @@ behavior ObserverRole {
 		@SuppressWarnings("potential_field_synchronization_problem")
 		on LeavePlatform {
 		//join(BaseContext.ID, BaseSpace.spaceID.ID)
-		info("ObserverLeaving")
+		//info("ObserverLeaving")
 		//leave(PlatformContext.ID)
 	}
 }

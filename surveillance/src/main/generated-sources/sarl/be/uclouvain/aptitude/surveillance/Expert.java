@@ -76,8 +76,6 @@ public class Expert extends Paraddis {
   
   @SuppressWarnings({ "potential_field_synchronization_problem", "discouraged_occurrence_readonly_use" })
   private void $behaviorUnit$newMission$1(final newMission occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("I have a new mission");
     final UUID PlatformID = this.platformList.get(occurrence.Mission.getLocation());
     this.MissionList.put(occurrence.Mission.getMissionID(), PlatformID);
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();

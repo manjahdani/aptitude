@@ -161,8 +161,6 @@ public class PlatformRole extends Behavior {
       _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1.emit(_platformOrganisationInfo, _function);
       boolean _contains = occurrence.agentType.contains("TOLD");
       if (_contains) {
-        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("I met TOLD");
         this.PlatformTOLDSpace = this.Listeners.get(MemberID);
       }
     } else {

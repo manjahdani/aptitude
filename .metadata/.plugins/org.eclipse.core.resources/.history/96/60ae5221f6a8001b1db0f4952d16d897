@@ -1,7 +1,0 @@
-APTITUDE aims to resolve numerous challenges in the use of artificial intelligence (AI) and image processing for tele-surveillance in urban areas.
-
-The recent emergence of artificial intelligence has led to the design of safer and smarter cities. However, today’s computer-vision solutions lack robustness when dealing with occlusions and unexplainable adversarial cases. In addition, the current paradigm of designing those solutions is centralized, which presents difficulties when one is scaling the model from a single to thousands of cameras. 
-
-We propose a cooperative approach among cameras as well as algorithms to overcome those limits. The philosophy is that collaboration will give us the best of both worlds. Namely, using classical image processing and deep learning could provide a more explainable AI and reduce training needs while keeping high precision. To support this distributed and hybrid approach, we will develop an holonic multi-agent architecture. 
-
-The outcome of APTITUDE is a scalable framework and toolbox deployable over a surveillance solution to address monitoring, event detection and traffic analysis at the scale of an entire city.

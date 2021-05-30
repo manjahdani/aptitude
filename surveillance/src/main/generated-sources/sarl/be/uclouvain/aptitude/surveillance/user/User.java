@@ -46,8 +46,6 @@ public class User extends Paraddis {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     UUID _iD = this.getID();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(("User" + _iD));
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("agent started.");
     String _string = occurrence.parameters[2].toString();
     UserSkill _userSkill = new UserSkill(_string);
     this.<UserSkill>setSkill(_userSkill, UserElementCapacity.class, ElementCapacity.class);

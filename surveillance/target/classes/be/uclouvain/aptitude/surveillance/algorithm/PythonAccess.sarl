@@ -83,7 +83,7 @@ abstract skill PythonAccess implements PythonAccessCapacity {
 	}
 
 	def UpdateStreamAccess(actionID : int, newFrameNumber : int) {
-		info("I am sending the action: " + actionID)
+		//info("I am sending the action: " + actionID)
 		var actionMessage = new ActionMessage() // @TODO : Strange way of doing it
 		actionMessage.actionID = actionID
 		if (newFrameNumber != -1) {

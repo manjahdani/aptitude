@@ -1,6 +1,6 @@
 {
 	"Video":{
-		"path": "F:/data/S05C016/vdo.avi"
+		"path": "F:/data/S02C006/vdo.avi"
 	},
     "Proc":{    
         "Tracker":{
@@ -32,7 +32,7 @@
             "height": 416
         },
         "roi":{
-            "path": "F:/data/S05C016/roi.jpg"
+            "path": "F:/data/S02C006/roi.jpg"
         }
     },
     "Postproc":{}

@@ -16,6 +16,7 @@ import com.hazelcast.core.HazelcastInstance
 import com.hazelcast.core.ITopic
 import com.hazelcast.core.Message
 import com.hazelcast.core.MessageListener
+import be.uclouvain.aptitude.surveillance.ui.DisplayMessage
 
 /** 
  * @author samelson
@@ -70,7 +71,9 @@ class CommunicationManager {
 					return new BBoxes2DMessage
 				else if (id == 211)
 					return new BBoxes2DTrackMessage
-				else if(id == 30) return new EvaluationMessage else return null
+				else if (id == 30)
+					return new EvaluationMessage
+				else if (id==91) return new DisplayMessage else return null
 			]
 		)
 		hzConfig.serializationConfig = serialConfig

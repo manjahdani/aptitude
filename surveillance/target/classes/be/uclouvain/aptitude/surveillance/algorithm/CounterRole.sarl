@@ -33,7 +33,7 @@ import java.util.TreeMap
  * 
  */
 
-behavior CounterRole extends ObserverRole {
+behavior CounterRole { //extends ObserverRole {
 	
 	uses Logging, ExternalContextAccess, CounterObserverCapacity
 
@@ -48,22 +48,23 @@ behavior CounterRole extends ObserverRole {
 
 	// end
 	on Initialize {
+		info("The counting starts from now !")
 		intensityMap.put(0, 1)
 		intensityMap.put(1, 0)
 		intensityMap.put(2, 1)
 		intensityMap.put(3, 0)
 		setSkill(new CountingSkill, CounterObserverCapacity)
 	}
-	@SuppressWarnings("potential_field_synchronization_problem")
-	on MissionSensitivity {
-		sensitivity = newLinkedList(occurrence.s)
-		val ObserverName = availableObservers.get(intensityMap.get(sensitivity.first))
-		info("Come here : " + ObserverName)
-		this.start = System.currentTimeMillis()
-		PlatformSpace.emit(
-			new AddAlgorithm(MissionSpaceList.values.get(0),
-				new AlgorithmInfo(ObserverName, "TRACKER")))[it.UUID == PlatformContext.ID] 	// @FIXME : Be very careful as I am taking the first Space !!!! DANGER
-	}
+//	@SuppressWarnings("potential_field_synchronization_problem")
+//	on MissionSensitivity {
+//		sensitivity = newLinkedList(occurrence.s)
+//		val ObserverName = availableObservers.get(intensityMap.get(sensitivity.first))
+//		info("Come here : " + ObserverName)
+//		this.start = System.currentTimeMillis()
+//		PlatformSpace.emit(
+//			new AddAlgorithm(MissionSpaceList.values.get(0),
+//				new AlgorithmInfo(ObserverName, "TRACKER")))[it.UUID == PlatformContext.ID] 	// @FIXME : Be very careful as I am taking the first Space !!!! DANGER
+//	}
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on TrackingPerception {
 		//info("Received Tracking")
@@ -86,10 +87,10 @@ behavior CounterRole extends ObserverRole {
 //			sendEvaluationRequest(UUID.randomUUID.toString, predictions, gts)
 	}
 	on LastFrame {
-		info("That was it!")
-		val totalTime = (((System.currentTimeMillis() - this.start) / 1000))
-		info("It took " + totalTime.toString + " seconds")
-		info("Average FPS : " + (occurrence.frameNumber / totalTime).toString)
+		info("That was it for Couting!")
+		//val totalTime = (((System.currentTimeMillis() - this.start) / 1000))
+		//info("It took " + totalTime.toString + " seconds")
+		//info("Average FPS : " + (occurrence.frameNumber / totalTime).toString)
 		info("I will transfer my perception to the Analyst")
 		DisplayPerception
 	}
@@ -139,21 +140,21 @@ behavior CounterRole extends ObserverRole {
 ////		}
 //	}
 //}
-	on EvaluationResult {
-		// time2 = System.currentTimeMillis()
-		// println(time2 - time1)
-		// println(time2 - time3)
-		info("Message Evaluation Received")
-		println("reqID \t" + occurrence.result.requestID)
-		println("HOTA \t" + occurrence.result.HOTA)
-		println("DetA \t" + occurrence.result.detA)
-		println("AssA \t" + occurrence.result.assA)
-		println("DetRe \t" + occurrence.result.detRe)
-		println("DetPr \t" + occurrence.result.detPr)
-		println("AssRe \t" + occurrence.result.assRe)
-		println("AssPr \t" + occurrence.result.assPr)
-		println("LocA \t" + occurrence.result.locA)
-	}
+//	on EvaluationResult {
+//		// time2 = System.currentTimeMillis()
+//		// println(time2 - time1)
+//		// println(time2 - time3)
+//		info("Message Evaluation Received")
+//		println("reqID \t" + occurrence.result.requestID)
+//		println("HOTA \t" + occurrence.result.HOTA)
+//		println("DetA \t" + occurrence.result.detA)
+//		println("AssA \t" + occurrence.result.assA)
+//		println("DetRe \t" + occurrence.result.detRe)
+//		println("DetPr \t" + occurrence.result.detPr)
+//		println("AssRe \t" + occurrence.result.assRe)
+//		println("AssPr \t" + occurrence.result.assPr)
+//		println("LocA \t" + occurrence.result.locA)
+//	}
 	
 }
 

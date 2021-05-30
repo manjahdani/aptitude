@@ -35,7 +35,7 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 	def prepareUninstallation {
 		// Function invoked when the skill is preparing to be uninstalled from the owner, but before the owner is destroyed.
 		// You should put all the resource release statements that should be executed before the owner is destroyed.
-		info("Preparing the uninstallation of the skill")
+		//info("Preparing the uninstallation of the skill")
 	}
 
 	def uninstall {

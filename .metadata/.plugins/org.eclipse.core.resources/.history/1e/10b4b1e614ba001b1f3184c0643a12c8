@@ -1,0 +1,330 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm
+
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxes2D
+import be.uclouvain.organisation.platform.AddAlgorithm
+import be.uclouvain.organisation.platform.CounterObserverCapacity
+import be.uclouvain.organisation.platform.MissionSensitivity
+import be.uclouvain.organisation.platform.ObserverRole
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import java.io.FileReader
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.ArrayList
+import java.util.TreeMap
+import java.util.UUID
+import org.json.simple.JSONObject
+import org.json.simple.parser.JSONParser
+import be.uclouvain.aptitude.surveillance.algorithm.messages.EvaluationMessage
+import java.util.Locale
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior CompetitiveCounterRole extends ObserverRole {
+	uses Logging, ExternalContextAccess, CounterObserverCapacity, Evaluation, Behaviors,DefaultContextInteractions
+
+	var Comp_Duration : long
+
+	val AVAILABLE_OBSERVERS = newArrayList("SORT")//,"DeepSORT") // "SORT",
+	
+	val ObjectPresentInframe = new TreeMap<Integer, BBoxes2D>
+	val ObjectToBeAnalyzed = new ArrayList<BBoxes2D>;
+	val CompResults = new TreeMap<UUID,CompetitionResults>
+	var EvaluationPartnerName : String;
+	var ExpertSensitivity : Integer
+	var gtFile = "F:/data/S02C006/gt/gt.txt"
+	var NumberTests = 0 
+on Initialize {
+	 	
+	 	sensitivity.add(0)
+		sensitivity.add(1)
+		isMaster = true; 
+		setSkill(new EvaluationImpl, Evaluation)
+		var configPath = "F:/aptitude/surveillance/src/main/resources/config/evalconfig.json"
+		var parser = new JSONParser();
+		var configPathEvaluator = configPath
+		var jsonEvaluator = parser.parse(new FileReader(configPathEvaluator)) as JSONObject;
+		ActivateAccess(jsonEvaluator)
+		info("Let the competition start !")
+	}
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on PartnerEvaluationFound {
+		EvaluationPartnerName = occurrence.partnerName
+		//info("I found my partner" + EvaluationPartnerName)
+		this.Comp_Duration = System.currentTimeMillis()
+	}
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on MissionSensitivity {
+		//info(occurrence.s)
+		ExpertSensitivity = occurrence.s.get(0)
+		for (ObserverName : AVAILABLE_OBSERVERS) {
+			info("Come here : " + ObserverName)
+			PlatformSpace.emit(
+				new AddAlgorithm(MissionSpaceList.values.get(0),
+					new AlgorithmInfo(ObserverName, "TRACKER")))[it.UUID == PlatformContext.ID] // @FIXME : Be very careful as I am taking the first Space !!!! DANGER
+		}
+	}
+	
+	on LastFrame {
+		//info("Receveid " + occurrence.pred_file_Path + occurrence.frameNumber)
+		//info("Sending to evaluation")
+		
+		var predictions = new String(Files.readAllBytes(Paths.get(occurrence.pred_file_Path)));
+		var gts = new String(Files.readAllBytes(Paths.get(gtFile)))
+		var testID = UUID.randomUUID
+		
+		CompResults.put(testID, 
+			new CompetitionResults(occurrence.source.UUID, 
+									occurrence.pred_file_Path, 
+									occurrence.total_time_detection, 
+									occurrence.total_time_tracking, occurrence.frameNumber))
+									
+		sendEvaluationRequest(predictions, gts)
+	}
+	
+	
+	on EvaluationResult {
+		// time2 = System.currentTimeMillis()
+		// println(time2 - time1)
+		// println(time2 - time3)
+		info("Message Evaluation Received")
+		
+		if(CompResults.get(UUID.fromString(occurrence.result.requestID)).HOTA ==0){
+			info("Recording the result of ")
+		CompResults.get(UUID.fromString(occurrence.result.requestID)).setValues(occurrence.result)
+		
+		//println("***********************")
+		//println("           reqID \t" + occurrence.result.requestID)
+		//CompResults.get(UUID.fromString(occurrence.result.requestID)).EvaluationPrint
+			NumberTests += 1
+			info("Recording the result of Competitor " + NumberTests)
+		if(NumberTests == 2)
+		{
+			SelectChampion
+		}}
+
+//		println("HOTA \t" + occurrence.result.HOTA)
+//		println("DetA \t" + occurrence.result.detA)
+//		println("AssA \t" + occurrence.result.assA)
+//		println("DetRe \t" + occurrence.result.detRe)
+//		println("DetPr \t" + occurrence.result.detPr)
+//		println("AssRe \t" + occurrence.result.assRe)
+//		println("AssPr \t" + occurrence.result.assPr)
+//		println("LocA \t" + occurrence.result.locA)
+	}
+	
+	def SelectChampion {
+		info("Competition is over. Lets choose the Champion !")
+		var res = new TreeMap<Double, String> 
+		for (l : CompResults.values) {
+			var HOTA = l.HOTA
+			var sframe =(l.trackingTime + l.detectionTime)/l.frame
+			var effeciency = (0.51 - 2 * sframe) / (0.49)
+			info("HOTA :" + HOTA)
+			info("Effeciency :" + effeciency)
+			//info("Exper" + ExpertSensitivity)
+			res.put(HOTA + ExpertSensitivity * effeciency, l.belief)
+		}
+		
+		var maxValue = (res.firstKey > res.lastKey) ? res.firstKey :res.lastKey
+		//info(res)
+		info("Congratulations to " + maxValue  + res.get(maxValue))
+		registerBehavior(new CounterRole(this.owner))
+		var trackingGuy = CompResults.filter[p1, p2|p2.belief == res.get(maxValue)].values.get(0).getCompetitorID
+		emit(new TrackingRequest(res.get(maxValue)))[it.UUID == trackingGuy]
+		
+	}
+}
+
+class CompetitionResults{
+	
+	var CompetitorID : UUID
+	var CompetitorBelief : String
+	var Frame : int
+	var DetectionTime : double
+	var TrackingTime : double
+	var HOTA : double
+	var DetA : double
+	var AssA : double
+	var DetRe : double
+	var DetPr : double
+	var AssRe : double
+	var AssPr : double
+	var LocA : double
+	var HOTA_Array : double[]
+	var MOTA : double
+	var MOTP : double
+
+	
+	new (id : UUID, s: String , ts:double, tt:double, h : double){
+		this.CompetitorID = id
+		this.CompetitorBelief = s
+		this.DetectionTime = ts
+		this.TrackingTime = tt
+		this.HOTA  = h
+		
+	}
+	def setValues(e : EvaluationMessage) {
+		this.HOTA = e.getHOTA
+		this.DetA = e.getDetA
+		this.AssA = e.getAssA
+		this.DetRe = e.getDetRe
+		this.DetPr = e.getDetPr
+		this.AssRe = e.getAssRe
+		this.AssPr = e.getAssPr
+		this.LocA = e.getLocA
+		this.HOTA_Array = e.getHOTA_Array
+		this.MOTA = e.getMOTA
+		this.MOTP = e.getMOTP
+		
+	}
+
+	new (id : UUID, s : String, ts : double, tt : double,   f:int) {
+		this.CompetitorID = id
+		this.CompetitorBelief = s
+		this.DetectionTime = ts
+		this.TrackingTime = tt
+		this.Frame = f
+	}
+	
+	def getCompetitorID{
+		return this.CompetitorID
+	}
+	def getBelief{
+		return this.CompetitorBelief
+	}
+	
+	def getFrame{
+		return this.Frame
+	}
+	def getHOTA_Array(l : double[]) {
+		return HOTA_Array
+	}
+
+	def getMOTA {
+		return this.MOTA  
+	}
+
+	def getMOTP {
+		return this.MOTP  
+	}
+
+	def getLocA {
+		return this.LocA 
+	}
+
+	def getDetA {
+		return this.DetA 
+	}
+
+	def getAssA {
+		return this.AssA 
+	}
+
+	def getDetRe {
+		return this.DetRe 
+	}
+
+	def getPr {
+		return this.DetPr
+	}
+
+	def getAssRe {
+		return this.AssRe
+	}
+
+	def getAssPr {
+		return this.AssPr
+	}
+	
+	
+	def setHOTA_Array(l : double[])
+	{
+		this.HOTA_Array=l
+	}
+	def setMOTA (l:double){
+		this.MOTA =l
+	}
+	def setMOTP (l:double){
+		this.MOTP = l
+	}
+	
+	def setLocA(l:double):void{
+		this.LocA = l
+	}
+	
+	def setDetA (l: double):void{
+		this.DetA=l
+	}
+	def setAssA (l:double):void{
+		this.AssA = l
+	}
+	def setDetRe (l:double):void{
+		this.DetRe=l
+	}
+	def DetPr(l:double):void{
+		this.DetPr=l
+	}
+
+	def setAssRe(l : double) : void {
+		this.AssRe = l
+	}
+
+	def DetAssPr(l : double) : void {
+		this.AssPr = l
+	}
+	
+	def setDetectionTime(l : double) {
+		this.DetectionTime = l
+	}
+
+	def setTrackingTime(l : double) {
+		this.TrackingTime=l
+	}
+	def setHOTA (h : double)
+	{
+		this.HOTA = h
+	}
+	def getDetectionTime : double {
+		return this.DetectionTime
+	}
+
+	def getTrackingTime : double {
+		return this.TrackingTime
+	}
+
+	def getHOTA : double {
+		return this.HOTA
+	}
+	
+	def EvaluationPrint() : void {
+		//println(CompetitorID.toString)
+		println(CompetitorBelief)
+		System.out.printf(Locale.FRANCE, "%-10.4f%n", HOTA)
+		System.out.printf(Locale.FRANCE, "%-10.4f%n", DetectionTime)
+		System.out.printf(Locale.FRANCE, "%-10.4f%n",TrackingTime)
+		//println("HOTA_ARRAY" + HOTA_Array.toString)
+		System.out.format("***********************")
+	}
+}
+
+
+event TrackingRequest {
+	var bel : String 
+	
+	new (a : String)
+	{
+		this.bel = a
+	}
+}

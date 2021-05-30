@@ -1,11 +1,13 @@
 package be.uclouvain.aptitude.surveillance.algorithm;
 
 import be.uclouvain.aptitude.surveillance.algorithm.CompetitionResults;
+import be.uclouvain.aptitude.surveillance.algorithm.CounterRole;
 import be.uclouvain.aptitude.surveillance.algorithm.Evaluation;
 import be.uclouvain.aptitude.surveillance.algorithm.EvaluationImpl;
 import be.uclouvain.aptitude.surveillance.algorithm.EvaluationResult;
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame;
 import be.uclouvain.aptitude.surveillance.algorithm.PartnerEvaluationFound;
+import be.uclouvain.aptitude.surveillance.algorithm.TrackingRequest;
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxes2D;
 import be.uclouvain.organisation.platform.AddAlgorithm;
 import be.uclouvain.organisation.platform.CounterObserverCapacity;
@@ -13,6 +15,8 @@ import be.uclouvain.organisation.platform.MissionSensitivity;
 import be.uclouvain.organisation.platform.ObserverRole;
 import be.uclouvain.organisation.told.util.AlgorithmInfo;
 import com.google.common.base.Objects;
+import io.sarl.core.Behaviors;
+import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.Initialize;
 import io.sarl.core.Logging;
@@ -39,7 +43,8 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.InputOutput;
+import org.eclipse.xtext.xbase.lib.Functions.Function2;
+import org.eclipse.xtext.xbase.lib.MapExtensions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -53,7 +58,7 @@ import org.json.simple.parser.JSONParser;
 public class CompetitiveCounterRole extends ObserverRole {
   private long Comp_Duration;
   
-  private final ArrayList<String> AVAILABLE_OBSERVERS = CollectionLiterals.<String>newArrayList("SORT", "DeepSORT");
+  private final ArrayList<String> AVAILABLE_OBSERVERS = CollectionLiterals.<String>newArrayList("SORT");
   
   private final TreeMap<Integer, BBoxes2D> ObjectPresentInframe = new TreeMap<Integer, BBoxes2D>();
   
@@ -63,10 +68,15 @@ public class CompetitiveCounterRole extends ObserverRole {
   
   private String EvaluationPartnerName;
   
-  private String gtFile = "F:/data/S05C016/gt/gt.txt";
+  private Integer ExpertSensitivity;
+  
+  private String gtFile = "F:/data/S02C006/gt/gt.txt";
+  
+  private int NumberTests = 0;
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     try {
+      this.sensitivity.add(Integer.valueOf(0));
       this.sensitivity.add(Integer.valueOf(1));
       this.isMaster = Boolean.valueOf(true);
       EvaluationImpl _evaluationImpl = new EvaluationImpl();
@@ -79,6 +89,8 @@ public class CompetitiveCounterRole extends ObserverRole {
       JSONObject jsonEvaluator = ((JSONObject) _parse);
       Evaluation _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_EVALUATION$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_EVALUATION$CALLER();
       _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_EVALUATION$CALLER.ActivateAccess(jsonEvaluator);
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Let the competition start !");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -87,13 +99,12 @@ public class CompetitiveCounterRole extends ObserverRole {
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$PartnerEvaluationFound$1(final PartnerEvaluationFound occurrence) {
     this.EvaluationPartnerName = occurrence.partnerName;
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I found my partner" + this.EvaluationPartnerName));
     this.Comp_Duration = System.currentTimeMillis();
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$MissionSensitivity$2(final MissionSensitivity occurrence) {
+    this.ExpertSensitivity = occurrence.s.get(0);
     for (final String ObserverName : this.AVAILABLE_OBSERVERS) {
       {
         Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
@@ -134,10 +145,6 @@ public class CompetitiveCounterRole extends ObserverRole {
   
   private void $behaviorUnit$LastFrame$3(final LastFrame occurrence) {
     try {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((("Receveid " + occurrence.pred_file_Path) + Integer.valueOf(occurrence.frameNumber)));
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Sending to evaluation");
       byte[] _readAllBytes = Files.readAllBytes(Paths.get(occurrence.pred_file_Path));
       String predictions = new String(_readAllBytes);
       byte[] _readAllBytes_1 = Files.readAllBytes(Paths.get(this.gtFile));
@@ -147,7 +154,7 @@ public class CompetitiveCounterRole extends ObserverRole {
       CompetitionResults _competitionResults = new CompetitionResults(_uUID, 
         occurrence.pred_file_Path, 
         occurrence.total_time_detection, 
-        occurrence.total_time_tracking);
+        occurrence.total_time_tracking, occurrence.frameNumber);
       this.CompResults.put(testID, _competitionResults);
       Evaluation _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_EVALUATION$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_EVALUATION$CALLER();
       _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_EVALUATION$CALLER.sendEvaluationRequest(testID.toString(), predictions, gts);
@@ -159,11 +166,91 @@ public class CompetitiveCounterRole extends ObserverRole {
   private void $behaviorUnit$EvaluationResult$4(final EvaluationResult occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Message Evaluation Received");
-    this.CompResults.get(UUID.fromString(occurrence.result.getRequestID())).setValues(occurrence.result);
-    InputOutput.<String>println("***********************");
-    String _requestID = occurrence.result.getRequestID();
-    InputOutput.<String>println(("           reqID \t" + _requestID));
-    this.CompResults.get(UUID.fromString(occurrence.result.getRequestID())).EvaluationPrint();
+    double _hOTA = this.CompResults.get(UUID.fromString(occurrence.result.getRequestID())).getHOTA();
+    if ((_hOTA == 0)) {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Recording the result of ");
+      this.CompResults.get(UUID.fromString(occurrence.result.getRequestID())).setValues(occurrence.result);
+      int _NumberTests = this.NumberTests;
+      this.NumberTests = (_NumberTests + 1);
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("Recording the result of Competitor " + Integer.valueOf(this.NumberTests)));
+      if ((this.NumberTests == 2)) {
+        this.SelectChampion();
+      }
+    }
+  }
+  
+  public void SelectChampion() {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Competition is over. Lets choose the Champion !");
+    TreeMap<Double, String> res = new TreeMap<Double, String>();
+    Collection<CompetitionResults> _values = this.CompResults.values();
+    for (final CompetitionResults l : _values) {
+      {
+        double HOTA = l.getHOTA();
+        double _trackingTime = l.getTrackingTime();
+        double _detectionTime = l.getDetectionTime();
+        int _frame = l.getFrame();
+        double sframe = ((_trackingTime + _detectionTime) / _frame);
+        double effeciency = ((0.51 - (2 * sframe)) / 0.49);
+        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("HOTA :" + Double.valueOf(HOTA)));
+        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("Effeciency :" + Double.valueOf(effeciency)));
+        res.put(Double.valueOf((HOTA + (((this.ExpertSensitivity) == null ? 0 : (this.ExpertSensitivity).intValue()) * effeciency))), l.getBelief());
+      }
+    }
+    Double _xifexpression = null;
+    Double _firstKey = res.firstKey();
+    Double _lastKey = res.lastKey();
+    if ((_firstKey.doubleValue() > _lastKey.doubleValue())) {
+      _xifexpression = res.firstKey();
+    } else {
+      _xifexpression = res.lastKey();
+    }
+    Double maxValue = _xifexpression;
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    String _get = res.get(maxValue);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info((("Congratulations to " + maxValue) + _get));
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    Agent _owner = this.getOwner();
+    CounterRole _counterRole = new CounterRole(_owner);
+    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_counterRole);
+    final Function2<UUID, CompetitionResults, Boolean> _function = (UUID p1, CompetitionResults p2) -> {
+      String _belief = p2.getBelief();
+      String _get_1 = res.get(maxValue);
+      return Boolean.valueOf(Objects.equal(_belief, _get_1));
+    };
+    UUID trackingGuy = ((CompetitionResults[])Conversions.unwrapArray(MapExtensions.<UUID, CompetitionResults>filter(this.CompResults, _function).values(), CompetitionResults.class))[0].getCompetitorID();
+    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+    String _get_1 = res.get(maxValue);
+    TrackingRequest _trackingRequest = new TrackingRequest(_get_1);
+    class $SerializableClosureProxy implements Scope<Address> {
+      
+      private final UUID trackingGuy;
+      
+      public $SerializableClosureProxy(final UUID trackingGuy) {
+        this.trackingGuy = trackingGuy;
+      }
+      
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, trackingGuy);
+      }
+    }
+    final Scope<Address> _function_1 = new Scope<Address>() {
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, trackingGuy);
+      }
+      private Object writeReplace() throws ObjectStreamException {
+        return new SerializableProxy($SerializableClosureProxy.class, trackingGuy);
+      }
+    };
+    _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_trackingRequest, _function_1);
   }
   
   @Extension
@@ -222,6 +309,34 @@ public class CompetitiveCounterRole extends ObserverRole {
     return $castSkill(Evaluation.class, this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_EVALUATION);
   }
   
+  @Extension
+  @ImportedCapacityFeature(Behaviors.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_BEHAVIORS;
+  
+  @SyntheticMember
+  @Pure
+  private Behaviors $CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS == null || this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS = $getSkill(Behaviors.class);
+    }
+    return $castSkill(Behaviors.class, this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS);
+  }
+  
+  @Extension
+  @ImportedCapacityFeature(DefaultContextInteractions.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS;
+  
+  @SyntheticMember
+  @Pure
+  private DefaultContextInteractions $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);
+    }
+    return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
+  }
+  
   @SyntheticMember
   @PerceptGuardEvaluator
   private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
@@ -277,7 +392,16 @@ public class CompetitiveCounterRole extends ObserverRole {
       return false;
     if (!java.util.Objects.equals(this.EvaluationPartnerName, other.EvaluationPartnerName))
       return false;
+    if (other.ExpertSensitivity == null) {
+      if (this.ExpertSensitivity != null)
+        return false;
+    } else if (this.ExpertSensitivity == null)
+      return false;
+    if (other.ExpertSensitivity != null && other.ExpertSensitivity.intValue() != this.ExpertSensitivity.intValue())
+      return false;
     if (!java.util.Objects.equals(this.gtFile, other.gtFile))
+      return false;
+    if (other.NumberTests != this.NumberTests)
       return false;
     return super.equals(obj);
   }
@@ -290,7 +414,9 @@ public class CompetitiveCounterRole extends ObserverRole {
     final int prime = 31;
     result = prime * result + Long.hashCode(this.Comp_Duration);
     result = prime * result + java.util.Objects.hashCode(this.EvaluationPartnerName);
+    result = prime * result + java.util.Objects.hashCode(this.ExpertSensitivity);
     result = prime * result + java.util.Objects.hashCode(this.gtFile);
+    result = prime * result + Integer.hashCode(this.NumberTests);
     return result;
   }
   

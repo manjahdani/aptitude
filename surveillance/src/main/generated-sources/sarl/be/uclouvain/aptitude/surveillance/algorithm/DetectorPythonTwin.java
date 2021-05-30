@@ -47,9 +47,6 @@ public class DetectorPythonTwin extends PythonAccessObserver implements Capacity
         if ((m instanceof ActionMessage)) {
           boolean _isAck = ((ActionMessage)m).isAck();
           if (_isAck) {
-            Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-            String _string = Integer.valueOf(((ActionMessage)m).getActionID()).toString();
-            _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Ack action " + _string));
           }
         }
       }

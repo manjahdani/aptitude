@@ -24,22 +24,23 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Received AddObserve"/>
+			<item key="textPattern" value="com.hazelcast.nio"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
-				<item value="*.sarl"/>
+				<item value="*"/>
 			</list>
 			<list key="workingSets">
 			</list>
 		</section>
 		<section name="EXTENSIONS">
-			<item key="0" value="*.sarl"/>
+			<item key="0" value=""/>
+			<item key="1" value="*.sarl"/>
 		</section>
 		<section name="HISTORY1">
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Received the id"/>
+			<item key="textPattern" value="nio"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -51,7 +52,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Received Mission"/>
+			<item key="textPattern" value="1.8"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -63,7 +64,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Received Mission Space SpaceID"/>
+			<item key="textPattern" value="I over-trust my tracker"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -75,7 +76,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="I am activating access"/>
+			<item key="textPattern" value="Preparing the uninstallation of the"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -87,7 +88,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="MissionSpace null"/>
+			<item key="textPattern" value="I found my partner"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -99,7 +100,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Receveived last frame"/>
+			<item key="textPattern" value="Average FPS"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -111,7 +112,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value=" Receveived last frame"/>
+			<item key="textPattern" value="Come here"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -123,7 +124,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="AlgorithmJoinPlatform"/>
+			<item key="textPattern" value="I received it trackingRequest"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -135,7 +136,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Received Mission Space from"/>
+			<item key="textPattern" value="Tracking Partner found"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -147,7 +148,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Collection"/>
+			<item key="textPattern" value="Thank you"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -159,7 +160,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Detector - frameNumber- lastframe"/>
+			<item key="textPattern" value="Detection partner found"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
