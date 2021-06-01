@@ -24,7 +24,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="com.hazelcast.nio"/>
+			<item key="textPattern" value="Recording the result of "/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -40,10 +40,10 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="nio"/>
+			<item key="textPattern" value="That was it for me I will send to my listeners"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
-				<item value="*.sarl"/>
+				<item value="*"/>
 			</list>
 			<list key="workingSets">
 			</list>
@@ -52,10 +52,10 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="1.8"/>
+			<item key="textPattern" value="I received BBOX2TrackResults"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
-				<item value="*.sarl"/>
+				<item value="*"/>
 			</list>
 			<list key="workingSets">
 			</list>
@@ -64,10 +64,10 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="I over-trust my tracker"/>
+			<item key="textPattern" value="I sent Add Algorithm"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
-				<item value="*.sarl"/>
+				<item value="*"/>
 			</list>
 			<list key="workingSets">
 			</list>
@@ -76,10 +76,10 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Preparing the uninstallation of the"/>
+			<item key="textPattern" value="One of my guy none is needed  with the belief"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
-				<item value="*.sarl"/>
+				<item value="*"/>
 			</list>
 			<list key="workingSets">
 			</list>
@@ -88,10 +88,10 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="I found my partner"/>
+			<item key="textPattern" value="As an expert I will start the mission of Vehicle Counting with the sensitivity:"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
-				<item value="*.sarl"/>
+				<item value="*"/>
 			</list>
 			<list key="workingSets">
 			</list>
@@ -100,10 +100,10 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Average FPS"/>
+			<item key="textPattern" value="BBoxes2DTrackResult"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
-				<item value="*.sarl"/>
+				<item value="*"/>
 			</list>
 			<list key="workingSets">
 			</list>
@@ -112,10 +112,10 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Come here"/>
+			<item key="textPattern" value="com.hazelcast.nio"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
-				<item value="*.sarl"/>
+				<item value="*"/>
 			</list>
 			<list key="workingSets">
 			</list>
@@ -124,7 +124,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="I received it trackingRequest"/>
+			<item key="textPattern" value="nio"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -136,7 +136,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Tracking Partner found"/>
+			<item key="textPattern" value="1.8"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -148,7 +148,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Thank you"/>
+			<item key="textPattern" value="I over-trust my tracker"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>
@@ -160,7 +160,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Detection partner found"/>
+			<item key="textPattern" value="Preparing the uninstallation of the"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.sarl"/>

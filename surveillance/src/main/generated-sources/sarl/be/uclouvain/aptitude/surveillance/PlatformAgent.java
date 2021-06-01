@@ -70,7 +70,7 @@ public class PlatformAgent extends Paraddis {
       this.<PlatformSkill>setSkill(_platformSkill, PlatformCapacity.class);
       Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
       PlatformRole _platformRole = new PlatformRole(this);
-      _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_platformRole);
+      _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_platformRole, platformConfig.getLocation());
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Ready to receive operating mission");
       Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();

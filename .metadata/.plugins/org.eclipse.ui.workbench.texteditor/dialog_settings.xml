@@ -6,8 +6,10 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="jfx"/>
+		<item key="selection" value="Info"/>
 		<list key="findhistory">
+			<item value="info"/>
+			<item value="gt"/>
 			<item value="jfx"/>
 			<item value="5.2"/>
 			<item value="spring"/>
@@ -21,15 +23,13 @@
 			<item value="7f39fb9b-e85a-4321-8ab6-ae5be857efa3"/>
 			<item value="UpdateStreamAccess"/>
 			<item value="I am activating access"/>
-			<item value="sarl"/>
-			<item value="sre"/>
 		</list>
 		<list key="replacehistory">
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="978"/>
-		<item key="DIALOG_Y_ORIGIN" value="148"/>
+		<item key="DIALOG_X_ORIGIN" value="1260"/>
+		<item key="DIALOG_Y_ORIGIN" value="161"/>
 		<item key="DIALOG_WIDTH" value="284"/>
 		<item key="DIALOG_HEIGHT" value="391"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>

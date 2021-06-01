@@ -21,16 +21,17 @@ class PlatformConfig {
 	val subPlatformConfig = new LinkedList<PlatformConfig> // The configuration of its sub-Platforms.
 	val LEVEL : int // The hierarchical level of the platform (0 is the highest level).
 	val CPU_MAX_USAGE = new AtomicInteger()
-
+	val Location : String
 	/** 
 	 * Constructor
 	 * 
 	 * @param	lvl	The hierarchical level of the Platform(0 is the highest level)
 	 * @param	shp	The shape of the Platform
 	 */
-	new (entity_max : int, lvl : int) {
+	new (entity_max : int, lvl : int, location : String) {
 		this.CPU_MAX_USAGE.set(entity_max)
 		this.LEVEL = lvl
+		this.Location=location
 	}
 
 	def addSubPlatform(wc : PlatformConfig) : void {
@@ -40,7 +41,9 @@ class PlatformConfig {
 	def removeSubPlatform(wc : PlatformConfig) : void {
 		this.subPlatformConfig.remove(wc)
 	}
-
+	def getLocation{
+		return this.Location
+	}
 	def getLevel() : int {
 		return this.LEVEL
 	}

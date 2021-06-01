@@ -49,7 +49,7 @@ agent PlatformAgent extends Paraddis {
 		if (platformConfig.getLevel > 0) {
 			
 			setSkill(new PlatformSkill(platformConfig), PlatformCapacity)
-			registerBehavior(new PlatformRole(this))
+			registerBehavior(new PlatformRole(this),platformConfig.getLocation)
 			info("Ready to receive operating mission")
 			spawn(TOLDAgent) 		// @FIXME IT is not clear !!! 
 		} else {

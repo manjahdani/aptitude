@@ -51,8 +51,9 @@ agent bootAgent extends Paraddis {
 		// WorldHolon.addSubWorld(wc)
 		// }
 		//info("Setting the agents")
-		var PlatformHolonConfig = new PlatformConfig(5, 0)
-		PlatformHolonConfig.addSubPlatform(new PlatformConfig(100, 1))
+		var PlatformHolonConfig = new PlatformConfig(5, 0, "LLN")
+		PlatformHolonConfig.addSubPlatform(new PlatformConfig(100, 1, "S02C006"))
+		PlatformHolonConfig.addSubPlatform(new PlatformConfig(100, 1, "S04C035"))
 		spawn(PlatformAgent, PlatformHolonConfig)
 		// StartSimulation
 	}

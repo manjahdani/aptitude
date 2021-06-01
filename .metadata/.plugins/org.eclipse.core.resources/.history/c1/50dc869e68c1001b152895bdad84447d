@@ -1,0 +1,76 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance
+
+import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
+import be.uclouvain.organisation.PlatformOrganisationInfo
+import be.uclouvain.organisation.told.AccessDatabaseCapacity
+import be.uclouvain.organisation.told.TOLDRole
+import be.uclouvain.organisation.told.VirtualDatabaseSkill
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import io.sarl.core.Behaviors
+import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.core.OpenEventSpace
+import java.util.ArrayList
+import java.util.HashMap
+import java.util.LinkedList
+import java.util.UUID
+
+/** 
+ * 
+ * The agent TOLD keeps record of current and past knowledge. 
+ * The size of the database is a parameter and therefore we could have local TOLD 
+ * that communicates to a higher TOLD itself communicating to a bigger database. 
+ * The TOLD agent creates within its context spaces, as many agents as there are different tasks. 
+ * Therefore a space for Detectors, Trackers, Vehicle Counter and broadly speaking each class of algorithms.    
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.2$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
+ */ 
+agent TOLDAgent extends Paraddis {
+	uses Logging, Lifecycle, InnerContextAccess, Behaviors
+
+ 	val INIT_TASKS : ArrayList<String> = newArrayList("DETECTOR", "TRACKER", "COUNTER") // @parameters
+	var PlatformTOLDSpaces =new LinkedList<OpenEventSpace>
+	var S : VirtualDatabaseSkill
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on Initialize {
+		
+		loggingName = "TOLD-" + this.ID
+		info("Ready to share my stored Knowledge.")
+		S = setSkill(new VirtualDatabaseSkill, AccessDatabaseCapacity)
+		registerBehavior(new TOLDRole(this))
+		
+	}
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on PlatformOrganisationInfo {
+		//info("Me TOLD I am going to listen to Platform" + occurrence.spaceID)
+		
+		synchronized(this){
+		PlatformTOLDSpaces.add(occurrence.spaceID)
+		occurrence.spaceID.register(asEventListener)
+		var registeredAlgorithms : HashMap<UUID, AlgorithmInfo> = new HashMap(S.database.filter [ p1, p2 |
+			p2 instanceof AlgorithmInfo
+		])
+		if(PlatformTOLDSpaces.size>1)//@FIXME 1 is not scalable
+		{ // Make sure that we only consider the algorithmsINFO entries
+			info(PlatformTOLDSpaces.size)
+			info("Activating the algorithms")
+			for (t : INIT_TASKS) {
+			spawnInContext(Algorithm, innerContext, new AlgorithmInfo(t, "none", t),
+				new HashMap(registeredAlgorithms.filter[p1, p2|p2.task == t]), PlatformTOLDSpaces) 	// provide the level 0, the task and the list of existing agents that supports the task
+			}
+			}
+	}}
+}
+
+
+

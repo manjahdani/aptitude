@@ -17,6 +17,11 @@
 			<artifactId>io.sarl.maven.sdk</artifactId>
 			<version>${sarl.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>mathgeom</artifactId>
+			<version>15.2</version>
+		</dependency>	
 	</dependencies>
 	<build>
 		<plugins>

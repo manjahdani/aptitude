@@ -2,6 +2,7 @@ package be.uclouvain.aptitude.surveillance.algorithm;
 
 import be.uclouvain.aptitude.surveillance.algorithm.BBoxes2DResult;
 import be.uclouvain.aptitude.surveillance.algorithm.BBoxes2DTrackResult;
+import be.uclouvain.aptitude.surveillance.algorithm.BBoxes2DTrackResultToCounter;
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame;
 import be.uclouvain.aptitude.surveillance.algorithm.PartnerTrackingFound;
 import be.uclouvain.aptitude.surveillance.algorithm.PythonTwinObserverAccess;
@@ -100,7 +101,11 @@ public class TrackerRole extends ObserverRole {
   
   private JSONParser parser = new JSONParser();
   
-  private int LastFrame;
+  private String championName = "None";
+  
+  private int championSensitivity = 5;
+  
+  private int LastFrame = 10000;
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     this.intensityMap.put(Integer.valueOf(0), Integer.valueOf(1));
@@ -115,6 +120,8 @@ public class TrackerRole extends ObserverRole {
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$PartnerTrackingFound$2(final PartnerTrackingFound occurrence) {
     this.partnerTrackingName = occurrence.partnerName;
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Tracking Partner found: " + this.partnerTrackingName));
   }
   
   private void $behaviorUnit$LeavePlatform$3(final LeavePlatform occurrence) {
@@ -178,12 +185,16 @@ public class TrackerRole extends ObserverRole {
       if (_contains) {
         Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
         _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("My Champion is SORT and TinyYOLO");
+        this.championSensitivity = 1;
+        this.championName = "tinyYOLO";
         DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
         RestartDetector _restartDetector = new RestartDetector("TinyYOLO");
         _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_restartDetector);
       } else {
         Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
         _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info("My Champion is SORT and YOLO");
+        this.championSensitivity = 0;
+        this.championName = "YOLO";
         DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
         RestartDetector _restartDetector_1 = new RestartDetector("YOLO");
         _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1.emit(_restartDetector_1);
@@ -200,7 +211,7 @@ public class TrackerRole extends ObserverRole {
       this.sensitivity = _linkedList;
       int _size = this.sensitivity.size();
       if ((_size == 1)) {
-        this.LastFrame = 500;
+        this.LastFrame = 10;
         TrackerPythonTwin _trackerPythonTwin = new TrackerPythonTwin();
         this.<TrackerPythonTwin>setSkill(_trackerPythonTwin);
         String configPathTracker = this.ObserverADN.getBelief();
@@ -345,21 +356,26 @@ public class TrackerRole extends ObserverRole {
           int classID = occurrence.bboxes2DTrack.getClassIDs()[i];
           int globalID = occurrence.bboxes2DTrack.getGlobalIDs()[i];
           double conf = occurrence.bboxes2DTrack.getDetConfs()[i];
-          try {
-            String _string = Integer.valueOf((frameNumber + 1)).toString();
-            String _string_1 = Integer.valueOf(globalID).toString();
-            String _string_2 = Integer.valueOf(Double.valueOf(X).intValue()).toString();
-            String _string_3 = Integer.valueOf(Double.valueOf(Y).intValue()).toString();
-            String _string_4 = Integer.valueOf(Double.valueOf(W).intValue()).toString();
-            String _string_5 = Integer.valueOf(Double.valueOf(H).intValue()).toString();
-            this.gt.write(
-              (((((((((((((((((((_string + ",") + _string_1) + ",") + _string_2) + ",") + _string_3) + ",") + _string_4) + ",") + _string_5) + ",") + 
-                "-1") + 
-                ",") + "-1") + ",") + "-1") + ",") + "-1") + "\n"));
-          } catch (final Throwable _t) {
-            if (_t instanceof IOException) {
-            } else {
-              throw Exceptions.sneakyThrow(_t);
+          synchronized (this) {
+            try {
+              String _string = Integer.valueOf((frameNumber + 1)).toString();
+              String _string_1 = Integer.valueOf(globalID).toString();
+              String _string_2 = Integer.valueOf(Double.valueOf(X).intValue()).toString();
+              String _string_3 = Integer.valueOf(Double.valueOf(Y).intValue()).toString();
+              String _string_4 = Integer.valueOf(Double.valueOf(W).intValue()).toString();
+              String _string_5 = Integer.valueOf(Double.valueOf(H).intValue()).toString();
+              this.gt.write(
+                (((((((((((((((((((_string + ",") + _string_1) + ",") + _string_2) + ",") + _string_3) + ",") + _string_4) + ",") + _string_5) + ",") + 
+                  "-1") + 
+                  ",") + "-1") + ",") + "-1") + ",") + "-1") + "\n"));
+            } catch (final Throwable _t) {
+              if (_t instanceof IOException) {
+              } else if (_t instanceof NullPointerException) {
+                Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+                _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("NullPointerException");
+              } else {
+                throw Exceptions.sneakyThrow(_t);
+              }
             }
           }
           BBOX _bBOX = new BBOX(X, Y, W, H);
@@ -368,46 +384,75 @@ public class TrackerRole extends ObserverRole {
         }
       }
       for (final UUID l : this.Listeners) {
-        OpenEventSpace _get = this.MissionSpaceList.get(l);
-        TrackingPerception _trackingPerception = new TrackingPerception(tmp);
-        class $SerializableClosureProxy implements Scope<Address> {
-          
-          private final UUID l;
-          
-          public $SerializableClosureProxy(final UUID l) {
-            this.l = l;
+        {
+          OpenEventSpace _get = this.MissionSpaceList.get(l);
+          TrackingPerception _trackingPerception = new TrackingPerception(tmp);
+          class $SerializableClosureProxy implements Scope<Address> {
+            
+            private final UUID l;
+            
+            public $SerializableClosureProxy(final UUID l) {
+              this.l = l;
+            }
+            
+            @Override
+            public boolean matches(final Address it) {
+              UUID _uUID = it.getUUID();
+              return Objects.equal(_uUID, l);
+            }
           }
-          
-          @Override
-          public boolean matches(final Address it) {
-            UUID _uUID = it.getUUID();
-            return Objects.equal(_uUID, l);
+          final Scope<Address> _function = new Scope<Address>() {
+            @Override
+            public boolean matches(final Address it) {
+              UUID _uUID = it.getUUID();
+              return Objects.equal(_uUID, l);
+            }
+            private Object writeReplace() throws ObjectStreamException {
+              return new SerializableProxy($SerializableClosureProxy.class, l);
+            }
+          };
+          _get.emit(this.getOwner().getID(), _trackingPerception, _function);
+          OpenEventSpace _get_1 = this.MissionSpaceList.get(l);
+          BBoxes2DTrackResultToCounter _bBoxes2DTrackResultToCounter = new BBoxes2DTrackResultToCounter(occurrence.bboxes2DTrack, this.championName, this.championSensitivity);
+          class $SerializableClosureProxy_1 implements Scope<Address> {
+            
+            private final UUID l;
+            
+            public $SerializableClosureProxy_1(final UUID l) {
+              this.l = l;
+            }
+            
+            @Override
+            public boolean matches(final Address it) {
+              UUID _uUID = it.getUUID();
+              return Objects.equal(_uUID, l);
+            }
           }
+          final Scope<Address> _function_1 = new Scope<Address>() {
+            @Override
+            public boolean matches(final Address it) {
+              UUID _uUID = it.getUUID();
+              return Objects.equal(_uUID, l);
+            }
+            private Object writeReplace() throws ObjectStreamException {
+              return new SerializableProxy($SerializableClosureProxy_1.class, l);
+            }
+          };
+          _get_1.emit(this.getOwner().getID(), _bBoxes2DTrackResultToCounter, _function_1);
         }
-        final Scope<Address> _function = new Scope<Address>() {
-          @Override
-          public boolean matches(final Address it) {
-            UUID _uUID = it.getUUID();
-            return Objects.equal(_uUID, l);
-          }
-          private Object writeReplace() throws ObjectStreamException {
-            return new SerializableProxy($SerializableClosureProxy.class, l);
-          }
-        };
-        _get.emit(this.getOwner().getID(), _trackingPerception, _function);
       }
       if ((occurrence.bboxes2DTrack.isLastFrame() || (frameNumber > this.LastFrame))) {
         this.gt.close();
         for (final UUID l_1 : this.Listeners) {
           {
-            OpenEventSpace _get_1 = this.MissionSpaceList.get(l_1);
+            OpenEventSpace _get = this.MissionSpaceList.get(l_1);
             String _string = this.predfile.toString();
             LastFrame _lastFrame = new LastFrame(frameNumber, _string, this.totalDetectorTime, this.totalTrackerTime);
-            class $SerializableClosureProxy_1 implements Scope<Address> {
+            class $SerializableClosureProxy implements Scope<Address> {
               
               private final UUID l_1;
               
-              public $SerializableClosureProxy_1(final UUID l_1) {
+              public $SerializableClosureProxy(final UUID l_1) {
                 this.l_1 = l_1;
               }
               
@@ -417,25 +462,25 @@ public class TrackerRole extends ObserverRole {
                 return Objects.equal(_uUID, l_1);
               }
             }
-            final Scope<Address> _function_1 = new Scope<Address>() {
+            final Scope<Address> _function = new Scope<Address>() {
               @Override
               public boolean matches(final Address it) {
                 UUID _uUID = it.getUUID();
                 return Objects.equal(_uUID, l_1);
               }
               private Object writeReplace() throws ObjectStreamException {
-                return new SerializableProxy($SerializableClosureProxy_1.class, l_1);
+                return new SerializableProxy($SerializableClosureProxy.class, l_1);
               }
             };
-            _get_1.emit(this.getOwner().getID(), _lastFrame, _function_1);
+            _get.emit(this.getOwner().getID(), _lastFrame, _function);
             for (final UUID p : this.Providers) {
               DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
               LeavePlatform _leavePlatform = new LeavePlatform();
-              class $SerializableClosureProxy_2 implements Scope<Address> {
+              class $SerializableClosureProxy_1 implements Scope<Address> {
                 
                 private final UUID p;
                 
-                public $SerializableClosureProxy_2(final UUID p) {
+                public $SerializableClosureProxy_1(final UUID p) {
                   this.p = p;
                 }
                 
@@ -445,17 +490,17 @@ public class TrackerRole extends ObserverRole {
                   return Objects.equal(_uUID, p);
                 }
               }
-              final Scope<Address> _function_2 = new Scope<Address>() {
+              final Scope<Address> _function_1 = new Scope<Address>() {
                 @Override
                 public boolean matches(final Address it) {
                   UUID _uUID = it.getUUID();
                   return Objects.equal(_uUID, p);
                 }
                 private Object writeReplace() throws ObjectStreamException {
-                  return new SerializableProxy($SerializableClosureProxy_2.class, p);
+                  return new SerializableProxy($SerializableClosureProxy_1.class, p);
                 }
               };
-              _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_leavePlatform, _function_2);
+              _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_leavePlatform, _function_1);
             }
             Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
             _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.killMe();
@@ -632,6 +677,10 @@ public class TrackerRole extends ObserverRole {
       return false;
     if (!java.util.Objects.equals(this.videoName, other.videoName))
       return false;
+    if (!java.util.Objects.equals(this.championName, other.championName))
+      return false;
+    if (other.championSensitivity != this.championSensitivity)
+      return false;
     if (other.LastFrame != this.LastFrame)
       return false;
     return super.equals(obj);
@@ -647,6 +696,8 @@ public class TrackerRole extends ObserverRole {
     result = prime * result + Double.hashCode(this.totalTrackerTime);
     result = prime * result + Double.hashCode(this.totalDetectorTime);
     result = prime * result + java.util.Objects.hashCode(this.videoName);
+    result = prime * result + java.util.Objects.hashCode(this.championName);
+    result = prime * result + Integer.hashCode(this.championSensitivity);
     result = prime * result + Integer.hashCode(this.LastFrame);
     return result;
   }

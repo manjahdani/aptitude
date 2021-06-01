@@ -5,14 +5,15 @@ package be.uclouvain.aptitude.surveillance.algorithm
 
 import be.uclouvain.organisation.platform.LeavePlatform
 import be.uclouvain.organisation.platform.ObserverRole
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
 import java.io.FileReader
+import java.util.HashMap
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
-import io.sarl.core.DefaultContextInteractions
 
 /** 
  * @TODO: write a description
@@ -28,6 +29,8 @@ behavior DetectorRole extends ObserverRole {
 	uses Logging, PythonTwinObserverAccess, Schedules,DefaultContextInteractions
 
 	var partnerDetectionName : String
+	
+	var platform = "S02C006"
 
 	on Initialize {
 		
@@ -35,6 +38,16 @@ behavior DetectorRole extends ObserverRole {
 		var parser = new JSONParser();
 		var configPathDetector =	ObserverADN.belief // occurrence.parameters.get(0).toString
 		var jsonDetector = parser.parse(new FileReader(configPathDetector)) as JSONObject;
+		
+		var video = (new HashMap<String, String>)
+		video.put("path", "F:/data/".concat(platform).concat("/vdo.avi"))
+		var pathRoi = new HashMap<String, String>
+		pathRoi.put("path", "F:/data/".concat(platform).concat("/roi.jpg"))
+		var a= jsonDetector.get("Preproc") as HashMap<String,HashMap<String,String>>
+		a.put("roi",pathRoi)
+		jsonDetector.put("Video",video)
+		//jsonDetector.put("Preproc2",a)
+		//info(jsonDetector)
 		ActivateAccess(jsonDetector)
 	}
 	
@@ -100,7 +113,9 @@ behavior DetectorRole extends ObserverRole {
 
 	on RestartDetector[occurrence.bel==ObserverADN.name]{
 		
+		
 		info("Restarting")
+		
 		MissionSpaceList.put(occurrence.source.UUID,MissionSpaceList.get(Listeners.get(0)))
 		Listeners.clear
 		Listeners.add(occurrence.source.UUID)

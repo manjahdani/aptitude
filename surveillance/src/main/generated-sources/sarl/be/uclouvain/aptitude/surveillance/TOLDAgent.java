@@ -25,6 +25,7 @@ import io.sarl.lang.core.DynamicSkillProvider;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
 import javax.inject.Inject;
@@ -53,7 +54,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class TOLDAgent extends Paraddis {
   private final ArrayList<String> INIT_TASKS = CollectionLiterals.<String>newArrayList("DETECTOR", "TRACKER", "COUNTER");
   
-  private OpenEventSpace PlatformTOLDSpace;
+  private LinkedList<OpenEventSpace> PlatformTOLDSpaces = new LinkedList<OpenEventSpace>();
   
   private VirtualDatabaseSkill S;
   
@@ -73,25 +74,30 @@ public class TOLDAgent extends Paraddis {
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$PlatformOrganisationInfo$1(final PlatformOrganisationInfo occurrence) {
-    this.PlatformTOLDSpace = occurrence.spaceID;
-    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    this.PlatformTOLDSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
-    final Function2<UUID, Object, Boolean> _function = (UUID p1, Object p2) -> {
-      return Boolean.valueOf((p2 instanceof AlgorithmInfo));
-    };
-    Map<UUID, Object> _filter = MapExtensions.<UUID, Object>filter(this.S.getDatabase(), _function);
-    HashMap<UUID, AlgorithmInfo> registeredAlgorithms = new HashMap(_filter);
-    for (final String t : this.INIT_TASKS) {
-      Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-      InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-      AlgorithmInfo _algorithmInfo = new AlgorithmInfo(t, "none", t);
-      final Function2<UUID, AlgorithmInfo, Boolean> _function_1 = (UUID p1, AlgorithmInfo p2) -> {
-        String _task = p2.getTask();
-        return Boolean.valueOf(Objects.equal(_task, t));
+    synchronized (this) {
+      this.PlatformTOLDSpaces.add(occurrence.spaceID);
+      Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+      occurrence.spaceID.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+      final Function2<UUID, Object, Boolean> _function = (UUID p1, Object p2) -> {
+        return Boolean.valueOf((p2 instanceof AlgorithmInfo));
       };
-      Map<UUID, AlgorithmInfo> _filter_1 = MapExtensions.<UUID, AlgorithmInfo>filter(registeredAlgorithms, _function_1);
-      HashMap<UUID, AlgorithmInfo> _hashMap = new HashMap<UUID, AlgorithmInfo>(_filter_1);
-      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContext(Algorithm.class, _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext(), _algorithmInfo, _hashMap, this.PlatformTOLDSpace);
+      Map<UUID, Object> _filter = MapExtensions.<UUID, Object>filter(this.S.getDatabase(), _function);
+      HashMap<UUID, AlgorithmInfo> registeredAlgorithms = new HashMap(_filter);
+      int _size = this.PlatformTOLDSpaces.size();
+      if ((_size > 1)) {
+        for (final String t : this.INIT_TASKS) {
+          Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+          InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+          AlgorithmInfo _algorithmInfo = new AlgorithmInfo(t, "none", t);
+          final Function2<UUID, AlgorithmInfo, Boolean> _function_1 = (UUID p1, AlgorithmInfo p2) -> {
+            String _task = p2.getTask();
+            return Boolean.valueOf(Objects.equal(_task, t));
+          };
+          Map<UUID, AlgorithmInfo> _filter_1 = MapExtensions.<UUID, AlgorithmInfo>filter(registeredAlgorithms, _function_1);
+          HashMap<UUID, AlgorithmInfo> _hashMap = new HashMap<UUID, AlgorithmInfo>(_filter_1);
+          _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContext(Algorithm.class, _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext(), _algorithmInfo, _hashMap, this.PlatformTOLDSpaces);
+        }
+      }
     }
   }
   

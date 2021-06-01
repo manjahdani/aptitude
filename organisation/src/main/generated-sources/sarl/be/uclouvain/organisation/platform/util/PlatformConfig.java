@@ -6,6 +6,7 @@ import io.sarl.lang.annotation.SyntheticMember;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -28,15 +29,18 @@ public class PlatformConfig {
   
   private final AtomicInteger CPU_MAX_USAGE = new AtomicInteger();
   
+  private final String Location;
+  
   /**
    * Constructor
    * 
    * @param	lvl	The hierarchical level of the Platform(0 is the highest level)
    * @param	shp	The shape of the Platform
    */
-  public PlatformConfig(final int entity_max, final int lvl) {
+  public PlatformConfig(final int entity_max, final int lvl, final String location) {
     this.CPU_MAX_USAGE.set(entity_max);
     this.LEVEL = lvl;
+    this.Location = location;
   }
   
   public void addSubPlatform(final PlatformConfig wc) {
@@ -45,6 +49,11 @@ public class PlatformConfig {
   
   public void removeSubPlatform(final PlatformConfig wc) {
     this.subPlatformConfig.remove(wc);
+  }
+  
+  @Pure
+  public String getLocation() {
+    return this.Location;
   }
   
   @Pure
@@ -75,6 +84,8 @@ public class PlatformConfig {
     PlatformConfig other = (PlatformConfig) obj;
     if (other.LEVEL != this.LEVEL)
       return false;
+    if (!Objects.equals(this.Location, other.Location))
+      return false;
     return super.equals(obj);
   }
   
@@ -85,6 +96,7 @@ public class PlatformConfig {
     int result = super.hashCode();
     final int prime = 31;
     result = prime * result + Integer.hashCode(this.LEVEL);
+    result = prime * result + Objects.hashCode(this.Location);
     return result;
   }
 }

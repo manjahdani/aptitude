@@ -22,7 +22,6 @@ import java.util.Collections
 import java.util.LinkedList
 import java.util.TreeMap
 import java.util.UUID
-import io.sarl.core.MemberLeft
 
 /** 
  * Ensures the management of the associated resources (computational and sensors) of a Location 
@@ -42,11 +41,13 @@ behavior PlatformRole {
 	val MissionsSpace : TreeMap<UUID, OpenEventSpace> = new TreeMap<UUID, OpenEventSpace> // Used for the communications among observers. 
 	val Participants = Collections.synchronizedMap(new TreeMap<String, UUID>) // @FIXME clarify MAP - Lists and so on. clarify also if the variables must be concurrent or not
 	val Request = Collections.synchronizedList(new LinkedList<String>) 
-	
+	var Location : String
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on Initialize {
 		this.PlatformTOLDSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID) // Space for the communication between Unity and the World
 		PlatformTOLDSpace.register(asEventListener)
+		Location = occurrence.parameters.get(0) as String
+		info(Location)
 	}
 
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
@@ -90,6 +91,7 @@ behavior PlatformRole {
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on AddAlgorithm {
+		//info("I sent Add Algorithm")
 			PlatformTOLDSpace.emit(
 				new AlgorithmJoinPlatform(innerContext, occurrence.MissionSpace, occurrence.info.name,
 					occurrence.info.task, occurrence.source.UUID))

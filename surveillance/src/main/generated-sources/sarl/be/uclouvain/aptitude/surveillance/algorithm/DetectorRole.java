@@ -27,6 +27,7 @@ import io.sarl.lang.util.SerializableProxy;
 import java.io.FileReader;
 import java.io.ObjectStreamException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -50,6 +51,8 @@ import org.json.simple.parser.JSONParser;
 public class DetectorRole extends ObserverRole {
   private String partnerDetectionName;
   
+  private String platform = "S02C006";
+  
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     try {
       DetectorPythonTwin _detectorPythonTwin = new DetectorPythonTwin();
@@ -59,6 +62,14 @@ public class DetectorRole extends ObserverRole {
       FileReader _fileReader = new FileReader(configPathDetector);
       Object _parse = parser.parse(_fileReader);
       JSONObject jsonDetector = ((JSONObject) _parse);
+      HashMap<String, String> video = new HashMap<String, String>();
+      video.put("path", "F:/data/".concat(this.platform).concat("/vdo.avi"));
+      HashMap<String, String> pathRoi = new HashMap<String, String>();
+      pathRoi.put("path", "F:/data/".concat(this.platform).concat("/roi.jpg"));
+      Object _get = jsonDetector.get("Preproc");
+      HashMap<String, HashMap<String, String>> a = ((HashMap<String, HashMap<String, String>>) _get);
+      a.put("roi", pathRoi);
+      jsonDetector.put("Video", video);
       PythonTwinObserverAccess _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER();
       _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESS$CALLER.ActivateAccess(jsonDetector);
     } catch (Throwable _e) {
@@ -284,6 +295,8 @@ public class DetectorRole extends ObserverRole {
     DetectorRole other = (DetectorRole) obj;
     if (!java.util.Objects.equals(this.partnerDetectionName, other.partnerDetectionName))
       return false;
+    if (!java.util.Objects.equals(this.platform, other.platform))
+      return false;
     return super.equals(obj);
   }
   
@@ -294,6 +307,7 @@ public class DetectorRole extends ObserverRole {
     int result = super.hashCode();
     final int prime = 31;
     result = prime * result + java.util.Objects.hashCode(this.partnerDetectionName);
+    result = prime * result + java.util.Objects.hashCode(this.platform);
     return result;
   }
   

@@ -10,7 +10,6 @@ import be.uclouvain.aptitude.surveillance.algorithm.PartnerEvaluationFound;
 import be.uclouvain.aptitude.surveillance.algorithm.TrackingRequest;
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxes2D;
 import be.uclouvain.organisation.platform.AddAlgorithm;
-import be.uclouvain.organisation.platform.CounterObserverCapacity;
 import be.uclouvain.organisation.platform.MissionSensitivity;
 import be.uclouvain.organisation.platform.ObserverRole;
 import be.uclouvain.organisation.told.util.AlgorithmInfo;
@@ -164,19 +163,19 @@ public class CompetitiveCounterRole extends ObserverRole {
   }
   
   private void $behaviorUnit$EvaluationResult$4(final EvaluationResult occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Message Evaluation Received");
-    double _hOTA = this.CompResults.get(UUID.fromString(occurrence.result.getRequestID())).getHOTA();
-    if ((_hOTA == 0)) {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Recording the result of ");
-      this.CompResults.get(UUID.fromString(occurrence.result.getRequestID())).setValues(occurrence.result);
-      int _NumberTests = this.NumberTests;
-      this.NumberTests = (_NumberTests + 1);
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("Recording the result of Competitor " + Integer.valueOf(this.NumberTests)));
-      if ((this.NumberTests == 2)) {
-        this.SelectChampion();
+    synchronized (this) {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Message Evaluation Received");
+      double _hOTA = this.CompResults.get(UUID.fromString(occurrence.result.getRequestID())).getHOTA();
+      if ((_hOTA == 0)) {
+        this.CompResults.get(UUID.fromString(occurrence.result.getRequestID())).setValues(occurrence.result);
+        int _NumberTests = this.NumberTests;
+        this.NumberTests = (_NumberTests + 1);
+        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("Recording the result of Competitor " + Integer.valueOf(this.NumberTests)));
+        if ((this.NumberTests == 2)) {
+          this.SelectChampion();
+        }
       }
     }
   }
@@ -279,20 +278,6 @@ public class CompetitiveCounterRole extends ObserverRole {
       this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS = $getSkill(ExternalContextAccess.class);
     }
     return $castSkill(ExternalContextAccess.class, this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS);
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(CounterObserverCapacity.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY;
-  
-  @SyntheticMember
-  @Pure
-  private CounterObserverCapacity $CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY$CALLER() {
-    if (this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY == null || this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY.get() == null) {
-      this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY = $getSkill(CounterObserverCapacity.class);
-    }
-    return $castSkill(CounterObserverCapacity.class, this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_COUNTEROBSERVERCAPACITY);
   }
   
   @Extension

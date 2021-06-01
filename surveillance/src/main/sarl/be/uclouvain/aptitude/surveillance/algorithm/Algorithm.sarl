@@ -17,6 +17,7 @@ import io.sarl.core.Logging
 import java.util.HashMap
 import java.util.UUID
 import io.sarl.core.OpenEventSpace
+import java.util.LinkedList
 
 /** 
  * Agent with a set of tasks (Goals) and a model (Belief). 
@@ -68,7 +69,11 @@ agent Algorithm extends Paraddis{
 		registerBehavior(new EntityRole(this))
 				
 		if(ADN.level==0){
-			(occurrence.parameters.get(2) as OpenEventSpace).register(asEventListener) // the PlatformTOLDSpace only available for level 0
+			for (k : (occurrence.parameters.get(2) as LinkedList<OpenEventSpace>))
+			{
+				k.register(asEventListener)
+			}
+			//(occurrence.parameters.get(2) as OpenEventSpace).register(asEventListener) // the PlatformTOLDSpace only available for level 0
 			var toSpawn = occurrence.parameters.get(1) as HashMap<UUID, AlgorithmInfo>
 			for (e : toSpawn.keySet) {spawnInContextWithID(Algorithm, e, innerContext, toSpawn.get(e).IncrementLevelAndGet)}}
 		

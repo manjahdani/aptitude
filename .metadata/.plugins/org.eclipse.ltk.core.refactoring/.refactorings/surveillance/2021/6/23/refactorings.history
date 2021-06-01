@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;countingLine.sarl&apos; to &apos;organisation/src/main/sarl/be.uclouvain.organisation.platform.util&apos;&#x0D;&#x0A;- Original project: &apos;surveillance&apos;&#x0D;&#x0A;- Destination element: &apos;organisation/src/main/sarl/be.uclouvain.organisation.platform.util&apos;&#x0D;&#x0A;- Original element: &apos;countingLine.sarl&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move file" destination="=organisation/src\/main\/sarl&lt;be.uclouvain.organisation.platform.util" element1="src/main/sarl/be/uclouvain/aptitude/surveillance/algorithm/util/countingLine.sarl" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1622542085618" units="0" version="1.0"/>
+</session>

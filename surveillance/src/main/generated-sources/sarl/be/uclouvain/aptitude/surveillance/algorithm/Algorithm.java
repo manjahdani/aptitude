@@ -27,6 +27,7 @@ import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.DynamicSkillProvider;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.UUID;
 import javax.inject.Inject;
@@ -87,8 +88,10 @@ public class Algorithm extends Paraddis {
     int _level_1 = this.ADN.getLevel();
     if ((_level_1 == 0)) {
       Object _get_1 = occurrence.parameters[2];
-      Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-      ((OpenEventSpace) _get_1).register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.asEventListener());
+      for (final OpenEventSpace k : ((LinkedList<OpenEventSpace>) _get_1)) {
+        Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+        k.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.asEventListener());
+      }
       Object _get_2 = occurrence.parameters[1];
       HashMap<UUID, AlgorithmInfo> toSpawn = ((HashMap<UUID, AlgorithmInfo>) _get_2);
       Set<UUID> _keySet = toSpawn.keySet();

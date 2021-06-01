@@ -76,9 +76,11 @@ public class bootAgent extends Paraddis {
   }
   
   protected void setAgentsReady() {
-    PlatformConfig PlatformHolonConfig = new PlatformConfig(5, 0);
-    PlatformConfig _platformConfig = new PlatformConfig(100, 1);
+    PlatformConfig PlatformHolonConfig = new PlatformConfig(5, 0, "LLN");
+    PlatformConfig _platformConfig = new PlatformConfig(100, 1, "S02C006");
     PlatformHolonConfig.addSubPlatform(_platformConfig);
+    PlatformConfig _platformConfig_1 = new PlatformConfig(100, 1, "S04C035");
+    PlatformHolonConfig.addSubPlatform(_platformConfig_1);
     Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawn(PlatformAgent.class, PlatformHolonConfig);
   }

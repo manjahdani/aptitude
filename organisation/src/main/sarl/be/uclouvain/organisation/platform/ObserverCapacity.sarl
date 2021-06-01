@@ -3,6 +3,9 @@
  */
 package be.uclouvain.organisation.platform
 
+import be.uclouvain.organisation.platform.util.countingLine
+import java.util.TreeMap
+
 /** 
  * Provide tools to interpret a signal    
  * 
@@ -34,5 +37,5 @@ capacity CounterObserverCapacity extends ObserverCapacity {
 	 *
 	 * */	
 
-	def DisplayPerception 
+	def DisplayPerception(actionID : int) : TreeMap<String, countingLine>
 }

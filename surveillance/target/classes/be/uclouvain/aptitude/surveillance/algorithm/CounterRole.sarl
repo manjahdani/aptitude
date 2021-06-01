@@ -8,12 +8,9 @@
 package be.uclouvain.aptitude.surveillance.algorithm
 
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxes2D
-import be.uclouvain.organisation.platform.AddAlgorithm
+import be.uclouvain.aptitude.surveillance.ui.DisplayCapacity
+import be.uclouvain.aptitude.surveillance.ui.DisplaySkill
 import be.uclouvain.organisation.platform.CounterObserverCapacity
-import be.uclouvain.organisation.platform.MissionSensitivity
-import be.uclouvain.organisation.platform.ObserverRole
-import be.uclouvain.organisation.told.util.AlgorithmInfo
-import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import java.util.ArrayList
@@ -35,17 +32,18 @@ import java.util.TreeMap
 
 behavior CounterRole { //extends ObserverRole {
 	
-	uses Logging, ExternalContextAccess, CounterObserverCapacity
+	uses Logging, CounterObserverCapacity, DisplayCapacity
 
-	var start : long
+	//var start : long
 	
-	val availableObservers = newArrayList("SORT", "DeepSORT")
+	//val availableObservers = newArrayList("SORT", "DeepSORT")
 	
 	val intensityMap = new TreeMap<Integer, Integer> 
 	
 	val ObjectPresentInframe = new TreeMap<Integer, BBoxes2D>
 	val ObjectToBeAnalyzed = new ArrayList<BBoxes2D>;
 
+	var lineCoords = #[1235, 700, 309, 664, 1477, 324, 1676, 310]
 	// end
 	on Initialize {
 		info("The counting starts from now !")
@@ -53,6 +51,7 @@ behavior CounterRole { //extends ObserverRole {
 		intensityMap.put(1, 0)
 		intensityMap.put(2, 1)
 		intensityMap.put(3, 0)
+		setSkill(new DisplaySkill)
 		setSkill(new CountingSkill, CounterObserverCapacity)
 	}
 //	@SuppressWarnings("potential_field_synchronization_problem")
@@ -78,7 +77,10 @@ behavior CounterRole { //extends ObserverRole {
 		}
 		ObjectToBeAnalyzed.add(ObjectPresentInframe.get(p.globalID))
 		}
-		Signal2Perception(new ArrayList(ObjectToBeAnalyzed)) // Activate its capacity to interpret a perception
+		Signal2Perception(new ArrayList(ObjectToBeAnalyzed))
+		
+		
+		 // Activate its capacity to interpret a perception
 //			info("Sending to evaluation")
 //			var predFile = "F:/TinySort.txt"
 //			var gtFile = "F:/gt.txt"
@@ -92,9 +94,27 @@ behavior CounterRole { //extends ObserverRole {
 		//info("It took " + totalTime.toString + " seconds")
 		//info("Average FPS : " + (occurrence.frameNumber / totalTime).toString)
 		info("I will transfer my perception to the Analyst")
-		DisplayPerception
+		DisplayPerception(1)
 	}
+	
+	on BBoxes2DTrackResultToCounter {
+		//info("I received BBOX2TrackResults")
 
+
+
+		var a = DisplayPerception(0)
+		
+		var counts = new ArrayList<Integer>
+		for (l : a.keySet){
+			for (id : a.get(l).counts.keySet){
+				counts.add(a.get(l).counts.get(id).get)
+			}
+		}
+		info(counts)
+		sendDisplayMessage(occurrence.bboxes2DTrack, this.ID.toString, "F:/data/S02C006/vdo.avi", null, lineCoords,
+			counts, occurrence.ObserverName, occurrence.Sensitivity)
+	}
+	
 	//	@SuppressWarnings("potential_field_synchronization_problem")
 //	on BBoxes2DTrackResult {
 //		

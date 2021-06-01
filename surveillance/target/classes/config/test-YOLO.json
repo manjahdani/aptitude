@@ -1,7 +1,4 @@
 {
-	"Video":{
-		"path": "F:/data/S02C006/vdo.avi"
-	},
     "Proc":{    
         "Detector":{
             "type": "BBoxes2DDetector"
@@ -30,8 +27,6 @@
         "resize":{
             "width" : 416,
             "height": 416
-        },
-        "roi":{"path": "F:/data/S02C006/roi.jpg"
         }
      },
     "Postproc":{

@@ -73,12 +73,18 @@ public class PlatformRole extends Behavior {
   
   private final List<String> Request = Collections.<String>synchronizedList(new LinkedList<String>());
   
+  private String Location;
+  
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
     this.PlatformTOLDSpace = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, UUID.randomUUID());
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     this.PlatformTOLDSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    Object _get = occurrence.parameters[0];
+    this.Location = (_get == null ? null : _get.toString());
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(this.Location);
   }
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
@@ -471,6 +477,15 @@ public class PlatformRole extends Behavior {
   @Pure
   @SyntheticMember
   public boolean equals(final Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    PlatformRole other = (PlatformRole) obj;
+    if (!java.util.Objects.equals(this.Location, other.Location))
+      return false;
     return super.equals(obj);
   }
   
@@ -479,6 +494,8 @@ public class PlatformRole extends Behavior {
   @SyntheticMember
   public int hashCode() {
     int result = super.hashCode();
+    final int prime = 31;
+    result = prime * result + java.util.Objects.hashCode(this.Location);
     return result;
   }
   

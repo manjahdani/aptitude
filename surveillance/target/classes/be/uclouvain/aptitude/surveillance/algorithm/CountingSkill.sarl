@@ -10,7 +10,7 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d
 import java.util.TreeMap
 import be.uclouvain.organisation.platform.CounterObserverCapacity
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBOX
-import be.uclouvain.aptitude.surveillance.algorithm.util.countingLine
+import be.uclouvain.organisation.platform.util.countingLine
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxes2D
 
 /** 
@@ -48,7 +48,7 @@ skill CountingSkill implements CounterObserverCapacity {
 					//var bbDir = bb.getDirection
 					//var nDir = countingLines.get(counting_line).getNormale
 					if (orientation != 0) {
-						countingLines.get(counting_line).IncrementCounts()
+						countingLines.get(counting_line).IncrementCounts(bb.classeID)
 						//info("Counted at frame " + bb.frame + " and " + counting_line + " is : " +
 							//	countingLines.get(counting_line).IncrementCounts() + " v=" + "(" + bbDir.x + " , " +
 							//bbDir.y + "And n=" + "(" + nDir.getX + " , " + nDir.getY + ")" + " ori:" +
@@ -130,9 +130,14 @@ skill CountingSkill implements CounterObserverCapacity {
 		return false
 	}
 	
-	def DisplayPerception {
+	def DisplayPerception(actionID: int):TreeMap<String,countingLine> {
+		
+		if(actionID==1){
 		for (counting_line : countingLines.keySet)
 			 {
-				info( counting_line +" : " + countingLines.get(counting_line).IncrementCounts())
+				//info( counting_line +" : " + countingLines.get(counting_line).IncrementCounts())
 	}}
+	return countingLines
+	}
+	
 }

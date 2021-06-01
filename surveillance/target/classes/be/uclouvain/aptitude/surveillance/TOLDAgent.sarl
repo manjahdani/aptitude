@@ -17,6 +17,7 @@ import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import java.util.ArrayList
 import java.util.HashMap
+import java.util.LinkedList
 import java.util.UUID
 
 /** 
@@ -37,7 +38,7 @@ agent TOLDAgent extends Paraddis {
 	uses Logging, Lifecycle, InnerContextAccess, Behaviors
 
  	val INIT_TASKS : ArrayList<String> = newArrayList("DETECTOR", "TRACKER", "COUNTER") // @parameters
-	var PlatformTOLDSpace : OpenEventSpace
+	var PlatformTOLDSpaces =new LinkedList<OpenEventSpace>
 	var S : VirtualDatabaseSkill
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on Initialize {
@@ -52,16 +53,23 @@ agent TOLDAgent extends Paraddis {
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on PlatformOrganisationInfo {
 		//info("Me TOLD I am going to listen to Platform" + occurrence.spaceID)
-		PlatformTOLDSpace = occurrence.spaceID
-		PlatformTOLDSpace.register(asEventListener)
+		
+		synchronized(this){
+		PlatformTOLDSpaces.add(occurrence.spaceID)
+		occurrence.spaceID.register(asEventListener)
 		var registeredAlgorithms : HashMap<UUID, AlgorithmInfo> = new HashMap(S.database.filter [ p1, p2 |
 			p2 instanceof AlgorithmInfo
-		]) // Make sure that we only consider the algorithmsINFO entries
-		for (t : INIT_TASKS) {
+		])
+		if(PlatformTOLDSpaces.size>1)//@FIXME 1 is not scalable
+		{ // Make sure that we only consider the algorithmsINFO entries
+			//info(PlatformTOLDSpaces.size)
+			//info("Activating the algorithms")
+			for (t : INIT_TASKS) {
 			spawnInContext(Algorithm, innerContext, new AlgorithmInfo(t, "none", t),
-				new HashMap(registeredAlgorithms.filter[p1, p2|p2.task == t]), PlatformTOLDSpace) 	// provide the level 0, the task and the list of existing agents that supports the task
+				new HashMap(registeredAlgorithms.filter[p1, p2|p2.task == t]), PlatformTOLDSpaces) 	// provide the level 0, the task and the list of existing agents that supports the task
 			}
-	}
+			}
+	}}
 }
 
 

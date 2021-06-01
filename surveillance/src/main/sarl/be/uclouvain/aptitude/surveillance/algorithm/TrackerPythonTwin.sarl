@@ -1,10 +1,10 @@
 package be.uclouvain.aptitude.surveillance.algorithm
 
+import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DTrackMessage
+import be.uclouvain.aptitude.surveillance.algorithm.messages.BaseMessage
+import be.uclouvain.aptitude.surveillance.algorithm.messages.RequestMessage
 import io.sarl.core.Behaviors
 import io.sarl.core.Schedules
-import be.uclouvain.aptitude.surveillance.algorithm.messages.BaseMessage
-import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DTrackMessage
-import be.uclouvain.aptitude.surveillance.algorithm.messages.RequestMessage
 
 /** 
  * @TODO: write a description
@@ -22,7 +22,7 @@ skill TrackerPythonTwin extends PythonAccessObserver {
 
 	def update(m : BaseMessage) {
 		if (m instanceof BBoxes2DTrackMessage) {
-			wake(new BBoxes2DTrackResult(m))
+			wake(new BBoxes2DTrackResult(m)) //@FIXME : it was wake !!!
 		} else if (m instanceof RequestMessage) {
 			onRequestMessage(m)
 		}

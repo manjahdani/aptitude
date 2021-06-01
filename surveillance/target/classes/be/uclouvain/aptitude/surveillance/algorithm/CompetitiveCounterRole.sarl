@@ -30,7 +30,7 @@ import io.sarl.core.DefaultContextInteractions
  * 
  */
 behavior CompetitiveCounterRole extends ObserverRole {
-	uses Logging, ExternalContextAccess, CounterObserverCapacity, Evaluation, Behaviors,DefaultContextInteractions
+	uses Logging, ExternalContextAccess, Evaluation, Behaviors,DefaultContextInteractions
 
 	var Comp_Duration : long
 
@@ -98,10 +98,10 @@ on Initialize {
 		// time2 = System.currentTimeMillis()
 		// println(time2 - time1)
 		// println(time2 - time3)
+		synchronized (this){
 		info("Message Evaluation Received")
 		
 		if(CompResults.get(UUID.fromString(occurrence.result.requestID)).HOTA ==0){
-			info("Recording the result of ")
 		CompResults.get(UUID.fromString(occurrence.result.requestID)).setValues(occurrence.result)
 		
 		//println("***********************")
@@ -112,7 +112,7 @@ on Initialize {
 		if(NumberTests == 2)
 		{
 			SelectChampion
-		}}
+		}}}
 
 //		println("HOTA \t" + occurrence.result.HOTA)
 //		println("DetA \t" + occurrence.result.detA)

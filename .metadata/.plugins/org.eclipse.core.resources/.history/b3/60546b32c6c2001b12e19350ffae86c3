@@ -1,0 +1,184 @@
+/** 
+ * @Name       : PlatformRole
+ * @Project    : APTITUDE
+ * @Author     : Dani Manjah
+ * @Version    : V.0.1 
+ * @Date       : 22/03/2021 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm
+
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxes2D
+import be.uclouvain.aptitude.surveillance.ui.DisplayCapacity
+import be.uclouvain.aptitude.surveillance.ui.DisplaySkill
+import be.uclouvain.organisation.platform.CounterObserverCapacity
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import java.util.ArrayList
+import java.util.TreeMap
+import java.util.List
+import java.util.LinkedList
+
+// Import the IOException class to handle errors
+
+/** 
+ * The CounterRole is a behaviour that an agent Algorithm endorses upon a mission to count vehicles
+ * 
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.2$
+ * @date $16/04/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
+ * 
+ */
+
+behavior CounterRole { //extends ObserverRole {
+	
+	uses Logging, CounterObserverCapacity, DisplayCapacity
+
+	var start : long
+	
+	val availableObservers = newArrayList("SORT", "DeepSORT")
+	
+	val intensityMap = new TreeMap<Integer, Integer> 
+	
+	val ObjectPresentInframe = new TreeMap<Integer, BBoxes2D>
+	val ObjectToBeAnalyzed = new ArrayList<BBoxes2D>;
+
+	var lineCoords = #[1235, 700, 309, 664, 1477, 324, 1676, 310]
+	// end
+	on Initialize {
+		info("The counting starts from now !")
+		intensityMap.put(0, 1)
+		intensityMap.put(1, 0)
+		intensityMap.put(2, 1)
+		intensityMap.put(3, 0)
+		setSkill(new DisplaySkill)
+		setSkill(new CountingSkill, CounterObserverCapacity)
+	}
+//	@SuppressWarnings("potential_field_synchronization_problem")
+//	on MissionSensitivity {
+//		sensitivity = newLinkedList(occurrence.s)
+//		val ObserverName = availableObservers.get(intensityMap.get(sensitivity.first))
+//		info("Come here : " + ObserverName)
+//		this.start = System.currentTimeMillis()
+//		PlatformSpace.emit(
+//			new AddAlgorithm(MissionSpaceList.values.get(0),
+//				new AlgorithmInfo(ObserverName, "TRACKER")))[it.UUID == PlatformContext.ID] 	// @FIXME : Be very careful as I am taking the first Space !!!! DANGER
+//	}
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on TrackingPerception {
+		//info("Received Tracking")
+		ObjectToBeAnalyzed.clear
+		for (p : occurrence.perceptions) {
+			if (ObjectPresentInframe.containsKey(p.globalID)) {
+			ObjectPresentInframe.get(p.globalID).update(p.BBOX.x, p.BBOX.y, p.BBOX.w, p.BBOX.h, p.classeID,p.frame,p.conf) // @FIXME : maybe shorten the code by passing p)
+		}
+		else{
+			ObjectPresentInframe.put(p.globalID, p)
+		}
+		ObjectToBeAnalyzed.add(ObjectPresentInframe.get(p.globalID))
+		}
+		Signal2Perception(new ArrayList(ObjectToBeAnalyzed))
+		
+		
+		 // Activate its capacity to interpret a perception
+//			info("Sending to evaluation")
+//			var predFile = "F:/TinySort.txt"
+//			var gtFile = "F:/gt.txt"
+//			var predictions = new String(Files.readAllBytes(Paths.get(predFile)));
+//			var gts = new String(Files.readAllBytes(Paths.get(gtFile)))
+//			sendEvaluationRequest(UUID.randomUUID.toString, predictions, gts)
+	}
+	on LastFrame {
+		info("That was it for Couting!")
+		//val totalTime = (((System.currentTimeMillis() - this.start) / 1000))
+		//info("It took " + totalTime.toString + " seconds")
+		//info("Average FPS : " + (occurrence.frameNumber / totalTime).toString)
+		info("I will transfer my perception to the Analyst")
+		DisplayPerception(1)
+	}
+	
+	on BBoxes2DTrackResultToCounter {
+		//info("I received BBOX2TrackResults")
+
+
+
+		var a = DisplayPerception(0)
+		
+		var counts = new LinkedList<Integer>
+		for (l : a.keySet){
+			for (id : a.get(l).counts.keySet){
+				counts.add(a.get(l).counts.get(id).get)
+			}
+		}
+		//var counts = #[a.get("A").counts.get, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, a.get("B").counts.get, 0, 0, 0, 0, 0, 0, 0,
+			//0, 0, 0]
+		
+		sendDisplayMessage(occurrence.bboxes2DTrack, this.ID.toString, "F:/data/S02C006/vdo.avi", null, lineCoords,
+			counts, occurrence.ObserverName, occurrence.Sensitivity)
+	}
+	
+	//	@SuppressWarnings("potential_field_synchronization_problem")
+//	on BBoxes2DTrackResult {
+//		
+//		var ratio_width = 1920.0 / occurrence.bboxes2DTrack.dimWidth
+//		var ratio_height = 1080.0 / occurrence.bboxes2DTrack.dimHeight
+//		var frameNumber = occurrence.bboxes2DTrack.frameNumber
+//
+//		ObjectToBeAnalyzed.clear
+//
+//		for (var i = 0; i < occurrence.bboxes2DTrack.numberObjects; i++) {
+//			var X = occurrence.bboxes2DTrack.bboxes.get(4 * i) * ratio_width
+//			var Y = occurrence.bboxes2DTrack.bboxes.get(4 * i + 1) * ratio_height
+//			var W = occurrence.bboxes2DTrack.bboxes.get(4 * i + 2) * ratio_width
+//			var H = occurrence.bboxes2DTrack.bboxes.get(4 * i + 3) * ratio_height
+//			var classID = occurrence.bboxes2DTrack.classIDs.get(i)
+//			var globalID = occurrence.bboxes2DTrack.globalIDs.get(i)
+//			var conf = occurrence.bboxes2DTrack.detConfs.get(i)
+//			if (ObjectPresentInframe.containsKey(globalID)) {
+//				ObjectPresentInframe.get(globalID).update(X, Y, W, H, classID, frameNumber, conf)
+//			} else {
+//				ObjectPresentInframe.put(globalID,
+//					new BBoxes2D(new BBOX(X, Y, W, H), conf, globalID, classID, frameNumber))
+//			}
+//
+//			ObjectToBeAnalyzed.add(ObjectPresentInframe.get(globalID))
+//		}
+//		
+//		Signal2Perception(new ArrayList(ObjectToBeAnalyzed)) // Activate its capacity to interpret a perception 
+//		
+//		if (occurrence.bboxes2DTrack.lastFrame) {
+//			info("That was it!" )
+//			val totalTime = (((System.currentTimeMillis() - this.start) / 1000))
+//			info("It took " + totalTime.toString + " seconds")
+//			info("Average FPS : " + (occurrence.bboxes2DTrack.frameNumber / totalTime).toString)
+//			info("I will transfer my perception to the Analyst")
+//			DisplayPerception
+//
+////			var predFile = "F:/TinySort.txt"
+////			var gtFile = "F:/gt.txt"
+////			var predictions = new String(Files.readAllBytes(Paths.get(predFile)));
+////			var gts = new String(Files.readAllBytes(Paths.get(gtFile)))
+////			sendEvaluationRequest(UUID.randomUUID.toString, predictions, gts)
+////		}
+//	}
+//}
+//	on EvaluationResult {
+//		// time2 = System.currentTimeMillis()
+//		// println(time2 - time1)
+//		// println(time2 - time3)
+//		info("Message Evaluation Received")
+//		println("reqID \t" + occurrence.result.requestID)
+//		println("HOTA \t" + occurrence.result.HOTA)
+//		println("DetA \t" + occurrence.result.detA)
+//		println("AssA \t" + occurrence.result.assA)
+//		println("DetRe \t" + occurrence.result.detRe)
+//		println("DetPr \t" + occurrence.result.detPr)
+//		println("AssRe \t" + occurrence.result.assRe)
+//		println("AssPr \t" + occurrence.result.assPr)
+//		println("LocA \t" + occurrence.result.locA)
+//	}
+	
+}
+

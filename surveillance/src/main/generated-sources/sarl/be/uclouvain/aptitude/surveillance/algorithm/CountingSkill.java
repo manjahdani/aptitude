@@ -2,8 +2,8 @@ package be.uclouvain.aptitude.surveillance.algorithm;
 
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBOX;
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxes2D;
-import be.uclouvain.aptitude.surveillance.algorithm.util.countingLine;
 import be.uclouvain.organisation.platform.CounterObserverCapacity;
+import be.uclouvain.organisation.platform.util.countingLine;
 import io.sarl.core.Logging;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.SarlElementType;
@@ -52,7 +52,7 @@ public class CountingSkill extends Skill implements CounterObserverCapacity {
           (!this.countingLines.get(counting_line).ObjectEncountered(bb.getGlobalID())))) {
           final int orientation = this.countingLines.get(counting_line).Orientation(bb.getDirection());
           if ((orientation != 0)) {
-            this.countingLines.get(counting_line).IncrementCounts();
+            this.countingLines.get(counting_line).IncrementCounts(bb.getClasseID());
           } else {
           }
         }
@@ -163,13 +163,13 @@ public class CountingSkill extends Skill implements CounterObserverCapacity {
     return false;
   }
   
-  public void DisplayPerception() {
-    Set<String> _keySet = this.countingLines.keySet();
-    for (final String counting_line : _keySet) {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      int _IncrementCounts = this.countingLines.get(counting_line).IncrementCounts();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((counting_line + " : ") + Integer.valueOf(_IncrementCounts)));
+  public TreeMap<String, countingLine> DisplayPerception(final int actionID) {
+    if ((actionID == 1)) {
+      Set<String> _keySet = this.countingLines.keySet();
+      for (final String counting_line : _keySet) {
+      }
     }
+    return this.countingLines;
   }
   
   @Extension

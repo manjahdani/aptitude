@@ -26,6 +26,7 @@ import java.util.TreeMap
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import io.sarl.core.Lifecycle
+import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DTrackMessage
 
 /** 
  * @FIXME : IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -52,20 +53,18 @@ behavior TrackerRole extends ObserverRole {
 	uses Logging, PythonTwinObserverAccess, DefaultContextInteractions,Lifecycle
 
 	var partnerTrackingName : String
-
-
 	val intensityMap = new TreeMap<Integer, Integer>
-
 	var gt :FileWriter
 	val availableObservers = newArrayList("TinyYOLO", "YOLO") //@FIXME should be given by the Analyst which makes it configurable ? 
-	
 	var totalTrackerTime : double = 0
 	var totalDetectorTime: double = 0
 	val dynamicTrackingMemory = Collections.synchronizedList(new LinkedList<ArrayList<BBoxes2D>>)
 	var predfile : File
 	var videoName : String = "S02C006"
 	var parser = new JSONParser(); 
-	var LastFrame: int 
+	var championName = "None"
+	var championSensitivity = 5
+	var LastFrame: int =10000
 	on Initialize {
 		intensityMap.put(0, 1)
 		intensityMap.put(1, 0)
@@ -81,7 +80,7 @@ behavior TrackerRole extends ObserverRole {
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on PartnerTrackingFound {
 		this.partnerTrackingName = occurrence.partnerName
-		//info("Tracking Partner found: " + this.partnerTrackingName)
+		info("Tracking Partner found: " + this.partnerTrackingName)
 	}
 	on LeavePlatform {
 		// join(BaseContext.ID, BaseSpace.spaceID.ID)
@@ -104,16 +103,20 @@ behavior TrackerRole extends ObserverRole {
 		var jsonTracker = parser.parse(new FileReader(configPathTracker)) as JSONObject; // @FIXME It is possible to generalize the behavior
 		LastFrame = 100000
 		predfile = new File("F:\\" +"Final".concat(videoName).concat(this.ID.toString) + ".txt")
-			gt = new FileWriter(predfile)
+		gt = new FileWriter(predfile)
 		info("ReactivatingAccess")
 		ActivateAccess(jsonTracker)
 		if (occurrence.bel.contains("Tiny")) {
-			
+
 			info("My Champion is SORT and TinyYOLO")
+			championSensitivity = 1
+			championName = "tinyYOLO" 
 			emit(new RestartDetector("TinyYOLO"))
 		}
 		else{
 			info("My Champion is SORT and YOLO")
+			championSensitivity = 0
+			championName = "YOLO" 
 			emit(new RestartDetector("YOLO"))
 		}
 
@@ -127,7 +130,7 @@ behavior TrackerRole extends ObserverRole {
 		sensitivity= new LinkedList(occurrence.s)
 		if(sensitivity.size==1)
 		{
-			LastFrame = 500
+			LastFrame = 10
 			setSkill(new TrackerPythonTwin)
 			var configPathTracker = ObserverADN.belief
 			var jsonTracker = parser.parse(new FileReader(configPathTracker)) as JSONObject; // @FIXME It is possible to generalize the behavior
@@ -160,7 +163,7 @@ behavior TrackerRole extends ObserverRole {
 		]
 	}
 
-	on BBoxes2DTrackResult {
+	on BBoxes2DTrackResult{//@FIXME the flag is not good
 		// emit(new BBoxes2DTrackResult(occurrence.bboxes2DTrack))[it.UUID == observerID]
 		//info("Received tracking")
 		totalDetectorTime += occurrence.bboxes2DTrack.detectionTime
@@ -184,9 +187,10 @@ behavior TrackerRole extends ObserverRole {
 			var classID = occurrence.bboxes2DTrack.classIDs.get(i)
 			var globalID = occurrence.bboxes2DTrack.globalIDs.get(i)
 			var conf = occurrence.bboxes2DTrack.detConfs.get(i)
-			
-			
+
+			synchronized (this)
 			try {
+				
 				gt.write(
 					(frameNumber + 1).toString + "," + globalID.toString + "," + X.intValue.toString + "," +
 						Y.intValue.toString + "," + W.intValue.toString + "," +
@@ -198,13 +202,20 @@ behavior TrackerRole extends ObserverRole {
 			{
 				//info("Error at the frame" + frameNumber)
 			}
-			
+			catch (e:NullPointerException)
+			{
+				info("NullPointerException")
+			}
 			tmp.add(new BBoxes2D(new BBOX(X, Y, W, H), conf, globalID, classID, frameNumber))}
 			
 			//dynamicTrackingMemory.add(frameNumber,tmp)
 			
 			for (l : Listeners){
-				MissionSpaceList.get(l).emit(this.ID, new TrackingPerception(tmp))[it.UUID == l]}
+				MissionSpaceList.get(l).emit(this.ID, new TrackingPerception(tmp))[it.UUID == l]
+			    MissionSpaceList.get(l).emit(this.ID, new BBoxes2DTrackResultToCounter(occurrence.bboxes2DTrack, championName, championSensitivity)) [
+				it.UUID == l
+			] 	// @FIXME c'est foireux dans le concept holonique..
+				}
 			
 			
 			if (occurrence.bboxes2DTrack.lastFrame || frameNumber > LastFrame) {
@@ -217,7 +228,6 @@ behavior TrackerRole extends ObserverRole {
 				
 				for(p : Providers){
 				emit(new LeavePlatform)[it.UUID==p]}
-				
 				killMe
 			}}
 			
@@ -243,3 +253,18 @@ behavior TrackerRole extends ObserverRole {
 		//getPerception(occurrence.bboxes2D)
 	}
 }
+
+event BBoxes2DTrackResultToCounter extends BBoxes2DTrackResult{
+	
+	var ObserverName : String
+	var Sensitivity : int
+	
+	new (t : BBoxes2DTrackMessage, o : String, s: int){
+		super(t)
+		this.ObserverName = o
+		this.Sensitivity=s
+	}
+	
+}
+
+
