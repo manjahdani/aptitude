@@ -1,15 +1,17 @@
 package be.uclouvain.aptitude.surveillance.algorithm;
 
 import be.uclouvain.aptitude.surveillance.Paraddis;
+import be.uclouvain.aptitude.surveillance.algorithm.AlgorithmEntity;
 import be.uclouvain.aptitude.surveillance.algorithm.AlgorithmNeeded;
-import be.uclouvain.aptitude.surveillance.algorithm.CompetitiveCounterRole;
 import be.uclouvain.aptitude.surveillance.algorithm.DetectorRole;
-import be.uclouvain.aptitude.surveillance.algorithm.TrackerRole;
+import be.uclouvain.aptitude.surveillance.algorithm.counter.CompetitiveCounterRole;
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerRole;
+import be.uclouvain.aptitude.surveillance.platform.AgentAlgorithm;
+import be.uclouvain.aptitude.surveillance.platform.AgentPlatform;
 import be.uclouvain.organisation.AuthorizationToJoin;
 import be.uclouvain.organisation.platform.AlgorithmJoinPlatform;
 import be.uclouvain.organisation.told.entity.EntityRole;
 import be.uclouvain.organisation.told.util.AlgorithmInfo;
-import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.Initialize;
@@ -17,17 +19,22 @@ import io.sarl.core.InnerContextAccess;
 import io.sarl.core.Lifecycle;
 import io.sarl.core.Logging;
 import io.sarl.core.OpenEventSpace;
+import io.sarl.core.OpenEventSpaceSpecification;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
+import io.sarl.lang.core.Address;
+import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.DynamicSkillProvider;
+import io.sarl.lang.core.Scope;
+import io.sarl.lang.util.SerializableProxy;
+import java.io.ObjectStreamException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Set;
 import java.util.UUID;
 import javax.inject.Inject;
@@ -74,54 +81,67 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class Algorithm extends Paraddis {
   private AlgorithmInfo ADN = null;
   
+  private final HashMap<String, OpenEventSpace> agentPlatformSpaces = new HashMap<String, OpenEventSpace>();
+  
+  private HashMap<AgentContext, UUID> subHolons = new HashMap<AgentContext, UUID>();
+  
+  private OpenEventSpace openChanel;
+  
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Object _get = occurrence.parameters[0];
     this.ADN = ((AlgorithmInfo) _get);
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    UUID _iD = this.getID();
+    String _plus = (_iD + "-ALGORITHM-");
     String _name = this.ADN.getName();
     int _level = this.ADN.getLevel();
-    UUID _iD = this.getID();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(((((("ALGORITHM-" + _name) + "-") + Integer.valueOf(_level)) + "-") + _iD));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName((((_plus + _name) + "-") + Integer.valueOf(_level)));
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     EntityRole _entityRole = new EntityRole(this);
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_entityRole);
+    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+    this.openChanel = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, UUID.randomUUID());
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    this.openChanel.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.asEventListener());
     int _level_1 = this.ADN.getLevel();
     if ((_level_1 == 0)) {
-      Object _get_1 = occurrence.parameters[2];
-      for (final OpenEventSpace k : ((LinkedList<OpenEventSpace>) _get_1)) {
-        Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-        k.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.asEventListener());
-      }
-      Object _get_2 = occurrence.parameters[1];
-      HashMap<UUID, AlgorithmInfo> toSpawn = ((HashMap<UUID, AlgorithmInfo>) _get_2);
+      Object _get_1 = occurrence.parameters[1];
+      HashMap<UUID, AlgorithmInfo> toSpawn = ((HashMap<UUID, AlgorithmInfo>) _get_1);
       Set<UUID> _keySet = toSpawn.keySet();
       for (final UUID e : _keySet) {
         Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-        InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-        _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(Algorithm.class, e, _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext(), toSpawn.get(e).IncrementLevelAndGet());
+        InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(Algorithm.class, e, _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1.getInnerContext(), toSpawn.get(e).IncrementLevelAndGet());
       }
     }
     int _level_2 = this.ADN.getLevel();
     if ((_level_2 > 1)) {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       String _task = this.ADN.getTask();
-      if (_task != null) {
-        switch (_task) {
+      String _belief = this.ADN.getBelief();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(((("new atomic agent with intention: " + _task) + " & belief : ") + _belief));
+      Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+      AlgorithmEntity _algorithmEntity = new AlgorithmEntity(this);
+      _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_2.registerBehavior(_algorithmEntity);
+      String _task_1 = this.ADN.getTask();
+      if (_task_1 != null) {
+        switch (_task_1) {
           case "COUNTER":
-            Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+            Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
             CompetitiveCounterRole _competitiveCounterRole = new CompetitiveCounterRole(this);
-            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_2.registerBehavior(_competitiveCounterRole, this.ADN, occurrence.parameters[1], 
+            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_3.registerBehavior(_competitiveCounterRole, this.ADN, occurrence.parameters[1], 
               occurrence.parameters[2]);
             break;
           case "TRACKER":
-            Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+            Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_4 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
             TrackerRole _trackerRole = new TrackerRole(this);
-            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_3.registerBehavior(_trackerRole, this.ADN, occurrence.parameters[1], 
+            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_4.registerBehavior(_trackerRole, this.ADN, occurrence.parameters[1], 
               occurrence.parameters[2]);
             break;
           case "DETECTOR":
-            Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_4 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+            Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_5 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
             DetectorRole _detectorRole = new DetectorRole(this);
-            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_4.registerBehavior(_detectorRole, this.ADN, occurrence.parameters[1], 
+            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_5.registerBehavior(_detectorRole, this.ADN, occurrence.parameters[1], 
               occurrence.parameters[2]);
             break;
         }
@@ -131,35 +151,73 @@ public class Algorithm extends Paraddis {
   }
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
-  private void $behaviorUnit$AlgorithmNeeded$1(final AlgorithmNeeded occurrence) {
-    Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContext(Algorithm.class, occurrence.ContextID, this.ADN.clone().IncrementLevelAndGet(), occurrence.SpaceID, occurrence.sourceID);
-  }
-  
-  @SyntheticMember
-  @Pure
-  private boolean $behaviorUnitGuard$AlgorithmNeeded$1(final AlgorithmNeeded it, final AlgorithmNeeded occurrence) {
+  private void $behaviorUnit$AgentPlatform$1(final AgentPlatform occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((("encounters : " + occurrence.name) + " agent"));
+    this.agentPlatformSpaces.put(occurrence.name, occurrence.topic);
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    occurrence.topic.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
     String _name = this.ADN.getName();
-    boolean _equals = Objects.equal(occurrence.name, _name);
-    return _equals;
+    AgentAlgorithm _agentAlgorithm = new AgentAlgorithm(_name, this.openChanel);
+    occurrence.topic.emit(this.getID(), _agentAlgorithm, null);
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    AgentPlatform _agentPlatform = new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic);
+    class $SerializableClosureProxy implements Scope<Address> {
+      
+      private final UUID $_iD;
+      
+      public $SerializableClosureProxy(final UUID $_iD) {
+        this.$_iD = $_iD;
+      }
+      
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return (_uUID != $_iD);
+      }
+    }
+    final Scope<Address> _function = new Scope<Address>() {
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        UUID _iD = Algorithm.this.getID();
+        return (_uUID != _iD);
+      }
+      private Object writeReplace() throws ObjectStreamException {
+        return new SerializableProxy($SerializableClosureProxy.class, Algorithm.this.getID());
+      }
+    };
+    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.wake(_agentPlatform, _function);
   }
   
-  private void $behaviorUnit$AlgorithmJoinPlatform$2(final AlgorithmJoinPlatform occurrence) {
+  @SuppressWarnings("discouraged_occurrence_readonly_use")
+  private void $behaviorUnit$AlgorithmNeeded$2(final AlgorithmNeeded occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("clones image with intention :" + occurrence.task) + "& belief : ") + occurrence.belief));
+    String _name = this.ADN.getName();
+    if ((occurrence.name == _name)) {
+      final UUID cloneID = UUID.randomUUID();
+      this.subHolons.put(occurrence.ContextID, cloneID);
+      Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(Algorithm.class, cloneID, occurrence.ContextID, this.ADN.cloneChild(), occurrence.SpaceID, occurrence.sourceID);
+    }
+  }
+  
+  private void $behaviorUnit$AlgorithmJoinPlatform$3(final AlgorithmJoinPlatform occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    String _substring = occurrence.getSource().getUUID().toString().substring(0, 5);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("receives request to join platform from : " + _substring));
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     String _belief = this.ADN.getBelief();
-    AlgorithmNeeded _algorithmNeeded = new AlgorithmNeeded(occurrence.contextID, occurrence.defaultSpaceID, occurrence.name, _belief, occurrence.task, occurrence.sourceID);
+    String _task = this.ADN.getTask();
+    AlgorithmNeeded _algorithmNeeded = new AlgorithmNeeded(occurrence.contextID, occurrence.missionSpace, occurrence.name, _belief, _task, occurrence.sourceID);
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_algorithmNeeded);
   }
   
-  @SyntheticMember
-  @Pure
-  private boolean $behaviorUnitGuard$AlgorithmJoinPlatform$2(final AlgorithmJoinPlatform it, final AlgorithmJoinPlatform occurrence) {
-    String _task = this.ADN.getTask();
-    boolean _equals = Objects.equal(occurrence.task, _task);
-    return _equals;
-  }
-  
-  private void $behaviorUnit$AuthorizationToJoin$3(final AuthorizationToJoin occurrence) {
+  private void $behaviorUnit$AuthorizationToJoin$4(final AuthorizationToJoin occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    UUID _uUID = occurrence.getSource().getUUID();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("receives authorisation to join" + _uUID));
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.join(occurrence.contextID.getID(), occurrence.defaultSpaceID.getSpaceID().getID());
   }
@@ -244,10 +302,18 @@ public class Algorithm extends Paraddis {
   
   @SyntheticMember
   @PerceptGuardEvaluator
+  private void $guardEvaluator$AgentPlatform(final AgentPlatform occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AgentPlatform$1(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
   private void $guardEvaluator$AuthorizationToJoin(final AuthorizationToJoin occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AuthorizationToJoin$3(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AuthorizationToJoin$4(occurrence));
   }
   
   @SyntheticMember
@@ -255,9 +321,7 @@ public class Algorithm extends Paraddis {
   private void $guardEvaluator$AlgorithmJoinPlatform(final AlgorithmJoinPlatform occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    if ($behaviorUnitGuard$AlgorithmJoinPlatform$2(occurrence, occurrence)) {
-      ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AlgorithmJoinPlatform$2(occurrence));
-    }
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AlgorithmJoinPlatform$3(occurrence));
   }
   
   @SyntheticMember
@@ -265,9 +329,7 @@ public class Algorithm extends Paraddis {
   private void $guardEvaluator$AlgorithmNeeded(final AlgorithmNeeded occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    if ($behaviorUnitGuard$AlgorithmNeeded$1(occurrence, occurrence)) {
-      ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AlgorithmNeeded$1(occurrence));
-    }
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AlgorithmNeeded$2(occurrence));
   }
   
   @Override

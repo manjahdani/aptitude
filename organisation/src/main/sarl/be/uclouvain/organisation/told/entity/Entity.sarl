@@ -6,6 +6,7 @@ import be.uclouvain.organisation.TOLDOrganisationInfo
 import io.sarl.core.Behaviors
 import io.sarl.core.OpenEventSpace
 import io.sarl.lang.core.AgentContext
+import io.sarl.core.Logging
 
 /** 
  * The concept-generic role of Entity seeks knowledge to update : 
@@ -24,7 +25,7 @@ import io.sarl.lang.core.AgentContext
  */
 behavior EntityRole {
 	
-	uses Behaviors
+	uses Behaviors, Logging
 	/*
 	 * The entity register the initial base
 	 * @TODO : The entity does not need to have a BaseContext ? It does not make sens it only has to know the context of current TOLD. 
@@ -37,8 +38,10 @@ behavior EntityRole {
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on TOLDOrganisationInfo {
+		info("met TOLD - " + occurrence.context.ID.toString.substring(0, 5))
 		TOLDContext = occurrence.context
 		TOLDSpace = occurrence.spaceID
-		TOLDSpace.register(asEventListener)
+		
+		//TOLDSpace.register(asEventListener)
 	}
 }

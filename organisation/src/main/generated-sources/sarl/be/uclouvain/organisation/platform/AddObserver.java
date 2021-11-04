@@ -13,18 +13,18 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlElementType(15)
 @SuppressWarnings("all")
 public class AddObserver extends Event {
-  public OpenEventSpace MissionSpace;
+  public OpenEventSpace missionSpace;
   
-  public AlgorithmInfo SignalProvider;
+  public AlgorithmInfo signalProvider;
   
-  public AlgorithmInfo SignalReceiver;
+  public AlgorithmInfo signalReceiver;
   
   public int flag;
   
   public AddObserver(final OpenEventSpace ospace, final AlgorithmInfo s, final AlgorithmInfo r) {
-    this.MissionSpace = ospace;
-    this.SignalProvider = s;
-    this.SignalReceiver = r;
+    this.missionSpace = ospace;
+    this.signalProvider = s;
+    this.signalReceiver = r;
   }
   
   @Override
@@ -60,12 +60,12 @@ public class AddObserver extends Event {
   @Pure
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
-    builder.add("MissionSpace", this.MissionSpace);
-    builder.add("SignalProvider", this.SignalProvider);
-    builder.add("SignalReceiver", this.SignalReceiver);
+    builder.add("missionSpace", this.missionSpace);
+    builder.add("signalProvider", this.signalProvider);
+    builder.add("signalReceiver", this.signalReceiver);
     builder.add("flag", this.flag);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = -35806940L;
+  private static final long serialVersionUID = 1803859140L;
 }

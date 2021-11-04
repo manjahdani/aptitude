@@ -1,0 +1,102 @@
+package be.uclouvain.organisation.told
+
+import be.uclouvain.organisation.AddMember
+import be.uclouvain.organisation.AuthorizationToJoin
+import be.uclouvain.organisation.TOLDOrganisationInfo
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Logging
+import io.sarl.core.MemberJoined
+import io.sarl.core.MemberLeft
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.OpenEventSpaceSpecification
+import java.util.HashMap
+import java.util.UUID
+import be.uclouvain.organisation.PlatformOrganisationInfo
+import io.sarl.core.ExternalContextAccess
+
+/** 
+ * Trusted Observations and Learning Database is a database aiming to achieve two goals. 
+ * 
+ *  - Storing the information communicated by a platform.  
+ * 
+ *  - Contains ground truth signals dedicated to learning.
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.2$
+ * @date $16/04/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ * 
+ */
+behavior TOLDRole {
+	
+	uses Behaviors, AccessDatabaseCapacity, InnerContextAccess,Logging, ExternalContextAccess, DefaultContextInteractions
+	
+	
+	protected var PlatformID : UUID
+	protected val privateSpacesListeners = new HashMap<UUID, OpenEventSpace>
+	/*
+	 * The platform register the context of a platform 
+	 */
+
+	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	on AddEntry{
+		create(occurrence.key, occurrence.data)
+	}
+	on DeleteEntry{
+		delete(occurrence.key)
+	}
+	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	on DataEntry {
+		//info("Updating key : " + occurrence.key  +" - " + occurrence.class)
+		update(occurrence.key, occurrence.data)
+	}
+	
+	/*
+	 * Send if available the stored data about it. 
+	 */
+	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	on AddMember{
+		info("I received Add Member")
+		occurrence.SourceEventSpace.emit(this.ID, new AuthorizationToJoin(innerContext, innerContext.getDefaultSpace as OpenEventSpace, occurrence.source.getUUID))
+	}
+	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	on ReadEntry {
+		privateSpacesListeners.get(occurrence.source.UUID).emit(this.ID, new QueryAnswer(read(this.ID)))
+	}
+	on MemberJoined {
+		info(
+			"noticed" + occurrence.agentType.replaceAll("be.uclouvain.aptitude.surveillance.", ":") +
+				" - ID: " + occurrence.agentID.toString.substring(0,5))
+				
+		val MemberID = occurrence.agentID;
+		privateSpacesListeners.put(MemberID,
+			innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID))
+		emit(new TOLDOrganisationInfo(innerContext, privateSpacesListeners.get(MemberID), read(MemberID))) [
+			it.UUID == MemberID
+		]
+		privateSpacesListeners.get(MemberID).register(asEventListener)
+
+	}
+
+	on PlatformOrganisationInfo {
+		info("Platform organisation - " + occurrence.platformName + " encountered ")
+		PlatformID = occurrence.source.UUID
+		if (!privateSpacesListeners.containsKey(PlatformID))
+		{
+			info("Platform was not encountered")
+			synchronized (this) {
+				privateSpacesListeners.put(PlatformID,occurrence.spaceID)
+				occurrence.spaceID.register(asEventListener)
+				occurrence.spaceID.emit(new TOLDOrganisationInfo(innerContext, privateSpacesListeners.get(PlatformID), read(PlatformID)))[it.UUID==PlatformID]
+			}
+		}
+		
+	}
+	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	on MemberLeft {
+		privateSpacesListeners.remove(occurrence.agentID)
+	}
+}

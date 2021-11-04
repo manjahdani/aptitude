@@ -1,6 +1,6 @@
 package be.uclouvain.aptitude.surveillance.algorithm;
 
-import be.uclouvain.aptitude.surveillance.algorithm.messages.EvaluationMessage;
+import be.uclouvain.python_access.messages.EvaluationMessage;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
@@ -44,5 +44,5 @@ public class EvaluationResult extends Event {
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = 3245249026L;
+  private static final long serialVersionUID = -577755806L;
 }

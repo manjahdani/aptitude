@@ -1,0 +1,65 @@
+
+package be.uclouvain.aptitude.surveillance.algorithm.counter
+
+import be.uclouvain.aptitude.surveillance.algorithm.util.Metric
+import be.uclouvain.organisation.platform.AddAlgorithm
+import be.uclouvain.organisation.platform.MissionSensitivity
+import be.uclouvain.organisation.platform.ObserverRole
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import io.sarl.core.Behaviors
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import java.util.ArrayList
+import be.uclouvain.aptitude.surveillance.evaluation.AlgorithmSelectorRole
+
+/** 
+ * @TODO : To complete
+ * 
+ * @author  $ manjahdani$
+ * @version $0.0.1$
+ * @date $17/06/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
+ * 
+ */
+behavior CompetitiveCounterRole extends ObserverRole {
+	
+	uses Logging, ExternalContextAccess, Behaviors
+
+	//val AVAILABLE_TRACKERS = newArrayList("SORT")//"DeepSORT") // "SORT", //@FIXME Parameters
+	var expertSensitivity : Integer
+
+	on Initialize {
+	 	sensitivity.add(0)
+		sensitivity.add(1)
+		isMaster = true;
+		info("Let the competition start !")
+	}
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on MissionSensitivity {
+		info("I received sensitivity - " + occurrence.s)
+		info("All Context" + allContexts)
+		info("Universe Context" + universeContext)
+		info(this.ID)
+		expertSensitivity = occurrence.s.get(0)
+		var parameters = new ArrayList<String>
+		parameters.add(expertSensitivity.toString)
+			registerBehavior(new AlgorithmSelectorRole(this.owner),
+			new Metric("APTITUDE", "F:/data/".concat(platformName).concat("/gt/gt.txt"), parameters))
+			
+		/** 
+		for (ObserverName : AVAILABLE_TRACKERS) {
+			info("requests tracker: " + ObserverName)
+			platformSpace.emit(
+				new AddAlgorithm(missionSpaceList.values.get(0),
+					new AlgorithmInfo(ObserverName, "TRACKER")))[it.UUID == platformContext.ID] // @FIXME : Be very careful as I am taking the first Space !!!! DANGER
+		}*/
+	}
+	
+
+	
+
+	
+
+}

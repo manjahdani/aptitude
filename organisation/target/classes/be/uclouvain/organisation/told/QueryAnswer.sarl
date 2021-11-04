@@ -1,0 +1,17 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.told
+
+/** 
+ * @author manjah
+ * 
+ */
+event QueryAnswer{
+	
+	var answerObject : Object
+	
+	new (o : Object){
+		this.answerObject=o
+	}
+}

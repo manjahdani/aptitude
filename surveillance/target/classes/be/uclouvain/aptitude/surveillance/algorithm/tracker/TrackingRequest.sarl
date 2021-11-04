@@ -1,0 +1,11 @@
+package be.uclouvain.aptitude.surveillance.algorithm
+
+
+
+event TrackingRequest {
+	var bel : String
+
+	new (a : String) {
+		this.bel = a
+	}
+}

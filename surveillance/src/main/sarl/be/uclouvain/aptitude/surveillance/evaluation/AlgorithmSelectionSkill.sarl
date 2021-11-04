@@ -1,0 +1,75 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.evaluation
+
+import be.uclouvain.aptitude.surveillance.algorithm.util.EvaluationResults
+import be.uclouvain.python_access.messages.EvaluationMessage
+import io.sarl.core.Logging
+import java.util.TreeMap
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+skill AlgorithmSelectionSkill implements AlgorithmSelection {
+	
+	uses Logging
+
+	val compResults = new TreeMap<UUID, EvaluationResults>
+	
+	var parameters : String[]
+	
+	new (p : String*)
+	{
+		parameters=p
+	}
+	
+	def selectAlgorithm():EvaluationResults {
+
+		info("Competition is over. Lets choose the Champion !")
+		var rankedResult = new TreeMap<Double, String>
+		for (l : compResults.values) {
+			var sframe = (l.trackingTime + l.detectionTime) / l.frame
+			var effeciency = (0.51 - 2 * sframe) / (0.49)
+			info("HOTA :" + l.HOTA)
+			info("Effeciency :" + effeciency)
+			// info("Exper" + ExpertSensitivity)
+			rankedResult.put(APTITUDE(l.HOTA, effeciency, parameters.get(0).toAtomicInteger.get), l.belief)
+		}
+		info(rankedResult + "\n Congratulations to " + rankedResult.lastEntry)
+		
+		var selectedAlgorithm = compResults.values.filter[belief == rankedResult.lastEntry.value].get(0)//.competitorID
+			
+		return selectedAlgorithm
+		
+		
+		
+		
+//		var trackingGuy = compResults.filter[p1, p2|p2.belief == rankedResult.lastEntry.value]get(maxValue)
+//		].values.get(0).
+//			getCompetitorID
+		
+	}
+	
+	def APTITUDE(hota : double, effeciency : double,  beta : int) {
+		return hota + beta*effeciency
+	}
+
+	def addResult(testID : UUID, e : EvaluationResults) {
+		compResults.put(testID, e)
+	}
+
+	def addResult(testID : UUID, e : EvaluationMessage) : boolean {
+
+		if (compResults.get(testID).HOTA == 0) {
+			compResults.get(testID).setValues(e)
+			return true
+			// println("***********************")
+			// println("           reqID \t" + occurrence.result.requestID)
+			// CompResults.get(UUID.fromString(occurrence.result.requestID)).EvaluationPrint
+		}
+		}
+}
+

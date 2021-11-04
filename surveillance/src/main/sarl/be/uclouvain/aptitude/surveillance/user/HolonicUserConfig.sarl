@@ -1,0 +1,37 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.user
+
+import be.uclouvain.organisation.util.HolonicConfig
+import java.util.Collection
+import java.util.LinkedList
+
+/** 
+ * @author manjah
+ * 
+ */
+class HolonicUserConfig extends HolonicConfig {
+	
+	var name : String
+	
+	var initialPlatforms = new LinkedList<String>
+
+	new(lvl : int, id : String){
+		super(lvl)
+		this.name=id
+	} 
+	new(lvl : int, id : String, platformsList : Collection<String>) {
+		super(lvl)
+		this.name = id
+		this.initialPlatforms.addAll(platformsList)
+	}
+	
+	def getInitialPlatforms {
+		return this.initialPlatforms
+	}
+	def getName{
+		return this.name
+	}
+	
+}

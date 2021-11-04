@@ -1,6 +1,5 @@
 package be.uclouvain.organisation;
 
-import be.uclouvain.organisation.platform.util.MissionData;
 import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
@@ -39,18 +38,16 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class AuthorizationToJoin extends Event {
   /**
-   * The context of the holon that fired the event
+   * Context of the holon that fired the event
    */
   public final AgentContext contextID;
   
   /**
-   * The context of the holon that fired the event
+   * Default Space of the holon that fired the event
    */
   public final OpenEventSpace defaultSpaceID;
   
   public final UUID entityID;
-  
-  public final MissionData missionData;
   
   /**
    * Constructor
@@ -63,14 +60,6 @@ public class AuthorizationToJoin extends Event {
     this.contextID = ctxt;
     this.defaultSpaceID = sid;
     this.entityID = id;
-    this.missionData = null;
-  }
-  
-  public AuthorizationToJoin(final AgentContext ctxt, final OpenEventSpace sid, final UUID id, final MissionData missionData) {
-    this.contextID = ctxt;
-    this.defaultSpaceID = sid;
-    this.entityID = id;
-    this.missionData = missionData;
   }
   
   @Override
@@ -109,9 +98,8 @@ public class AuthorizationToJoin extends Event {
     builder.add("contextID", this.contextID);
     builder.add("defaultSpaceID", this.defaultSpaceID);
     builder.add("entityID", this.entityID);
-    builder.add("missionData", this.missionData);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = 872707217L;
+  private static final long serialVersionUID = -430642085L;
 }

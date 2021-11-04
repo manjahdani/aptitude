@@ -1,0 +1,53 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance
+
+import be.uclouvain.organisation.util.HolonicConfig
+import io.sarl.lang.core.AgentContext
+import java.util.ArrayList
+import java.util.UUID
+import java.util.HashMap
+
+/** 
+ * @author manjah
+ * 
+ */
+class TOLDConfig extends HolonicConfig {
+	
+	var parentContext : AgentContext
+	var init_tasks : ArrayList<String>
+	val subTOLDConfig = new HashMap <TOLDConfig,UUID>
+	var accountablePlatform : String 
+	
+	new (l : int, platformName : String, parent : AgentContext, init_tasks : ArrayList<String>){
+		
+		super(l)
+		this.parentContext = parent
+		this.init_tasks=init_tasks
+		this.accountablePlatform =  platformName
+	}
+	
+	def getAccountablePlatform{
+		
+		return accountablePlatform
+	}
+	def getParentContext {
+		return parentContext
+	}
+	def getInit_tasks {
+		return init_tasks
+	}
+	def addSubTOLD(wc : TOLDConfig, id: UUID) {
+		this.subTOLDConfig.put(wc,id)
+		return wc
+	}
+
+	def removeSubPlatform(wc : TOLDConfig) : void {
+		this.subTOLDConfig.remove(wc)
+	}
+
+	def getSubTOLDConfig() {
+		return this.subTOLDConfig
+	}
+}

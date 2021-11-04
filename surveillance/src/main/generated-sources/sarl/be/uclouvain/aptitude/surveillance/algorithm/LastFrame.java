@@ -9,7 +9,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * @author manjah
+ * @TODO : Descrribe
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.3$
+ * @date $28/06/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  */
 @SarlSpecification("0.11")
 @SarlElementType(15)
@@ -28,6 +34,10 @@ public class LastFrame extends Event {
     this.pred_file_Path = p;
     this.total_time_detection = total_time_detection;
     this.total_time_tracking = total_time_tracking;
+  }
+  
+  public LastFrame(final int f) {
+    this.frameNumber = f;
   }
   
   @Override
@@ -79,5 +89,5 @@ public class LastFrame extends Event {
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = -2916988161L;
+  private static final long serialVersionUID = -2913747641L;
 }

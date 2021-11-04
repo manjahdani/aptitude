@@ -3,7 +3,6 @@
 package be.uclouvain.organisation
 
 import io.sarl.lang.core.AgentContext
-import io.sarl.core.OpenEventSpace
 
 /** 
  * Generic event to invites the receiver to join an organisation context 
@@ -29,11 +28,21 @@ import io.sarl.core.OpenEventSpace
  */
 event JoinOrganisation {
 	
-	val contextID : AgentContext // The context of 
-	val defaultSpaceID : OpenEventSpace // The defaultSpace
+	val contextID : AgentContext 
 	
-	new (context : AgentContext, openSpace : OpenEventSpace) {
+	new (context : AgentContext) {
 		this.contextID = context
-		this.defaultSpaceID = openSpace
 	}
 }
+
+
+event JoinPlatform extends JoinOrganisation {
+
+	val location : String
+
+	new (context : AgentContext, platformName : String) {
+		super(context)
+		this.location=platformName
+	}
+}
+

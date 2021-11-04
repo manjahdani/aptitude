@@ -1,0 +1,21 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.evaluation
+
+import be.uclouvain.aptitude.surveillance.algorithm.util.EvaluationResults
+import java.util.UUID
+import be.uclouvain.python_access.messages.EvaluationMessage
+
+/** 
+ * @author manjah
+ * 
+ */
+capacity AlgorithmSelection {
+
+	def addResult(testID : UUID, s : EvaluationResults)
+
+	def addResult(testID : UUID, e : EvaluationMessage) : boolean
+	
+	def selectAlgorithm() : EvaluationResults
+}

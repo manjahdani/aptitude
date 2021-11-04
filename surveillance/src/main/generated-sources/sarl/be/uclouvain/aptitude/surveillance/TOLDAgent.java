@@ -1,11 +1,13 @@
 package be.uclouvain.aptitude.surveillance;
 
 import be.uclouvain.aptitude.surveillance.Paraddis;
+import be.uclouvain.aptitude.surveillance.TOLDConfig;
+import be.uclouvain.aptitude.surveillance.VirtualDatabaseSkill;
 import be.uclouvain.aptitude.surveillance.algorithm.Algorithm;
-import be.uclouvain.organisation.PlatformOrganisationInfo;
+import be.uclouvain.aptitude.surveillance.platform.AgentPlatform;
+import be.uclouvain.organisation.JoinPlatform;
 import be.uclouvain.organisation.told.AccessDatabaseCapacity;
 import be.uclouvain.organisation.told.TOLDRole;
-import be.uclouvain.organisation.told.VirtualDatabaseSkill;
 import be.uclouvain.organisation.told.util.AlgorithmInfo;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
@@ -19,17 +21,20 @@ import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
+import io.sarl.lang.core.Address;
+import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.DynamicSkillProvider;
+import io.sarl.lang.core.Scope;
+import io.sarl.lang.util.SerializableProxy;
+import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
 import javax.inject.Inject;
-import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.MapExtensions;
@@ -52,53 +57,99 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlElementType(19)
 @SuppressWarnings("all")
 public class TOLDAgent extends Paraddis {
-  private final ArrayList<String> INIT_TASKS = CollectionLiterals.<String>newArrayList("DETECTOR", "TRACKER", "COUNTER");
+  private TOLDConfig config;
   
-  private LinkedList<OpenEventSpace> PlatformTOLDSpaces = new LinkedList<OpenEventSpace>();
+  private final HashMap<String, OpenEventSpace> agentPlatformSpaces = new HashMap<String, OpenEventSpace>();
   
   private VirtualDatabaseSkill S;
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
+    Object _get = occurrence.parameters[0];
+    this.config = ((TOLDConfig) _get);
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     UUID _iD = this.getID();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(("TOLD-" + _iD));
+    String _plus = (_iD + "-TOLD");
+    int _level = this.config.getLevel();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(((_plus + "-") + Integer.valueOf(_level)));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Ready to share my stored Knowledge.");
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("ready to share my stored knowledge.");
     VirtualDatabaseSkill _virtualDatabaseSkill = new VirtualDatabaseSkill();
     this.S = this.<VirtualDatabaseSkill>setSkill(_virtualDatabaseSkill, AccessDatabaseCapacity.class);
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     TOLDRole _tOLDRole = new TOLDRole(this);
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_tOLDRole);
+    final Function2<UUID, Object, Boolean> _function = (UUID p1, Object p2) -> {
+      return Boolean.valueOf((p2 instanceof AlgorithmInfo));
+    };
+    Map<UUID, Object> _filter = MapExtensions.<UUID, Object>filter(this.S.database, _function);
+    HashMap<UUID, AlgorithmInfo> registeredAlgorithms = new HashMap(_filter);
+    ArrayList<String> _init_tasks = this.config.getInit_tasks();
+    for (final String t : _init_tasks) {
+      Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+      InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+      AlgorithmInfo _algorithmInfo = new AlgorithmInfo(t, "none", t);
+      final Function2<UUID, AlgorithmInfo, Boolean> _function_1 = (UUID p1, AlgorithmInfo p2) -> {
+        String _task = p2.getTask();
+        return Boolean.valueOf(Objects.equal(_task, t));
+      };
+      Map<UUID, AlgorithmInfo> _filter_1 = MapExtensions.<UUID, AlgorithmInfo>filter(registeredAlgorithms, _function_1);
+      HashMap<UUID, AlgorithmInfo> _hashMap = new HashMap<UUID, AlgorithmInfo>(_filter_1);
+      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContext(Algorithm.class, _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext(), _algorithmInfo, _hashMap);
+    }
   }
   
-  @SuppressWarnings("potential_field_synchronization_problem")
-  private void $behaviorUnit$PlatformOrganisationInfo$1(final PlatformOrganisationInfo occurrence) {
-    synchronized (this) {
-      this.PlatformTOLDSpaces.add(occurrence.spaceID);
-      Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-      occurrence.spaceID.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
-      final Function2<UUID, Object, Boolean> _function = (UUID p1, Object p2) -> {
-        return Boolean.valueOf((p2 instanceof AlgorithmInfo));
-      };
-      Map<UUID, Object> _filter = MapExtensions.<UUID, Object>filter(this.S.getDatabase(), _function);
-      HashMap<UUID, AlgorithmInfo> registeredAlgorithms = new HashMap(_filter);
-      int _size = this.PlatformTOLDSpaces.size();
-      if ((_size > 1)) {
-        for (final String t : this.INIT_TASKS) {
-          Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-          InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-          AlgorithmInfo _algorithmInfo = new AlgorithmInfo(t, "none", t);
-          final Function2<UUID, AlgorithmInfo, Boolean> _function_1 = (UUID p1, AlgorithmInfo p2) -> {
-            String _task = p2.getTask();
-            return Boolean.valueOf(Objects.equal(_task, t));
-          };
-          Map<UUID, AlgorithmInfo> _filter_1 = MapExtensions.<UUID, AlgorithmInfo>filter(registeredAlgorithms, _function_1);
-          HashMap<UUID, AlgorithmInfo> _hashMap = new HashMap<UUID, AlgorithmInfo>(_filter_1);
-          _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContext(Algorithm.class, _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext(), _algorithmInfo, _hashMap, this.PlatformTOLDSpaces);
-        }
+  @SuppressWarnings({ "discouraged_occurrence_readonly_use", "potential_field_synchronization_problem" })
+  private void $behaviorUnit$AgentPlatform$1(final AgentPlatform occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((("encounters " + occurrence.name) + " agent platform"));
+    this.agentPlatformSpaces.put(occurrence.name, occurrence.topic);
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    occurrence.topic.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    AgentPlatform _agentPlatform = new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic);
+    class $SerializableClosureProxy implements Scope<Address> {
+      
+      private final UUID $_iD;
+      
+      public $SerializableClosureProxy(final UUID $_iD) {
+        this.$_iD = $_iD;
+      }
+      
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return (_uUID != $_iD);
       }
     }
+    final Scope<Address> _function = new Scope<Address>() {
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        UUID _iD = TOLDAgent.this.getID();
+        return (_uUID != _iD);
+      }
+      private Object writeReplace() throws ObjectStreamException {
+        return new SerializableProxy($SerializableClosureProxy.class, TOLDAgent.this.getID());
+      }
+    };
+    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.wake(_agentPlatform, _function);
+  }
+  
+  @SuppressWarnings({ "discouraged_occurrence_readonly_use", "potential_field_synchronization_problem" })
+  private void $behaviorUnit$JoinPlatform$2(final JoinPlatform occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    String _substring = occurrence.contextID.getID().toString().substring(0, 5);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("joins organisation - " + _substring));
+    final UUID randomID = UUID.randomUUID();
+    int _level = this.config.getLevel();
+    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+    AgentContext _innerContext = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext();
+    ArrayList<String> _arrayList = new ArrayList<String>();
+    TOLDConfig _tOLDConfig = new TOLDConfig((_level + 1), occurrence.location, _innerContext, _arrayList);
+    TOLDConfig holonConfig = this.config.addSubTOLD(_tOLDConfig, randomID);
+    Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(TOLDAgent.class, randomID, occurrence.contextID, holonConfig);
   }
   
   @Extension
@@ -167,10 +218,18 @@ public class TOLDAgent extends Paraddis {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$PlatformOrganisationInfo(final PlatformOrganisationInfo occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+  private void $guardEvaluator$AgentPlatform(final AgentPlatform occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$PlatformOrganisationInfo$1(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AgentPlatform$1(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$JoinPlatform(final JoinPlatform occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$JoinPlatform$2(occurrence));
   }
   
   @Override

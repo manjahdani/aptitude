@@ -2,6 +2,7 @@ package be.uclouvain.organisation.told.entity;
 
 import be.uclouvain.organisation.TOLDOrganisationInfo;
 import io.sarl.core.Behaviors;
+import io.sarl.core.Logging;
 import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
@@ -46,10 +47,11 @@ public class EntityRole extends Behavior {
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$TOLDOrganisationInfo$0(final TOLDOrganisationInfo occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    String _substring = occurrence.context.getID().toString().substring(0, 5);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("met TOLD - " + _substring));
     this.TOLDContext = occurrence.context;
     this.TOLDSpace = occurrence.spaceID;
-    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    this.TOLDSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
   }
   
   @Extension
@@ -64,6 +66,20 @@ public class EntityRole extends Behavior {
       this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS = $getSkill(Behaviors.class);
     }
     return $castSkill(Behaviors.class, this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS);
+  }
+  
+  @Extension
+  @ImportedCapacityFeature(Logging.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_LOGGING;
+  
+  @SyntheticMember
+  @Pure
+  private Logging $CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = $getSkill(Logging.class);
+    }
+    return $castSkill(Logging.class, this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
   }
   
   @SyntheticMember

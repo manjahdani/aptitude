@@ -1,16 +1,15 @@
 package be.uclouvain.aptitude.surveillance.algorithm;
 
 import be.uclouvain.aptitude.surveillance.algorithm.BBoxes2DResult;
-import be.uclouvain.aptitude.surveillance.algorithm.CommunicationManager;
+import be.uclouvain.aptitude.surveillance.algorithm.ObserverPythonAccess;
 import be.uclouvain.aptitude.surveillance.algorithm.PartnerDetectionFound;
-import be.uclouvain.aptitude.surveillance.algorithm.PythonAccessObserver;
-import be.uclouvain.aptitude.surveillance.algorithm.messages.ActionMessage;
-import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DMessage;
-import be.uclouvain.aptitude.surveillance.algorithm.messages.BaseMessage;
-import be.uclouvain.aptitude.surveillance.algorithm.messages.RequestMessage;
+import be.uclouvain.python_access.CommunicationManager;
+import be.uclouvain.python_access.messages.ActionMessage;
+import be.uclouvain.python_access.messages.BBoxes2DMessage;
+import be.uclouvain.python_access.messages.BaseMessage;
+import be.uclouvain.python_access.messages.RequestMessage;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
-import io.sarl.core.Logging;
 import io.sarl.core.Schedules;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.SarlElementType;
@@ -34,7 +33,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlSpecification("0.11")
 @SarlElementType(22)
 @SuppressWarnings("all")
-public class DetectorPythonTwin extends PythonAccessObserver implements Capacity {
+public class DetectorPythonTwin extends ObserverPythonAccess implements Capacity {
   public void update(final BaseMessage m) {
     if ((m instanceof BBoxes2DMessage)) {
       Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
@@ -68,20 +67,6 @@ public class DetectorPythonTwin extends PythonAccessObserver implements Capacity
       PartnerDetectionFound _partnerDetectionFound = new PartnerDetectionFound(_clientName_1);
       _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_partnerDetectionFound);
     }
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(Logging.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_LOGGING;
-  
-  @SyntheticMember
-  @Pure
-  private Logging $CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = $getSkill(Logging.class);
-    }
-    return $castSkill(Logging.class, this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
   }
   
   @Extension

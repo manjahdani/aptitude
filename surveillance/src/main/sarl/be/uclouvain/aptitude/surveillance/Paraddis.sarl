@@ -9,6 +9,8 @@ import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
+import io.sarl.core.MemberJoined
+import io.sarl.core.ParticipantJoined
 
 /** 
  * The agent gives global trait to agents. 
@@ -54,44 +56,76 @@ agent Paraddis {
 	//}
 	on Destroy {
 		// synchronized (AgentType)
-			//info("agent was stopped.")
+			info("Stopped.")
 	}
-	
+
+	on MemberJoined {
+		
+		//@DEBUG
+		info(" noticed " + occurrence.agentType.replaceAll("be.uclouvain.aptitude.surveillance.", " - ") +
+				" - &ID : " + occurrence.agentID.toString.substring(0, 5))
+	}
+
+	on ParticipantJoined {
+		//@DEBUG
+		//info("Participant  - " + occurrence.source.UUID.toString.substring(0, 5) + " - Joined space -" +
+			//occurrence.spaceID)
+	}
+
 	on CommitSuicide {
+		
+		//info("received commitSuicide : " + occurrence.fromMe + " : " + occurrence.source.UUID) 
+		terminateAgent
+	}
+
+	def terminateAgent {
 
 		/* 
-		 * When receiving this, the agent tries
-		 * 1. to cancel all the tasks he was busy with
-		 * 2. 
-		 * 
-		*/
+		 * Protocol 
+		 * 1. Kill sub-holons 
+		 * 2. Cancel tasks
+		 * 3. terminate agent
+		 */
 		
-		//info("I received a CommitSuicide : " + occurrence.fromMe + " : " +occurrence.source.UUID) 
-		if (hasMemberAgent && !getActiveTasks.contains("wait-task")) {
-				val waitTask = task("wait-task")
-				waitTask.every(2000) [
-				if (!hasMemberAgent) {
-					CancelTasks
-					waitTask.cancel
-					killMe
-				} else {
-					innerContext.defaultSpace.emit(this.ID,new CommitSuicide)[it!=me]
-				}
-			]
-		}
-		else {
+		if (hasMemberAgent) {
+			KillMembers
+		} else if (!getActiveTasks.isEmpty) {
+
 			CancelTasks
-			killMe //@TODO : Il reçoit 2 fois le message car ces processus sont concurrents (en fait ils continuent à recevoir de commitSuicide qui sont envoyés par des tiers)
+		} else {
+			killMe
 		}
 	}
+
+	def KillMembers {
+		
+		
+		for (h : memberAgents) {
+			innerContext.defaultSpace.emit(this.ID, new CommitSuicide)[it.UUID == h]
+		}
+		val waitTask = task("wait-member-killed-task")
+		waitTask.every(2000) [
+			if (!hasMemberAgent) {
+				CancelTasks
+			}
+		]
+	}
+	
 	def CancelTasks{
-		if (!getActiveTasks.isEmpty) {
-			for (e : getActiveTasks) {
-				//info("task in progress" + e)
-				task(e).cancel}}
-				//info("Done cancelling " + getActiveTasks)}
+		
+		var tasksInProgress = getActiveTasks
+		for (t : tasksInProgress) {
+			task(t).cancel
+			tasksInProgress.remove(t)
+			// @DEBUG info("done cancelling : " + getActiveTasks)
 	}
-	on Hello[!occurrence.fromMe]{
-		info("I received Hello")
-	}
+	
+	val waitTask = task("final-task")
+	waitTask.every(1000)[
+		if(tasksInProgress.isEmpty){
+			waitTask.cancel
+			killMe	
+		}
+	]
+}		
 }

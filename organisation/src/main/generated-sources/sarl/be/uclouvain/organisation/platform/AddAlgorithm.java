@@ -22,13 +22,13 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlElementType(15)
 @SuppressWarnings("all")
 public class AddAlgorithm extends Event {
-  public OpenEventSpace MissionSpace;
+  public OpenEventSpace missionSpace;
   
-  public AlgorithmInfo info;
+  public AlgorithmInfo algorithmInfo;
   
-  public AddAlgorithm(final OpenEventSpace ospace, final AlgorithmInfo d) {
-    this.MissionSpace = ospace;
-    this.info = d;
+  public AddAlgorithm(final OpenEventSpace openSpace, final AlgorithmInfo data) {
+    this.missionSpace = openSpace;
+    this.algorithmInfo = data;
   }
   
   @Override
@@ -53,10 +53,10 @@ public class AddAlgorithm extends Event {
   @Pure
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
-    builder.add("MissionSpace", this.MissionSpace);
-    builder.add("info", this.info);
+    builder.add("missionSpace", this.missionSpace);
+    builder.add("algorithmInfo", this.algorithmInfo);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = 1623098905L;
+  private static final long serialVersionUID = 452430600L;
 }

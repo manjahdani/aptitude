@@ -1,8 +1,8 @@
 package be.uclouvain.aptitude.surveillance.algorithm
 
-import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DMessage
-import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DTrackMessage
-import be.uclouvain.aptitude.surveillance.algorithm.messages.EvaluationMessage
+import be.uclouvain.python_access.messages.BBoxes2DMessage
+import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
+import be.uclouvain.python_access.messages.EvaluationMessage
 
 event BBoxes2DResult {
 

@@ -50,16 +50,25 @@ event OrganisationInfo {
 		this.context = ctxt
 		this.spaceID = sid
 	}
-
 }
+
 
 event TOLDOrganisationInfo extends OrganisationInfo {
 	
-	val StoredData : Object
+	val storedData : Object
 	new (ctxt : AgentContext, sid : OpenEventSpace, data : Object ) {
 		super(ctxt,sid)
-		this.StoredData = data
+		this.storedData = data
 	}
 }
-event PlatformOrganisationInfo extends OrganisationInfo
+
+event PlatformOrganisationInfo extends OrganisationInfo{
+	
+	val platformName : String
+
+	new (ctxt : AgentContext, sid : OpenEventSpace, name : String) {
+		super(ctxt,sid)
+		this.platformName = name
+	}
+}
 event InteractivittyOrganisationInfo extends OrganisationInfo

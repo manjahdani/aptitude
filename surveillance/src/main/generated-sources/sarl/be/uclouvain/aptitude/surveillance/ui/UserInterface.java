@@ -20,9 +20,8 @@ import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.DynamicSkillProvider;
-import io.sarl.lang.core.EventSpace;
 import java.util.Collection;
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.UUID;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -46,17 +45,17 @@ public class UserInterface extends Paraddis {
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     UUID _iD = this.getID();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(("UserInterface-" + _iD));
+    String _plus = (_iD + "-UserInterface");
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(_plus);
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Ready to receive external inputs");
-    Object _get = occurrence.parameters[0];
-    DeviceNetworkManagerSkill _deviceNetworkManagerSkill = new DeviceNetworkManagerSkill(65001, ((TreeMap<UUID, EventSpace>) _get));
-    DeviceNetworkManagerSkill s = this.<DeviceNetworkManagerSkill>setSkill(_deviceNetworkManagerSkill, 
-      InputDeviceCapacity.class);
+    UUID _parentID = this.getParentID();
+    DeviceNetworkManagerSkill _deviceNetworkManagerSkill = new DeviceNetworkManagerSkill(65001, _parentID);
+    DeviceNetworkManagerSkill s = this.<DeviceNetworkManagerSkill>setSkill(_deviceNetworkManagerSkill, InputDeviceCapacity.class);
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     InputDeviceRole _inputDeviceRole = new InputDeviceRole(this);
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_inputDeviceRole);
-    TreeMap<UUID, String> _mobileAddress = s.getMobileAddress();
+    HashMap<UUID, String> _mobileAddress = s.getMobileAddress();
     MobileOutputSkill _mobileOutputSkill = new MobileOutputSkill(_mobileAddress);
     this.<MobileOutputSkill>setSkill(_mobileOutputSkill, OutputDeviceCapacity.class);
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();

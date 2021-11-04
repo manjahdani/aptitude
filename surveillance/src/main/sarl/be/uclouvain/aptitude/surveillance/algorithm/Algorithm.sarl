@@ -4,6 +4,9 @@
 package be.uclouvain.aptitude.surveillance.algorithm
 
 import be.uclouvain.aptitude.surveillance.Paraddis
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerRole
+import be.uclouvain.aptitude.surveillance.platform.AgentAlgorithm
+import be.uclouvain.aptitude.surveillance.platform.AgentPlatform
 import be.uclouvain.organisation.AuthorizationToJoin
 import be.uclouvain.organisation.platform.AlgorithmJoinPlatform
 import be.uclouvain.organisation.told.entity.EntityRole
@@ -14,10 +17,12 @@ import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.OpenEventSpaceSpecification
 import java.util.HashMap
 import java.util.UUID
-import io.sarl.core.OpenEventSpace
-import java.util.LinkedList
+import io.sarl.lang.core.AgentContext
+import be.uclouvain.aptitude.surveillance.algorithm.counter.CompetitiveCounterRole
 
 /** 
  * Agent with a set of tasks (Goals) and a model (Belief). 
@@ -60,25 +65,26 @@ agent Algorithm extends Paraddis{
 	
 	uses Behaviors,Logging, Lifecycle, InnerContextAccess, ExternalContextAccess
 	
-	var ADN : AlgorithmInfo = null; 
+	var ADN : AlgorithmInfo = null;
 
+	val agentPlatformSpaces = new HashMap<String, OpenEventSpace>
+	var subHolons = new HashMap<AgentContext,UUID>
+	var openChanel : OpenEventSpace
+	
 	on Initialize {
 		ADN = occurrence.parameters.get(0) as AlgorithmInfo 
-		loggingName = "ALGORITHM-"+ ADN.name + "-"+ ADN.level +"-" + this.ID
-		
+		loggingName = this.ID + "-ALGORITHM-" + ADN.name + "-" + ADN.level 
 		registerBehavior(new EntityRole(this))
-				
-		if(ADN.level==0){
-			for (k : (occurrence.parameters.get(2) as LinkedList<OpenEventSpace>))
-			{
-				k.register(asEventListener)
-			}
-			//(occurrence.parameters.get(2) as OpenEventSpace).register(asEventListener) // the PlatformTOLDSpace only available for level 0
+		openChanel = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
+		openChanel.register(asEventListener)
+		
+		if (ADN.level == 0) {
 			var toSpawn = occurrence.parameters.get(1) as HashMap<UUID, AlgorithmInfo>
 			for (e : toSpawn.keySet) {spawnInContextWithID(Algorithm, e, innerContext, toSpawn.get(e).IncrementLevelAndGet)}}
 		
 		if(ADN.level>1){
-			//info(" My name is " + ADN.name + " I DO "+ ADN.task + " and my skills are : "+ ADN.belief)
+			info("new atomic agent with intention: " + ADN.task + " & belief : "+ ADN.belief)
+			registerBehavior(new AlgorithmEntity(this))
 			switch(ADN.task){
 				case "COUNTER": {
 					registerBehavior(new CompetitiveCounterRole(this), ADN, occurrence.parameters.get(1),
@@ -97,21 +103,31 @@ agent Algorithm extends Paraddis{
 		 else {
 			//info("I believe in : " + ADN.name)
 		 }
-		
-		 
 	}
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
-	on AlgorithmNeeded [occurrence.name == ADN.name] {
-			//info("One of my guy " +  occurrence.task + " is needed  with the belief : "  + occurrence.belief)
-			spawnInContext(Algorithm, occurrence.ContextID,(ADN.clone).IncrementLevelAndGet, occurrence.SpaceID,occurrence.sourceID) //@FIXME : improper names // Maybe the clone should directly integrate the incrementandLevel
-		}
-	on AlgorithmJoinPlatform[occurrence.task==ADN.task] {
-		//info("I received Algorithm Join Platform")
-		wake(new AlgorithmNeeded(occurrence.contextID, occurrence.defaultSpaceID, occurrence.name, ADN.belief,occurrence.task, occurrence.sourceID)
+	on AgentPlatform {
+		info("encounters : " + occurrence.name + " agent")
+		agentPlatformSpaces.put(occurrence.name, occurrence.topic)
+		occurrence.topic.register(asEventListener)
+		occurrence.topic.emit(this.ID, new AgentAlgorithm(ADN.name, openChanel))
+		wake(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it.UUID !== this.ID]
+	}
+	
+	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	on AlgorithmNeeded  { //
+			info("clones image with intention :" +  occurrence.task + "& belief : " + occurrence.belief)
+			if(occurrence.name === ADN.name){
+			val cloneID = UUID.randomUUID
+			subHolons.put(occurrence.ContextID, cloneID)
+			spawnInContextWithID(Algorithm, cloneID, occurrence.ContextID, ADN.cloneChild , occurrence.SpaceID, occurrence.sourceID) //@FIXME : improper names // Maybe the clone should directly integrate the incrementandLevel
+		}}
+	on AlgorithmJoinPlatform {
+		info("receives request to join platform from : " + occurrence.source.UUID.toString.substring(0, 5))
+		wake(new AlgorithmNeeded(occurrence.contextID, occurrence.missionSpace, occurrence.name, ADN.belief, ADN.task, occurrence.sourceID)
 		)
 	}
 	on AuthorizationToJoin {
-		//info("I received an Authorization to join from" + occurrence.source.UUID)
+		info("receives authorisation to join" + occurrence.source.UUID)
 		join(occurrence.contextID.getID, occurrence.defaultSpaceID.getSpaceID.getID)
 	}
 }

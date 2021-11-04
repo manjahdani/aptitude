@@ -1,0 +1,29 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation
+
+import io.sarl.core.OpenEventSpace
+
+/** 
+ * @author manjah
+ * 
+ */
+event HolonicParentInfo {
+
+	/** 
+	 * A private space used for the communication
+	 */
+	val spaceID : OpenEventSpace // UUID
+
+	/* 
+	 * Constructor
+	 * @param	ctxt	The context to join
+	 * @param	sid	    The space in the context to join
+	 */
+	new (sid : OpenEventSpace) {
+
+		this.spaceID = sid
+	}
+}
+

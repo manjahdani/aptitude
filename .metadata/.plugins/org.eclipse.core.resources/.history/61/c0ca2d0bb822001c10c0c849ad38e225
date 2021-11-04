@@ -1,0 +1,33 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance
+
+import be.uclouvain.organisation.util.HolonicConfig
+import io.sarl.lang.core.AgentContext
+import java.util.ArrayList
+
+/** 
+ * @author manjah
+ * 
+ */
+class TOLDHolonicConfig extends HolonicConfig {
+	
+	var parentContext : AgentContext
+	var init_tasks : ArrayList<String>
+	new (l : int, parent : AgentContext, init_tasks : ArrayList<String>){
+		
+		super(l)
+		this.parentContext = parent
+		this.init_tasks=init_tasks
+		
+	}
+	
+	def getParentContext {
+		return parentContext
+	}
+	def getInit_tasks {
+		return init_tasks
+	}
+	
+}

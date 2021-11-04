@@ -12,14 +12,11 @@ import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AtomicSkillReference;
-import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Skill;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
-import java.util.TreeMap;
-import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
@@ -38,8 +35,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SuppressWarnings("all")
 public abstract class InputSkill extends Skill implements InputDeviceCapacity {
   private final DatagramSocket client;
-  
-  protected TreeMap<UUID, EventSpace> listenersSpaceIDs;
   
   protected boolean serverRunning = true;
   
@@ -65,14 +60,14 @@ public abstract class InputSkill extends Skill implements InputDeviceCapacity {
             int _length_1 = packet.getLength();
             String message = new String(_data, _offset, _length_1);
             UDP_Message_Base data = this.parser.<UDP_Message_Base>Deserialize(message);
-            this.MessageAnalysis(data, packet.getAddress().getHostAddress());
+            this.messageAnalysis(data, packet.getAddress().getHostAddress());
             packet.setLength(buffer.length);
           }
         }
       } catch (final Throwable _t) {
         if (_t instanceof SocketException) {
-          Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-          _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("I noticed the problem at SocketExcepetion");
+          final SocketException e = (SocketException)_t;
+          e.printStackTrace();
         } else if (_t instanceof IOException) {
           final IOException e_1 = (IOException)_t;
           e_1.printStackTrace();
@@ -115,22 +110,12 @@ public abstract class InputSkill extends Skill implements InputDeviceCapacity {
     }
   }
   
-  public abstract void MessageAnalysis(final UDP_Message_Base data, final String IPaddrs);
+  public abstract void messageAnalysis(final UDP_Message_Base data, final String IPaddrs);
   
   public InputSkill(final int p) {
     try {
       DatagramSocket _datagramSocket = new DatagramSocket(p);
       this.client = _datagramSocket;
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
-  }
-  
-  public InputSkill(final int p, final TreeMap<UUID, EventSpace> subWorldSpaceIDs) {
-    try {
-      DatagramSocket _datagramSocket = new DatagramSocket(p);
-      this.client = _datagramSocket;
-      this.listenersSpaceIDs = subWorldSpaceIDs;
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

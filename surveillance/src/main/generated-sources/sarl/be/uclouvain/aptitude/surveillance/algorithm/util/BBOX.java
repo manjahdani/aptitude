@@ -45,6 +45,11 @@ public class BBOX {
     return this.h;
   }
   
+  @Pure
+  public BBOX getBBOX() {
+    return this;
+  }
+  
   public double update(final double X, final double Y, final double W, final double H) {
     double _xblockexpression = (double) 0;
     {

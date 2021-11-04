@@ -1,0 +1,31 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.platform
+
+import io.sarl.core.OpenEventSpace
+import java.util.UUID
+
+event AgentPlatform{
+	
+	val name : String
+	val id : UUID
+	val topic : OpenEventSpace 
+	
+	new(n : String, id:UUID, o : OpenEventSpace){
+		this.name = n
+		this.topic = o
+		this.id = id
+	}
+}
+
+event AgentAlgorithm {
+
+	val name : String
+	val topic : OpenEventSpace
+
+	new(n : String, o : OpenEventSpace) {
+		this.name = n
+		this.topic = o
+	}
+}

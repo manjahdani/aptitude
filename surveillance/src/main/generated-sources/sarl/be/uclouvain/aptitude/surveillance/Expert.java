@@ -1,24 +1,30 @@
 package be.uclouvain.aptitude.surveillance;
 
 import be.uclouvain.aptitude.surveillance.Paraddis;
-import be.uclouvain.organisation.AuthorizationToJoin;
+import be.uclouvain.organisation.AuthorizationToJoinContext;
+import be.uclouvain.organisation.RequestToJoin;
 import be.uclouvain.organisation.platform.AddMission;
 import be.uclouvain.organisation.platform.AnalystRole;
+import be.uclouvain.organisation.platform.NewMission;
 import be.uclouvain.organisation.platform.StopMission;
-import be.uclouvain.organisation.platform.newMission;
 import be.uclouvain.organisation.told.entity.EntityRole;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
+import io.sarl.core.ContextJoined;
 import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.Initialize;
+import io.sarl.core.InnerContextAccess;
 import io.sarl.core.Logging;
+import io.sarl.core.OpenEventSpace;
+import io.sarl.core.OpenEventSpaceSpecification;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Address;
+import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.DynamicSkillProvider;
@@ -26,10 +32,10 @@ import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.util.SerializableProxy;
 import java.io.ObjectStreamException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -39,9 +45,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * 
  * The goal of the expert is to draw conclusions such as statistics or occurrence of events. It will uses for that the help of algorithms and Sensors.
  * 
- * @TODO : It is strange that the sensitivity is sent. Maybe its best that platform creates a space where they could discuss
- * @TODO : Maybe expert or probably platform creates a space (a channel between them) for the discussion
- * @FIXME : Verify the need of TreeMap
+ * @FIXME : It is strange that the sensitivity is sent. Maybe its best that platform creates a space where they could discuss
+ * @FIXME : Maybe expert or probably platform creates a space (a channel between them) for the discussion
  * 
  * 
  * @author $Author: manjahdani$
@@ -54,104 +59,121 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlElementType(19)
 @SuppressWarnings("all")
 public class Expert extends Paraddis {
-  private TreeMap<UUID, EventSpace> PlatformlistenersSpaceIDs;
+  private HashMap<UUID, String> missionList = new HashMap<UUID, String>();
   
-  private ArrayList<UUID> platformList;
+  private HashMap<String, OpenEventSpace> encounteredPlatforms = new HashMap<String, OpenEventSpace>();
   
-  private final TreeMap<UUID, UUID> MissionList = new TreeMap<UUID, UUID>();
+  private OpenEventSpace publicChannel = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER().getInnerContext().<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, UUID.randomUUID());
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     UUID _iD = this.getID();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(("Expert-" + _iD));
-    Object _get = occurrence.parameters[0];
-    this.PlatformlistenersSpaceIDs = ((TreeMap<UUID, EventSpace>) _get);
-    Object _get_1 = occurrence.parameters[1];
-    this.platformList = ((ArrayList<UUID>) _get_1);
+    String _plus = (_iD + "-Expert");
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(_plus);
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     EntityRole _entityRole = new EntityRole(this);
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_entityRole);
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    this.publicChannel.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.asEventListener());
   }
   
   @SuppressWarnings({ "potential_field_synchronization_problem", "discouraged_occurrence_readonly_use" })
-  private void $behaviorUnit$newMission$1(final newMission occurrence) {
-    final UUID PlatformID = this.platformList.get(occurrence.Mission.getLocation());
-    this.MissionList.put(occurrence.Mission.getMissionID(), PlatformID);
+  private void $behaviorUnit$NewMission$1(final NewMission occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    String _location = occurrence.mission.getLocation();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("has a new mission " + _location));
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     AnalystRole _analystRole = new AnalystRole(this);
-    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_analystRole, occurrence.Mission);
-    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    EventSpace _get = this.PlatformlistenersSpaceIDs.get(PlatformID);
+    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_analystRole, occurrence.mission);
+    boolean _isInContext = this.isInContext(occurrence.platformOpenChannel.getSpaceID().getContextID());
+    if ((!_isInContext)) {
+      ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
+      RequestToJoin _requestToJoin = new RequestToJoin(this.publicChannel);
+      class $SerializableClosureProxy implements Scope<Address> {
+        
+        private final UUID $_contextID;
+        
+        public $SerializableClosureProxy(final UUID $_contextID) {
+          this.$_contextID = $_contextID;
+        }
+        
+        @Override
+        public boolean matches(final Address it) {
+          UUID _uUID = it.getUUID();
+          return Objects.equal(_uUID, $_contextID);
+        }
+      }
+      final Scope<Address> _function = new Scope<Address>() {
+        @Override
+        public boolean matches(final Address it) {
+          UUID _uUID = it.getUUID();
+          UUID _contextID = occurrence.platformOpenChannel.getSpaceID().getContextID();
+          return Objects.equal(_uUID, _contextID);
+        }
+        private Object writeReplace() throws ObjectStreamException {
+          return new SerializableProxy($SerializableClosureProxy.class, occurrence.platformOpenChannel.getSpaceID().getContextID());
+        }
+      };
+      _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(occurrence.platformOpenChannel, _requestToJoin, _function);
+    }
+    this.missionList.put(occurrence.mission.getMissionID(), occurrence.mission.getLocation());
+    this.encounteredPlatforms.put(occurrence.mission.getLocation(), occurrence.platformOpenChannel);
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    UUID _iD = occurrence.platformOpenChannel.getSpaceID().getID();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("starts mission with spaceID - " + _iD));
+    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
     EventSpace _defaultSpace = _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultSpace();
-    AddMission _addMission = new AddMission(_defaultSpace, occurrence.Mission);
-    class $SerializableClosureProxy implements Scope<Address> {
-      
-      private final UUID PlatformID;
-      
-      public $SerializableClosureProxy(final UUID PlatformID) {
-        this.PlatformID = PlatformID;
-      }
-      
-      @Override
-      public boolean matches(final Address it) {
-        UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, PlatformID);
-      }
-    }
-    final Scope<Address> _function = new Scope<Address>() {
-      @Override
-      public boolean matches(final Address it) {
-        UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, PlatformID);
-      }
-      private Object writeReplace() throws ObjectStreamException {
-        return new SerializableProxy($SerializableClosureProxy.class, PlatformID);
-      }
-    };
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(_get, _addMission, _function);
+    AddMission _addMission = new AddMission(_defaultSpace, occurrence.mission);
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER_1.emit(occurrence.platformOpenChannel, _addMission);
   }
   
   @SuppressWarnings({ "potential_field_synchronization_problem", "discouraged_occurrence_readonly_use" })
   private void $behaviorUnit$StopMission$2(final StopMission occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Received Stop Mission");
-    final UUID PlatformID = this.MissionList.get(occurrence.expertID);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("received Stop Mission");
+    String platformLocation = this.missionList.get(occurrence.expertID);
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("received Stop mission at " + platformLocation));
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    EventSpace _get = this.PlatformlistenersSpaceIDs.get(PlatformID);
+    OpenEventSpace _get = this.encounteredPlatforms.get(platformLocation);
     StopMission _stopMission = new StopMission(occurrence.expertID);
-    class $SerializableClosureProxy implements Scope<Address> {
-      
-      private final UUID PlatformID;
-      
-      public $SerializableClosureProxy(final UUID PlatformID) {
-        this.PlatformID = PlatformID;
-      }
-      
-      @Override
-      public boolean matches(final Address it) {
-        UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, PlatformID);
-      }
-    }
-    final Scope<Address> _function = new Scope<Address>() {
-      @Override
-      public boolean matches(final Address it) {
-        UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, PlatformID);
-      }
-      private Object writeReplace() throws ObjectStreamException {
-        return new SerializableProxy($SerializableClosureProxy.class, PlatformID);
-      }
-    };
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(_get, _stopMission, _function);
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(_get, _stopMission);
   }
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
-  private void $behaviorUnit$AuthorizationToJoin$3(final AuthorizationToJoin occurrence) {
+  private void $behaviorUnit$AuthorizationToJoinContext$3(final AuthorizationToJoinContext occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    String _substring = occurrence.getSource().getUUID().toString().substring(0, 5);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(
+      ((("receives authorisation to join the context of - " + _substring) + 
+        " and space ") + occurrence.defaultSpaceID));
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.join(occurrence.contextID.getID(), occurrence.contextID.getDefaultSpace().getSpaceID().getID());
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.join(occurrence.contextID, occurrence.defaultSpaceID);
+  }
+  
+  private void $behaviorUnit$ContextJoined$4(final ContextJoined occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
+    ConcurrentLinkedDeque<AgentContext> _allContexts = _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.getAllContexts();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("all experts context" + _allContexts));
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("DefaultSpaceJoined" + occurrence.defaultSpaceID));
+  }
+  
+  @Pure
+  protected boolean isInContext(final UUID contextID) {
+    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
+    ConcurrentLinkedDeque<AgentContext> _allContexts = _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.getAllContexts();
+    for (final AgentContext ctxt : _allContexts) {
+      UUID _iD = ctxt.getID();
+      boolean _equals = Objects.equal(_iD, contextID);
+      if (_equals) {
+        return true;
+      }
+    }
+    return false;
   }
   
   @Extension
@@ -210,12 +232,34 @@ public class Expert extends Paraddis {
     return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
   }
   
+  @Extension
+  @ImportedCapacityFeature(InnerContextAccess.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS;
+  
+  @SyntheticMember
+  @Pure
+  private InnerContextAccess $CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS == null || this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS = $getSkill(InnerContextAccess.class);
+    }
+    return $castSkill(InnerContextAccess.class, this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS);
+  }
+  
   @SyntheticMember
   @PerceptGuardEvaluator
   private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$0(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$AuthorizationToJoinContext(final AuthorizationToJoinContext occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AuthorizationToJoinContext$3(occurrence));
   }
   
   @SyntheticMember
@@ -228,18 +272,18 @@ public class Expert extends Paraddis {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$AuthorizationToJoin(final AuthorizationToJoin occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+  private void $guardEvaluator$ContextJoined(final ContextJoined occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AuthorizationToJoin$3(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$ContextJoined$4(occurrence));
   }
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$newMission(final newMission occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+  private void $guardEvaluator$NewMission(final NewMission occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$newMission$1(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$NewMission$1(occurrence));
   }
   
   @Override

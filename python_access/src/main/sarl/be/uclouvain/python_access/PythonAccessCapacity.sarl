@@ -1,0 +1,20 @@
+/** 
+ * 
+ */
+package be.uclouvain.python_access
+
+import org.json.simple.JSONObject
+import be.uclouvain.python_access.messages.BaseMessage
+
+/** 
+ * @author manjah
+ * 
+ */
+capacity PythonAccessCapacity {
+
+	def ActivateAccess(j : JSONObject)
+
+	def update(m : BaseMessage)
+
+	def UpdateStreamAccess(a : int)
+}

@@ -3,6 +3,8 @@
  */
 package be.uclouvain.organisation
 
+import io.sarl.lang.core.AgentContext
+
 /** 
  * 
  * @TODO : comment  
@@ -14,4 +16,11 @@ package be.uclouvain.organisation
  * @mavenartifactid $organisation$
  * 
  */
-event LocalDatabaseRequest
+event LocalDatabaseRequest {
+	
+	val context : AgentContext
+	
+	new(ctxt : AgentContext){
+		this.context= ctxt
+	}
+}

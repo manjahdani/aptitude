@@ -1,10 +1,9 @@
-/** 
- * 
- */
 package be.uclouvain.organisation.platform
 
 /** 
- * @TODO : Ensure that the resources are respected with the interactions (Maybe need clarifications) 
+ * The platform capacity involves the task of resource management ensuring a fair access and
+ * legitimate interactions. For example, the authorization or denial of new missions or the addition
+ * of an algorithm.
  * 
  * @author $Author: manjahdani$
  * @version $0.0.1$
@@ -15,10 +14,10 @@ package be.uclouvain.organisation.platform
  */
 capacity PlatformCapacity {
 
-	/** 
-	  * Verifies if some conditions in the World have changed.
-	*/
-	def ConditionActivation()
+//	/** 
+//	  * Verifies if some conditions in the World have changed.
+//	*/
+//	def ConditionActivation()
 
 	/** 
 	 * Verifies if the different information provided to the {@code WorldRole} respect the rules of the World.

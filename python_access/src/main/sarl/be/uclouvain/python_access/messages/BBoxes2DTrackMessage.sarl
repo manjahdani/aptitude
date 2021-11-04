@@ -1,0 +1,42 @@
+package be.uclouvain.python_access.messages 
+
+import com.hazelcast.nio.ObjectDataInput
+import com.hazelcast.nio.ObjectDataOutput
+import java.io.IOException
+import org.eclipse.xtend.lib.annotations.Accessors
+
+/** 
+ * @author samelson
+ * 
+ */
+class BBoxes2DTrackMessage extends BBoxes2DMessage {
+
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var trackingTime : double
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var globalIDs : int[]
+
+	val FACTORY_ID = 1
+	val CLASS_ID = 211
+	
+	def getFactoryId : int {
+		FACTORY_ID
+	}
+	
+	def getId : int {
+		CLASS_ID
+	}
+
+	def writeData(odo : ObjectDataOutput) throws IOException {
+		super.writeData(odo)
+		
+		odo.writeDouble(trackingTime)
+		odo.writeIntArray(globalIDs)
+	}
+
+	def readData(odi : ObjectDataInput) throws IOException {
+		super.readData(odi)
+		
+		trackingTime = odi.readDouble()
+		globalIDs = odi.readIntArray()
+	}
+
+}

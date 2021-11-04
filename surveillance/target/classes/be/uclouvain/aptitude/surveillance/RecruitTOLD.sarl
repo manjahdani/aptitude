@@ -1,0 +1,19 @@
+package be.uclouvain.aptitude.surveillance
+
+import java.util.LinkedList
+import java.util.UUID
+
+
+
+/** 
+ * @author manjah
+ * @TODO Comment
+ */
+event RecruitTOLD{
+	
+	val a : LinkedList<UUID>
+	
+	new(s:LinkedList<UUID>){
+		this.a=s
+	}
+}

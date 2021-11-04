@@ -34,25 +34,33 @@ public class AlgorithmJoinPlatform extends JoinOrganisation {
   
   public UUID sourceID;
   
+  public OpenEventSpace missionSpace;
+  
   public AlgorithmJoinPlatform(final AgentContext context, final OpenEventSpace openSpace, final String n, final String t, final UUID sourceID) {
-    super(context, openSpace);
+    super(context);
     this.name = n;
     this.task = t;
+    this.missionSpace = openSpace;
     this.sourceID = sourceID;
   }
   
   public AlgorithmJoinPlatform(final AgentContext context, final String n, final String t, final UUID sourceID) {
-    super(context, null);
+    super(context);
     this.name = n;
     this.task = t;
     this.sourceID = sourceID;
   }
   
   public AlgorithmJoinPlatform(final AgentContext context, final String n, final String t) {
-    super(context, null);
+    super(context);
     this.name = n;
     this.task = t;
     this.sourceID = null;
+  }
+  
+  public AlgorithmJoinPlatform(final AgentContext context, final String n) {
+    super(context);
+    this.name = n;
   }
   
   @Override
@@ -97,8 +105,9 @@ public class AlgorithmJoinPlatform extends JoinOrganisation {
     builder.add("name", this.name);
     builder.add("task", this.task);
     builder.add("sourceID", this.sourceID);
+    builder.add("missionSpace", this.missionSpace);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = 3814772508L;
+  private static final long serialVersionUID = 1488761828L;
 }

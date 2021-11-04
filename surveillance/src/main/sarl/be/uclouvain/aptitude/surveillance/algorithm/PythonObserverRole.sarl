@@ -1,0 +1,59 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm
+
+import be.uclouvain.organisation.platform.ObserverRole
+import io.sarl.core.Initialize
+import io.sarl.core.Schedules
+import java.io.FileReader
+import java.util.HashMap
+import org.json.simple.JSONObject
+import org.json.simple.parser.JSONParser
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior PythonObserverRole extends ObserverRole {
+	
+	uses Schedules, PythonTwinObserverAccessCapacity
+	protected var parser = new JSONParser();
+	protected var jsonConfig : JSONObject;
+	protected var partnerName : String;
+	
+	on Initialize {
+		task("waitforPlatform").every(500) [
+			
+			if (observerADN.belief !== null && platformName !== null) {
+				var configPath = observerADN.belief // occurrence.parameters.get(0).toString
+				var jsonConfigtmp = parser.parse(new FileReader(configPath)) as JSONObject;
+				var video = (new HashMap<String, String>)
+				video.put("path", "F:/data/".concat(platformName).concat("/vdo.avi"))
+				var pathRoi = new HashMap<String, String>
+				pathRoi.put("path", "F:/data/".concat(platformName).concat("/roi.jpg"))
+				var a = jsonConfigtmp.get("Preproc") as HashMap<String, HashMap<String, String>>
+				a.put("roi", pathRoi)
+				jsonConfigtmp.put("Video", video)
+				jsonConfig = jsonConfigtmp
+				task("waitforPlatform").cancel
+			}
+		]
+	}
+
+	on PartnerTrackingFound {
+		synchronized(this)
+		this.partnerName = occurrence.partnerName
+		//info("Tracking Partner found: " + this.partnerTrackingName)
+	}
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on PartnerDetectionFound {
+		this.partnerName = occurrence.partnerName
+		// info("Detection partner found: " + this.partnerDetectionName)
+		task("wait").in(2000) [
+			UpdateStreamAccess(1)
+			task("wait").cancel // PLAY
+			]
+	}
+
+}

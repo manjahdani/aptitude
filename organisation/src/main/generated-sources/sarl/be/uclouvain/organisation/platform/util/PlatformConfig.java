@@ -1,5 +1,6 @@
 package be.uclouvain.organisation.platform.util;
 
+import be.uclouvain.organisation.util.HolonicConfig;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
@@ -22,14 +23,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlSpecification("0.11")
 @SarlElementType(10)
 @SuppressWarnings("all")
-public class PlatformConfig {
+public class PlatformConfig extends HolonicConfig {
   private final LinkedList<PlatformConfig> subPlatformConfig = new LinkedList<PlatformConfig>();
-  
-  private final int LEVEL;
   
   private final AtomicInteger CPU_MAX_USAGE = new AtomicInteger();
   
-  private final String Location;
+  private String location;
   
   /**
    * Constructor
@@ -37,10 +36,15 @@ public class PlatformConfig {
    * @param	lvl	The hierarchical level of the Platform(0 is the highest level)
    * @param	shp	The shape of the Platform
    */
-  public PlatformConfig(final int entity_max, final int lvl, final String location) {
+  public PlatformConfig(final int lvl, final int entity_max, final String location) {
+    super(lvl);
     this.CPU_MAX_USAGE.set(entity_max);
-    this.LEVEL = lvl;
-    this.Location = location;
+    this.location = location;
+  }
+  
+  @Pure
+  public String getLocation() {
+    return this.location;
   }
   
   public void addSubPlatform(final PlatformConfig wc) {
@@ -49,16 +53,6 @@ public class PlatformConfig {
   
   public void removeSubPlatform(final PlatformConfig wc) {
     this.subPlatformConfig.remove(wc);
-  }
-  
-  @Pure
-  public String getLocation() {
-    return this.Location;
-  }
-  
-  @Pure
-  public int getLevel() {
-    return this.LEVEL;
   }
   
   @Pure
@@ -82,9 +76,7 @@ public class PlatformConfig {
     if (getClass() != obj.getClass())
       return false;
     PlatformConfig other = (PlatformConfig) obj;
-    if (other.LEVEL != this.LEVEL)
-      return false;
-    if (!Objects.equals(this.Location, other.Location))
+    if (!Objects.equals(this.location, other.location))
       return false;
     return super.equals(obj);
   }
@@ -95,8 +87,7 @@ public class PlatformConfig {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
-    result = prime * result + Integer.hashCode(this.LEVEL);
-    result = prime * result + Objects.hashCode(this.Location);
+    result = prime * result + Objects.hashCode(this.location);
     return result;
   }
 }

@@ -1,0 +1,78 @@
+
+package be.uclouvain.python_access.messages
+
+import org.eclipse.xtend.lib.annotations.Accessors
+import com.hazelcast.nio.ObjectDataOutput
+import com.hazelcast.nio.ObjectDataInput
+import java.io.IOException
+
+/** 
+ * @author manjah
+ * 
+ */
+class DisplayMessage extends BBoxes2DTrackMessage {
+
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var streamID : String
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var streamPath : String
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var countingLines : int[]
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var counts : int[]
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var name : String
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var sensitivity : int
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var observer : String
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var roiPath : String
+
+	val FACTORY_ID = 1
+	val CLASS_ID = 91
+
+	new() {
+	}
+
+	new(message : BBoxes2DTrackMessage) {
+		this.numberObjects = message.numberObjects
+		this.detectionTime = message.detectionTime
+		this.bboxes = message.bboxes
+		this.classIDs = message.classIDs
+		this.detConfs = message.detConfs
+		this.dimWidth = message.dimWidth
+		this.dimHeight = message.dimHeight
+		this.bboxesFormat = message.bboxesFormat
+		this.frameNumber = message.frameNumber
+		this.lastFrame = message.lastFrame
+		this.trackingTime = message.trackingTime
+		this.globalIDs = message.globalIDs
+	}
+
+	def getFactoryId : int {
+		FACTORY_ID
+	}
+
+	def getId : int {
+		CLASS_ID
+	}
+
+	def writeData(odo : ObjectDataOutput) throws IOException {
+		super.writeData(odo)
+
+		odo.writeUTF(streamID)
+		odo.writeUTF(streamPath)
+		odo.writeIntArray(countingLines)
+		odo.writeIntArray(counts)
+		odo.writeUTF(name)
+		odo.writeInt(sensitivity)
+		odo.writeUTF(observer)
+		odo.writeUTF(roiPath)
+	}
+
+	def readData(odi : ObjectDataInput) throws IOException {
+		super.readData(odi)
+
+		streamID = odi.readUTF()
+		streamPath = odi.readUTF()
+		countingLines = odi.readIntArray()
+		counts = odi.readIntArray()
+		name = odi.readUTF()
+		sensitivity = odi.readInt()
+		observer = odi.readUTF()
+		roiPath = odi.readUTF()
+	}
+}

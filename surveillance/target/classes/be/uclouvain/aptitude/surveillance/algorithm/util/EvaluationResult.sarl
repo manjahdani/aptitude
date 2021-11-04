@@ -1,0 +1,194 @@
+
+package be.uclouvain.aptitude.surveillance.algorithm.util
+
+import java.util.Locale
+
+import java.util.UUID
+import be.uclouvain.python_access.messages.EvaluationMessage
+
+/** 
+ * @TODO : To complete
+ * 
+ * @author  $ manjahdani$
+ * @version $0.0.2$
+ * @date $17/06/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
+ * 
+ */
+class EvaluationResults{
+
+	var CompetitorID : UUID
+	var CompetitorBelief : String
+	var Frame : int
+	var DetectionTime : double
+	var TrackingTime : double
+	var HOTA : double
+	var DetA : double
+	var AssA : double
+	var DetRe : double
+	var DetPr : double
+	var AssRe : double
+	var AssPr : double
+	var LocA : double
+	var HOTA_Array : double[]
+	var MOTA : double
+	var MOTP : double
+
+	new (id : UUID, s : String, ts : double, tt : double, f : int) {
+		this.CompetitorID = id
+		this.CompetitorBelief = s
+		this.DetectionTime = ts
+		this.TrackingTime = tt
+		this.Frame = f
+	}
+	
+	new (id : UUID, s : String, ts : double, tt : double) {
+		this.CompetitorID = id
+		this.CompetitorBelief = s
+		this.DetectionTime = ts
+		this.TrackingTime = tt
+	}
+
+	def setValues(e : EvaluationMessage) {
+		this.HOTA = e.getHOTA
+		this.DetA = e.getDetA
+		this.AssA = e.getAssA
+		this.DetRe = e.getDetRe
+		this.DetPr = e.getDetPr
+		this.AssRe = e.getAssRe
+		this.AssPr = e.getAssPr
+		this.LocA = e.getLocA
+		this.HOTA_Array = e.getHOTA_Array
+		this.MOTA = e.getMOTA
+		this.MOTP = e.getMOTP
+
+	}
+
+	def getCompetitorID {
+		return this.CompetitorID
+	}
+
+	def getBelief {
+		return this.CompetitorBelief
+	}
+
+	def getFrame {
+		return this.Frame
+	}
+
+	def getHOTA_Array(l : double[]) {
+		return HOTA_Array
+	}
+
+	def getMOTA {
+		return this.MOTA
+	}
+
+	def getMOTP {
+		return this.MOTP
+	}
+
+	def getLocA {
+		return this.LocA
+	}
+
+	def getDetA {
+		return this.DetA
+	}
+
+	def getAssA {
+		return this.AssA
+	}
+
+	def getDetRe {
+		return this.DetRe
+	}
+
+	def getPr {
+		return this.DetPr
+	}
+
+	def getAssRe {
+		return this.AssRe
+	}
+
+	def getAssPr {
+		return this.AssPr
+	}
+
+	def setHOTA_Array(l : double[]) {
+		this.HOTA_Array = l
+	}
+
+	def setMOTA(l : double) {
+		this.MOTA = l
+	}
+
+	def setMOTP(l : double) {
+		this.MOTP = l
+	}
+
+	def setLocA(l : double) : void {
+		this.LocA = l
+	}
+
+	def setDetA(l : double) : void {
+		this.DetA = l
+	}
+
+	def setAssA(l : double) : void {
+		this.AssA = l
+	}
+
+	def setDetRe(l : double) : void {
+		this.DetRe = l
+	}
+
+	def DetPr(l : double) : void {
+		this.DetPr = l
+	}
+
+	def setAssRe(l : double) : void {
+		this.AssRe = l
+	}
+
+	def DetAssPr(l : double) : void {
+		this.AssPr = l
+	}
+
+	def setDetectionTime(l : double) {
+		this.DetectionTime = l
+	}
+
+	def setTrackingTime(l : double) {
+		this.TrackingTime = l
+	}
+
+	def setHOTA(h : double) {
+		this.HOTA = h
+	}
+
+	def getDetectionTime : double {
+		return this.DetectionTime
+	}
+
+	def getTrackingTime : double {
+		return this.TrackingTime
+	}
+
+	def getHOTA : double {
+		return this.HOTA
+	}
+
+	@SuppressWarnings("discouraged_reference")
+	def EvaluationPrint() : void {
+		// println(CompetitorID.toString)
+		println(CompetitorBelief)
+		System.out.printf(Locale.FRANCE, "%-10.4f%n", HOTA)
+		System.out.printf(Locale.FRANCE, "%-10.4f%n", DetectionTime)
+		System.out.printf(Locale.FRANCE, "%-10.4f%n", TrackingTime)
+		// println("HOTA_ARRAY" + HOTA_Array.toString)
+		System.out.format("***********************")
+	}
+}

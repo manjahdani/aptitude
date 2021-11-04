@@ -20,39 +20,39 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlElementType(10)
 @SuppressWarnings("all")
 public class MissionData {
-  private final UUID MissionID;
+  private final UUID missionID;
   
-  private final UUID ExpertID;
+  private final UUID expertID;
   
-  private final int Location;
+  private final String location;
   
-  private final int Sensitivity;
+  private final int sensitivity;
   
-  public MissionData(final UUID missionID, final UUID expertID, final int location, final int sensitivity) {
-    this.MissionID = missionID;
-    this.ExpertID = expertID;
-    this.Location = location;
-    this.Sensitivity = sensitivity;
+  public MissionData(final UUID missionID, final UUID expertID, final String location, final int sensitivity) {
+    this.missionID = missionID;
+    this.expertID = expertID;
+    this.location = location;
+    this.sensitivity = sensitivity;
   }
   
   @Pure
   public UUID getMissionID() {
-    return this.MissionID;
+    return this.missionID;
   }
   
   @Pure
   public UUID getExpertID() {
-    return this.ExpertID;
+    return this.expertID;
   }
   
   @Pure
-  public int getLocation() {
-    return this.Location;
+  public String getLocation() {
+    return this.location;
   }
   
   @Pure
   public int getSensitivity() {
-    return this.Sensitivity;
+    return this.sensitivity;
   }
   
   @Override
@@ -66,13 +66,13 @@ public class MissionData {
     if (getClass() != obj.getClass())
       return false;
     MissionData other = (MissionData) obj;
-    if (!Objects.equals(this.MissionID, other.MissionID))
+    if (!Objects.equals(this.missionID, other.missionID))
       return false;
-    if (!Objects.equals(this.ExpertID, other.ExpertID))
+    if (!Objects.equals(this.expertID, other.expertID))
       return false;
-    if (other.Location != this.Location)
+    if (!Objects.equals(this.location, other.location))
       return false;
-    if (other.Sensitivity != this.Sensitivity)
+    if (other.sensitivity != this.sensitivity)
       return false;
     return super.equals(obj);
   }
@@ -83,10 +83,10 @@ public class MissionData {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
-    result = prime * result + Objects.hashCode(this.MissionID);
-    result = prime * result + Objects.hashCode(this.ExpertID);
-    result = prime * result + Integer.hashCode(this.Location);
-    result = prime * result + Integer.hashCode(this.Sensitivity);
+    result = prime * result + Objects.hashCode(this.missionID);
+    result = prime * result + Objects.hashCode(this.expertID);
+    result = prime * result + Objects.hashCode(this.location);
+    result = prime * result + Integer.hashCode(this.sensitivity);
     return result;
   }
 }

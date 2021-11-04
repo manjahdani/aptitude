@@ -19,25 +19,26 @@ import io.sarl.core.OpenEventSpace
  */
 event AddAlgorithm {
 	
-	var MissionSpace : OpenEventSpace
-	var info : AlgorithmInfo
+	var missionSpace : OpenEventSpace
+	var algorithmInfo : AlgorithmInfo
 	
-	new (ospace : OpenEventSpace, d : AlgorithmInfo){
-		this.MissionSpace = ospace
-		this.info=d 
+	new (openSpace : OpenEventSpace, data : AlgorithmInfo){
+		this.missionSpace = openSpace
+		this.algorithmInfo=data 
 	}
 }
 
+//@FIXME In Another File
 event AddObserver {
 
-	var MissionSpace   : OpenEventSpace
-	var SignalProvider : AlgorithmInfo // @FIXME not general
-	var SignalReceiver : AlgorithmInfo
+	var missionSpace   : OpenEventSpace
+	var signalProvider : AlgorithmInfo // @FIXME not general
+	var signalReceiver : AlgorithmInfo
 	var flag : int
 	new (ospace : OpenEventSpace, s : AlgorithmInfo, r : AlgorithmInfo) {
-		this.MissionSpace = ospace
-		this.SignalProvider = s
-		this.SignalReceiver = r 
+		this.missionSpace = ospace
+		this.signalProvider = s
+		this.signalReceiver = r 
 	}
 }
 

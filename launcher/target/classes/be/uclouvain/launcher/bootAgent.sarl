@@ -1,11 +1,11 @@
-/** 
- * 
- */
 package be.uclouvain.launcher
 
 import UDPMessages.MessageDeserializer
 import UDPMessages.UDP_Message_Base
-
+import be.uclouvain.aptitude.surveillance.CommitSuicide
+import be.uclouvain.aptitude.surveillance.Paraddis
+import be.uclouvain.aptitude.surveillance.TOLDAgent
+import be.uclouvain.aptitude.surveillance.platform.PlatformAgent
 import be.uclouvain.organisation.platform.util.PlatformConfig
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
@@ -15,9 +15,10 @@ import io.sarl.core.Schedules
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import javafx.application.Application
-import be.uclouvain.aptitude.surveillance.Paraddis
-import be.uclouvain.aptitude.surveillance.CommitSuicide
-import be.uclouvain.aptitude.surveillance.PlatformAgent
+import be.uclouvain.aptitude.surveillance.user.HolonicUserConfig
+import be.uclouvain.aptitude.surveillance.user.User
+import be.uclouvain.aptitude.surveillance.TOLDConfig
+
 /** 
  * @TODO: The holarchy needs rethinking. 
  * 
@@ -28,33 +29,44 @@ import be.uclouvain.aptitude.surveillance.PlatformAgent
  * @mavenartifactid $organisation$
  */
 agent bootAgent extends Paraddis {
+	
 	uses Lifecycle, Schedules, DefaultContextInteractions, Logging
 
-	//val junctionList = "MacqWoolridge"
+	// val junctionList = "MacqWoolridge"
+
+	//@Parameters
+	
+	val initial_cameras = newArrayList("S02C006", "S04C035")
+   	val INIT_TASKS= newArrayList("DETECTOR", "TRACKER", "COUNTER")
+
 
 	val client : DatagramSocket = new DatagramSocket(65000) // A client to listen requests
 	//val clientSender = new UDPSender() // homeMade client to send UDP message
 
-	on Initialize {
-		loggingName = "Boot" + "-" + this.ID
-		info("Universe started")
+	on Initialize { 
+		loggingName = this.ID + "-Boot"
+		//info("System started")
 		setAgentsReady()
 		enableInputStream()
 		task("Application-Launcher").execute[Application::launch(GUI, " ")]
-//        task("Application-front").execute[ApplicationVaadin.runFrontend]
 	}
 	
 	//@FIXME We absolutely need to extend the Universe Concept. We need a global database.. with local d.b. Need Rethinking
 	def setAgentsReady {
-		
-		// for (wc : subWorldConfig) {
+					// for (wc : subWorldConfig) {
 		// WorldHolon.addSubWorld(wc)
 		// }
-		//info("Setting the agents")
-		var PlatformHolonConfig = new PlatformConfig(5, 0, "LLN")
-		PlatformHolonConfig.addSubPlatform(new PlatformConfig(100, 1, "S02C006"))
-		PlatformHolonConfig.addSubPlatform(new PlatformConfig(100, 1, "S04C035"))
+		// info("Setting the agents")
+	
+		var PlatformHolonConfig = new PlatformConfig(0,5, "LLN")
+		for (c : initial_cameras) {
+			PlatformHolonConfig.addSubPlatform(new PlatformConfig(1,100,c))
+		}
+		
+		
+		spawn(TOLDAgent, new TOLDConfig(0,"LLN",null,INIT_TASKS))
 		spawn(PlatformAgent, PlatformHolonConfig)
+		spawn(User, new HolonicUserConfig(0, "UserAccessManager", initial_cameras))
 		// StartSimulation
 	}
 
@@ -84,7 +96,7 @@ agent bootAgent extends Paraddis {
 				if (data !== null) {
 					MessageAnalysis(data, (packet.getAddress()).getHostAddress)
 				} else {
-					info("I received it NULLL" + data)
+					info("received NULL" + data)
 				}
 				packet.setLength(buffer.length);
 			}

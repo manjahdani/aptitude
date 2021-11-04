@@ -1,7 +1,7 @@
 package be.uclouvain.organisation.platform;
 
-import be.uclouvain.organisation.platform.MembershipRule;
 import be.uclouvain.organisation.platform.PlatformCapacity;
+import be.uclouvain.organisation.platform.util.MembershipRule;
 import be.uclouvain.organisation.platform.util.PlatformConfig;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
@@ -45,10 +45,6 @@ public class PlatformSkill extends Skill implements PlatformCapacity {
   @Pure
   public PlatformConfig getPlatformConfig() {
     return this.WC;
-  }
-  
-  @Override
-  public void ConditionActivation() {
   }
   
   @Override

@@ -25,24 +25,32 @@ event AlgorithmJoinPlatform extends JoinOrganisation {
 	var name : String // Name of the algorithm
 	var task : String // Which task will be done
 	var sourceID : UUID
+	var missionSpace : OpenEventSpace
+	
 	new (context : AgentContext, openSpace : OpenEventSpace, n : String, t : String, sourceID : UUID) {
-		super(context,openSpace)
+		super(context)
 		this.name = n
 		this.task = t
+		this.missionSpace = openSpace
 		this.sourceID =sourceID
 	}
 
 	new (context : AgentContext, n : String, t : String, sourceID : UUID) {
-		super(context, null)
+		super(context)
 		this.name = n
 		this.task = t
 		this.sourceID = sourceID
 	}
 
 	new (context : AgentContext, n : String, t : String) {
-		super(context, null)
+		super(context)
 		this.name = n
 		this.task = t
 		this.sourceID = null
+	}
+
+	new (context : AgentContext, n : String) {
+		super(context)
+		this.name = n
 	}
 }

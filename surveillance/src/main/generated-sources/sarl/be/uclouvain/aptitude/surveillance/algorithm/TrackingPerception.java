@@ -1,6 +1,6 @@
 package be.uclouvain.aptitude.surveillance.algorithm;
 
-import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxes2D;
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
@@ -10,15 +10,17 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
+ * @TODO: Comment
+ * 
  * @author manjah
  */
 @SarlSpecification("0.11")
 @SarlElementType(15)
 @SuppressWarnings("all")
 public class TrackingPerception extends Event {
-  public ArrayList<BBoxes2D> perceptions;
+  public ArrayList<BBoxe2D> perceptions;
   
-  public TrackingPerception(final ArrayList<BBoxes2D> p) {
+  public TrackingPerception(final ArrayList<BBoxe2D> p) {
     this.perceptions = p;
   }
   
@@ -48,5 +50,5 @@ public class TrackingPerception extends Event {
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = 4741442995L;
+  private static final long serialVersionUID = 3601438995L;
 }

@@ -1,21 +1,17 @@
 package be.uclouvain.aptitude.surveillance.ui;
 
-import be.uclouvain.aptitude.surveillance.algorithm.CommunicationManager;
-import be.uclouvain.aptitude.surveillance.algorithm.PythonAccess;
-import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DTrackMessage;
-import be.uclouvain.aptitude.surveillance.algorithm.messages.BaseMessage;
 import be.uclouvain.aptitude.surveillance.ui.DisplayCapacity;
-import be.uclouvain.aptitude.surveillance.ui.DisplayMessage;
+import be.uclouvain.python_access.CommunicationManager;
+import be.uclouvain.python_access.PythonAccess;
+import be.uclouvain.python_access.messages.BBoxes2DTrackMessage;
+import be.uclouvain.python_access.messages.BaseMessage;
+import be.uclouvain.python_access.messages.DisplayMessage;
 import io.sarl.core.AgentTask;
-import io.sarl.core.Logging;
-import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Agent;
-import io.sarl.lang.core.AtomicSkillReference;
 import java.util.Objects;
-import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -44,12 +40,13 @@ public class DisplaySkill extends PythonAccess implements DisplayCapacity {
     }
   }
   
-  public void sendDisplayMessage(final BBoxes2DTrackMessage bboxes2dTrack, final String streamID, final String streamPath, final String roi, final int[] countingLines, final int[] counts, final String observer, final int sensitivity) {
+  public void sendDisplayMessage(final BBoxes2DTrackMessage bboxes2dTrack, final String streamID, final String streamPath, final String roi, final int[] countingLines, final int[] counts, final String name, final String observer, final int sensitivity) {
     DisplayMessage displayMessage = new DisplayMessage(bboxes2dTrack);
     displayMessage.setStreamID(streamID);
     displayMessage.setStreamPath(streamPath);
     displayMessage.setCountingLines(countingLines);
     displayMessage.setCounts(counts);
+    displayMessage.setName(name);
     displayMessage.setObserver(observer);
     displayMessage.setSensitivity(sensitivity);
     if ((roi != null)) {
@@ -60,20 +57,6 @@ public class DisplaySkill extends PythonAccess implements DisplayCapacity {
   
   public void update(final BaseMessage m) {
     throw new UnsupportedOperationException("TODO: auto-generated method stub");
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(Logging.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_LOGGING;
-  
-  @SyntheticMember
-  @Pure
-  private Logging $CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = $getSkill(Logging.class);
-    }
-    return $castSkill(Logging.class, this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
   }
   
   @Override

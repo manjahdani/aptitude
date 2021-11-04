@@ -1,6 +1,3 @@
-/** 
- * 
- */
 package be.uclouvain.organisation.platform.util
 
 import java.util.concurrent.atomic.AtomicInteger
@@ -10,106 +7,45 @@ import org.arakhne.afc.math.geometry.d2.d.Vector2d
 import java.util.TreeMap
 
 /** 
- * @TODO: write a description
+ * The class represents a crossable counting line with a direction.
  * 
- * @author $Author: manjahdani$
+ * @param : lx : X coordinate of the left point A  
+ * @param : ly : Y coordinate of the left point A
+ * @param : rX : X coordinate of the right point B
+ * @param : rY : Y coordinate of the right point B
+ * @param : numberOfClass : The number of object's classification
+ * @param : d  : direction  @FIXME not clear
+ * 
+ * @author $manjahdani$
  * @version $0.0.1$
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $surveillance$
  * 
  */
-class countingLine {
+class OrientedCountingLine extends CountingLine {
+
+	val ANGLE_ALONGSIDE = Math.PI * 80 / 180;
+	val ANGLE_OPPOSITE = Math.PI * 120 / 180;
 	
-	
-	
-	public var direction : int;
-	public var lowerX : double
-	public var upperX : double
-	public var lowerY : double
-	public var upperY : double
-	public val counts = new TreeMap<Integer, AtomicInteger>
-	
-	
-	
-  	public val ObjEncountered = new ArrayList<Integer>
+	public var direction : int; 
   	val normale : Vector2d;
+  	
+	new (lX : int, lY : int, uX : int, uY : int, numberOfClass : int, d : int) {
 	
-	val ANGLE_ALONGSIDE = Math.PI*80/180; 
-	val ANGLE_OPPOSITE = Math.PI*120/180;
-	
-	new (lX : double, lY : double, uX : double, uY : double, d : int) {
-		this.lowerX = lX
-		this.upperX = uX
-		this.lowerY = lY
-		this.upperY = uY
+		super(lX,lY, uX,uY, numberOfClass)
 		this.direction = d
 		this.normale = get_normale(new Point2d(lX,lY), new Point2d(uX,uY), direction)
-		
-		counts.put(0, new AtomicInteger(0)) // truck
-		counts.put(1, new AtomicInteger(0)) // bycicle
-		counts.put(2, new AtomicInteger(0)) // bus
-		counts.put(3, new AtomicInteger(0)) // car 
-		counts.put(4, new AtomicInteger(0)) // motor
-		counts.put(5, new AtomicInteger(0)) // motorized vehicle
-		counts.put(6, new AtomicInteger(0)) // non-motorized vehicle
-		counts.put(7, new AtomicInteger(0)) // pedestrian
-		counts.put(8, new AtomicInteger(0)) // pickup
-		counts.put(9, new AtomicInteger(0)) // single_unit truck
-		counts.put(10, new AtomicInteger(0))// work_van
-		
-	}
-
-	def isInWorldLimit(x : double, y : double, z : double) : boolean {
-		if (x > lowerX && ( x < upperX )) {
-			return false
-		}
-		if (y > lowerY && ( y < upperY )) {
-			return false
 		}
 		
-		return true
-	}
-
-	def CopyWorld(w : countingLine) {
-		this.lowerX = w.lowerX
-		this.upperX = w.upperX
-		this.lowerY = w.lowerY
-		this.upperY = w.upperY
-		this.direction = w.direction
-	}
-	
-	def getCounts
-	{
-		return this.counts
-	}
-	
-	def IncrementCounts(classID : int){
-		
-		this.counts.get(classID).andIncrement
-	}
-	def getLine {
-		return newArrayList(new Point2d(lowerX,lowerY),new Point2d(upperX,upperY))
-	}
-	
-	def ObjectEncountered(ID : int) {
-		
-		if(ObjEncountered.contains(ID)){
-			return true
-		}
-		else{
-			ObjEncountered.add(ID)
-			return false
-		}
-	}
 	def getNormale{
 		return this.normale
 	}
 
 	def get_normale(P1 : Point2d, P2:Point2d, flag : int) {
 
-    // Flag :  1  gives the normale towards South or West
-    // Flag : -1  gives the normale towards North or East
+    // Flag :  1  gives the normal towards South or West
+    // Flag : -1  gives the normal towards North or East
     
     var A:Point2d = P1
     var B:Point2d = P2
@@ -138,6 +74,69 @@ class countingLine {
 	}
 }
 
+/** 
+ * The class represents a crossable counting line.
+ * 
+ * @param : lx : X coordinate of the left point A  
+ * @param : ly : Y coordinate of the left point A
+ * @param : rX : X coordinate of the right point B
+ * @param : rY : Y coordinate of the right point B
+ * @param : numberOfClass : The number of object's classification 
+ * 
+ * @author manjahdani
+ * @version 0.0.2
+ * @date $17/06/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
+ * 
+ */
 
+class CountingLine {
+
+
+	public var X_A : int // X coordinate of the left point A 
+	public var Y_A : int // Y coordinate of the left point A
+	public var X_B : int // X coordinate of the right point A
+	public var Y_B : int // Y coordinate of the right point A
 	
+	public val crossedObjects = new ArrayList<Integer>
+	public val counts = new TreeMap<Integer, AtomicInteger>
+	
+	new (lX : int, lY : int, rX : int, rY : int, numberOfClass : int) {
+		this.X_A = lX
+		this.Y_A = lY
+		this.X_B = rX
+		this.Y_B = rY
+		
+		/*
+		 * Initialise the counting. 
+		 * The mapping of the class number and the its representation is specified in an external file. 
+		 *  
+		 */
+		for (var i = 0; i<numberOfClass ; i++){
+			counts.put(i, new AtomicInteger(0)) 
+		}
+	}
+	
+	def getCounts {
+		return this.counts
+	}
+	def incrementCount(classID : int) {
+		this.counts.get(classID).andIncrement
+	}
 
+	def getLine {
+		return newArrayList(new Point2d(X_A, Y_A), new Point2d(X_A, Y_A))
+	}
+
+	def hasCrossed(ID : int) {
+
+		if (crossedObjects.contains(ID)) {
+			return true
+		} else {
+			crossedObjects.add(ID)
+			return false
+		}
+	}
+
+}

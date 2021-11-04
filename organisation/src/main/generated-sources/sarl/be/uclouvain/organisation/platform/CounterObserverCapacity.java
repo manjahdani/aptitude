@@ -1,11 +1,11 @@
 package be.uclouvain.organisation.platform;
 
 import be.uclouvain.organisation.platform.ObserverCapacity;
-import be.uclouvain.organisation.platform.util.countingLine;
+import be.uclouvain.organisation.platform.util.OrientedCountingLine;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.core.AgentTrait;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 @SarlSpecification("0.11")
 @SarlElementType(20)
@@ -14,7 +14,7 @@ public interface CounterObserverCapacity extends ObserverCapacity {
   /**
    * The capacity is able to display
    */
-  public abstract TreeMap<String, countingLine> DisplayPerception(final int actionID);
+  public abstract HashMap<String, OrientedCountingLine> DisplayPerception(final int actionID);
   
   /**
    * @ExcludeFromApidoc
@@ -24,7 +24,7 @@ public interface CounterObserverCapacity extends ObserverCapacity {
       super(capacity, caller);
     }
     
-    public TreeMap<String, countingLine> DisplayPerception(final int actionID) {
+    public HashMap<String, OrientedCountingLine> DisplayPerception(final int actionID) {
       try {
         ensureCallerInLocalThread();
         return this.capacity.DisplayPerception(actionID);

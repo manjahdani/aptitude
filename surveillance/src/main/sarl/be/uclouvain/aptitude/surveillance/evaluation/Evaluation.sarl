@@ -1,0 +1,24 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.evaluation
+
+import be.uclouvain.python_access.PythonAccessCapacity
+
+/** 
+ * @TODO: write a description
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
+ * 
+ */
+capacity Evaluation extends PythonAccessCapacity {
+
+	def sendEvaluationRequest(requestID : String, predictions : String, gts : String)
+
+	def sendEvaluationRequest(requestID : String, predictions : String, gts : String, maxFrame : int)
+}
+

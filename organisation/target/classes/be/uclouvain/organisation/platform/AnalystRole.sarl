@@ -1,6 +1,3 @@
-/** 
- * 
- */
 package be.uclouvain.organisation.platform
 
 import be.uclouvain.organisation.AuthorizationToJoin
@@ -22,9 +19,13 @@ import be.uclouvain.organisation.platform.util.MissionData
 
 /** 
  * 
- * An Analyst receives perceptions and translates those into Insights. 
- * For example, the Analyst  upon the reception of a list of cars and 
- * their position could extrapolate if those cars entered or exited an Area and raise the Event according to it. 
+ * The Analyst gathers information about a mission and collects Events of Interest or more generally
+ * intelligence (e.g. statistics) for the Client. The role could recommend actions as well. The concept
+ * is not necessarily holonic.
+ * 
+ * As an example, an Analyst received 175 events of incidents involving bikes and cars from one
+ * Algorithm. After analysing the incidents, it could draw recommendations to the Client to take
+ * actions such as a preventive campaign or new installations.
  * 
  * We advise Analysts specializing to one scenario; consequently, you need two Analysts to perform the counting of vehicles and detect traffic offenses. 
  * However, those Analysts could use the same Observer if they rely on those perceptions. 
@@ -39,33 +40,28 @@ import be.uclouvain.organisation.platform.util.MissionData
 behavior AnalystRole {
 	
 	uses Logging, Behaviors,DefaultContextInteractions, ExternalContextAccess
-
-	protected var BaseContext : AgentContext
-	protected var BaseSpace : EventSpace
 	
-	protected var PlatformContext : AgentContext
-	protected var PlatformSpace : OpenEventSpace //Private channel 
+	protected var platformContext : AgentContext
+	protected var platformSpace : OpenEventSpace //Private channel 
 	
 	protected var TOLDContext : AgentContext
-	protected var TOLDSpace : OpenEventSpace
+	protected var TOLDSpace : OpenEventSpace // Private channel
 
-	protected var MissionSpace : OpenEventSpace
+	protected var missionSpace : OpenEventSpace
 	
 	
-	val Sensitivity = new AtomicInteger()
+	val sensitivity = new AtomicInteger()
 	/** 
 	 * Receiving this event, the behavior has to update its fields of perception.
 	 */
-	val availableObservers = newArrayList("Extremely Careful", "Speed, Speed, Speed ", "Speed, Speed, Speed ",
-		"Balanced")
+	val availableObservers = newArrayList("careful", "dynamic", "dynamic ",
+		"balanced")
 	
 	var myObserver : UUID
 	@SuppressWarnings("potential_field_synchronization_problem")
-	on Initialize {
-		BaseContext = getDefaultContext
-		BaseSpace = getDefaultSpace
-		Sensitivity.set((occurrence.parameters.get(0) as MissionData).sensitivity)
-		info("As an expert I will start the mission of Vehicle Counting with the sensitivity:  " + availableObservers.get(Sensitivity.get))
+	on Initialize 
+		sensitivity.set((occurrence.parameters.get(0) as MissionData).sensitivity)
+		info("starts mission of vehicle counting with sensitivity:  " + availableObservers.get(sensitivity.get))
 	}
 	
 	@SuppressWarnings("potential_field_synchronization_problem")
@@ -73,18 +69,18 @@ behavior AnalystRole {
 	// @FIXME There are global behavior organisational Behavior
 	on PlatformOrganisationInfo {
 		//info("Joining the Platform organisation: " + occurrence.spaceID + " (" + occurrence.context + ").")
-		PlatformContext = occurrence.context
-		PlatformSpace = occurrence.spaceID
-		PlatformSpace.register(asEventListener)
-		//info("Come here : Vehicle Counter")
-		PlatformSpace.emit(new LocalDatabaseRequest)[it.UUID == PlatformContext.ID]
-		PlatformSpace.emit(new AddAlgorithm(MissionSpace, new AlgorithmInfo("APTITUDE", "COUNTER")))
+		platformContext = occurrence.context
+		platformSpace = occurrence.spaceID
+		platformSpace.register(asEventListener)
+		info("asks for algorithm performing vehicle counting to platform")
+		platformSpace.emit(new LocalDatabaseRequest(defaultContext))[it.UUID == platformContext.ID]
+		platformSpace.emit(new AddAlgorithm(missionSpace, new AlgorithmInfo("APTITUDE", "COUNTER")))
 	}
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on AuthorizationToJoin {
-		MissionSpace = occurrence.defaultSpaceID;
-		MissionSpace.register(asEventListener)
-		
+		info("Received authorization to perform a mission" + occurrence.defaultSpaceID)
+		missionSpace = occurrence.defaultSpaceID;
+		missionSpace.register(asEventListener)
 	}
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on TOLDOrganisationInfo{
@@ -94,9 +90,9 @@ behavior AnalystRole {
 	}
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on SensititvityRequest{
-		info("The user sensitivity is : " + availableObservers.get(Sensitivity.get))
+		info("user sensitivity is : " + availableObservers.get(sensitivity.get))
 		myObserver=occurrence.source.UUID
-		emit(PlatformContext.defaultSpace, new MissionSensitivity(newLinkedList(Sensitivity.get))
+		emit(platformContext.defaultSpace, new MissionSensitivity(newLinkedList(sensitivity.get))
 		)[it.UUID==occurrence.source.UUID]
 	}
 }

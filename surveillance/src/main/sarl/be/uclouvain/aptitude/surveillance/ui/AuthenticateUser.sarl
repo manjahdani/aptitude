@@ -1,0 +1,21 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.ui
+
+import UDPMessages.UDP_Message_AuthenticateMobile
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+event AuthenticateUser {
+	
+	val userID : UUID
+	val data : UDP_Message_AuthenticateMobile
+	new (ID : UUID, data : UDP_Message_AuthenticateMobile) {
+		this.data=data
+		this.userID = ID
+	}
+}

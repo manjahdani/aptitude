@@ -4,6 +4,7 @@
 package be.uclouvain.organisation.platform
 
 import be.uclouvain.organisation.platform.util.MissionData
+import io.sarl.core.OpenEventSpace
 
 /** 
  * Request to perform a New Mission 
@@ -27,13 +28,30 @@ import be.uclouvain.organisation.platform.util.MissionData
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
  */
-event newMission{
+event NewMission{
 
-	val Mission : MissionData
+	val mission : MissionData
+	var platformOpenChannel : OpenEventSpace
 
 	new(data : MissionData) {
 
-		this.Mission = data
+		this.mission = data
+	}
+	
+	new(data : MissionData, sid : OpenEventSpace) {
+		
+		this.mission = data
+		this.platformOpenChannel = sid
 	}
 }
 
+event AuthorizedMission {
+
+	val mission : MissionData
+	val platformOpenChannel : OpenEventSpace
+	
+	new(data : MissionData, sid : OpenEventSpace) {
+		this.mission = data
+		this.platformOpenChannel = sid
+	}
+}

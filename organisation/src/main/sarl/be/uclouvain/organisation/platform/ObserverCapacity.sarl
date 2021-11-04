@@ -3,8 +3,11 @@
  */
 package be.uclouvain.organisation.platform
 
-import be.uclouvain.organisation.platform.util.countingLine
-import java.util.TreeMap
+
+import java.util.HashMap
+import be.uclouvain.organisation.platform.util.OrientedCountingLine
+
+//@FIX
 
 /** 
  * Provide tools to interpret a signal    
@@ -27,15 +30,14 @@ capacity ObserverCapacity {
 	 def Signal2Perception(signal : Object)
 }
 
-
-//@TODO this is non-sens ? why create such a specific capacity for that at least not the way we use it ? Maybe it is the analyst ? Or at least provide another name if we want it to be an Observer Capacity
-// As it is mainly a debug option... 
+// @TODO this is non-sens ? why create such a specific capacity for that at least not the way we use it ? Maybe it is the analyst ? Or at least provide another name if we want it to be an Observer Capacity
+// As it is mainly a debug option...
 capacity CounterObserverCapacity extends ObserverCapacity {
 
-	/** 
-	 * The capacity is able to display  
-	 *
-	 * */	
-
-	def DisplayPerception(actionID : int) : TreeMap<String, countingLine>
+		/** 
+		 * The capacity is able to display  
+		 * 
+		 * 
+		 */
+	def DisplayPerception(actionID : int) : HashMap<String, OrientedCountingLine> 	// @FIXME : It is not an ObserverCapacity
 }

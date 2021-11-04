@@ -1,0 +1,13 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.told
+
+/** 
+ * @author manjah
+ * 
+ */
+capacity InternalUpdate {
+	
+	def internalUpdate(info : Object)
+}

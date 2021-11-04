@@ -13,11 +13,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlElementType(15)
 @SuppressWarnings("all")
 public class TOLDOrganisationInfo extends OrganisationInfo {
-  public final Object StoredData;
+  public final Object storedData;
   
   public TOLDOrganisationInfo(final AgentContext ctxt, final OpenEventSpace sid, final Object data) {
     super(ctxt, sid);
-    this.StoredData = data;
+    this.storedData = data;
   }
   
   @Override
@@ -42,9 +42,9 @@ public class TOLDOrganisationInfo extends OrganisationInfo {
   @Pure
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
-    builder.add("StoredData", this.StoredData);
+    builder.add("storedData", this.storedData);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = -2517915252L;
+  private static final long serialVersionUID = -216412820L;
 }

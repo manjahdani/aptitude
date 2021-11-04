@@ -1,0 +1,113 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.evaluation
+
+
+import be.uclouvain.aptitude.surveillance.algorithm.EvaluationResult
+import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
+import be.uclouvain.aptitude.surveillance.algorithm.PartnerEvaluationFound
+import be.uclouvain.aptitude.surveillance.algorithm.TrackingRequest
+import be.uclouvain.aptitude.surveillance.algorithm.util.EvaluationResults
+import be.uclouvain.aptitude.surveillance.algorithm.util.Metric
+import be.uclouvain.python_access.messages.EvaluationMessage
+import io.sarl.core.Behaviors
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import java.io.FileReader
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.UUID
+import org.json.simple.JSONObject
+import org.json.simple.parser.JSONParser
+import io.sarl.core.DefaultContextInteractions
+import be.uclouvain.aptitude.surveillance.algorithm.counter.CounterRole
+
+/** 
+ * @TODO : To complete
+ * 
+ * @author  $ manjahdani$
+ * @version $0.0.1$
+ * @date $17/06/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
+ * 
+ */
+behavior AlgorithmSelectorRole {
+	
+	uses AlgorithmSelection, Behaviors, Logging, Evaluation, DefaultContextInteractions  
+	
+	var evaluationPartnerName : String;
+	
+	
+	protected var Comp_Duration : long
+	protected var numberTests = 0 
+	
+	protected var score : Metric; 
+	protected var gts : String
+	
+	on Initialize {
+		score = occurrence.parameters.get(0) as Metric
+		gts = new String(Files.readAllBytes(Paths.get(score.gtFilePatch)))
+		setSkill(new EvaluationImpl, Evaluation)		
+		setSkill(new AlgorithmSelectionSkill(score.params),AlgorithmSelection)
+		var configPath = "F:/aptitude/surveillance/src/main/resources/config/evalconfig.json"
+		var parser = new JSONParser();
+		var configPathEvaluator = configPath
+		var jsonEvaluator = parser.parse(new FileReader(configPathEvaluator)) as JSONObject;
+		info("Activating access")
+		ActivateAccess(jsonEvaluator)
+		info("Access activated")
+}
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on PartnerEvaluationFound {
+		evaluationPartnerName = occurrence.partnerName
+		//info("I found my partner" + EvaluationPartnerName)
+		this.Comp_Duration = System.currentTimeMillis()
+	}
+
+	on LastFrame {
+		info("Receveid " + occurrence.pred_file_Path + occurrence.frameNumber)
+		info("Sending to evaluation")
+		var predictions = new String(Files.readAllBytes(Paths.get(occurrence.pred_file_Path)));
+		var testID = UUID.randomUUID
+		addResult(testID,
+			new EvaluationResults(occurrence.source.UUID, occurrence.pred_file_Path, occurrence.total_time_detection,
+				occurrence.total_time_tracking, occurrence.frameNumber))
+		sendEvaluationRequest(testID.toString, predictions, gts)
+	}
+
+	/* 
+	 * @FIXME Not general
+	 */
+	on EvaluationResult {
+
+		synchronized (this) {
+			 info("Message Evaluation Received")
+			if (addResult(UUID.fromString(occurrence.result.requestID), occurrence.result)) {
+				numberTests += 1
+				info("Recording the result of Competitor " + numberTests)
+				if (numberTests == 2) {
+					var selected = selectAlgorithm()
+					emit(new TrackingRequest(selected.belief))[it.UUID == selected.belief]
+					registerBehavior(new CounterRole(this.owner))
+				}
+			}}
+			// print(Result) 
+	}
+	
+	@SuppressWarnings("discouraged_reference")
+	def print(result : EvaluationMessage) {
+		
+		 println("HOTA \t" + result.HOTA)
+		 println("DetA \t" + result.detA)
+		 println("AssA \t" + result.assA)
+		 println("DetRe \t" + result.detRe)
+		 println("DetPr \t" + result.detPr)
+		 println("AssRe \t" + result.assRe)
+		 println("AssPr \t" + result.assPr)
+		 println("LocA \t" + result.locA)
+		
+	}
+}

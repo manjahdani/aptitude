@@ -7,7 +7,7 @@ import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Skill;
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -24,11 +24,11 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlElementType(22)
 @SuppressWarnings("all")
 public class MobileOutputSkill extends Skill implements OutputDeviceCapacity {
-  private final TreeMap<UUID, String> mobileAddress;
+  private final HashMap<UUID, String> mobileAddress;
   
   private final UDPSender clientSender = new UDPSender();
   
-  public MobileOutputSkill(final TreeMap<UUID, String> m) {
+  public MobileOutputSkill(final HashMap<UUID, String> m) {
     this.mobileAddress = m;
   }
   

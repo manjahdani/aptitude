@@ -1,6 +1,5 @@
 package be.uclouvain.organisation;
 
-import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
@@ -37,11 +36,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 public class JoinOrganisation extends Event {
   public final AgentContext contextID;
   
-  public final OpenEventSpace defaultSpaceID;
-  
-  public JoinOrganisation(final AgentContext context, final OpenEventSpace openSpace) {
+  public JoinOrganisation(final AgentContext context) {
     this.contextID = context;
-    this.defaultSpaceID = openSpace;
   }
   
   @Override
@@ -67,9 +63,8 @@ public class JoinOrganisation extends Event {
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
     builder.add("contextID", this.contextID);
-    builder.add("defaultSpaceID", this.defaultSpaceID);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = -298389445L;
+  private static final long serialVersionUID = 22601871L;
 }

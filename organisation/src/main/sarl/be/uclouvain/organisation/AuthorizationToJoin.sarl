@@ -6,7 +6,6 @@ package be.uclouvain.organisation
 import io.sarl.lang.core.AgentContext
 import io.sarl.core.OpenEventSpace
 import java.util.UUID
-import be.uclouvain.organisation.platform.util.MissionData
 
 /** 
  * Positive answer to a request to join a context .
@@ -34,22 +33,16 @@ import be.uclouvain.organisation.platform.util.MissionData
 event AuthorizationToJoin {
 
 	/** 
-	  * The context of the holon that fired the event    
+	  * Context of the holon that fired the event    
 	  */
 	val contextID : AgentContext
 
 	/** 
-	 * The context of the holon that fired the event    
+	 * Default Space of the holon that fired the event    
 	 */
 	val defaultSpaceID : OpenEventSpace
 	
 	val entityID : UUID
-	
-	val missionData : MissionData
-
-	/** 
-	 * The accepted sensitivity     
-	 */
 
 	/* 
 	 * Constructor
@@ -62,12 +55,5 @@ event AuthorizationToJoin {
 		this.contextID = ctxt
 		this.defaultSpaceID = sid
 		this.entityID = id
-		this.missionData = null
-	}
-	new (ctxt : AgentContext, sid : OpenEventSpace, id : UUID, missionData : MissionData) {
-		this.contextID = ctxt
-		this.defaultSpaceID = sid
-		this.entityID = id
-		this.missionData = missionData
 	}
 }

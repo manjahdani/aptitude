@@ -14,8 +14,10 @@ import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
+import io.sarl.core.InnerContextAccess;
 import io.sarl.core.Logging;
 import io.sarl.core.OpenEventSpace;
+import io.sarl.core.OpenEventSpaceSpecification;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
@@ -32,11 +34,11 @@ import io.sarl.lang.util.SerializableProxy;
 import java.io.ObjectStreamException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
@@ -76,37 +78,45 @@ public class ObserverRole extends Behavior {
   
   protected AgentContext TOLDContext;
   
-  protected OpenEventSpace PlatformSpace;
+  protected OpenEventSpace platformSpace;
   
-  protected AgentContext PlatformContext;
+  protected AgentContext platformContext;
+  
+  protected OpenEventSpace selfSpace = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER().getInnerContext().<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, 
+    UUID.randomUUID());
   
   protected LinkedList<Integer> sensitivity = new LinkedList<Integer>();
   
-  protected AlgorithmInfo ObserverADN;
+  protected AlgorithmInfo observerADN;
   
   protected Boolean isMaster = Boolean.valueOf(false);
   
-  protected List<UUID> Listeners = Collections.<UUID>synchronizedList(new LinkedList<UUID>());
+  protected Set<UUID> listeners = Collections.<UUID>synchronizedSet(new HashSet<UUID>());
   
-  protected List<UUID> Providers = Collections.<UUID>synchronizedList(new LinkedList<UUID>());
+  protected Set<UUID> providers = Collections.<UUID>synchronizedSet(new HashSet<UUID>());
   
-  protected Map<UUID, OpenEventSpace> MissionSpaceList = Collections.<UUID, OpenEventSpace>synchronizedMap(new TreeMap<UUID, OpenEventSpace>());
+  protected Map<UUID, OpenEventSpace> missionSpaceList = Collections.<UUID, OpenEventSpace>synchronizedMap(new HashMap<UUID, OpenEventSpace>());
+  
+  protected String platformName;
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Object _get = occurrence.parameters[0];
-    this.ObserverADN = ((AlgorithmInfo) _get);
+    this.observerADN = ((AlgorithmInfo) _get);
     Object _get_1 = occurrence.parameters[2];
-    boolean _notEquals = (!Objects.equal(_get_1, null));
-    if (_notEquals) {
+    if ((_get_1 != null)) {
       Object _get_2 = occurrence.parameters[2];
       UUID ObserverID = ((UUID) _get_2);
       Object _get_3 = occurrence.parameters[1];
-      this.MissionSpaceList.put(ObserverID, ((OpenEventSpace) _get_3));
+      this.missionSpaceList.put(ObserverID, ((OpenEventSpace) _get_3));
       Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-      this.MissionSpaceList.get(ObserverID).register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+      this.missionSpaceList.get(ObserverID).register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
       Object _get_4 = occurrence.parameters[2];
-      this.Listeners.add(((UUID) _get_4));
+      this.listeners.add(((UUID) _get_4));
+      this.listeners.add(this.getOwner().getID());
+      Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+      this.selfSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.asEventListener());
+      this.missionSpaceList.put(this.getOwner().getID(), this.selfSpace);
     }
   }
   
@@ -115,11 +125,11 @@ public class ObserverRole extends Behavior {
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$PlatformOrganisationInfo$2(final PlatformOrganisationInfo occurrence) {
-    this.PlatformContext = occurrence.context;
-    this.PlatformSpace = occurrence.spaceID;
+    this.platformContext = occurrence.context;
+    this.platformSpace = occurrence.spaceID;
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    this.PlatformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
-    String _name = this.ObserverADN.getName();
+    this.platformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    String _name = this.observerADN.getName();
     Identification _identification = new Identification(_name);
     class $SerializableClosureProxy implements Scope<Address> {
       
@@ -139,17 +149,18 @@ public class ObserverRole extends Behavior {
       @Override
       public boolean matches(final Address it) {
         UUID _uUID = it.getUUID();
-        UUID _iD = ObserverRole.this.PlatformContext.getID();
+        UUID _iD = ObserverRole.this.platformContext.getID();
         return Objects.equal(_uUID, _iD);
       }
       private Object writeReplace() throws ObjectStreamException {
-        return new SerializableProxy($SerializableClosureProxy.class, ObserverRole.this.PlatformContext.getID());
+        return new SerializableProxy($SerializableClosureProxy.class, ObserverRole.this.platformContext.getID());
       }
     };
-    this.PlatformSpace.emit(this.getOwner().getID(), _identification, _function);
-    Set<UUID> _keySet = this.MissionSpaceList.keySet();
+    this.platformSpace.emit(this.getOwner().getID(), _identification, _function);
+    this.platformName = occurrence.platformName;
+    Set<UUID> _keySet = this.missionSpaceList.keySet();
     for (final UUID ObserverID : _keySet) {
-      OpenEventSpace _get = this.MissionSpaceList.get(ObserverID);
+      OpenEventSpace _get = this.missionSpaceList.get(ObserverID);
       SensititvityRequest _sensititvityRequest = new SensititvityRequest();
       class $SerializableClosureProxy_1 implements Scope<Address> {
         
@@ -189,12 +200,18 @@ public class ObserverRole extends Behavior {
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$SensititvityRequest$4(final SensititvityRequest occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    String _substring = occurrence.getSource().getUUID().toString().substring(0, 5);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("received sensitivity request from " + _substring));
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    UUID _uUID = occurrence.getSource().getUUID();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(((("Thank you: " + _uUID) + "  use the following sensitivity") + this.sensitivity));
     final Function2<UUID, OpenEventSpace, Boolean> _function = (UUID p1, OpenEventSpace p2) -> {
       SpaceID _spaceID = p2.getSpaceID();
       SpaceID _spaceID_1 = occurrence.getSource().getSpaceID();
       return Boolean.valueOf(Objects.equal(_spaceID, _spaceID_1));
     };
-    OpenEventSpace MissionSpace = ((OpenEventSpace[])Conversions.unwrapArray(MapExtensions.<UUID, OpenEventSpace>filter(this.MissionSpaceList, _function).values(), OpenEventSpace.class))[0];
+    OpenEventSpace missionSpace = ((OpenEventSpace[])Conversions.unwrapArray(MapExtensions.<UUID, OpenEventSpace>filter(this.missionSpaceList, _function).values(), OpenEventSpace.class))[0];
     LinkedList<Integer> _xifexpression = null;
     if (((this.isMaster) == null ? false : (this.isMaster).booleanValue())) {
       _xifexpression = this.sensitivity;
@@ -228,23 +245,23 @@ public class ObserverRole extends Behavior {
         return new SerializableProxy($SerializableClosureProxy.class, occurrence.getSource().getUUID());
       }
     };
-    MissionSpace.emit(this.getOwner().getID(), _missionSensitivity, _function_1);
+    missionSpace.emit(this.getOwner().getID(), _missionSensitivity, _function_1);
   }
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$AddMission$5(final AddMission occurrence) {
-    this.MissionSpaceList.put(occurrence.getSource().getUUID(), ((OpenEventSpace) occurrence.SourceEventSpace));
+    this.missionSpaceList.put(occurrence.getSource().getUUID(), ((OpenEventSpace) occurrence.SourceEventSpace));
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     ((OpenEventSpace) occurrence.SourceEventSpace).register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
-    boolean _contains = this.Listeners.contains(occurrence.getSource().getUUID());
+    boolean _contains = this.listeners.contains(occurrence.getSource().getUUID());
     if ((!_contains)) {
-      this.Listeners.add(occurrence.getSource().getUUID());
+      this.listeners.add(occurrence.getSource().getUUID());
     }
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$StopMission$6(final StopMission occurrence) {
-    boolean _contains = this.Listeners.contains(occurrence.getSource().getUUID());
+    boolean _contains = this.listeners.contains(occurrence.getSource().getUUID());
     if (_contains) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("I received the StopMission");
@@ -325,6 +342,20 @@ public class ObserverRole extends Behavior {
       this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);
     }
     return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
+  }
+  
+  @Extension
+  @ImportedCapacityFeature(InnerContextAccess.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS;
+  
+  @SyntheticMember
+  @Pure
+  private InnerContextAccess $CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS == null || this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS = $getSkill(InnerContextAccess.class);
+    }
+    return $castSkill(InnerContextAccess.class, this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS);
   }
   
   @SyntheticMember
@@ -409,6 +440,8 @@ public class ObserverRole extends Behavior {
       return false;
     if (other.isMaster != null && other.isMaster.booleanValue() != this.isMaster.booleanValue())
       return false;
+    if (!java.util.Objects.equals(this.platformName, other.platformName))
+      return false;
     return super.equals(obj);
   }
   
@@ -419,6 +452,7 @@ public class ObserverRole extends Behavior {
     int result = super.hashCode();
     final int prime = 31;
     result = prime * result + java.util.Objects.hashCode(this.isMaster);
+    result = prime * result + java.util.Objects.hashCode(this.platformName);
     return result;
   }
   

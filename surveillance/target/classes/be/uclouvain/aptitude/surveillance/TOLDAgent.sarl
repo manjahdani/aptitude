@@ -4,12 +4,13 @@
 package be.uclouvain.aptitude.surveillance
 
 import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
-import be.uclouvain.organisation.PlatformOrganisationInfo
+import be.uclouvain.aptitude.surveillance.platform.AgentPlatform
+import be.uclouvain.organisation.JoinPlatform
 import be.uclouvain.organisation.told.AccessDatabaseCapacity
 import be.uclouvain.organisation.told.TOLDRole
-import be.uclouvain.organisation.told.VirtualDatabaseSkill
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
@@ -17,7 +18,6 @@ import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import java.util.ArrayList
 import java.util.HashMap
-import java.util.LinkedList
 import java.util.UUID
 
 /** 
@@ -33,43 +33,50 @@ import java.util.UUID
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $surveillance$
- */ 
+ */
+ 
+  
 agent TOLDAgent extends Paraddis {
+	
 	uses Logging, Lifecycle, InnerContextAccess, Behaviors
 
- 	val INIT_TASKS : ArrayList<String> = newArrayList("DETECTOR", "TRACKER", "COUNTER") // @parameters
-	var PlatformTOLDSpaces =new LinkedList<OpenEventSpace>
+ 	//val INIT_TASKS : ArrayList<String> = newArrayList() // @parameters
+	
+	var config : TOLDConfig
+	val agentPlatformSpaces = new HashMap<String, OpenEventSpace> 
 	var S : VirtualDatabaseSkill
+	
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on Initialize {
-		
-		loggingName = "TOLD-" + this.ID
-		info("Ready to share my stored Knowledge.")
+		config = occurrence.parameters.get(0) as TOLDConfig
+		loggingName = this.ID + "-TOLD" + "-" + config.level
+		info("ready to share my stored knowledge.")
 		S = setSkill(new VirtualDatabaseSkill, AccessDatabaseCapacity)
 		registerBehavior(new TOLDRole(this))
-		
-	}
-
-	@SuppressWarnings("potential_field_synchronization_problem")
-	on PlatformOrganisationInfo {
-		//info("Me TOLD I am going to listen to Platform" + occurrence.spaceID)
-		
-		synchronized(this){
-		PlatformTOLDSpaces.add(occurrence.spaceID)
-		occurrence.spaceID.register(asEventListener)
 		var registeredAlgorithms : HashMap<UUID, AlgorithmInfo> = new HashMap(S.database.filter [ p1, p2 |
 			p2 instanceof AlgorithmInfo
 		])
-		if(PlatformTOLDSpaces.size>1)//@FIXME 1 is not scalable
-		{ // Make sure that we only consider the algorithmsINFO entries
-			//info(PlatformTOLDSpaces.size)
-			//info("Activating the algorithms")
-			for (t : INIT_TASKS) {
+		for (t : config.init_tasks) {
 			spawnInContext(Algorithm, innerContext, new AlgorithmInfo(t, "none", t),
-				new HashMap(registeredAlgorithms.filter[p1, p2|p2.task == t]), PlatformTOLDSpaces) 	// provide the level 0, the task and the list of existing agents that supports the task
-			}
-			}
-	}}
+				new HashMap(registeredAlgorithms.filter[p1, p2|p2.task == t]))
+		}
+	}
+	
+	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
+	
+	on AgentPlatform {
+		info("encounters " + occurrence.name + " agent platform")
+		agentPlatformSpaces.put(occurrence.name, occurrence.topic)
+		occurrence.topic.register(asEventListener)
+		wake(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it.UUID !== this.ID]
+	}
+	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
+	on JoinPlatform {
+		info("joins organisation - " + occurrence.contextID.ID.toString.substring(0,5))
+		val randomID = UUID.randomUUID
+		var holonConfig = config.addSubTOLD(new TOLDConfig(config.level + 1, occurrence.location, innerContext, new ArrayList<String>), randomID)
+		spawnInContextWithID(TOLDAgent, randomID, occurrence.contextID, holonConfig)
+	}
 }
 
 

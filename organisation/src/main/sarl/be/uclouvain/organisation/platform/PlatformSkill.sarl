@@ -5,6 +5,7 @@ package be.uclouvain.organisation.platform
 
 import be.uclouvain.organisation.platform.util.PlatformConfig
 import java.util.LinkedList
+import be.uclouvain.organisation.platform.util.MembershipRule
 
 /** 
  * @author manjah
@@ -37,9 +38,5 @@ skill PlatformSkill implements PlatformCapacity {
 
 	def getPlatformConfig : PlatformConfig {
 		return this.WC
-	}
-
-	override ConditionActivation {
-		// TODO Auto-generated code.
 	}
 }

@@ -4,7 +4,11 @@ import UDPMessages.MessageDeserializer;
 import UDPMessages.UDP_Message_Base;
 import be.uclouvain.aptitude.surveillance.CommitSuicide;
 import be.uclouvain.aptitude.surveillance.Paraddis;
-import be.uclouvain.aptitude.surveillance.PlatformAgent;
+import be.uclouvain.aptitude.surveillance.TOLDAgent;
+import be.uclouvain.aptitude.surveillance.TOLDConfig;
+import be.uclouvain.aptitude.surveillance.platform.PlatformAgent;
+import be.uclouvain.aptitude.surveillance.user.HolonicUserConfig;
+import be.uclouvain.aptitude.surveillance.user.User;
 import be.uclouvain.launcher.GUI;
 import be.uclouvain.organisation.platform.util.PlatformConfig;
 import io.sarl.core.AgentTask;
@@ -24,10 +28,12 @@ import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.DynamicSkillProvider;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 import javafx.application.Application;
 import javax.inject.Inject;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function0;
@@ -47,6 +53,10 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlElementType(19)
 @SuppressWarnings("all")
 public class bootAgent extends Paraddis {
+  private final ArrayList<String> initial_cameras = CollectionLiterals.<String>newArrayList("S02C006", "S04C035");
+  
+  private final ArrayList<String> INIT_TASKS = CollectionLiterals.<String>newArrayList("DETECTOR", "TRACKER", "COUNTER");
+  
   private final DatagramSocket client = new Function0<DatagramSocket>() {
     @Override
     public DatagramSocket apply() {
@@ -62,9 +72,8 @@ public class bootAgent extends Paraddis {
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     UUID _iD = this.getID();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName((("Boot" + "-") + _iD));
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Universe started");
+    String _plus = (_iD + "-Boot");
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(_plus);
     this.setAgentsReady();
     this.enableInputStream();
     Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
@@ -76,13 +85,19 @@ public class bootAgent extends Paraddis {
   }
   
   protected void setAgentsReady() {
-    PlatformConfig PlatformHolonConfig = new PlatformConfig(5, 0, "LLN");
-    PlatformConfig _platformConfig = new PlatformConfig(100, 1, "S02C006");
-    PlatformHolonConfig.addSubPlatform(_platformConfig);
-    PlatformConfig _platformConfig_1 = new PlatformConfig(100, 1, "S04C035");
-    PlatformHolonConfig.addSubPlatform(_platformConfig_1);
+    PlatformConfig PlatformHolonConfig = new PlatformConfig(0, 5, "LLN");
+    for (final String c : this.initial_cameras) {
+      PlatformConfig _platformConfig = new PlatformConfig(1, 100, c);
+      PlatformHolonConfig.addSubPlatform(_platformConfig);
+    }
     Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawn(PlatformAgent.class, PlatformHolonConfig);
+    TOLDConfig _tOLDConfig = new TOLDConfig(0, "LLN", null, this.INIT_TASKS);
+    _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawn(TOLDAgent.class, _tOLDConfig);
+    Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER_1.spawn(PlatformAgent.class, PlatformHolonConfig);
+    Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+    HolonicUserConfig _holonicUserConfig = new HolonicUserConfig(0, "UserAccessManager", this.initial_cameras);
+    _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER_2.spawn(User.class, _holonicUserConfig);
   }
   
   protected void MessageAnalysis(final UDP_Message_Base msg, final String adrss) {
@@ -130,7 +145,7 @@ public class bootAgent extends Paraddis {
                 this.MessageAnalysis(data, packet.getAddress().getHostAddress());
               } else {
                 Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-                _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I received it NULLL" + data));
+                _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("received NULL" + data));
               }
               packet.setLength(buffer.length);
             }

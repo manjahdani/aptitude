@@ -25,4 +25,5 @@ behavior InputDeviceRole {
 	on DataAcquisition {
 		emit(new ElementInformation(occurrence.data))[it.UUID == occurrence.elementID]
 	}
+	
 }

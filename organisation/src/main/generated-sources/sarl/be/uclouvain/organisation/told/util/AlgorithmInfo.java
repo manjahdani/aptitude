@@ -52,6 +52,10 @@ public class AlgorithmInfo implements Cloneable {
     this.level = a;
   }
   
+  public AlgorithmInfo cloneChild() {
+    return this.clone().IncrementLevelAndGet();
+  }
+  
   public AlgorithmInfo IncrementLevelAndGet() {
     this.level = (this.level + 1);
     return this;

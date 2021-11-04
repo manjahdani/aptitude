@@ -1,6 +1,6 @@
 package be.uclouvain.aptitude.surveillance.algorithm;
 
-import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DTrackMessage;
+import be.uclouvain.python_access.messages.BBoxes2DTrackMessage;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
@@ -44,5 +44,5 @@ public class BBoxes2DTrackResult extends Event {
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = 1623564039L;
+  private static final long serialVersionUID = 4429369255L;
 }

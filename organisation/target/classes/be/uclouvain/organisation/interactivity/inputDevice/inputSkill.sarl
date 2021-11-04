@@ -9,11 +9,11 @@ import java.io.IOException
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.SocketException
-import java.util.TreeMap
 import java.util.UUID
 import UDPMessages.MessageDeserializer
 import UDPMessages.UDP_Message_Base
 import io.sarl.core.Logging
+import java.util.HashMap
 
 /** 
  * @TODO : comment
@@ -28,7 +28,7 @@ abstract skill InputSkill implements InputDeviceCapacity {
 	uses Schedules,Logging
 
 	val client : DatagramSocket;
-	protected var listenersSpaceIDs : TreeMap<UUID, EventSpace>
+	
 
 	protected var serverRunning : boolean = true;
 	var parser = new MessageDeserializer();
@@ -44,13 +44,12 @@ abstract skill InputSkill implements InputDeviceCapacity {
 					client.receive(packet);}
 					var message = new String(packet.getData(), packet.getOffset(), packet.getLength());
 					var data = parser.Deserialize(message); // To change, it seems weird, there's a conflict between this and the role of an element
-					MessageAnalysis(data, packet.getAddress().getHostAddress);
+					messageAnalysis(data, packet.getAddress().getHostAddress);
 					packet.setLength(buffer.length);
 				}
 				//client.close();
 			} catch (e : SocketException) {
-				info("I noticed the problem at SocketExcepetion")
-				//e.printStackTrace();
+				e.printStackTrace();
 			} catch (e : IOException) {
 				e.printStackTrace();
 			}
@@ -81,16 +80,16 @@ abstract skill InputSkill implements InputDeviceCapacity {
 				"isConnected : " + this.client.isConnected + "isClosed : " + this.client.isClosed)
 	}
 	}
-	abstract def MessageAnalysis(data : UDP_Message_Base, IPaddrs : String)
+	abstract def messageAnalysis(data : UDP_Message_Base, IPaddrs : String)
 
 	new (p : int) {
 		this.client = new DatagramSocket(p)
 	}
 
-	new (p : int, subWorldSpaceIDs : TreeMap<UUID, EventSpace>) {
-		this.client = new DatagramSocket(p)
-		this.listenersSpaceIDs = subWorldSpaceIDs
-	}
+//	new (p : int, subWorldSpaceIDs : HashMap<UUID, EventSpace>) {
+//		this.client = new DatagramSocket(p)
+//		this.listenersSpaceIDs = subWorldSpaceIDs
+	//	
 
 	new (server : DatagramSocket) {
 		this.client = server

@@ -1,0 +1,65 @@
+package be.uclouvain.python_access.messages 
+
+import com.hazelcast.nio.ObjectDataInput
+import com.hazelcast.nio.ObjectDataOutput
+import java.io.IOException
+import org.eclipse.xtend.lib.annotations.Accessors
+
+/** 
+ * @author samelson
+ * 
+ */
+class BBoxes2DMessage extends BaseMessage {
+
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var numberObjects : int 
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var detectionTime : double
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var bboxes : int[]
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var classIDs : int[]
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var detConfs : double[]
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var dimWidth : int
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var dimHeight : int
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var bboxesFormat : String
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var frameNumber : int
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var lastFrame : boolean
+
+	val FACTORY_ID = 1
+	val CLASS_ID = 21
+
+	def getFactoryId : int {
+		FACTORY_ID
+	}
+
+	def getId : int {
+		CLASS_ID
+	}
+
+	def writeData(odo : ObjectDataOutput) throws IOException {
+		super.writeData(odo)
+		
+		odo.writeInt(numberObjects)
+		odo.writeDouble(detectionTime)
+		odo.writeIntArray(bboxes)
+		odo.writeIntArray(classIDs)
+		odo.writeDoubleArray(detConfs)
+		odo.writeInt(dimWidth)
+		odo.writeInt(dimHeight)
+		odo.writeUTF(bboxesFormat)
+		odo.writeInt(frameNumber)
+		odo.writeBoolean(lastFrame)
+	}
+
+	def readData(odi : ObjectDataInput) throws IOException {
+		super.readData(odi)
+
+		numberObjects = odi.readInt()
+		detectionTime = odi.readDouble()
+		bboxes = odi.readIntArray()
+		classIDs = odi.readIntArray()
+		detConfs = odi.readDoubleArray()
+		dimWidth = odi.readInt()
+		dimHeight = odi.readInt()
+		bboxesFormat = odi.readUTF()
+		frameNumber = odi.readInt()
+		lastFrame = odi.readBoolean()
+	}
+}

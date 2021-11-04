@@ -7,7 +7,6 @@ import be.uclouvain.organisation.TOLDOrganisationInfo;
 import be.uclouvain.organisation.platform.AddAlgorithm;
 import be.uclouvain.organisation.platform.MissionSensitivity;
 import be.uclouvain.organisation.platform.SensititvityRequest;
-import be.uclouvain.organisation.platform.util.MissionData;
 import be.uclouvain.organisation.told.util.AlgorithmInfo;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
@@ -26,7 +25,6 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.Behavior;
-import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.util.SerializableProxy;
 import java.io.ObjectStreamException;
@@ -40,9 +38,13 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * An Analyst receives perceptions and translates those into Insights.
- * For example, the Analyst  upon the reception of a list of cars and
- * their position could extrapolate if those cars entered or exited an Area and raise the Event according to it.
+ * The Analyst gathers information about a mission and collects Events of Interest or more generally
+ * intelligence (e.g. statistics) for the Client. The role could recommend actions as well. The concept
+ * is not necessarily holonic.
+ * 
+ * As an example, an Analyst received 175 events of incidents involving bikes and cars from one
+ * Algorithm. After analysing the incidents, it could draw recommendations to the Client to take
+ * actions such as a preventive campaign or new installations.
  * 
  * We advise Analysts specializing to one scenario; consequently, you need two Analysts to perform the counting of vehicles and detect traffic offenses.
  * However, those Analysts could use the same Observer if they rely on those perceptions.
@@ -58,51 +60,44 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlElementType(21)
 @SuppressWarnings("all")
 public class AnalystRole extends Behavior {
-  protected AgentContext BaseContext;
+  protected AgentContext platformContext;
   
-  protected EventSpace BaseSpace;
-  
-  protected AgentContext PlatformContext;
-  
-  protected OpenEventSpace PlatformSpace;
+  protected OpenEventSpace platformSpace;
   
   protected AgentContext TOLDContext;
   
   protected OpenEventSpace TOLDSpace;
   
-  protected OpenEventSpace MissionSpace;
+  protected OpenEventSpace missionSpace;
   
-  private final AtomicInteger Sensitivity = new AtomicInteger();
+  private final AtomicInteger sensitivity = new AtomicInteger();
   
   /**
    * Receiving this event, the behavior has to update its fields of perception.
    */
-  private final ArrayList<String> availableObservers = CollectionLiterals.<String>newArrayList("Extremely Careful", "Speed, Speed, Speed ", "Speed, Speed, Speed ", 
-    "Balanced");
+  private final ArrayList<String> availableObservers = CollectionLiterals.<String>newArrayList("careful", "dynamic", "dynamic ", 
+    "balanced");
   
   private UUID myObserver;
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
-    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-    this.BaseContext = _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext();
-    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-    this.BaseSpace = _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1.getDefaultSpace();
-    Object _get = occurrence.parameters[0];
-    this.Sensitivity.set(((MissionData) _get).getSensitivity());
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    String _get_1 = this.availableObservers.get(this.Sensitivity.get());
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("As an expert I will start the mission of Vehicle Counting with the sensitivity:  " + _get_1));
+    throw new Error("Unresolved compilation problems:"
+      + "\nmissing \'{\' at \'sensitivity\'");
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$PlatformOrganisationInfo$1(final PlatformOrganisationInfo occurrence) {
-    this.PlatformContext = occurrence.context;
-    this.PlatformSpace = occurrence.spaceID;
+    this.platformContext = occurrence.context;
+    this.platformSpace = occurrence.spaceID;
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    this.PlatformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    this.platformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("asks for algorithm performing vehicle counting to platform");
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    LocalDatabaseRequest _localDatabaseRequest = new LocalDatabaseRequest();
+    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+    AgentContext _defaultContext = _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext();
+    LocalDatabaseRequest _localDatabaseRequest = new LocalDatabaseRequest(_defaultContext);
     class $SerializableClosureProxy implements Scope<Address> {
       
       private final UUID $_iD_1;
@@ -121,25 +116,27 @@ public class AnalystRole extends Behavior {
       @Override
       public boolean matches(final Address it) {
         UUID _uUID = it.getUUID();
-        UUID _iD = AnalystRole.this.PlatformContext.getID();
+        UUID _iD = AnalystRole.this.platformContext.getID();
         return Objects.equal(_uUID, _iD);
       }
       private Object writeReplace() throws ObjectStreamException {
-        return new SerializableProxy($SerializableClosureProxy.class, AnalystRole.this.PlatformContext.getID());
+        return new SerializableProxy($SerializableClosureProxy.class, AnalystRole.this.platformContext.getID());
       }
     };
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.PlatformSpace, _localDatabaseRequest, _function);
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.platformSpace, _localDatabaseRequest, _function);
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     AlgorithmInfo _algorithmInfo = new AlgorithmInfo("APTITUDE", "COUNTER");
-    AddAlgorithm _addAlgorithm = new AddAlgorithm(this.MissionSpace, _algorithmInfo);
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER_1.emit(this.PlatformSpace, _addAlgorithm);
+    AddAlgorithm _addAlgorithm = new AddAlgorithm(this.missionSpace, _algorithmInfo);
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER_1.emit(this.platformSpace, _addAlgorithm);
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$AuthorizationToJoin$2(final AuthorizationToJoin occurrence) {
-    this.MissionSpace = occurrence.defaultSpaceID;
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Received authorization to perform a mission" + occurrence.defaultSpaceID));
+    this.missionSpace = occurrence.defaultSpaceID;
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    this.MissionSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    this.missionSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
@@ -153,11 +150,11 @@ public class AnalystRole extends Behavior {
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$SensititvityRequest$4(final SensititvityRequest occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    String _get = this.availableObservers.get(this.Sensitivity.get());
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("The user sensitivity is : " + _get));
+    String _get = this.availableObservers.get(this.sensitivity.get());
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("user sensitivity is : " + _get));
     this.myObserver = occurrence.getSource().getUUID();
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    LinkedList<Integer> _newLinkedList = CollectionLiterals.<Integer>newLinkedList(Integer.valueOf(this.Sensitivity.get()));
+    LinkedList<Integer> _newLinkedList = CollectionLiterals.<Integer>newLinkedList(Integer.valueOf(this.sensitivity.get()));
     MissionSensitivity _missionSensitivity = new MissionSensitivity(_newLinkedList);
     class $SerializableClosureProxy implements Scope<Address> {
       
@@ -184,7 +181,7 @@ public class AnalystRole extends Behavior {
         return new SerializableProxy($SerializableClosureProxy.class, occurrence.getSource().getUUID());
       }
     };
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.PlatformContext.getDefaultSpace(), _missionSensitivity, _function);
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.platformContext.getDefaultSpace(), _missionSensitivity, _function);
   }
   
   @Extension

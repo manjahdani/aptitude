@@ -1,0 +1,32 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.util
+
+import java.util.concurrent.atomic.AtomicInteger
+
+/** 
+ * @author manjah
+ * 
+ */
+abstract class HolonicConfig {
+
+	var level : AtomicInteger // The hierarchical level of the platform (0 is the highest level).
+
+	/** 
+	 * Constructor
+	 * 
+	 * @param	lvl	The hierarchical level of the Platform(0 is the highest level)
+	 */
+	new (l : int){
+		this.level=l
+	}
+
+	def getLevel() : int {
+		return this.level.get
+	}
+	def setLevel(a :int)
+	{
+		this.level.set(a)
+	}
+}

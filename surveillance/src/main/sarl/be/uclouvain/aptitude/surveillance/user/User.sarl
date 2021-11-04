@@ -1,15 +1,13 @@
 package be.uclouvain.aptitude.surveillance.user
 
-
+import be.uclouvain.aptitude.surveillance.Paraddis
+import be.uclouvain.aptitude.surveillance.ui.UserInterface
 import be.uclouvain.organisation.interactivity.element.ElementCapacity
 import io.sarl.core.Behaviors
 import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
-import io.sarl.lang.core.EventSpace
-import java.util.ArrayList
-import java.util.TreeMap
-import java.util.UUID
-import be.uclouvain.aptitude.surveillance.Paraddis
 
 /** 
  * The Holon User represents an agent that want to use/used the system. 
@@ -26,15 +24,25 @@ import be.uclouvain.aptitude.surveillance.Paraddis
  * 
  * */
 
-agent User extends Paraddis{
-	uses Logging, Behaviors
+agent User extends Paraddis {
+	uses Logging, Behaviors, Lifecycle, InnerContextAccess
 	
+	var userConfig : HolonicUserConfig
+	@SuppressWarnings("potential_field_synchronization_problem")
 	on Initialize {
-		loggingName = "User" + this.ID
-		//info("agent started.")
-		setSkill(
-			new UserSkill(occurrence.parameters.get(2).toString), UserElementCapacity,ElementCapacity)
-		registerBehavior(new UserRole(this), occurrence.parameters.get(0) as TreeMap<UUID, EventSpace>,
-			occurrence.parameters.get(1) as ArrayList<UUID>)
+		userConfig = occurrence.parameters.get(0) as HolonicUserConfig
+		
+		loggingName = this.ID + "-User-" + userConfig.level.toString 
+		switch(userConfig.level){
+			case 0: {
+				registerBehavior(new UserManagerEntity(this),userConfig.initialPlatforms)
+				spawnInContext(UserInterface,innerContext)
+			}
+			default : {
+				setSkill(new UserSkill(userConfig.name), UserElementCapacity, ElementCapacity)
+				registerBehavior(new UserRole(this), userConfig.initialPlatforms)
+			}
+		}
+		
 	}
 }

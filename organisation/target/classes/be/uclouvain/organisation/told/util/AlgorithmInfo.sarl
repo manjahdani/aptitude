@@ -47,6 +47,9 @@ class AlgorithmInfo implements Cloneable {
 		this.level=a
 	}
 	
+	def cloneChild {
+		return this.clone.IncrementLevelAndGet
+	}
 	def IncrementLevelAndGet : AlgorithmInfo{
 		this.level=level+1
 		return this

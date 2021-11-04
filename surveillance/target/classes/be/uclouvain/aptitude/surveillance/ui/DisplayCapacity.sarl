@@ -3,8 +3,9 @@
  */
 package be.uclouvain.aptitude.surveillance.ui
 
-import be.uclouvain.aptitude.surveillance.algorithm.PythonAccessCapacity
-import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DTrackMessage
+
+import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
+import be.uclouvain.python_access.PythonAccessCapacity
 
 /** 
  * @author manjah
@@ -13,6 +14,6 @@ import be.uclouvain.aptitude.surveillance.algorithm.messages.BBoxes2DTrackMessag
 capacity DisplayCapacity extends PythonAccessCapacity {
 
 	def sendDisplayMessage(bboxes2dTrack : BBoxes2DTrackMessage, streamID : String, streamPath : String, roi : String,
-		countingLines : int[], counts : int[], observer : String, sensitivity : int)
+		countingLines : int[], counts : int[], name : String, observer : String, sensitivity : int)
 
 }

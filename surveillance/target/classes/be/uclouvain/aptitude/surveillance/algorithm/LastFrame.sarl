@@ -4,7 +4,13 @@
 package be.uclouvain.aptitude.surveillance.algorithm
 
 /** 
- * @author manjah
+ * @TODO : Descrribe
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.3$
+ * @date $28/06/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  * 
  */
 event LastFrame {
@@ -19,5 +25,10 @@ event LastFrame {
 		this.pred_file_Path = p
 		this.total_time_detection = total_time_detection
 		this.total_time_tracking = total_time_tracking
+	}
+	
+	new (f : int)
+	{
+		this.frameNumber=f
 	}
 }

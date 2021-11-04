@@ -24,7 +24,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Recording the result of "/>
+			<item key="textPattern" value="AuthorizationToJoin"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -33,14 +33,15 @@
 			</list>
 		</section>
 		<section name="EXTENSIONS">
-			<item key="0" value=""/>
-			<item key="1" value="*.sarl"/>
+			<item key="0" value="*"/>
+			<item key="1" value=""/>
+			<item key="2" value="*.sarl"/>
 		</section>
 		<section name="HISTORY1">
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="That was it for me I will send to my listeners"/>
+			<item key="textPattern" value="received add member"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -52,7 +53,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="I received BBOX2TrackResults"/>
+			<item key="textPattern" value="receives authorisation to join the context"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -64,7 +65,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="I sent Add Algorithm"/>
+			<item key="textPattern" value="All Context"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -76,7 +77,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="One of my guy none is needed  with the belief"/>
+			<item key="textPattern" value="MissionSensitivity"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -88,7 +89,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="As an expert I will start the mission of Vehicle Counting with the sensitivity:"/>
+			<item key="textPattern" value="new participant: APTITUDE"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -100,7 +101,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="BBoxes2DTrackResult"/>
+			<item key="textPattern" value="I received sensitivity"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -112,7 +113,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="com.hazelcast.nio"/>
+			<item key="textPattern" value="to connect with a database"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -124,10 +125,10 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="nio"/>
+			<item key="textPattern" value="I have a new mission"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
-				<item value="*.sarl"/>
+				<item value="*"/>
 			</list>
 			<list key="workingSets">
 			</list>
@@ -136,10 +137,10 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="1.8"/>
+			<item key="textPattern" value="I received a new mission request for location"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
-				<item value="*.sarl"/>
+				<item value="*"/>
 			</list>
 			<list key="workingSets">
 			</list>
@@ -148,10 +149,10 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="I over-trust my tracker"/>
+			<item key="textPattern" value="clones image with intention :none&amp; belief : TRACKER"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
-				<item value="*.sarl"/>
+				<item value="*"/>
 			</list>
 			<list key="workingSets">
 			</list>
@@ -160,10 +161,10 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="Preparing the uninstallation of the"/>
+			<item key="textPattern" value="received sensitivity request"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
-				<item value="*.sarl"/>
+				<item value="*"/>
 			</list>
 			<list key="workingSets">
 			</list>

@@ -1,0 +1,13 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance
+
+import be.uclouvain.organisation.util.HolonicConfig
+
+/** 
+ * @author manjah
+ * 
+ */
+class TOLDHolonicConfig extends HolonicConfig {
+}

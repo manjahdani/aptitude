@@ -36,3 +36,5 @@ event DataEntry extends Entry {
 event AddEntry extends DataEntry
 
 event DeleteEntry extends Entry
+
+event ReadEntry extends Entry

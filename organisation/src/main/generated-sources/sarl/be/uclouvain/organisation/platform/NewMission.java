@@ -1,6 +1,7 @@
 package be.uclouvain.organisation.platform;
 
 import be.uclouvain.organisation.platform.util.MissionData;
+import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
@@ -33,11 +34,18 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlSpecification("0.11")
 @SarlElementType(15)
 @SuppressWarnings("all")
-public class newMission extends Event {
-  public final MissionData Mission;
+public class NewMission extends Event {
+  public final MissionData mission;
   
-  public newMission(final MissionData data) {
-    this.Mission = data;
+  public OpenEventSpace platformOpenChannel;
+  
+  public NewMission(final MissionData data) {
+    this.mission = data;
+  }
+  
+  public NewMission(final MissionData data, final OpenEventSpace sid) {
+    this.mission = data;
+    this.platformOpenChannel = sid;
   }
   
   @Override
@@ -56,15 +64,13 @@ public class newMission extends Event {
   }
   
   /**
-   * Returns a String representation of the newMission event's attributes only.
+   * Returns a String representation of the NewMission event's attributes only.
    */
   @SyntheticMember
   @Pure
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
-    builder.add("Mission", this.Mission);
+    builder.add("mission", this.mission);
+    builder.add("platformOpenChannel", this.platformOpenChannel);
   }
-  
-  @SyntheticMember
-  private static final long serialVersionUID = 496002769L;
 }

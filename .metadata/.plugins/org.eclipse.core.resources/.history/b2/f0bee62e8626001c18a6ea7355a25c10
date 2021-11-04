@@ -1,0 +1,75 @@
+package be.uclouvain.aptitude.surveillance
+
+import be.uclouvain.organisation.AuthorizationToJoin
+import be.uclouvain.organisation.platform.AddMission
+import be.uclouvain.organisation.platform.AnalystRole
+import be.uclouvain.organisation.platform.NewMission
+import be.uclouvain.organisation.platform.StopMission
+import be.uclouvain.organisation.told.entity.EntityRole
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import java.util.HashMap
+import java.util.UUID
+import io.sarl.core.OpenEventSpace
+
+/** 
+ * The expert receives the requirements of the client and translates them into a mission.
+ * 
+ * The goal of the expert is to draw conclusions such as statistics or occurrence of events. It will uses for that the help of algorithms and Sensors.
+ * 
+ * @FIXME : It is strange that the sensitivity is sent. Maybe its best that platform creates a space where they could discuss
+ * @FIXME : Maybe expert or probably platform creates a space (a channel between them) for the discussion
+ * 
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.2$
+ * @date $16/04/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
+ */ 
+
+agent Expert extends Paraddis {
+	
+	uses Logging, Behaviors, ExternalContextAccess, DefaultContextInteractions
+	
+	val missionList = new HashMap<UUID, String> // The different Mission its responsible the first entry is the mission list and the second the ContextID
+	val encounteredPlatforms = new HashMap<String, OpenEventSpace>
+	
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on Initialize {
+		loggingName = this.ID + "-Expert"   
+		registerBehavior(new EntityRole(this))
+	}
+	@SuppressWarnings("potential_field_synchronization_problem", "discouraged_occurrence_readonly_use")
+	on NewMission {
+		info("has a new mission " + occurrence.mission.location )
+		
+		//val PlatformSpace = platformlistenersSpaceIDs.get(PlatformID)
+		// MissionList.put(occurrence.missionData.entityID, PlatformSpace)
+		missionList.put(occurrence.mission.getMissionID, occurrence.mission.location)
+		registerBehavior(new AnalystRole(this), occurrence.mission)
+		encounteredPlatforms.put(occurrence.mission.location, occurrence.platformChanel)
+		info("starts mission with spaceID - " + occurrence.platformChanel.spaceID.ID)
+		occurrence.platformChanel.emit(
+			new AddMission(getDefaultSpace(), occurrence.mission))[it.UUID==occurrence.platformChanel.spaceID.contextID] //The contextID of the space is the one of the platform as the platform generated the space.  
+			 //@FIXME A lot receives the message. 
+	}
+
+	@SuppressWarnings("potential_field_synchronization_problem", "discouraged_occurrence_readonly_use")
+	
+	//@FIXME This should be in the role rather in the agent. 
+	on StopMission {
+		info("received Stop Mission")
+		var platformLocation = missionList.get(occurrence.expertID) // @TODO : The experts may be on hold at this point
+		info("received Stop mission at " + platformLocation)
+		encounteredPlatforms.get(platformLocation).emit(new StopMission(occurrence.expertID))
+	}
+	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	on AuthorizationToJoin {
+		info("receives authorisation to join the context of - " + occurrence.source.UUID.toString.substring(0,5))
+		join(occurrence.contextID.getID, occurrence.contextID.defaultSpace.getSpaceID.getID)
+	}
+}
