@@ -1,0 +1,151 @@
+/** 
+ */
+package be.uclouvain.organisation.platform
+
+import be.uclouvain.organisation.Identification
+import be.uclouvain.organisation.PlatformOrganisationInfo
+import be.uclouvain.organisation.TOLDOrganisationInfo
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.core.OpenEventSpace
+import io.sarl.lang.core.AgentContext
+import java.util.Collections
+import java.util.HashMap
+import java.util.HashSet
+import java.util.LinkedList
+import java.util.UUID
+import io.sarl.core.OpenEventSpaceSpecification
+import io.sarl.core.InnerContextAccess
+
+/** 
+ * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 
+ * Observers are distinct if they process a different Signal or use another Model or both .
+ * 
+ * It Becomes a multi-layer concept if it involves several entities observing the same target(data).
+ * A possible Holonic configuration could have the following layers : 
+ * 
+ * 			- Multiple Sensors at different location analysing the same scene
+ *          - Multiple Algorithms with different beliefs analysing the same signal. 
+ * 
+ * Example : let's take a junction equipped with three cameras (C_1  ,C_2,C_3) aiming to provide a list of the cars in the scene. 
+ * The cameras dispose two algorithms models (M_1 ,M_2). Let us assume, that C_1  uses M_1and M_2 to process the data while others only use M_1. 
+ * You have four Observers (O_1,O_2,O_3,O_4) = (C_1 M_1; C_1 M_2; C_2 M_1; C_3 M_1). 
+ * A stable and scalable approach would consider two supplementary Observers to gather this as a Holonic system. 
+ * On the one hand an Observer O_5 concatenating the perceptions of O_1, O_2 and on the other hand, a sixth Observer for the perceptions of O_5 O_3 O_4. 
+ * Notice that Observers O_1and O_2 became Signals for O_5, becoming itself a signal for O_6. 
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.2$
+ * @date $16/04/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ */
+ 
+behavior ObserverRole {
+	
+	uses Logging, Behaviors, DefaultContextInteractions, InnerContextAccess
+
+	protected var TOLDSpace : OpenEventSpace
+	protected var TOLDContext : AgentContext
+	
+	protected var platformSpace : OpenEventSpace
+	protected var platformContext : AgentContext
+	
+	protected var selfSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification,
+		UUID.randomUUID)// An internal space to communicate with other roles. 
+
+	protected var sensitivity= new LinkedList<Integer>
+	
+	protected var observerADN : AlgorithmInfo	
+	
+	protected var isMaster : Boolean = false
+	
+	
+	protected var listeners = Collections.synchronizedSet(new HashSet<UUID>)
+	protected var providers = Collections.synchronizedSet(new HashSet<UUID>)
+	
+	protected var missionSpaceList = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>)
+
+	protected var platformName : String
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on Initialize {
+		observerADN = occurrence.parameters.get(0) as AlgorithmInfo
+		if(occurrence.parameters.get(2)!==null){
+		var ObserverID = occurrence.parameters.get(2) as UUID
+		missionSpaceList.put(ObserverID ,occurrence.parameters.get(1) as OpenEventSpace) //@FIXME maybe there is a huge mistunderstanding of the use of Spaces, maybe we could have address which is simpler
+		missionSpaceList.get(ObserverID).register(asEventListener)
+		listeners.add(occurrence.parameters.get(2) as UUID)
+		listeners.add(this.ID) // Listen to the results
+		selfSpace.register(asEventListener) // Listen to self-internal space.
+		missionSpaceList.put(this.ID, selfSpace) 	// To send results to itself
+		}
+	}
+
+	on Destroy {
+		//info("The behavior was stopped.")
+	}
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on PlatformOrganisationInfo  { 
+		platformContext = occurrence.context
+		platformSpace = occurrence.spaceID
+		platformSpace.register(asEventListener)
+		
+		platformSpace.emit(this.ID,new Identification(observerADN.name))[it.UUID==platformContext.ID]
+		platformName = occurrence.platformName
+		
+		for(observerID : missionSpaceList.keySet){
+			info("asks  sensitivity to " + observerID )
+			missionSpaceList.get(observerID).emit(this.ID, new HyperParametersRequest)[it.UUID == observerID]
+		}
+		 // Put here because it seems that the change is not fast enough between initalize and here.. anyway no big deal
+	}
+	
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on TOLDOrganisationInfo {
+		TOLDContext = occurrence.context
+		TOLDSpace = occurrence.spaceID
+		TOLDSpace.register(asEventListener)
+	}
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	
+	
+	on HyperParametersRequest {
+
+		info("received sensitivity request from -" + occurrence.source.UUID.toString.substring(0, 5) + " will send the following sensitivity" + sensitivity)
+		var missionSpace = (missionSpaceList.filter[p1, p2|p2.spaceID == occurrence.source.spaceID]).values.get(0) // @FIXME weird
+		var s = isMaster ? sensitivity:newLinkedList(sensitivity.pop) // @FIXME weird
+		missionSpace.emit(this.ID, new MissionSensitivity(s))[it.UUID == occurrence.source.UUID]
+	}
+	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	on AddMission {
+		//info("Received Mission Space " + (occurrence.SourceEventSpace.spaceID) +" from " + occurrence.source.UUID)
+		missionSpaceList.put(occurrence.source.UUID, occurrence.SourceEventSpace as OpenEventSpace)
+		(occurrence.SourceEventSpace as OpenEventSpace).register(asEventListener)
+		if (!listeners.contains(occurrence.source.UUID)) {
+			listeners.add(occurrence.source.UUID)
+		}
+	}
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on StopMission {
+		if (listeners.contains(occurrence.source.UUID)){
+			info("I received the StopMission")
+			emit(new StopMission(occurrence.expertID))
+			emit(new LeavePlatform)[it==me]
+		}
+	}
+		@SuppressWarnings("potential_field_synchronization_problem")
+		on LeavePlatform {
+		//join(BaseContext.ID, BaseSpace.spaceID.ID)
+		//info("ObserverLeaving")
+		//leave(PlatformContext.ID)
+	}
+}
+
+

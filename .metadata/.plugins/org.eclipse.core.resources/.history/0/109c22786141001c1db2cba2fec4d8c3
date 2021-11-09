@@ -1,0 +1,52 @@
+package be.uclouvain.organisation.platform.util
+
+import java.util.UUID
+import be.uclouvain.organisation.platform.MissionParameters
+
+/** 
+ * @TODO : to comment and to generalize
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ */
+class MissionData {
+	
+	var missionID : UUID
+	var expertID : UUID
+	var platformID : UUID
+	var location : String
+	var missionParam : MissionParameters
+	
+	var sensitivity : int
+
+	new (missionID : UUID, expertID : UUID, location : String, sensitivity : int) {
+		this.missionID=missionID
+		this.expertID = expertID
+		this.location = location
+		this.sensitivity = sensitivity
+	}
+	
+	def getPlatformID{
+		return this.platformID
+	}
+	def setPlatformID (id: UUID) {
+		this.platformID = id; 
+		return this
+	}
+	
+	def getMissionID{
+		return this.missionID
+	}
+	def getExpertID() {
+		return this.expertID
+	}
+	def getLocation() {
+		return this.location
+	}
+	def getSensitivity() {
+		return this.sensitivity
+	}
+}

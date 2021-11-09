@@ -121,26 +121,23 @@ behavior TrackerRole extends PythonObserverRole {
 			// val ObserverName = availableObservers.get(intensityMap.get(sensitivity.get))
 			val DetectorName = availableObservers.get(sensitivity.get(0))
 			//info("Come here : " + DetectorName)	
-			platformSpace.emit(this.ID,
-				new AddObserver(missionSpaceList.values.get(0), new AlgorithmInfo(DetectorName, "DETECTOR"),
-				new AlgorithmInfo(observerADN.name, "TRACKER")))[it.UUID == platformContext.ID] 	// @FIXME : Be very careful as I am taking the first Space
+			privatePlatformSpace.emit(this.ID,
+				new AddObserver(new AlgorithmInfo(DetectorName, "DETECTOR"),
+				new AlgorithmInfo(observerADN.name, "TRACKER")))[it.UUID == platformContext.ID]
 		}
 		else {
 			for(s : sensitivity)
 			{
 				info("Come here : " + observerADN.name)
-				platformSpace.emit(this.ID,
-					new AddAlgorithm(missionSpaceList.values.get(0),
-					new AlgorithmInfo(observerADN.name, observerADN.task))) [
-					it.UUID == platformContext.ID
-				] 	// @FIXME : Be very careful as I am taking the first Space !!!! DANGER
-			}
+				privatePlatformSpace.emit(this.ID, new AddObserver(new AlgorithmInfo(observerADN.name.concat(sensitivity.toString), "TRACKER"),
+					new AlgorithmInfo(observerADN.name, "TRACKER")))[it.UUID == platformContext.ID]
+			}//@FIXME Probably the trackers will accumulate in platforms. Remember to deal with that. 
 		}
 	}
 	on SignalID{
 		platformContext.defaultSpace.emit(this.ID, new AddMission(missionSpaceList.values.get(0), null)) [
-			it.UUID == occurrence.name
-		]
+			it.UUID == occurrence.signalID
+		] 		// @FIXME : DANGET TO CHANGE IMMEDIATLYBe very careful as I am taking the first Space
 	}
 
 	on BBoxes2DTrackResult{

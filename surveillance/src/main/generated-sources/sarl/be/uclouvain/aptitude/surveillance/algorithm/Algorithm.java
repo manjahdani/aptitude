@@ -129,20 +129,17 @@ public class Algorithm extends Paraddis {
           case "COUNTER":
             Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
             CompetitiveCounterRole _competitiveCounterRole = new CompetitiveCounterRole(this);
-            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_3.registerBehavior(_competitiveCounterRole, this.ADN, occurrence.parameters[1], 
-              occurrence.parameters[2]);
+            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_3.registerBehavior(_competitiveCounterRole, this.ADN);
             break;
           case "TRACKER":
             Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_4 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
             TrackerRole _trackerRole = new TrackerRole(this);
-            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_4.registerBehavior(_trackerRole, this.ADN, occurrence.parameters[1], 
-              occurrence.parameters[2]);
+            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_4.registerBehavior(_trackerRole, this.ADN);
             break;
           case "DETECTOR":
             Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_5 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
             DetectorRole _detectorRole = new DetectorRole(this);
-            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_5.registerBehavior(_detectorRole, this.ADN, occurrence.parameters[1], 
-              occurrence.parameters[2]);
+            _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_5.registerBehavior(_detectorRole, this.ADN);
             break;
         }
       }
@@ -203,9 +200,9 @@ public class Algorithm extends Paraddis {
         ((((((("clones image with intention :" + occurrence.task) + " - name - ") + occurrence.name) + "& belief : ") + 
           occurrence.belief) + "from ") + _substring));
       final UUID cloneID = UUID.randomUUID();
-      this.subHolons.put(occurrence.ContextID, cloneID);
+      this.subHolons.put(occurrence.contextID, cloneID);
       Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(Algorithm.class, cloneID, occurrence.ContextID, this.ADN.cloneChild(), occurrence.SpaceID, occurrence.sourceID);
+      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(Algorithm.class, cloneID, occurrence.contextID, this.ADN.cloneChild());
     }
   }
   
@@ -216,8 +213,7 @@ public class Algorithm extends Paraddis {
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     String _task = this.ADN.getTask();
     String _belief = this.ADN.getBelief();
-    AlgorithmNeeded _algorithmNeeded = new AlgorithmNeeded(occurrence.contextID, occurrence.missionSpace, occurrence.name, _task, _belief, 
-      occurrence.sourceID);
+    AlgorithmNeeded _algorithmNeeded = new AlgorithmNeeded(occurrence.contextID, occurrence.name, _task, _belief);
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_algorithmNeeded);
   }
   

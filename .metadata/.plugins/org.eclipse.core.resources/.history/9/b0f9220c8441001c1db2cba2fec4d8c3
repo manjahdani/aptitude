@@ -1,0 +1,107 @@
+package be.uclouvain.organisation.platform
+
+import be.uclouvain.organisation.AuthorizationToJoin
+import be.uclouvain.organisation.LocalDatabaseRequest
+import be.uclouvain.organisation.PlatformOrganisationInfo
+import be.uclouvain.organisation.TOLDOrganisationInfo
+import be.uclouvain.organisation.platform.util.MissionData
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.core.OpenEventSpace
+import io.sarl.lang.core.AgentContext
+import java.util.UUID
+import be.uclouvain.organisation.AuthorizationToPerformMission
+
+/** 
+ * 
+ * The Analyst gathers information about a mission and collects Events of Interest or more generally
+ * intelligence (e.g. statistics) for the Client. The role could recommend actions as well. The concept
+ * is not necessarily holonic.
+ * 
+ * As an example, an Analyst received 175 events of incidents involving bikes and cars from one
+ * Algorithm. After analysing the incidents, it could draw recommendations to the Client to take
+ * actions such as a preventive campaign or new installations.
+ * 
+ * We advise Analysts specializing to one scenario; consequently, you need two Analysts to perform the counting of vehicles and detect traffic offenses. 
+ * However, those Analysts could use the same Observer if they rely on those perceptions. 
+ * Therefore, we advise an Analyst rely on one and only one Observer (itself composed of other Observers). 
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.2$
+ * @date $16/04/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ */
+behavior AnalystRole {
+	
+	uses Logging, Behaviors,DefaultContextInteractions, ExternalContextAccess
+	
+	protected var platformContext : AgentContext
+	protected var platformSpace : OpenEventSpace //Private channel 
+	
+	protected var TOLDContext : AgentContext
+	protected var TOLDSpace : OpenEventSpace // Private channel
+	
+	protected var missionData : MissionData
+	protected var missionSpace : OpenEventSpace
+
+	var providerID : UUID
+	
+	/** 
+	 * Receiving this event, the behavior has to update its fields of perception.
+	 */
+	val availableObservers = newArrayList("careful", "dynamic", "dynamic ",
+		"balanced")
+	
+	
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on Initialize {
+		missionData = occurrence.parameters.get(0) as MissionData
+		info("starts mission of vehicle counting with sensitivity:  " + availableObservers.get(missionData.sensitivity))
+	}
+	
+	@SuppressWarnings("potential_field_synchronization_problem")
+	
+	// @FIXME There are global behavior organisational Behavior
+	on PlatformOrganisationInfo {
+		info("Joined platform organisation: " + occurrence.spaceID + " (" + occurrence.context + ").")
+		if (occurrence.context.ID == missionData.platformID) {
+			info("Sending add mission to - " + occurrence.context.ID)
+			platformContext = occurrence.context
+			platformSpace = occurrence.spaceID
+			platformSpace.register(asEventListener)
+			info("starts mission with spaceID - " + missionData.missionID)
+			platformSpace.emit(new AddMission(getDefaultSpace(), missionData))[it.UUID == missionData.platformID]
+			info("asks for algorithm performing vehicle counting to platform")
+		}
+	}
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on AuthorizationToPerformMission {
+		info("Received authorisation to perform a mission within the space : " + occurrence.missionSpace.spaceID.ID)
+		missionSpace = occurrence.missionSpace;
+		missionSpace.register(asEventListener)
+		//platformSpace.emit(new LocalDatabaseRequest(defaultContext))[it.UUID == platformContext.ID]
+		platformSpace.emit(new AddAlgorithm(missionSpace, new AlgorithmInfo("APTITUDE", "COUNTER")))
+	}
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on TOLDOrganisationInfo {
+		info("Joined TOLD organisation: " + occurrence.spaceID + " (" + occurrence.context + ").")
+		TOLDContext = occurrence.context
+		TOLDSpace = occurrence.spaceID
+		TOLDSpace.register(asEventListener)
+	}
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on HyperParametersRequest {
+		info("received a request for mission parameters \n will send the 
+user sensitivity : " + availableObservers.get(missionData.sensitivity))
+		providerID=occurrence.source.UUID
+		emit(
+			platformContext.defaultSpace,
+			new MissionSensitivity(newLinkedList(missionData.sensitivity))
+		)[it.UUID==providerID]
+	}
+}

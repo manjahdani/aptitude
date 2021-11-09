@@ -20,9 +20,9 @@ event Identification{
 
 event SignalID {
 
-	val name : UUID
+	val signalID : UUID
 
-	new (n : UUID) {
-		this.name = n
+	new (id : UUID) {
+		this.signalID = id
 	}
 }

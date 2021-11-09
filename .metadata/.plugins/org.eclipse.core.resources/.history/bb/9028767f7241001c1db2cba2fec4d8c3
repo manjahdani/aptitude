@@ -1,0 +1,45 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import io.sarl.core.OpenEventSpace
+
+/** 
+ * 
+ * @TODO : comment  
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ * 
+ */
+event AddAlgorithm {
+	
+	var missionSpace : OpenEventSpace
+	var algorithmInfo : AlgorithmInfo
+	
+	new (openSpace : OpenEventSpace, data : AlgorithmInfo){
+		this.missionSpace = openSpace
+		this.algorithmInfo=data 
+	}
+}
+
+//@FIXME In Another File
+event AddObserver {
+
+	var missionSpace   : OpenEventSpace
+	var signalProvider : AlgorithmInfo // @FIXME not general
+	var signalReceiver : AlgorithmInfo
+	var flag : int
+	new (ospace : OpenEventSpace, s : AlgorithmInfo, r : AlgorithmInfo) {
+		this.missionSpace = ospace
+		this.signalProvider = s
+		this.signalReceiver = r 
+	}
+}
+
+

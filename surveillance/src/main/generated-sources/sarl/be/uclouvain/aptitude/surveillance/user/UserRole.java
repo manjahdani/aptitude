@@ -13,6 +13,7 @@ import be.uclouvain.organisation.platform.AuthorizedMission;
 import be.uclouvain.organisation.platform.NewMission;
 import be.uclouvain.organisation.platform.StopMission;
 import be.uclouvain.organisation.platform.util.MissionData;
+import be.uclouvain.organisation.platform.util.MissionParameters;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
 import io.sarl.core.Initialize;
@@ -93,8 +94,8 @@ public class UserRole extends ElementRole {
       final UUID entityID = UUID.fromString(((UDP_Message_RequestSpawn)msg).actorUID);
       UUID _randomUUID = UUID.randomUUID();
       String _get = this.availablePlatforms.get(((UDP_Message_RequestSpawn)msg).sceneID);
-      MissionData _missionData = new MissionData(_randomUUID, entityID, _get, 
-        this.entityList.get(entityID).evolution);
+      MissionParameters _missionParameters = new MissionParameters(this.entityList.get(entityID).evolution);
+      MissionData _missionData = new MissionData(_randomUUID, entityID, _get, _missionParameters);
       NewMission _newMission = new NewMission(_missionData);
       class $SerializableClosureProxy implements Scope<Address> {
         

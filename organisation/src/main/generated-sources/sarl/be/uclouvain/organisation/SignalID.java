@@ -13,10 +13,10 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlElementType(15)
 @SuppressWarnings("all")
 public class SignalID extends Event {
-  public final UUID name;
+  public final UUID signalID;
   
-  public SignalID(final UUID n) {
-    this.name = n;
+  public SignalID(final UUID id) {
+    this.signalID = id;
   }
   
   @Override
@@ -30,7 +30,7 @@ public class SignalID extends Event {
     if (getClass() != obj.getClass())
       return false;
     SignalID other = (SignalID) obj;
-    if (!Objects.equals(this.name, other.name))
+    if (!Objects.equals(this.signalID, other.signalID))
       return false;
     return super.equals(obj);
   }
@@ -41,7 +41,7 @@ public class SignalID extends Event {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
-    result = prime * result + Objects.hashCode(this.name);
+    result = prime * result + Objects.hashCode(this.signalID);
     return result;
   }
   
@@ -52,9 +52,9 @@ public class SignalID extends Event {
   @Pure
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
-    builder.add("name", this.name);
+    builder.add("signalID", this.signalID);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = 2705947792L;
+  private static final long serialVersionUID = 3014291400L;
 }

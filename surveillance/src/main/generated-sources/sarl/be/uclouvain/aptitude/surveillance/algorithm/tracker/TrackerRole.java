@@ -12,7 +12,6 @@ import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwin;
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBOX;
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D;
 import be.uclouvain.organisation.SignalID;
-import be.uclouvain.organisation.platform.AddAlgorithm;
 import be.uclouvain.organisation.platform.AddMission;
 import be.uclouvain.organisation.platform.AddObserver;
 import be.uclouvain.organisation.platform.LeavePlatform;
@@ -176,11 +175,10 @@ public class TrackerRole extends PythonObserverRole {
       };
       _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER.every(_$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1.task("waitforConfig"), 500, _function);
       final String DetectorName = this.availableObservers.get(((this.sensitivity.get(0)) == null ? 0 : (this.sensitivity.get(0)).intValue()));
-      OpenEventSpace _get = ((OpenEventSpace[])Conversions.unwrapArray(this.missionSpaceList.values(), OpenEventSpace.class))[0];
       AlgorithmInfo _algorithmInfo = new AlgorithmInfo(DetectorName, "DETECTOR");
       String _name = this.observerADN.getName();
       AlgorithmInfo _algorithmInfo_1 = new AlgorithmInfo(_name, "TRACKER");
-      AddObserver _addObserver = new AddObserver(_get, _algorithmInfo, _algorithmInfo_1);
+      AddObserver _addObserver = new AddObserver(_algorithmInfo, _algorithmInfo_1);
       class $SerializableClosureProxy implements Scope<Address> {
         
         private final UUID $_iD_1;
@@ -206,18 +204,18 @@ public class TrackerRole extends PythonObserverRole {
           return new SerializableProxy($SerializableClosureProxy.class, TrackerRole.this.platformContext.getID());
         }
       };
-      this.platformSpace.emit(this.getOwner().getID(), _addObserver, _function_1);
+      this.privatePlatformSpace.emit(this.getOwner().getID(), _addObserver, _function_1);
     } else {
       for (final Integer s : this.sensitivity) {
         {
           Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
           String _name_1 = this.observerADN.getName();
           _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Come here : " + _name_1));
-          OpenEventSpace _get_1 = ((OpenEventSpace[])Conversions.unwrapArray(this.missionSpaceList.values(), OpenEventSpace.class))[0];
+          String _concat = this.observerADN.getName().concat(this.sensitivity.toString());
+          AlgorithmInfo _algorithmInfo_2 = new AlgorithmInfo(_concat, "TRACKER");
           String _name_2 = this.observerADN.getName();
-          String _task = this.observerADN.getTask();
-          AlgorithmInfo _algorithmInfo_2 = new AlgorithmInfo(_name_2, _task);
-          AddAlgorithm _addAlgorithm = new AddAlgorithm(_get_1, _algorithmInfo_2);
+          AlgorithmInfo _algorithmInfo_3 = new AlgorithmInfo(_name_2, "TRACKER");
+          AddObserver _addObserver_1 = new AddObserver(_algorithmInfo_2, _algorithmInfo_3);
           class $SerializableClosureProxy_1 implements Scope<Address> {
             
             private final UUID $_iD_1;
@@ -243,7 +241,7 @@ public class TrackerRole extends PythonObserverRole {
               return new SerializableProxy($SerializableClosureProxy_1.class, TrackerRole.this.platformContext.getID());
             }
           };
-          this.platformSpace.emit(this.getOwner().getID(), _addAlgorithm, _function_2);
+          this.privatePlatformSpace.emit(this.getOwner().getID(), _addObserver_1, _function_2);
         }
       }
     }
@@ -254,26 +252,26 @@ public class TrackerRole extends PythonObserverRole {
     AddMission _addMission = new AddMission(_get, null);
     class $SerializableClosureProxy implements Scope<Address> {
       
-      private final UUID $_name;
+      private final UUID $_signalID;
       
-      public $SerializableClosureProxy(final UUID $_name) {
-        this.$_name = $_name;
+      public $SerializableClosureProxy(final UUID $_signalID) {
+        this.$_signalID = $_signalID;
       }
       
       @Override
       public boolean matches(final Address it) {
         UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, $_name);
+        return Objects.equal(_uUID, $_signalID);
       }
     }
     final Scope<Address> _function = new Scope<Address>() {
       @Override
       public boolean matches(final Address it) {
         UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, occurrence.name);
+        return Objects.equal(_uUID, occurrence.signalID);
       }
       private Object writeReplace() throws ObjectStreamException {
-        return new SerializableProxy($SerializableClosureProxy.class, occurrence.name);
+        return new SerializableProxy($SerializableClosureProxy.class, occurrence.signalID);
       }
     };
     this.platformContext.getDefaultSpace().emit(this.getOwner().getID(), _addMission, _function);

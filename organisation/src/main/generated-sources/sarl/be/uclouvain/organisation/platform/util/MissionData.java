@@ -1,5 +1,6 @@
 package be.uclouvain.organisation.platform.util;
 
+import be.uclouvain.organisation.platform.util.MissionParameters;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
@@ -28,13 +29,13 @@ public class MissionData {
   
   private String location;
   
-  private int sensitivity;
+  private MissionParameters missionParam;
   
-  public MissionData(final UUID missionID, final UUID expertID, final String location, final int sensitivity) {
+  public MissionData(final UUID missionID, final UUID expertID, final String location, final MissionParameters missionParameters) {
     this.missionID = missionID;
     this.expertID = expertID;
     this.location = location;
-    this.sensitivity = sensitivity;
+    this.missionParam = missionParameters;
   }
   
   @Pure
@@ -64,7 +65,7 @@ public class MissionData {
   
   @Pure
   public int getSensitivity() {
-    return this.sensitivity;
+    return this.missionParam.getSensitivity();
   }
   
   @Override
@@ -86,8 +87,6 @@ public class MissionData {
       return false;
     if (!Objects.equals(this.location, other.location))
       return false;
-    if (other.sensitivity != this.sensitivity)
-      return false;
     return super.equals(obj);
   }
   
@@ -101,7 +100,6 @@ public class MissionData {
     result = prime * result + Objects.hashCode(this.expertID);
     result = prime * result + Objects.hashCode(this.platformID);
     result = prime * result + Objects.hashCode(this.location);
-    result = prime * result + Integer.hashCode(this.sensitivity);
     return result;
   }
 }

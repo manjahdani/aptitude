@@ -17,13 +17,13 @@ class MissionData {
 	var expertID : UUID
 	var platformID : UUID
 	var location : String
-	var sensitivity : int
+	var missionParam : MissionParameters
 
-	new (missionID : UUID, expertID : UUID, location : String, sensitivity : int) {
+	new (missionID : UUID, expertID : UUID, location : String, missionParameters : MissionParameters) {
 		this.missionID=missionID
 		this.expertID = expertID
 		this.location = location
-		this.sensitivity = sensitivity
+		this.missionParam = missionParameters
 	}
 	
 	def getPlatformID{
@@ -44,6 +44,6 @@ class MissionData {
 		return this.location
 	}
 	def getSensitivity() {
-		return this.sensitivity
+		return this.missionParam.sensitivity
 	}
 }

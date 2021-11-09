@@ -1,18 +1,18 @@
 package be.uclouvain.aptitude.surveillance.algorithm;
 
-import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.Event;
 import java.util.Objects;
-import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * @TODO : Comment
+ * 
+ * @FIXME Shouldn't we juste use AlgorithmJoinPlatform?
  * 
  * @author $Author: manjahdani$
  * @version $0.0.2$
@@ -24,25 +24,19 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlElementType(15)
 @SuppressWarnings("all")
 public class AlgorithmNeeded extends Event {
-  public final AgentContext ContextID;
+  public AgentContext contextID;
   
-  public final OpenEventSpace SpaceID;
+  public String name;
   
-  public final String name;
+  public String task;
   
-  public final String task;
+  public String belief;
   
-  public final String belief;
-  
-  public final UUID sourceID;
-  
-  public AlgorithmNeeded(final AgentContext context, final OpenEventSpace Space, final String n, final String t, final String bel, final UUID sourceID) {
-    this.ContextID = context;
-    this.SpaceID = Space;
+  public AlgorithmNeeded(final AgentContext ctxt, final String n, final String t, final String bel) {
+    this.contextID = ctxt;
     this.task = t;
     this.belief = bel;
     this.name = n;
-    this.sourceID = sourceID;
   }
   
   @Override
@@ -62,8 +56,6 @@ public class AlgorithmNeeded extends Event {
       return false;
     if (!Objects.equals(this.belief, other.belief))
       return false;
-    if (!Objects.equals(this.sourceID, other.sourceID))
-      return false;
     return super.equals(obj);
   }
   
@@ -76,7 +68,6 @@ public class AlgorithmNeeded extends Event {
     result = prime * result + Objects.hashCode(this.name);
     result = prime * result + Objects.hashCode(this.task);
     result = prime * result + Objects.hashCode(this.belief);
-    result = prime * result + Objects.hashCode(this.sourceID);
     return result;
   }
   
@@ -87,14 +78,12 @@ public class AlgorithmNeeded extends Event {
   @Pure
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
-    builder.add("ContextID", this.ContextID);
-    builder.add("SpaceID", this.SpaceID);
+    builder.add("contextID", this.contextID);
     builder.add("name", this.name);
     builder.add("task", this.task);
     builder.add("belief", this.belief);
-    builder.add("sourceID", this.sourceID);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = 6874671415L;
+  private static final long serialVersionUID = 1902366326L;
 }

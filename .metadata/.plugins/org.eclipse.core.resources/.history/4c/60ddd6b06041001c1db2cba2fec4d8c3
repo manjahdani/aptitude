@@ -1,0 +1,11 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+/** 
+ * @author manjah
+ * 
+ */
+class MissionParameters {
+}

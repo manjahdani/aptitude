@@ -2,11 +2,12 @@ package be.uclouvain.organisation.platform;
 
 import be.uclouvain.organisation.AuthorizationToPerformMission;
 import be.uclouvain.organisation.PlatformOrganisationInfo;
+import be.uclouvain.organisation.SignalID;
 import be.uclouvain.organisation.TOLDOrganisationInfo;
-import be.uclouvain.organisation.platform.AddAlgorithm;
 import be.uclouvain.organisation.platform.AddMission;
+import be.uclouvain.organisation.platform.AddObserver;
+import be.uclouvain.organisation.platform.HyperParametersRequest;
 import be.uclouvain.organisation.platform.MissionSensitivity;
-import be.uclouvain.organisation.platform.SensititvityRequest;
 import be.uclouvain.organisation.platform.util.MissionData;
 import be.uclouvain.organisation.told.util.AlgorithmInfo;
 import com.google.common.base.Objects;
@@ -73,13 +74,13 @@ public class AnalystRole extends Behavior {
   
   protected OpenEventSpace missionSpace;
   
+  private UUID providerID;
+  
   /**
    * Receiving this event, the behavior has to update its fields of perception.
    */
   private final ArrayList<String> availableObservers = CollectionLiterals.<String>newArrayList("careful", "dynamic", "dynamic ", 
     "balanced");
-  
-  private UUID myObserver;
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
@@ -147,18 +148,50 @@ public class AnalystRole extends Behavior {
   private void $behaviorUnit$AuthorizationToPerformMission$2(final AuthorizationToPerformMission occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     UUID _iD = occurrence.missionSpace.getSpaceID().getID();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Received authorisation to perform a mission" + _iD));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Received authorisation to perform a mission within the space : " + _iD));
     this.missionSpace = occurrence.missionSpace;
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     this.missionSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     AlgorithmInfo _algorithmInfo = new AlgorithmInfo("APTITUDE", "COUNTER");
-    AddAlgorithm _addAlgorithm = new AddAlgorithm(this.missionSpace, _algorithmInfo);
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.platformSpace, _addAlgorithm);
+    AlgorithmInfo _algorithmInfo_1 = new AlgorithmInfo("EXPERT", "ROADANALYST");
+    AddObserver _addObserver = new AddObserver(_algorithmInfo, _algorithmInfo_1);
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.platformSpace, _addObserver);
+  }
+  
+  private void $behaviorUnit$SignalID$3(final SignalID occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("received the provider ID \n sending the missionSpace");
+    AddMission _addMission = new AddMission(this.missionSpace, null);
+    class $SerializableClosureProxy implements Scope<Address> {
+      
+      private final UUID $_signalID;
+      
+      public $SerializableClosureProxy(final UUID $_signalID) {
+        this.$_signalID = $_signalID;
+      }
+      
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, $_signalID);
+      }
+    }
+    final Scope<Address> _function = new Scope<Address>() {
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, occurrence.signalID);
+      }
+      private Object writeReplace() throws ObjectStreamException {
+        return new SerializableProxy($SerializableClosureProxy.class, occurrence.signalID);
+      }
+    };
+    this.platformContext.getDefaultSpace().emit(this.getOwner().getID(), _addMission, _function);
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
-  private void $behaviorUnit$TOLDOrganisationInfo$3(final TOLDOrganisationInfo occurrence) {
+  private void $behaviorUnit$TOLDOrganisationInfo$4(final TOLDOrganisationInfo occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((((("Joined TOLD organisation: " + occurrence.spaceID) + " (") + occurrence.context) + ")."));
     this.TOLDContext = occurrence.context;
@@ -168,37 +201,36 @@ public class AnalystRole extends Behavior {
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
-  private void $behaviorUnit$SensititvityRequest$4(final SensititvityRequest occurrence) {
+  private void $behaviorUnit$HyperParametersRequest$5(final HyperParametersRequest occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     String _get = this.availableObservers.get(this.missionData.getSensitivity());
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("user sensitivity is : " + _get));
-    this.myObserver = occurrence.getSource().getUUID();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("received a request for mission parameters \n will send the \r\nuser sensitivity : " + _get));
+    this.providerID = occurrence.getSource().getUUID();
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     LinkedList<Integer> _newLinkedList = CollectionLiterals.<Integer>newLinkedList(Integer.valueOf(this.missionData.getSensitivity()));
     MissionSensitivity _missionSensitivity = new MissionSensitivity(_newLinkedList);
     class $SerializableClosureProxy implements Scope<Address> {
       
-      private final UUID $_uUID;
+      private final UUID $_providerID;
       
-      public $SerializableClosureProxy(final UUID $_uUID) {
-        this.$_uUID = $_uUID;
+      public $SerializableClosureProxy(final UUID $_providerID) {
+        this.$_providerID = $_providerID;
       }
       
       @Override
       public boolean matches(final Address it) {
         UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, $_uUID);
+        return Objects.equal(_uUID, $_providerID);
       }
     }
     final Scope<Address> _function = new Scope<Address>() {
       @Override
       public boolean matches(final Address it) {
         UUID _uUID = it.getUUID();
-        UUID _uUID_1 = occurrence.getSource().getUUID();
-        return Objects.equal(_uUID, _uUID_1);
+        return Objects.equal(_uUID, AnalystRole.this.providerID);
       }
       private Object writeReplace() throws ObjectStreamException {
-        return new SerializableProxy($SerializableClosureProxy.class, occurrence.getSource().getUUID());
+        return new SerializableProxy($SerializableClosureProxy.class, AnalystRole.this.providerID);
       }
     };
     _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(
@@ -279,6 +311,22 @@ public class AnalystRole extends Behavior {
   
   @SyntheticMember
   @PerceptGuardEvaluator
+  private void $guardEvaluator$HyperParametersRequest(final HyperParametersRequest occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$HyperParametersRequest$5(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$SignalID(final SignalID occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$SignalID$3(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
   private void $guardEvaluator$PlatformOrganisationInfo(final PlatformOrganisationInfo occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
@@ -287,18 +335,10 @@ public class AnalystRole extends Behavior {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$SensititvityRequest(final SensititvityRequest occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
-    assert occurrence != null;
-    assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$SensititvityRequest$4(occurrence));
-  }
-  
-  @SyntheticMember
-  @PerceptGuardEvaluator
   private void $guardEvaluator$TOLDOrganisationInfo(final TOLDOrganisationInfo occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$TOLDOrganisationInfo$3(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$TOLDOrganisationInfo$4(occurrence));
   }
   
   @Override
@@ -312,7 +352,7 @@ public class AnalystRole extends Behavior {
     if (getClass() != obj.getClass())
       return false;
     AnalystRole other = (AnalystRole) obj;
-    if (!java.util.Objects.equals(this.myObserver, other.myObserver))
+    if (!java.util.Objects.equals(this.providerID, other.providerID))
       return false;
     return super.equals(obj);
   }
@@ -323,7 +363,7 @@ public class AnalystRole extends Behavior {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
-    result = prime * result + java.util.Objects.hashCode(this.myObserver);
+    result = prime * result + java.util.Objects.hashCode(this.providerID);
     return result;
   }
   

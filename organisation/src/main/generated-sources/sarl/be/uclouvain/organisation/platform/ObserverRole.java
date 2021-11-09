@@ -1,15 +1,19 @@
 package be.uclouvain.organisation.platform;
 
+import be.uclouvain.organisation.Identification;
 import be.uclouvain.organisation.PlatformOrganisationInfo;
 import be.uclouvain.organisation.TOLDOrganisationInfo;
 import be.uclouvain.organisation.platform.AddMission;
+import be.uclouvain.organisation.platform.HyperParametersRequest;
 import be.uclouvain.organisation.platform.LeavePlatform;
-import be.uclouvain.organisation.platform.SensititvityRequest;
+import be.uclouvain.organisation.platform.MissionSensitivity;
 import be.uclouvain.organisation.platform.StopMission;
 import be.uclouvain.organisation.told.util.AlgorithmInfo;
+import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Destroy;
+import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.Initialize;
 import io.sarl.core.InnerContextAccess;
 import io.sarl.core.Logging;
@@ -20,20 +24,28 @@ import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
+import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.Behavior;
+import io.sarl.lang.core.Scope;
+import io.sarl.lang.core.SpaceID;
+import io.sarl.lang.util.SerializableProxy;
+import java.io.ObjectStreamException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.Functions.Function2;
+import org.eclipse.xtext.xbase.lib.MapExtensions;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -63,11 +75,11 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlElementType(21)
 @SuppressWarnings("all")
 public class ObserverRole extends Behavior {
-  protected OpenEventSpace TOLDSpace;
+  protected OpenEventSpace privateTOLDSpace;
   
   protected AgentContext TOLDContext;
   
-  protected OpenEventSpace platformSpace;
+  protected OpenEventSpace privatePlatformSpace;
   
   protected AgentContext platformContext;
   
@@ -90,9 +102,12 @@ public class ObserverRole extends Behavior {
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nType mismatch: cannot convert from UUID to UUID"
-      + "\nType mismatch: cannot convert from UUID to UUID");
+    Object _get = occurrence.parameters[0];
+    this.observerADN = ((AlgorithmInfo) _get);
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    this.selfSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    this.listeners.add(this.getOwner().getID());
+    this.missionSpaceList.put(this.getOwner().getID(), this.selfSpace);
   }
   
   private void $behaviorUnit$Destroy$1(final Destroy occurrence) {
@@ -100,40 +115,149 @@ public class ObserverRole extends Behavior {
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$PlatformOrganisationInfo$2(final PlatformOrganisationInfo occurrence) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nType mismatch: cannot convert from UUID to UUID"
-      + "\nType mismatch: cannot convert from UUID to UUID");
+    this.platformContext = occurrence.context;
+    this.privatePlatformSpace = occurrence.spaceID;
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    this.privatePlatformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    this.platformName = occurrence.platformName;
+    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
+    String _name = this.observerADN.getName();
+    Identification _identification = new Identification(_name);
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.platformContext.getDefaultSpace(), _identification);
   }
   
-  @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$TOLDOrganisationInfo$3(final TOLDOrganisationInfo occurrence) {
     this.TOLDContext = occurrence.context;
-    this.TOLDSpace = occurrence.spaceID;
+    this.privateTOLDSpace = occurrence.spaceID;
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    this.TOLDSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    this.privateTOLDSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
-  private void $behaviorUnit$SensititvityRequest$4(final SensititvityRequest occurrence) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nType mismatch: cannot convert from UUID to UUID");
+  private void $behaviorUnit$HyperParametersRequest$4(final HyperParametersRequest occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    String _substring = occurrence.getSource().getUUID().toString().substring(0, 5);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("received sensitivity request from -" + _substring) + " will send the following sensitivity") + this.sensitivity));
+    final Function2<UUID, OpenEventSpace, Boolean> _function = (UUID p1, OpenEventSpace p2) -> {
+      SpaceID _spaceID = p2.getSpaceID();
+      SpaceID _spaceID_1 = occurrence.getSource().getSpaceID();
+      return Boolean.valueOf(Objects.equal(_spaceID, _spaceID_1));
+    };
+    OpenEventSpace missionSpace = ((OpenEventSpace[])Conversions.unwrapArray(MapExtensions.<UUID, OpenEventSpace>filter(this.missionSpaceList, _function).values(), OpenEventSpace.class))[0];
+    LinkedList<Integer> _xifexpression = null;
+    if (((this.isMaster) == null ? false : (this.isMaster).booleanValue())) {
+      _xifexpression = this.sensitivity;
+    } else {
+      _xifexpression = CollectionLiterals.<Integer>newLinkedList(this.sensitivity.pop());
+    }
+    LinkedList<Integer> s = _xifexpression;
+    MissionSensitivity _missionSensitivity = new MissionSensitivity(s);
+    class $SerializableClosureProxy implements Scope<Address> {
+      
+      private final UUID $_uUID;
+      
+      public $SerializableClosureProxy(final UUID $_uUID) {
+        this.$_uUID = $_uUID;
+      }
+      
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, $_uUID);
+      }
+    }
+    final Scope<Address> _function_1 = new Scope<Address>() {
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        UUID _uUID_1 = occurrence.getSource().getUUID();
+        return Objects.equal(_uUID, _uUID_1);
+      }
+      private Object writeReplace() throws ObjectStreamException {
+        return new SerializableProxy($SerializableClosureProxy.class, occurrence.getSource().getUUID());
+      }
+    };
+    missionSpace.emit(this.getOwner().getID(), _missionSensitivity, _function_1);
   }
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$AddMission$5(final AddMission occurrence) {
-    this.missionSpaceList.put(occurrence.getSource().getUUID(), ((OpenEventSpace) occurrence.SourceEventSpace));
+    UUID clientID = occurrence.getSource().getUUID();
+    this.missionSpaceList.put(clientID, ((OpenEventSpace) occurrence.SourceEventSpace));
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     ((OpenEventSpace) occurrence.SourceEventSpace).register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
-    boolean _contains = this.listeners.contains(occurrence.getSource().getUUID());
+    boolean _contains = this.listeners.contains(clientID);
     if ((!_contains)) {
-      this.listeners.add(occurrence.getSource().getUUID());
+      this.listeners.add(clientID);
+      OpenEventSpace _get = this.missionSpaceList.get(clientID);
+      HyperParametersRequest _hyperParametersRequest = new HyperParametersRequest();
+      class $SerializableClosureProxy implements Scope<Address> {
+        
+        private final UUID clientID;
+        
+        public $SerializableClosureProxy(final UUID clientID) {
+          this.clientID = clientID;
+        }
+        
+        @Override
+        public boolean matches(final Address it) {
+          UUID _uUID = it.getUUID();
+          return Objects.equal(_uUID, clientID);
+        }
+      }
+      final Scope<Address> _function = new Scope<Address>() {
+        @Override
+        public boolean matches(final Address it) {
+          UUID _uUID = it.getUUID();
+          return Objects.equal(_uUID, clientID);
+        }
+        private Object writeReplace() throws ObjectStreamException {
+          return new SerializableProxy($SerializableClosureProxy.class, clientID);
+        }
+      };
+      _get.emit(this.getOwner().getID(), _hyperParametersRequest, _function);
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Requesting missinParameters");
     }
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$StopMission$6(final StopMission occurrence) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nType mismatch: cannot convert implicit first argument from Address to Address");
+    boolean _contains = this.listeners.contains(occurrence.getSource().getUUID());
+    if (_contains) {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("I received the StopMission");
+      DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+      StopMission _stopMission = new StopMission(occurrence.expertID);
+      _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_stopMission);
+      DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+      LeavePlatform _leavePlatform = new LeavePlatform();
+      class $SerializableClosureProxy implements Scope<Address> {
+        
+        private final ObserverRole $_ObserverRole;
+        
+        public $SerializableClosureProxy(final ObserverRole $_ObserverRole) {
+          this.$_ObserverRole = $_ObserverRole;
+        }
+        
+        @Override
+        public boolean matches(final Address it) {
+          boolean _isMe = $_ObserverRole.isMe(it);
+          return Objects.equal(it, Boolean.valueOf(_isMe));
+        }
+      }
+      final Scope<Address> _function = new Scope<Address>() {
+        @Override
+        public boolean matches(final Address it) {
+          boolean _isMe = ObserverRole.this.isMe(it);
+          return Objects.equal(it, Boolean.valueOf(_isMe));
+        }
+        private Object writeReplace() throws ObjectStreamException {
+          return new SerializableProxy($SerializableClosureProxy.class, ObserverRole.this);
+        }
+      };
+      _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1.emit(_leavePlatform, _function);
+    }
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
@@ -196,6 +320,20 @@ public class ObserverRole extends Behavior {
     return $castSkill(InnerContextAccess.class, this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS);
   }
   
+  @Extension
+  @ImportedCapacityFeature(ExternalContextAccess.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS;
+  
+  @SyntheticMember
+  @Pure
+  private ExternalContextAccess $CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS == null || this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS = $getSkill(ExternalContextAccess.class);
+    }
+    return $castSkill(ExternalContextAccess.class, this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS);
+  }
+  
   @SyntheticMember
   @PerceptGuardEvaluator
   private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
@@ -218,6 +356,14 @@ public class ObserverRole extends Behavior {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$StopMission$6(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$HyperParametersRequest(final HyperParametersRequest occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$HyperParametersRequest$4(occurrence));
   }
   
   @SyntheticMember
@@ -246,14 +392,6 @@ public class ObserverRole extends Behavior {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$SensititvityRequest(final SensititvityRequest occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
-    assert occurrence != null;
-    assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$SensititvityRequest$4(occurrence));
-  }
-  
-  @SyntheticMember
-  @PerceptGuardEvaluator
   private void $guardEvaluator$TOLDOrganisationInfo(final TOLDOrganisationInfo occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
@@ -278,7 +416,7 @@ public class ObserverRole extends Behavior {
       return false;
     if (other.isMaster != null && other.isMaster.booleanValue() != this.isMaster.booleanValue())
       return false;
-    if (!Objects.equals(this.platformName, other.platformName))
+    if (!java.util.Objects.equals(this.platformName, other.platformName))
       return false;
     return super.equals(obj);
   }
@@ -289,8 +427,8 @@ public class ObserverRole extends Behavior {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
-    result = prime * result + Objects.hashCode(this.isMaster);
-    result = prime * result + Objects.hashCode(this.platformName);
+    result = prime * result + java.util.Objects.hashCode(this.isMaster);
+    result = prime * result + java.util.Objects.hashCode(this.platformName);
     return result;
   }
   

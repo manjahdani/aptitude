@@ -87,16 +87,13 @@ agent Algorithm extends Paraddis{
 			registerBehavior(new AlgorithmEntity(this))
 			switch(ADN.task){
 				case "COUNTER": {
-					registerBehavior(new CompetitiveCounterRole(this), ADN, occurrence.parameters.get(1),
-						occurrence.parameters.get(2))
+					registerBehavior(new CompetitiveCounterRole(this), ADN)
 				}
 				case "TRACKER": {
-					registerBehavior(new TrackerRole(this), ADN, occurrence.parameters.get(1),
-						occurrence.parameters.get(2))
+					registerBehavior(new TrackerRole(this), ADN)
 				}
 				case "DETECTOR": {
-					registerBehavior(new DetectorRole(this), ADN, occurrence.parameters.get(1),
-						occurrence.parameters.get(2))
+					registerBehavior(new DetectorRole(this), ADN)
 				}
 			}
 		 }
@@ -120,14 +117,13 @@ agent Algorithm extends Paraddis{
 				"clones image with intention :" + occurrence.task + " - name - " + occurrence.name + "& belief : " +
 					occurrence.belief + "from " + occurrence.source.UUID.toString.substring(0, 5))
 			val cloneID = UUID.randomUUID
-			subHolons.put(occurrence.ContextID, cloneID)
-			spawnInContextWithID(Algorithm, cloneID, occurrence.ContextID, ADN.cloneChild , occurrence.SpaceID, occurrence.sourceID) //@FIXME : improper names // Maybe the clone should directly integrate the incrementandLevel
+			subHolons.put(occurrence.contextID, cloneID)
+			spawnInContextWithID(Algorithm, cloneID, occurrence.contextID, ADN.cloneChild) //@FIXME : improper names // Maybe the clone should directly integrate the incrementandLevel
 		}}//@FIXME we could have a table of each child, so that we could direct the information to it. 
 	on AlgorithmJoinPlatform {
 		info("receives request to join platform from : " + occurrence.source.UUID.toString.substring(0, 5))
 		wake(
-			new AlgorithmNeeded(occurrence.contextID, occurrence.missionSpace, occurrence.name, ADN.task, ADN.belief,
-				occurrence.sourceID)
+			new AlgorithmNeeded(occurrence.contextID, occurrence.name, ADN.task, ADN.belief)
 		)
 	}
 	// @FIXME : AuthorizationToJoin is too vague

@@ -1,0 +1,21 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform.util
+
+/** 
+ * @author manjah
+ * 
+ */
+class MissionParameters {
+	
+	var sensitivity : int
+
+	new (s : int) {
+		this.sensitivity = s
+	}
+
+	def getSensitivity() {
+		return this.sensitivity
+	}
+}

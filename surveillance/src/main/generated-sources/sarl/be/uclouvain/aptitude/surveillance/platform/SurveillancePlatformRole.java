@@ -5,7 +5,6 @@ import be.uclouvain.organisation.AddMember;
 import be.uclouvain.organisation.Identification;
 import be.uclouvain.organisation.LocalDatabaseRequest;
 import be.uclouvain.organisation.SignalID;
-import be.uclouvain.organisation.platform.AddAlgorithm;
 import be.uclouvain.organisation.platform.AddObserver;
 import be.uclouvain.organisation.platform.AlgorithmJoinPlatform;
 import be.uclouvain.organisation.platform.PlatformCapacity;
@@ -77,24 +76,8 @@ public class SurveillancePlatformRole extends PlatformRole {
     this.participants.put(occurrence.name, occurrence.getSource().getUUID());
   }
   
-  @SuppressWarnings("potential_field_synchronization_problem")
-  private void $behaviorUnit$AddAlgorithm$2(final AddAlgorithm occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    String _name = occurrence.algorithmInfo.getName();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((("recruiting agent algorithm " + _name) + " to join our platform "));
-    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    OpenEventSpace _get = this.agentAlgorithm.get(occurrence.algorithmInfo.getTask());
-    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-    AgentContext _innerContext = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext();
-    String _name_1 = occurrence.algorithmInfo.getName();
-    String _task = occurrence.algorithmInfo.getTask();
-    UUID _uUID = occurrence.getSource().getUUID();
-    AlgorithmJoinPlatform _algorithmJoinPlatform = new AlgorithmJoinPlatform(_innerContext, occurrence.missionSpace, _name_1, _task, _uUID);
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(_get, _algorithmJoinPlatform);
-  }
-  
   @SuppressWarnings({ "discouraged_occurrence_readonly_use", "potential_field_synchronization_problem" })
-  private void $behaviorUnit$AddObserver$3(final AddObserver occurrence) {
+  private void $behaviorUnit$AddObserver$2(final AddObserver occurrence) {
     String signal = occurrence.signalProvider.getName();
     String receiver = occurrence.signalReceiver.getName();
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
@@ -128,7 +111,7 @@ public class SurveillancePlatformRole extends PlatformRole {
     }
   }
   
-  private void $behaviorUnit$AgentAlgorithm$4(final AgentAlgorithm occurrence) {
+  private void $behaviorUnit$AgentAlgorithm$3(final AgentAlgorithm occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     String _substring = occurrence.getSource().getUUID().toString().substring(0, 5);
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("encountered : " + occurrence.name) + " - ") + _substring));
@@ -261,7 +244,7 @@ public class SurveillancePlatformRole extends PlatformRole {
   private void $guardEvaluator$AddObserver(final AddObserver occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AddObserver$3(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AddObserver$2(occurrence));
   }
   
   @SyntheticMember
@@ -269,15 +252,7 @@ public class SurveillancePlatformRole extends PlatformRole {
   private void $guardEvaluator$AgentAlgorithm(final AgentAlgorithm occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AgentAlgorithm$4(occurrence));
-  }
-  
-  @SyntheticMember
-  @PerceptGuardEvaluator
-  private void $guardEvaluator$AddAlgorithm(final AddAlgorithm occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
-    assert occurrence != null;
-    assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AddAlgorithm$2(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AgentAlgorithm$3(occurrence));
   }
   
   @SyntheticMember

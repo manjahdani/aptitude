@@ -50,14 +50,14 @@ behavior SurveillancePlatformRole extends PlatformRole {
 		participants.put(occurrence.name, occurrence.source.UUID)
 	}
 
-	@SuppressWarnings("potential_field_synchronization_problem")
-	on AddAlgorithm {
-		info("recruiting agent algorithm "+ occurrence.algorithmInfo.name + " to join our platform ")
-		agentAlgorithm.get(occurrence.algorithmInfo.task).emit(
-			new AlgorithmJoinPlatform(innerContext, occurrence.missionSpace, occurrence.algorithmInfo.name,
-			occurrence.algorithmInfo.task,
-				occurrence.source.UUID))
-	} //Revoir
+//	@SuppressWarnings("potential_field_synchronization_problem")
+//	on AddAlgorithm {
+//		info("recruiting agent algorithm "+ occurrence.algorithmInfo.name + " to join our platform ")
+//		agentAlgorithm.get(occurrence.algorithmInfo.task).emit(
+//			new AlgorithmJoinPlatform(innerContext, occurrence.missionSpace, occurrence.algorithmInfo.name,
+//			occurrence.algorithmInfo.task,
+//				occurrence.source.UUID))
+//	} //Revoir @FIXME Obsolete 
 	
 	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
 	on AddObserver {
