@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * @TODO : to comment
+ * @TODO : to comment and to generalize
  * 
  * @author $Author: manjahdani$
  * @version $0.0.1$
@@ -20,19 +20,31 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlElementType(10)
 @SuppressWarnings("all")
 public class MissionData {
-  private final UUID missionID;
+  private UUID missionID;
   
-  private final UUID expertID;
+  private UUID expertID;
   
-  private final String location;
+  private UUID platformID;
   
-  private final int sensitivity;
+  private String location;
+  
+  private int sensitivity;
   
   public MissionData(final UUID missionID, final UUID expertID, final String location, final int sensitivity) {
     this.missionID = missionID;
     this.expertID = expertID;
     this.location = location;
     this.sensitivity = sensitivity;
+  }
+  
+  @Pure
+  public UUID getPlatformID() {
+    return this.platformID;
+  }
+  
+  public MissionData setPlatformID(final UUID id) {
+    this.platformID = id;
+    return this;
   }
   
   @Pure
@@ -70,6 +82,8 @@ public class MissionData {
       return false;
     if (!Objects.equals(this.expertID, other.expertID))
       return false;
+    if (!Objects.equals(this.platformID, other.platformID))
+      return false;
     if (!Objects.equals(this.location, other.location))
       return false;
     if (other.sensitivity != this.sensitivity)
@@ -85,6 +99,7 @@ public class MissionData {
     final int prime = 31;
     result = prime * result + Objects.hashCode(this.missionID);
     result = prime * result + Objects.hashCode(this.expertID);
+    result = prime * result + Objects.hashCode(this.platformID);
     result = prime * result + Objects.hashCode(this.location);
     result = prime * result + Integer.hashCode(this.sensitivity);
     return result;

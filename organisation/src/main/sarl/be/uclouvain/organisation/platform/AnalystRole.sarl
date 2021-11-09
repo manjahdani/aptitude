@@ -4,6 +4,7 @@ import be.uclouvain.organisation.AuthorizationToJoin
 import be.uclouvain.organisation.LocalDatabaseRequest
 import be.uclouvain.organisation.PlatformOrganisationInfo
 import be.uclouvain.organisation.TOLDOrganisationInfo
+import be.uclouvain.organisation.platform.util.MissionData
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
@@ -12,10 +13,9 @@ import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import io.sarl.lang.core.AgentContext
-import io.sarl.lang.core.EventSpace
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger
-import be.uclouvain.organisation.platform.util.MissionData
+import be.uclouvain.organisation.AuthorizationToPerformMission
 
 /** 
  * 
@@ -47,10 +47,11 @@ behavior AnalystRole {
 	protected var TOLDContext : AgentContext
 	protected var TOLDSpace : OpenEventSpace // Private channel
 
+	protected var missionData : MissionData
+	
 	protected var missionSpace : OpenEventSpace
 	
-	
-	val sensitivity = new AtomicInteger()
+
 	/** 
 	 * Receiving this event, the behavior has to update its fields of perception.
 	 */
@@ -59,40 +60,49 @@ behavior AnalystRole {
 	
 	var myObserver : UUID
 	@SuppressWarnings("potential_field_synchronization_problem")
-	on Initialize 
-		sensitivity.set((occurrence.parameters.get(0) as MissionData).sensitivity)
-		info("starts mission of vehicle counting with sensitivity:  " + availableObservers.get(sensitivity.get))
+	on Initialize {
+		
+		missionData = occurrence.parameters.get(0) as MissionData
+		info("starts mission of vehicle counting with sensitivity:  " + availableObservers.get(missionData.sensitivity))
 	}
 	
 	@SuppressWarnings("potential_field_synchronization_problem")
 	
 	// @FIXME There are global behavior organisational Behavior
 	on PlatformOrganisationInfo {
-		//info("Joining the Platform organisation: " + occurrence.spaceID + " (" + occurrence.context + ").")
-		platformContext = occurrence.context
-		platformSpace = occurrence.spaceID
-		platformSpace.register(asEventListener)
-		info("asks for algorithm performing vehicle counting to platform")
-		platformSpace.emit(new LocalDatabaseRequest(defaultContext))[it.UUID == platformContext.ID]
+		info("Joined platform organisation: " + occurrence.spaceID + " (" + occurrence.context + ").")
+		if (occurrence.context.ID == missionData.platformID) {
+			info("Sending add mission to - " + occurrence.context.ID)
+			platformContext = occurrence.context
+			platformSpace = occurrence.spaceID
+			platformSpace.register(asEventListener)
+			info("starts mission with spaceID - " + missionData.missionID)
+			platformSpace.emit(new AddMission(getDefaultSpace(), missionData))[it.UUID == missionData.platformID]
+			info("asks for algorithm performing vehicle counting to platform")
+		}
+	}
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on AuthorizationToPerformMission {
+		info("Received authorisation to perform a mission" + occurrence.missionSpace.spaceID.ID)
+		missionSpace = occurrence.missionSpace;
+		missionSpace.register(asEventListener)
+		//platformSpace.emit(new LocalDatabaseRequest(defaultContext))[it.UUID == platformContext.ID]
 		platformSpace.emit(new AddAlgorithm(missionSpace, new AlgorithmInfo("APTITUDE", "COUNTER")))
 	}
 	@SuppressWarnings("potential_field_synchronization_problem")
-	on AuthorizationToJoin {
-		info("Received authorization to perform a mission" + occurrence.defaultSpaceID)
-		missionSpace = occurrence.defaultSpaceID;
-		missionSpace.register(asEventListener)
-	}
-	@SuppressWarnings("potential_field_synchronization_problem")
-	on TOLDOrganisationInfo{
+	on TOLDOrganisationInfo {
+		info("Joined TOLD organisation: " + occurrence.spaceID + " (" + occurrence.context + ").")
 		TOLDContext = occurrence.context
 		TOLDSpace = occurrence.spaceID
 		TOLDSpace.register(asEventListener)
 	}
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on SensititvityRequest{
-		info("user sensitivity is : " + availableObservers.get(sensitivity.get))
+		info("user sensitivity is : " + availableObservers.get(missionData.sensitivity))
 		myObserver=occurrence.source.UUID
-		emit(platformContext.defaultSpace, new MissionSensitivity(newLinkedList(sensitivity.get))
+		emit(
+			platformContext.defaultSpace,
+			new MissionSensitivity(newLinkedList(missionData.sensitivity))
 		)[it.UUID==occurrence.source.UUID]
 	}
 }

@@ -15,6 +15,7 @@ import java.util.HashMap
 import java.util.UUID
 import be.uclouvain.organisation.PlatformOrganisationInfo
 import io.sarl.core.ExternalContextAccess
+import be.uclouvain.organisation.AuthorizationToJoinContext
 
 /** 
  * Trusted Observations and Learning Database is a database aiming to achieve two goals. 
@@ -61,7 +62,8 @@ behavior TOLDRole {
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on AddMember{
 		info("received add member from " + occurrence.source.UUID.toString.substring(0, 5))
-		occurrence.SourceEventSpace.emit(this.ID, new AuthorizationToJoin(innerContext, innerContext.getDefaultSpace as OpenEventSpace, occurrence.source.getUUID))
+		occurrence.SourceEventSpace.emit(this.ID,
+			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID))
 	}
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on ReadEntry {

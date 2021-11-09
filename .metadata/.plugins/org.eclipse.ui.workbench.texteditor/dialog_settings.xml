@@ -6,23 +6,23 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="starts mission with spaceID"/>
+		<item key="selection" value=""/>
 		<list key="findhistory">
-			<item value="9644"/>
+			<item value="Activating access"/>
+			<item value="receives authorisation to join"/>
+			<item value="clones image with intention :"/>
+			<item value="receives request to join platform from"/>
+			<item value="I believe in"/>
 			<item value="starts mission with spaceID"/>
+			<item value="receives authorisation to join the context of"/>
+			<item value="Received the request to add a mission"/>
+			<item value="9644"/>
 			<item value="Received authorization to perform a mission"/>
 			<item value="receives authorisation to join the context"/>
 			<item value="Context"/>
 			<item value="ae299"/>
 			<item value="d5ca4"/>
 			<item value="2c38fb7f-f363-4f6e-877b-110b1f07cc77"/>
-			<item value="dd50a"/>
-			<item value="receives authorisation to join the context of"/>
-			<item value="met TOLD"/>
-			<item value="new participant: APTITUDE"/>
-			<item value="new atomic agent with intention: COUNTER &amp; belief : NoneForTheMoment"/>
-			<item value="Let the competition start !"/>
-			<item value="8b22c677-aff9-4ee1-b97f-f83b835cd880-ALGORITHM-TinyYOLO-1] clones image with intention :none&amp; belief : DETECTOR"/>
 		</list>
 		<list key="replacehistory">
 			<item value="TOLD"/>
@@ -36,8 +36,8 @@
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="1403"/>
-		<item key="DIALOG_Y_ORIGIN" value="267"/>
+		<item key="DIALOG_X_ORIGIN" value="1464"/>
+		<item key="DIALOG_Y_ORIGIN" value="106"/>
 		<item key="DIALOG_WIDTH" value="284"/>
 		<item key="DIALOG_HEIGHT" value="391"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>

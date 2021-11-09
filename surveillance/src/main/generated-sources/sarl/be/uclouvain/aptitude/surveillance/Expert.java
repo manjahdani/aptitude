@@ -3,7 +3,6 @@ package be.uclouvain.aptitude.surveillance;
 import be.uclouvain.aptitude.surveillance.Paraddis;
 import be.uclouvain.organisation.AuthorizationToJoinContext;
 import be.uclouvain.organisation.RequestToJoin;
-import be.uclouvain.organisation.platform.AddMission;
 import be.uclouvain.organisation.platform.AnalystRole;
 import be.uclouvain.organisation.platform.NewMission;
 import be.uclouvain.organisation.platform.StopMission;
@@ -28,7 +27,6 @@ import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.DynamicSkillProvider;
-import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.util.SerializableProxy;
 import java.io.ObjectStreamException;
@@ -63,7 +61,7 @@ public class Expert extends Paraddis {
   
   private HashMap<String, OpenEventSpace> encounteredPlatforms = new HashMap<String, OpenEventSpace>();
   
-  private OpenEventSpace publicChannel = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER().getInnerContext().<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, UUID.randomUUID());
+  private OpenEventSpace publicChannel;
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
@@ -74,6 +72,8 @@ public class Expert extends Paraddis {
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     EntityRole _entityRole = new EntityRole(this);
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_entityRole);
+    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+    this.publicChannel = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, UUID.randomUUID());
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     this.publicChannel.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.asEventListener());
   }
@@ -85,48 +85,41 @@ public class Expert extends Paraddis {
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("has a new mission " + _location));
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     AnalystRole _analystRole = new AnalystRole(this);
-    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_analystRole, occurrence.mission);
-    boolean _isInContext = this.isInContext(occurrence.platformOpenChannel.getSpaceID().getContextID());
+    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_analystRole, 
+      occurrence.mission.setPlatformID(occurrence.platformOpenChannel.getSpaceID().getContextID()));
+    boolean _isInContext = this.isInContext(occurrence.mission.getPlatformID());
     if ((!_isInContext)) {
       ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
       RequestToJoin _requestToJoin = new RequestToJoin(this.publicChannel);
       class $SerializableClosureProxy implements Scope<Address> {
         
-        private final UUID $_contextID;
+        private final UUID $_platformID;
         
-        public $SerializableClosureProxy(final UUID $_contextID) {
-          this.$_contextID = $_contextID;
+        public $SerializableClosureProxy(final UUID $_platformID) {
+          this.$_platformID = $_platformID;
         }
         
         @Override
         public boolean matches(final Address it) {
           UUID _uUID = it.getUUID();
-          return Objects.equal(_uUID, $_contextID);
+          return Objects.equal(_uUID, $_platformID);
         }
       }
       final Scope<Address> _function = new Scope<Address>() {
         @Override
         public boolean matches(final Address it) {
           UUID _uUID = it.getUUID();
-          UUID _contextID = occurrence.platformOpenChannel.getSpaceID().getContextID();
-          return Objects.equal(_uUID, _contextID);
+          UUID _platformID = occurrence.mission.getPlatformID();
+          return Objects.equal(_uUID, _platformID);
         }
         private Object writeReplace() throws ObjectStreamException {
-          return new SerializableProxy($SerializableClosureProxy.class, occurrence.platformOpenChannel.getSpaceID().getContextID());
+          return new SerializableProxy($SerializableClosureProxy.class, occurrence.mission.getPlatformID());
         }
       };
       _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(occurrence.platformOpenChannel, _requestToJoin, _function);
     }
     this.missionList.put(occurrence.mission.getMissionID(), occurrence.mission.getLocation());
     this.encounteredPlatforms.put(occurrence.mission.getLocation(), occurrence.platformOpenChannel);
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    UUID _iD = occurrence.platformOpenChannel.getSpaceID().getID();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("starts mission with spaceID - " + _iD));
-    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-    EventSpace _defaultSpace = _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultSpace();
-    AddMission _addMission = new AddMission(_defaultSpace, occurrence.mission);
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER_1.emit(occurrence.platformOpenChannel, _addMission);
   }
   
   @SuppressWarnings({ "potential_field_synchronization_problem", "discouraged_occurrence_readonly_use" })
@@ -157,9 +150,9 @@ public class Expert extends Paraddis {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     ConcurrentLinkedDeque<AgentContext> _allContexts = _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.getAllContexts();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("all experts context" + _allContexts));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("all experts context -- " + _allContexts));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("DefaultSpaceJoined" + occurrence.defaultSpaceID));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("DefaultSpaceJoined -- " + occurrence.defaultSpaceID));
   }
   
   @Pure

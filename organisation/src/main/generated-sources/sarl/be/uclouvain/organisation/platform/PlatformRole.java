@@ -1,6 +1,7 @@
 package be.uclouvain.organisation.platform;
 
 import be.uclouvain.organisation.AuthorizationToJoinContext;
+import be.uclouvain.organisation.AuthorizationToPerformMission;
 import be.uclouvain.organisation.PlatformOrganisationInfo;
 import be.uclouvain.organisation.RequestToJoin;
 import be.uclouvain.organisation.TOLDOrganisationInfo;
@@ -118,8 +119,43 @@ public class PlatformRole extends Behavior {
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$AddMission$2(final AddMission occurrence) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nInvalid number of arguments. The constructor AuthorizationToJoin(AgentContext, OpenEventSpace, UUID) is not applicable for the arguments (AgentContext,OpenEventSpace,UUID,MissionData)");
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    UUID _uUID = occurrence.getSource().getUUID();
+    String _location = occurrence.MissionData.getLocation();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((("Received the request to add a mission " + _uUID) + _location));
+    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+    this.missionSpace.put(occurrence.MissionData.getMissionID(), 
+      _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, occurrence.MissionData.getMissionID()));
+    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
+    OpenEventSpace _get = this.missionSpace.get(occurrence.MissionData.getMissionID());
+    AuthorizationToPerformMission _authorizationToPerformMission = new AuthorizationToPerformMission(_get);
+    class $SerializableClosureProxy implements Scope<Address> {
+      
+      private final UUID $_uUID;
+      
+      public $SerializableClosureProxy(final UUID $_uUID) {
+        this.$_uUID = $_uUID;
+      }
+      
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, $_uUID);
+      }
+    }
+    final Scope<Address> _function = new Scope<Address>() {
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        UUID _uUID_1 = occurrence.getSource().getUUID();
+        return Objects.equal(_uUID, _uUID_1);
+      }
+      private Object writeReplace() throws ObjectStreamException {
+        return new SerializableProxy($SerializableClosureProxy.class, occurrence.getSource().getUUID());
+      }
+    };
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(
+      occurrence.SourceEventSpace, _authorizationToPerformMission, _function);
   }
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")

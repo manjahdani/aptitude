@@ -2,12 +2,11 @@
  */
 package be.uclouvain.organisation.platform
 
-import be.uclouvain.organisation.AuthorizationToJoin
-import be.uclouvain.organisation.JoinOrganisation
+import be.uclouvain.organisation.AuthorizationToJoinContext
 import be.uclouvain.organisation.PlatformOrganisationInfo
+import be.uclouvain.organisation.RequestToJoin
 import be.uclouvain.organisation.TOLDOrganisationInfo
 import io.sarl.core.Behaviors
-import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
@@ -17,11 +16,8 @@ import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
 import java.util.HashMap
 import java.util.UUID
-import be.uclouvain.organisation.LocalDatabaseRequest
-import be.uclouvain.organisation.JoinPlatform
 import java.util.concurrent.atomic.AtomicReference
-import be.uclouvain.organisation.RequestToJoin
-import be.uclouvain.organisation.AuthorizationToJoinContext
+import be.uclouvain.organisation.AuthorizationToPerformMission
 
 /** 
  * The Platform manages the storage and/or computing of resources. A Platform could include sub-Platforms (holonic). 
@@ -73,13 +69,13 @@ behavior PlatformRole {
 		// RuleManagement(new MembershipInfoRule(occurrence.source, occurrence.SourceEventSpace, occurrence.entityData))
 		// if (true) {
 		
+		info("Received the request to add a mission " + occurrence.source.UUID + occurrence.MissionData.location)
 		
 		missionSpace.put(occurrence.MissionData.missionID,
 			innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, occurrence.MissionData.missionID))
 		emit(
 			occurrence.SourceEventSpace,
-			new AuthorizationToJoin(innerContext, missionSpace.get(occurrence.MissionData.missionID),
-				occurrence.source.getUUID, occurrence.MissionData)
+			new AuthorizationToPerformMission(missionSpace.get(occurrence.MissionData.missionID))
 		)[it.UUID == occurrence.source.getUUID]
 	}
 	

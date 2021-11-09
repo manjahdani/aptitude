@@ -12,8 +12,8 @@ import java.util.UUID
 event AuthorizationToJoinContext {
 
 	/** 
-		 * Context of the holon that fired the event    
-	  */
+	 * Context of the holon that fired the event    
+	 */
 	val contextID : UUID
 
 	/** 

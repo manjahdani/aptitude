@@ -117,8 +117,7 @@ behavior ObserverRole {
 	//@FIXME SensitivityRequest seems weird. 
 	on SensititvityRequest {
 
-		info("received sensitivity request from " + occurrence.source.UUID.toString.substring(0, 5))
-		info("Thank you: " + occurrence.source.UUID + "  use the following sensitivity" + sensitivity)
+		info("received sensitivity request from -" + occurrence.source.UUID.toString.substring(0, 5) + " will send the following sensitivity" + sensitivity)
 		var missionSpace = (missionSpaceList.filter[p1, p2|p2.spaceID == occurrence.source.spaceID]).values.get(0) // @FIXME weird
 		var s = isMaster ? sensitivity:newLinkedList(sensitivity.pop) // @FIXME weird
 		missionSpace.emit(this.ID, new MissionSensitivity(s))[it.UUID == occurrence.source.UUID]

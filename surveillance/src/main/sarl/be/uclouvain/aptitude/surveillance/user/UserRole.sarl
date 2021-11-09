@@ -94,7 +94,7 @@ behavior UserRole extends ElementRole {
 		
 		info("receives authorisation for mission")
 		wake(
-			new NewMission(occurrence.mission, occurrence.platformOpenChanel)) [
+			new NewMission(occurrence.mission, occurrence.platformOpenChannel)) [
 			it.UUID == occurrence.mission.expertID
 		]
 	}

@@ -47,4 +47,7 @@ public class AuthorizedMission extends Event {
     builder.add("mission", this.mission);
     builder.add("platformOpenChannel", this.platformOpenChannel);
   }
+  
+  @SyntheticMember
+  private static final long serialVersionUID = 2796941441L;
 }

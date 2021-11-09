@@ -3,7 +3,7 @@ package be.uclouvain.organisation.platform.util
 import java.util.UUID
 
 /** 
- * @TODO : to comment
+ * @TODO : to comment and to generalize
  * 
  * @author $Author: manjahdani$
  * @version $0.0.1$
@@ -13,16 +13,25 @@ import java.util.UUID
  */
 class MissionData {
 	
-	val missionID : UUID
-	val expertID : UUID
-	val location : String
-	val sensitivity : int
+	var missionID : UUID
+	var expertID : UUID
+	var platformID : UUID
+	var location : String
+	var sensitivity : int
 
 	new (missionID : UUID, expertID : UUID, location : String, sensitivity : int) {
 		this.missionID=missionID
 		this.expertID = expertID
 		this.location = location
 		this.sensitivity = sensitivity
+	}
+	
+	def getPlatformID{
+		return this.platformID
+	}
+	def setPlatformID (id: UUID) {
+		this.platformID = id; 
+		return this
 	}
 	
 	def getMissionID{

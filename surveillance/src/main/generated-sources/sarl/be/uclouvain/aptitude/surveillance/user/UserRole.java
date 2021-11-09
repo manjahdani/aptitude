@@ -173,8 +173,36 @@ public class UserRole extends ElementRole {
   }
   
   private void $behaviorUnit$AuthorizedMission$3(final AuthorizedMission occurrence) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nThe method or field platformOpenChanel is undefined for the type AuthorizedMission");
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("receives authorisation for mission");
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    NewMission _newMission = new NewMission(occurrence.mission, occurrence.platformOpenChannel);
+    class $SerializableClosureProxy implements Scope<Address> {
+      
+      private final UUID $_expertID;
+      
+      public $SerializableClosureProxy(final UUID $_expertID) {
+        this.$_expertID = $_expertID;
+      }
+      
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, $_expertID);
+      }
+    }
+    final Scope<Address> _function = new Scope<Address>() {
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        UUID _expertID = occurrence.mission.getExpertID();
+        return Objects.equal(_uUID, _expertID);
+      }
+      private Object writeReplace() throws ObjectStreamException {
+        return new SerializableProxy($SerializableClosureProxy.class, occurrence.mission.getExpertID());
+      }
+    };
+    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_newMission, _function);
   }
   
   @Pure

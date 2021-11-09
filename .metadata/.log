@@ -7402,3 +7402,1471 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64
 
 !ENTRY io.sarl.lang.ui 4 0 2021-11-04 11:06:40.491
 !MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:16:42.497
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/surveillance/src/main/sarl/be/uclouvain/aptitude/surveillance/user/UserRole.sarl. Reconciliation of the editor is forced.
+!SESSION 2021-11-04 12:31:42.286 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_211
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_GB
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 12:35:25.366
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 12:35:44.606
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 12:35:44.687
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:46:53.986
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY org.apache.log4j 4 0 2021-11-04 12:51:41.696
+!MESSAGE org.eclipse.xtext.ui.editor.hover.html.DefaultEObjectHoverProvider  - Error on computation of hover information. No hover information available for org.eclipse.xtext.xbase.impl.XConstructorCallImplCustom@41eef2d3 (invalidFeatureIssueCode: null, validFeature: false, explicitConstructorCall: true, anonymousClassConstructorCall: false) at offset: 3574, length: 3
+
+!STACK 0
+org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.jdt.internal.core.AbstractClassFile.getClassFileContent(AbstractClassFile.java:213)
+	at org.eclipse.jdt.internal.core.ModularClassFile.getJarBinaryModuleInfo(ModularClassFile.java:171)
+	at org.eclipse.jdt.internal.core.ModularClassFile.getBinaryModuleInfo(ModularClassFile.java:136)
+	at org.eclipse.jdt.internal.core.ModularClassFile.buildStructure(ModularClassFile.java:55)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:268)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:596)
+	at org.eclipse.jdt.internal.core.ModularClassFile.getModule(ModularClassFile.java:298)
+	at org.eclipse.jdt.internal.core.PackageFragmentRoot.getSourceModuleDescription(PackageFragmentRoot.java:928)
+	at org.eclipse.jdt.internal.core.PackageFragmentRoot.getModuleDescription(PackageFragmentRoot.java:904)
+	at org.eclipse.jdt.internal.core.JarPackageFragmentRoot.getModuleDescription(JarPackageFragmentRoot.java:342)
+	at org.eclipse.jdt.internal.core.NameLookup.getModuleDescription(NameLookup.java:911)
+	at org.eclipse.jdt.internal.core.SearchableEnvironment.getModuleDescription(SearchableEnvironment.java:987)
+	at org.eclipse.jdt.internal.core.SearchableEnvironment.getModulesDeclaringPackage(SearchableEnvironment.java:926)
+	at org.eclipse.jdt.internal.compiler.env.IModuleAwareNameEnvironment.getUniqueModulesDeclaringPackage(IModuleAwareNameEnvironment.java:113)
+	at org.eclipse.jdt.internal.compiler.lookup.ModuleBinding.getVisiblePackage(ModuleBinding.java:583)
+	at org.eclipse.jdt.internal.compiler.lookup.ModuleBinding.getTopLevelPackage(ModuleBinding.java:552)
+	at org.eclipse.jdt.internal.compiler.lookup.LookupEnvironment.getTopLevelPackage(LookupEnvironment.java:1652)
+	at org.eclipse.jdt.internal.compiler.lookup.CompilationUnitScope.getDefaultImports(CompilationUnitScope.java:681)
+	at org.eclipse.jdt.internal.compiler.lookup.CompilationUnitScope.checkAndSetImports(CompilationUnitScope.java:240)
+	at org.eclipse.jdt.internal.compiler.lookup.LookupEnvironment.completeTypeBindings(LookupEnvironment.java:583)
+	at org.eclipse.jdt.internal.codeassist.SelectionEngine.selectType(SelectionEngine.java:1636)
+	at org.eclipse.jdt.internal.core.NamedMember.resolveType(NamedMember.java:328)
+	at org.eclipse.jdt.internal.core.NamedMember.resolveType(NamedMember.java:270)
+	at org.eclipse.xtext.common.types.util.jdt.JavaElementFinder$Implementation.toQualifiedTypeName(JavaElementFinder.java:210)
+	at org.eclipse.xtext.common.types.util.jdt.JavaElementFinder$Implementation.toQualifiedRawTypeName(JavaElementFinder.java:195)
+	at org.eclipse.xtext.common.types.util.jdt.JavaElementFinder$Implementation.doParametersMatch(JavaElementFinder.java:165)
+	at org.eclipse.xtext.common.types.util.jdt.JavaElementFinder$Implementation.caseJvmConstructor(JavaElementFinder.java:237)
+	at org.eclipse.xtext.common.types.util.jdt.JavaElementFinder$Implementation.caseJvmConstructor(JavaElementFinder.java:1)
+	at org.eclipse.xtext.common.types.util.TypesSwitch.doSwitch(TypesSwitch.java:339)
+	at org.eclipse.emf.ecore.util.Switch.doSwitch(Switch.java:53)
+	at org.eclipse.emf.ecore.util.Switch.doSwitch(Switch.java:69)
+	at org.eclipse.xtext.common.types.util.jdt.JavaElementFinder$Implementation.doSwitch(JavaElementFinder.java:266)
+	at org.eclipse.xtext.common.types.util.jdt.JavaElementFinder.internalFindElementFor(JavaElementFinder.java:63)
+	at org.eclipse.xtext.common.types.util.jdt.JavaElementFinder.findElementFor(JavaElementFinder.java:45)
+	at org.eclipse.xtext.xbase.ui.hover.XbaseHoverProvider.getHoverInfo(XbaseHoverProvider.java:121)
+	at org.eclipse.xtend.ide.hover.XtendHoverProvider.getHoverInfo(XtendHoverProvider.java:34)
+	at org.eclipse.xtext.ui.editor.hover.html.DefaultEObjectHoverProvider$2.getInfo(DefaultEObjectHoverProvider.java:539)
+	at org.eclipse.xtext.ui.editor.hover.DispatchingEObjectTextHover.getHoverInfo(DispatchingEObjectTextHover.java:41)
+	at org.eclipse.xtext.ui.editor.hover.AbstractEObjectHover$2.exec(AbstractEObjectHover.java:94)
+	at org.eclipse.xtext.ui.editor.hover.AbstractEObjectHover$2.exec(AbstractEObjectHover.java:1)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.lambda$tryReadOnly$0(IReadAccess.java:56)
+	at org.eclipse.xtext.resource.OutdatedStateManager.exec(OutdatedStateManager.java:91)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:524)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:52)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:70)
+	at org.eclipse.xtext.ui.editor.hover.AbstractEObjectHover.getHoverInfo2(AbstractEObjectHover.java:89)
+	at org.eclipse.xtext.xbase.ui.hover.XbaseDispatchingEObjectTextHover.getHoverInfo2(XbaseDispatchingEObjectTextHover.java:67)
+	at org.eclipse.xtext.ui.editor.hover.AbstractCompositeHover.getHoverInfo2(AbstractCompositeHover.java:94)
+	at org.eclipse.jface.text.TextViewerHoverManager$4.run(TextViewerHoverManager.java:169)
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:51:55.088
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:51:55.202
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:51:55.739
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:51:55.882
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:51:58.297
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:51:58.388
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:51:58.470
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:51:58.566
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:51:59.101
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:51:59.166
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:52:00.290
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:15.420
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:15.505
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:17.719
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:17.810
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:20.024
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:20.112
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:22.909
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:22.989
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:24.063
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:24.147
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:25.065
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:25.149
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:26.577
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:26.670
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:35.659
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:35.743
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:37.260
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:53:37.345
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:00.555
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:00.640
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:01.445
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:01.524
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:01.990
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:02.075
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:04.482
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:04.569
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:05.754
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:05.842
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:06.450
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:06.535
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:06.983
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:07.073
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:10.390
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:10.479
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:12.147
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:12.229
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:13.404
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:13.488
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:14.248
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:14.334
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:16.691
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:16.775
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:20.977
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:21.061
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:22.781
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:22.867
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:24.290
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:24.898
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:24.899
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:24.977
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:25.435
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:25.530
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:25.617
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:25.700
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:26.403
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:26.436
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:57:29.859
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:58:15.977
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:58:15.979
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:58:16.054
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:58:27.332
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:58:30.896
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:22.434
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:22.518
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:23.556
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:23.645
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:24.886
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:24.972
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:26.425
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:35.426
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:35.434
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:35.459
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:35.549
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:35.650
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:50.702
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:50.755
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:50.757
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:50.765
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:50.765
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 12:59:59.340
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:00.213
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:00.214
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:00.222
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:00.222
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:00.305
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:00.679
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:00.771
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:00.850
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:00.937
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:01.589
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:01.601
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:01.602
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:01.686
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:09.329
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:14.135
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:14.153
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:14.154
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:14.216
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:15.129
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:15.152
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:15.153
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:15.212
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:20.415
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:20.433
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:20.433
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:20.491
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:23.723
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:23.739
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:23.740
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:23.804
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:26.800
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:26.817
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:26.817
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:26.882
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:31.250
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:31.268
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:31.269
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:32.540
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:32.559
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:35.804
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:35.823
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:37.537
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:37.556
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:39.934
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:39.952
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:45.870
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:45.889
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:49.618
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:49.636
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:50.999
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:00:51.019
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:01:06.264
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:01:17.681
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:01:17.681
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:01:17.713
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:01:17.953
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:01:18.035
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:01:18.115
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:01:18.198
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:01:18.905
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:01:18.947
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:01:56.152
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 13:02:26.017
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/told/TOLDRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 14:56:59.765
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/surveillance/src/main/sarl/be/uclouvain/aptitude/surveillance/platform/SurveillancePlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 14:56:59.977
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/surveillance/src/main/sarl/be/uclouvain/aptitude/surveillance/platform/SurveillancePlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 14:57:00.382
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/surveillance/src/main/sarl/be/uclouvain/aptitude/surveillance/platform/SurveillancePlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 14:57:00.423
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/surveillance/src/main/sarl/be/uclouvain/aptitude/surveillance/platform/SurveillancePlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 14:57:02.500
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/surveillance/src/main/sarl/be/uclouvain/aptitude/surveillance/platform/SurveillancePlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 14:57:02.544
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/surveillance/src/main/sarl/be/uclouvain/aptitude/surveillance/platform/SurveillancePlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 14:57:09.593
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/surveillance/src/main/sarl/be/uclouvain/aptitude/surveillance/platform/SurveillancePlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 14:57:09.691
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/surveillance/src/main/sarl/be/uclouvain/aptitude/surveillance/platform/SurveillancePlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 14:57:10.111
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/surveillance/src/main/sarl/be/uclouvain/aptitude/surveillance/platform/SurveillancePlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 15:04:55.909
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.apache.log4j 4 0 2021-11-04 15:05:16.224
+!MESSAGE org.eclipse.xtext.xbase.resource.BatchLinkableResource  - resolution of uriFragment '/0/@xtendTypes.0/@members.10/@expression/@expressions.3/@featureCallArguments.0/@rightOperand/@memberCallTarget/@memberCallTarget' failed.
+
+!STACK 0
+java.lang.IllegalArgumentException: The feature 'rightOperand' is not a valid feature
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eStructuralFeature(BasicEObjectImpl.java:733)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eObjectForURIFragmentSegment(BasicEObjectImpl.java:551)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:811)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:787)
+	at org.eclipse.xtext.resource.XtextResource.access$101(XtextResource.java:63)
+	at org.eclipse.xtext.resource.XtextResource$1.getEObject(XtextResource.java:119)
+	at org.eclipse.xtext.resource.DefaultFragmentProvider.getEObject(DefaultFragmentProvider.java:28)
+	at org.eclipse.xtext.resource.XtextResource.basicGetEObject(XtextResource.java:363)
+	at org.eclipse.xtext.resource.XtextResource.getEObject(XtextResource.java:349)
+	at org.eclipse.xtext.linking.lazy.LazyLinkingResource.getEObject(LazyLinkingResource.java:246)
+	at org.eclipse.xtext.resource.persistence.StorageAwareResource.getEObject(StorageAwareResource.java:119)
+	at org.eclipse.xtext.xbase.resource.BatchLinkableResource.getEObject(BatchLinkableResource.java:124)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.getEObject(ResourceSetImpl.java:223)
+	at io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification.accept(SuppressWarningsAddModification.java:85)
+	at io.sarl.lang.ui.quickfix.SARLQuickfixProvider.fixSuppressWarnings(SARLQuickfixProvider.java:184)
+	at sun.reflect.GeneratedMethodAccessor246.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:57)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:87)
+	at org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider.getResolutions(DefaultQuickfixProvider.java:249)
+	at org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider.getResolutions(XtendQuickfixProvider.java:187)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractIssueResolutionProviderAdapter.getResolutions(AbstractIssueResolutionProviderAdapter.java:46)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.createQuickfixes(XtextQuickAssistProcessor.java:154)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.computeQuickAssistProposals(XtextQuickAssistProcessor.java:123)
+	at org.eclipse.xtext.ui.editor.hover.AnnotationWithQuickFixesHover$CompletionProposalRunnable.run(AnnotationWithQuickFixesHover.java:604)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:185)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3963)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3590)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1049)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:660)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:154)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:150)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:657)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:594)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+
+!ENTRY org.apache.log4j 4 0 2021-11-04 15:05:16.348
+!MESSAGE org.eclipse.xtext.xbase.resource.BatchLinkableResource  - resolution of uriFragment '/0/@xtendTypes.0/@members.10/@expression/@expressions.3/@featureCallArguments.0/@rightOperand/@memberCallTarget' failed.
+
+!STACK 0
+java.lang.IllegalArgumentException: The feature 'rightOperand' is not a valid feature
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eStructuralFeature(BasicEObjectImpl.java:733)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eObjectForURIFragmentSegment(BasicEObjectImpl.java:551)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:811)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:787)
+	at org.eclipse.xtext.resource.XtextResource.access$101(XtextResource.java:63)
+	at org.eclipse.xtext.resource.XtextResource$1.getEObject(XtextResource.java:119)
+	at org.eclipse.xtext.resource.DefaultFragmentProvider.getEObject(DefaultFragmentProvider.java:28)
+	at org.eclipse.xtext.resource.XtextResource.basicGetEObject(XtextResource.java:363)
+	at org.eclipse.xtext.resource.XtextResource.getEObject(XtextResource.java:349)
+	at org.eclipse.xtext.linking.lazy.LazyLinkingResource.getEObject(LazyLinkingResource.java:246)
+	at org.eclipse.xtext.resource.persistence.StorageAwareResource.getEObject(StorageAwareResource.java:119)
+	at org.eclipse.xtext.xbase.resource.BatchLinkableResource.getEObject(BatchLinkableResource.java:124)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.getEObject(ResourceSetImpl.java:223)
+	at io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification.accept(SuppressWarningsAddModification.java:85)
+	at io.sarl.lang.ui.quickfix.SARLQuickfixProvider.fixSuppressWarnings(SARLQuickfixProvider.java:184)
+	at sun.reflect.GeneratedMethodAccessor246.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:57)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:87)
+	at org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider.getResolutions(DefaultQuickfixProvider.java:249)
+	at org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider.getResolutions(XtendQuickfixProvider.java:187)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractIssueResolutionProviderAdapter.getResolutions(AbstractIssueResolutionProviderAdapter.java:46)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.createQuickfixes(XtextQuickAssistProcessor.java:154)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.computeQuickAssistProposals(XtextQuickAssistProcessor.java:123)
+	at org.eclipse.xtext.ui.editor.hover.AnnotationWithQuickFixesHover$CompletionProposalRunnable.run(AnnotationWithQuickFixesHover.java:604)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:185)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3963)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3590)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1049)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:660)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:154)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:150)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:657)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:594)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+
+!ENTRY org.apache.log4j 4 0 2021-11-04 15:05:16.478
+!MESSAGE org.eclipse.xtext.xbase.resource.BatchLinkableResource  - resolution of uriFragment '/0/@xtendTypes.0/@members.10/@expression/@expressions.3/@featureCallArguments.0/@rightOperand' failed.
+
+!STACK 0
+java.lang.IllegalArgumentException: The feature 'rightOperand' is not a valid feature
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eStructuralFeature(BasicEObjectImpl.java:733)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eObjectForURIFragmentSegment(BasicEObjectImpl.java:551)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:811)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:787)
+	at org.eclipse.xtext.resource.XtextResource.access$101(XtextResource.java:63)
+	at org.eclipse.xtext.resource.XtextResource$1.getEObject(XtextResource.java:119)
+	at org.eclipse.xtext.resource.DefaultFragmentProvider.getEObject(DefaultFragmentProvider.java:28)
+	at org.eclipse.xtext.resource.XtextResource.basicGetEObject(XtextResource.java:363)
+	at org.eclipse.xtext.resource.XtextResource.getEObject(XtextResource.java:349)
+	at org.eclipse.xtext.linking.lazy.LazyLinkingResource.getEObject(LazyLinkingResource.java:246)
+	at org.eclipse.xtext.resource.persistence.StorageAwareResource.getEObject(StorageAwareResource.java:119)
+	at org.eclipse.xtext.xbase.resource.BatchLinkableResource.getEObject(BatchLinkableResource.java:124)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.getEObject(ResourceSetImpl.java:223)
+	at io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification.accept(SuppressWarningsAddModification.java:85)
+	at io.sarl.lang.ui.quickfix.SARLQuickfixProvider.fixSuppressWarnings(SARLQuickfixProvider.java:184)
+	at sun.reflect.GeneratedMethodAccessor246.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:57)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:87)
+	at org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider.getResolutions(DefaultQuickfixProvider.java:249)
+	at org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider.getResolutions(XtendQuickfixProvider.java:187)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractIssueResolutionProviderAdapter.getResolutions(AbstractIssueResolutionProviderAdapter.java:46)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.createQuickfixes(XtextQuickAssistProcessor.java:154)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.computeQuickAssistProposals(XtextQuickAssistProcessor.java:123)
+	at org.eclipse.xtext.ui.editor.hover.AnnotationWithQuickFixesHover$CompletionProposalRunnable.run(AnnotationWithQuickFixesHover.java:604)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:185)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3963)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3590)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1049)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:660)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:154)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:150)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:657)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:594)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+
+!ENTRY org.apache.log4j 4 0 2021-11-04 15:05:24.100
+!MESSAGE org.eclipse.xtext.xbase.resource.BatchLinkableResource  - resolution of uriFragment '/0/@xtendTypes.0/@members.10/@expression/@expressions.3/@featureCallArguments.0/@rightOperand/@memberCallTarget/@memberCallTarget' failed.
+
+!STACK 0
+java.lang.IllegalArgumentException: The feature 'rightOperand' is not a valid feature
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eStructuralFeature(BasicEObjectImpl.java:733)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eObjectForURIFragmentSegment(BasicEObjectImpl.java:551)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:811)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:787)
+	at org.eclipse.xtext.resource.XtextResource.access$101(XtextResource.java:63)
+	at org.eclipse.xtext.resource.XtextResource$1.getEObject(XtextResource.java:119)
+	at org.eclipse.xtext.resource.DefaultFragmentProvider.getEObject(DefaultFragmentProvider.java:28)
+	at org.eclipse.xtext.resource.XtextResource.basicGetEObject(XtextResource.java:363)
+	at org.eclipse.xtext.resource.XtextResource.getEObject(XtextResource.java:349)
+	at org.eclipse.xtext.linking.lazy.LazyLinkingResource.getEObject(LazyLinkingResource.java:246)
+	at org.eclipse.xtext.resource.persistence.StorageAwareResource.getEObject(StorageAwareResource.java:119)
+	at org.eclipse.xtext.xbase.resource.BatchLinkableResource.getEObject(BatchLinkableResource.java:124)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.getEObject(ResourceSetImpl.java:223)
+	at io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification.accept(SuppressWarningsAddModification.java:85)
+	at io.sarl.lang.ui.quickfix.SARLQuickfixProvider.fixSuppressWarnings(SARLQuickfixProvider.java:184)
+	at sun.reflect.GeneratedMethodAccessor246.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:57)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:87)
+	at org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider.getResolutions(DefaultQuickfixProvider.java:249)
+	at org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider.getResolutions(XtendQuickfixProvider.java:187)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractIssueResolutionProviderAdapter.getResolutions(AbstractIssueResolutionProviderAdapter.java:46)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.createQuickfixes(XtextQuickAssistProcessor.java:154)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.computeQuickAssistProposals(XtextQuickAssistProcessor.java:123)
+	at org.eclipse.xtext.ui.editor.hover.AnnotationWithQuickFixesHover$CompletionProposalRunnable.run(AnnotationWithQuickFixesHover.java:604)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:185)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3963)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3590)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1049)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:660)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:154)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:150)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:657)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:594)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+
+!ENTRY org.apache.log4j 4 0 2021-11-04 15:05:24.223
+!MESSAGE org.eclipse.xtext.xbase.resource.BatchLinkableResource  - resolution of uriFragment '/0/@xtendTypes.0/@members.10/@expression/@expressions.3/@featureCallArguments.0/@rightOperand/@memberCallTarget' failed.
+
+!STACK 0
+java.lang.IllegalArgumentException: The feature 'rightOperand' is not a valid feature
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eStructuralFeature(BasicEObjectImpl.java:733)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eObjectForURIFragmentSegment(BasicEObjectImpl.java:551)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:811)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:787)
+	at org.eclipse.xtext.resource.XtextResource.access$101(XtextResource.java:63)
+	at org.eclipse.xtext.resource.XtextResource$1.getEObject(XtextResource.java:119)
+	at org.eclipse.xtext.resource.DefaultFragmentProvider.getEObject(DefaultFragmentProvider.java:28)
+	at org.eclipse.xtext.resource.XtextResource.basicGetEObject(XtextResource.java:363)
+	at org.eclipse.xtext.resource.XtextResource.getEObject(XtextResource.java:349)
+	at org.eclipse.xtext.linking.lazy.LazyLinkingResource.getEObject(LazyLinkingResource.java:246)
+	at org.eclipse.xtext.resource.persistence.StorageAwareResource.getEObject(StorageAwareResource.java:119)
+	at org.eclipse.xtext.xbase.resource.BatchLinkableResource.getEObject(BatchLinkableResource.java:124)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.getEObject(ResourceSetImpl.java:223)
+	at io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification.accept(SuppressWarningsAddModification.java:85)
+	at io.sarl.lang.ui.quickfix.SARLQuickfixProvider.fixSuppressWarnings(SARLQuickfixProvider.java:184)
+	at sun.reflect.GeneratedMethodAccessor246.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:57)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:87)
+	at org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider.getResolutions(DefaultQuickfixProvider.java:249)
+	at org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider.getResolutions(XtendQuickfixProvider.java:187)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractIssueResolutionProviderAdapter.getResolutions(AbstractIssueResolutionProviderAdapter.java:46)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.createQuickfixes(XtextQuickAssistProcessor.java:154)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.computeQuickAssistProposals(XtextQuickAssistProcessor.java:123)
+	at org.eclipse.xtext.ui.editor.hover.AnnotationWithQuickFixesHover$CompletionProposalRunnable.run(AnnotationWithQuickFixesHover.java:604)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:185)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3963)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3590)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1049)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:660)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:154)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:150)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:657)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:594)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+
+!ENTRY org.apache.log4j 4 0 2021-11-04 15:05:24.347
+!MESSAGE org.eclipse.xtext.xbase.resource.BatchLinkableResource  - resolution of uriFragment '/0/@xtendTypes.0/@members.10/@expression/@expressions.3/@featureCallArguments.0/@rightOperand' failed.
+
+!STACK 0
+java.lang.IllegalArgumentException: The feature 'rightOperand' is not a valid feature
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eStructuralFeature(BasicEObjectImpl.java:733)
+	at org.eclipse.emf.ecore.impl.BasicEObjectImpl.eObjectForURIFragmentSegment(BasicEObjectImpl.java:551)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:811)
+	at org.eclipse.emf.ecore.resource.impl.ResourceImpl.getEObject(ResourceImpl.java:787)
+	at org.eclipse.xtext.resource.XtextResource.access$101(XtextResource.java:63)
+	at org.eclipse.xtext.resource.XtextResource$1.getEObject(XtextResource.java:119)
+	at org.eclipse.xtext.resource.DefaultFragmentProvider.getEObject(DefaultFragmentProvider.java:28)
+	at org.eclipse.xtext.resource.XtextResource.basicGetEObject(XtextResource.java:363)
+	at org.eclipse.xtext.resource.XtextResource.getEObject(XtextResource.java:349)
+	at org.eclipse.xtext.linking.lazy.LazyLinkingResource.getEObject(LazyLinkingResource.java:246)
+	at org.eclipse.xtext.resource.persistence.StorageAwareResource.getEObject(StorageAwareResource.java:119)
+	at org.eclipse.xtext.xbase.resource.BatchLinkableResource.getEObject(BatchLinkableResource.java:124)
+	at org.eclipse.emf.ecore.resource.impl.ResourceSetImpl.getEObject(ResourceSetImpl.java:223)
+	at io.sarl.lang.ui.quickfix.acceptors.SuppressWarningsAddModification.accept(SuppressWarningsAddModification.java:85)
+	at io.sarl.lang.ui.quickfix.SARLQuickfixProvider.fixSuppressWarnings(SARLQuickfixProvider.java:184)
+	at sun.reflect.GeneratedMethodAccessor246.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:57)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractDeclarativeQuickfixProvider.getResolutions(AbstractDeclarativeQuickfixProvider.java:87)
+	at org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider.getResolutions(DefaultQuickfixProvider.java:249)
+	at org.eclipse.xtend.ide.quickfix.XtendQuickfixProvider.getResolutions(XtendQuickfixProvider.java:187)
+	at org.eclipse.xtext.ui.editor.quickfix.AbstractIssueResolutionProviderAdapter.getResolutions(AbstractIssueResolutionProviderAdapter.java:46)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.createQuickfixes(XtextQuickAssistProcessor.java:154)
+	at org.eclipse.xtext.ui.editor.quickfix.XtextQuickAssistProcessor.computeQuickAssistProposals(XtextQuickAssistProcessor.java:123)
+	at org.eclipse.xtext.ui.editor.hover.AnnotationWithQuickFixesHover$CompletionProposalRunnable.run(AnnotationWithQuickFixesHover.java:604)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:185)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3963)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3590)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1049)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:660)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:559)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:154)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:150)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:137)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:107)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:657)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:594)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:30.127
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:31.082
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:31.100
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:31.118
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:31.643
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:32.433
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:32.453
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:32.471
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:35.507
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:35.514
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:40.197
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:40.780
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:41.038
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:41.126
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:41.688
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:41.771
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:47.229
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:56.275
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:56.876
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:57.108
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:13:57.190
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:14:50.633
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:14:50.649
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:14:52.197
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:14:52.214
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:29:31.183
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:30:44.229
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:30:44.284
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/surveillance/src/main/sarl/be/uclouvain/aptitude/surveillance/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:30:45.138
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:30:45.142
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/surveillance/src/main/sarl/be/uclouvain/aptitude/surveillance/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:35:50.732
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:35:51.523
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:35:51.578
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:35:51.579
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:35:51.583
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/surveillance/src/main/sarl/be/uclouvain/aptitude/surveillance/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:35:51.958
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:35:52.045
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:35:52.885
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/surveillance/src/main/sarl/be/uclouvain/aptitude/surveillance/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:35:52.907
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/surveillance/src/main/sarl/be/uclouvain/aptitude/surveillance/Expert.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:35:52.936
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:35:52.954
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:36:21.846
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 15:37:08.852
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 15:38:28.593
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 15:39:31.066
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:39:42.227
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:39:42.910
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:39:43.175
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:39:43.262
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 15:39:52.565
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/AnalystRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 15:40:03.673
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 15:43:34.316
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 15:49:16.560
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 15:49:16.606
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 15:49:16.640
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 15:49:16.677
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 15:49:16.712
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 15:49:16.748
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 16:59:51.559
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 16:59:51.839
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/OrganisationInfo.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 16:59:51.840
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/OrganisationInfo.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 16:59:52.012
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/OrganisationInfo.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-04 16:59:52.414
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/PlatformRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 17:24:08.977
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 17:29:17.520
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 17:31:36.821
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 17:31:36.862
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+
+!ENTRY org.eclipse.jface.text 4 0 2021-11-04 17:31:36.911
+!MESSAGE org.eclipse.core.runtime.OperationCanceledException
+!STACK 0
+java.util.concurrent.CompletionException: org.eclipse.core.runtime.OperationCanceledException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(Unknown Source)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(Unknown Source)
+	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(Unknown Source)
+	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+Caused by: org.eclipse.core.runtime.OperationCanceledException
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:539)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:496)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:135)
+	at org.eclipse.xtext.util.concurrent.IReadAccess.tryReadOnly(IReadAccess.java:49)
+	at org.eclipse.xtext.ui.codemining.AbstractXtextCodeMiningProvider.lambda$0(AbstractXtextCodeMiningProvider.java:89)
+	... 6 more
+!SESSION 2021-11-09 13:56:43.105 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_211
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_GB
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-09 13:57:00.922
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/ObserverRole.sarl. Reconciliation of the editor is forced.
+
+!ENTRY io.sarl.lang.ui 4 0 2021-11-09 13:57:00.982
+!MESSAGE Possible inconsistency problem between the editor and the resource platform:/resource/organisation/src/main/sarl/be/uclouvain/organisation/platform/ObserverRole.sarl. Reconciliation of the editor is forced.

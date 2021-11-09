@@ -1,7 +1,7 @@
 package be.uclouvain.organisation.told;
 
 import be.uclouvain.organisation.AddMember;
-import be.uclouvain.organisation.AuthorizationToJoin;
+import be.uclouvain.organisation.AuthorizationToJoinContext;
 import be.uclouvain.organisation.PlatformOrganisationInfo;
 import be.uclouvain.organisation.TOLDOrganisationInfo;
 import be.uclouvain.organisation.told.AccessDatabaseCapacity;
@@ -30,7 +30,6 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.Behavior;
-import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.util.SerializableProxy;
 import java.io.ObjectStreamException;
@@ -85,13 +84,11 @@ public class TOLDRole extends Behavior {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     String _substring = occurrence.getSource().getUUID().toString().substring(0, 5);
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("received add member from " + _substring));
+    UUID _iD = this.getOwner().getID();
     InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-    AgentContext _innerContext = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext();
-    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-    EventSpace _defaultSpace = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1.getInnerContext().getDefaultSpace();
-    UUID _uUID = occurrence.getSource().getUUID();
-    AuthorizationToJoin _authorizationToJoin = new AuthorizationToJoin(_innerContext, ((OpenEventSpace) _defaultSpace), _uUID);
-    occurrence.SourceEventSpace.emit(this.getOwner().getID(), _authorizationToJoin, null);
+    UUID _iD_1 = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().getDefaultSpace().getSpaceID().getID();
+    AuthorizationToJoinContext _authorizationToJoinContext = new AuthorizationToJoinContext(_iD, _iD_1);
+    occurrence.SourceEventSpace.emit(this.getOwner().getID(), _authorizationToJoinContext, null);
   }
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")

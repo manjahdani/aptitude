@@ -10,7 +10,6 @@ import be.uclouvain.organisation.told.AccessDatabaseCapacity
 import be.uclouvain.organisation.told.TOLDRole
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
-import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle

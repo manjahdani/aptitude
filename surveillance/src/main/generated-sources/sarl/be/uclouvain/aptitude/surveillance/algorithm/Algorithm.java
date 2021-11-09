@@ -147,6 +147,9 @@ public class Algorithm extends Paraddis {
         }
       }
     } else {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      String _name_1 = this.ADN.getName();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("I believe in : " + _name_1));
     }
   }
   
@@ -192,10 +195,13 @@ public class Algorithm extends Paraddis {
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$AlgorithmNeeded$2(final AlgorithmNeeded occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("clones image with intention :" + occurrence.task) + "& belief : ") + occurrence.belief));
     String _name = this.ADN.getName();
     if ((occurrence.name == _name)) {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      String _substring = occurrence.getSource().getUUID().toString().substring(0, 5);
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(
+        ((((((("clones image with intention :" + occurrence.task) + " - name - ") + occurrence.name) + "& belief : ") + 
+          occurrence.belief) + "from ") + _substring));
       final UUID cloneID = UUID.randomUUID();
       this.subHolons.put(occurrence.ContextID, cloneID);
       Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
@@ -208,9 +214,10 @@ public class Algorithm extends Paraddis {
     String _substring = occurrence.getSource().getUUID().toString().substring(0, 5);
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("receives request to join platform from : " + _substring));
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    String _belief = this.ADN.getBelief();
     String _task = this.ADN.getTask();
-    AlgorithmNeeded _algorithmNeeded = new AlgorithmNeeded(occurrence.contextID, occurrence.missionSpace, occurrence.name, _belief, _task, occurrence.sourceID);
+    String _belief = this.ADN.getBelief();
+    AlgorithmNeeded _algorithmNeeded = new AlgorithmNeeded(occurrence.contextID, occurrence.missionSpace, occurrence.name, _task, _belief, 
+      occurrence.sourceID);
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_algorithmNeeded);
   }
   

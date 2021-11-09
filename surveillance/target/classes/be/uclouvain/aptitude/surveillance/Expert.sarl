@@ -1,6 +1,7 @@
 package be.uclouvain.aptitude.surveillance
 
-import be.uclouvain.organisation.platform.AddMission
+import be.uclouvain.organisation.AuthorizationToJoinContext
+import be.uclouvain.organisation.RequestToJoin
 import be.uclouvain.organisation.platform.AnalystRole
 import be.uclouvain.organisation.platform.NewMission
 import be.uclouvain.organisation.platform.StopMission
@@ -10,16 +11,12 @@ import io.sarl.core.ContextJoined
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
+import io.sarl.core.OpenEventSpaceSpecification
 import java.util.HashMap
 import java.util.UUID
-import io.sarl.lang.core.AgentContext
-import java.util.LinkedList
-import io.sarl.core.InnerContextAccess
-import io.sarl.core.OpenEventSpaceSpecification
-import be.uclouvain.organisation.RequestToJoin
-import be.uclouvain.organisation.AuthorizationToJoinContext
 
 /** 
  * The expert receives the requirements of the client and translates them into a mission.
@@ -43,12 +40,13 @@ agent Expert extends Paraddis {
 	
 	var missionList = new HashMap<UUID, String> // The different Mission its responsible the first entry is the mission list and the second the ContextID
 	var encounteredPlatforms = new HashMap<String, OpenEventSpace>
-	var publicChannel = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
+	var publicChannel : OpenEventSpace
 	
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on Initialize {
 		loggingName = this.ID + "-Expert"   
 		registerBehavior(new EntityRole(this))
+		publicChannel = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
 		publicChannel.register(asEventListener) 	// public channel
 		
 	}
@@ -57,26 +55,23 @@ agent Expert extends Paraddis {
 		
 		info("has a new mission " + occurrence.mission.location)
 
-		registerBehavior(new AnalystRole(this), occurrence.mission)
+		registerBehavior(new AnalystRole(this),
+			occurrence.mission.setPlatformID(occurrence.platformOpenChannel.spaceID.contextID)) // // @FIXME: Not natural (MEDIUM Priority) The contextID of the space is the one of the platform as the platform generated the space.
 		
-		// @FIXME: Not natural (MEDIUM Priority) 
+		 
 		// Check whether the agent already lives in the context of the platform where it has to pursue the mission
 		// We assume that the platformOpenChanel is created within the platform such that we could retrieve the contextID which is the platform ID.  
-		if (!isInContext(occurrence.platformOpenChannel.spaceID.contextID)) {
+		if (!isInContext(occurrence.mission.platformID)) {
 			//The agent is not in the context. The agent starts a task to join the context.
-			occurrence.platformOpenChannel.emit(new RequestToJoin(publicChannel)) [it.UUID == occurrence.platformOpenChannel.spaceID.contextID]
-
+			occurrence.platformOpenChannel.emit(new RequestToJoin(publicChannel)) [
+				it.UUID == occurrence.mission.platformID
+			] 	
 		}
 		
 		//val PlatformSpace = platformlistenersSpaceIDs.get(PlatformID)
 		// MissionList.put(occurrence.missionData.entityID, PlatformSpace)
-		missionList.put(occurrence.mission.getMissionID, occurrence.mission.location)
-		
+		missionList.put(occurrence.mission.missionID, occurrence.mission.location)
 		encounteredPlatforms.put(occurrence.mission.location, occurrence.platformOpenChannel)
-		info("starts mission with spaceID - " + occurrence.platformOpenChannel.spaceID.ID)
-		occurrence.platformOpenChannel.emit(
-			new AddMission(getDefaultSpace(), occurrence.mission)) //The contextID of the space is the one of the platform as the platform generated the space.  
-			 //@FIXME A lot receives the message. 
 	}
 
 	@SuppressWarnings("potential_field_synchronization_problem", "discouraged_occurrence_readonly_use")
@@ -97,8 +92,8 @@ agent Expert extends Paraddis {
 	}
 	
 	on ContextJoined {
-		info("all experts context" + allContexts)
-		info("DefaultSpaceJoined" + occurrence.defaultSpaceID)
+		info("all experts context -- " + allContexts)
+		info("DefaultSpaceJoined -- " + occurrence.defaultSpaceID)
 	}
 
 	def isInContext(contextID : UUID) {
