@@ -24,8 +24,8 @@ import io.sarl.lang.core.Scope;
 import io.sarl.lang.util.SerializableProxy;
 import java.io.ObjectStreamException;
 import java.util.Collection;
+import java.util.Set;
 import java.util.UUID;
-import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -61,8 +61,9 @@ public class DetectorRole extends PythonObserverRole {
   }
   
   private void $behaviorUnit$BBoxes2DResult$1(final BBoxes2DResult occurrence) {
-    for (final UUID l : this.listeners) {
-      OpenEventSpace _get = this.missionSpaceList.get(l);
+    Set<UUID> _keySet = this.listeners.keySet();
+    for (final UUID l : _keySet) {
+      OpenEventSpace _get = this.listeners.get(l);
       BBoxes2DResult _bBoxes2DResult = new BBoxes2DResult(occurrence.bboxes2D);
       class $SerializableClosureProxy implements Scope<Address> {
         
@@ -98,9 +99,9 @@ public class DetectorRole extends PythonObserverRole {
     if (_equals) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Restarting");
-      this.missionSpaceList.put(occurrence.getSource().getUUID(), this.missionSpaceList.get(((Object[])Conversions.unwrapArray(this.listeners, Object.class))[0]));
+      OpenEventSpace spaceToSend = this.listeners.get(this.listeners.get(Integer.valueOf(0)));
       this.listeners.clear();
-      this.listeners.add(occurrence.getSource().getUUID());
+      this.listeners.put(occurrence.getSource().getUUID(), spaceToSend);
       PythonTwinObserverAccessCapacity _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESSCAPACITY$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESSCAPACITY$CALLER();
       _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESSCAPACITY$CALLER.UpdateStreamAccess(5);
       PythonTwinObserverAccessCapacity _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESSCAPACITY$CALLER_1 = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESSCAPACITY$CALLER();

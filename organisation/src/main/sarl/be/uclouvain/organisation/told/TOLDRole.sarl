@@ -62,6 +62,7 @@ behavior TOLDRole {
 	
 	on AddMember{
 		info("received add member from " + occurrence.source.UUID.toString.substring(0, 5))
+		
 		occurrence.SourceEventSpace.emit(this.ID,
 			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID))
 	}

@@ -85,7 +85,9 @@ behavior PlatformRole {
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	
 	on RequestToJoin {
+		
 		info("receives a request to welcome a new agent")
+		
 		occurrence.emitterSpace.emit(this.ID, 
 			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID)) [
 				it.UUID == occurrence.source.getUUID

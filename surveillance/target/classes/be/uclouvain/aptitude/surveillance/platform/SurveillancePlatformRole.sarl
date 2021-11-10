@@ -4,7 +4,6 @@ import be.uclouvain.organisation.AddMember
 import be.uclouvain.organisation.Identification
 import be.uclouvain.organisation.LocalDatabaseRequest
 import be.uclouvain.organisation.SignalID
-import be.uclouvain.organisation.platform.AddAlgorithm
 import be.uclouvain.organisation.platform.AddObserver
 import be.uclouvain.organisation.platform.AlgorithmJoinPlatform
 import be.uclouvain.organisation.platform.PlatformCapacity

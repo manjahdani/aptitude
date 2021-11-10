@@ -66,20 +66,16 @@ behavior ObserverRole {
 	
 	protected var isMaster : Boolean = false
 	
+	protected val listeners = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the client and the role 
+	protected val providers = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
 	
-	protected var listeners = Collections.synchronizedSet(new HashSet<UUID>)
-	protected var providers = Collections.synchronizedSet(new HashSet<UUID>)
-	
-	protected var missionSpaceList = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>)
-
 	protected var platformName : String
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on Initialize {
 		observerADN = occurrence.parameters.get(0) as AlgorithmInfo
-		selfSpace.register(asEventListener) // Listen to self-internal space.
-		listeners.add(this.ID) // Listen to its own results
-		missionSpaceList.put(this.ID, selfSpace) 	// To send results to itself @FIXME maybe we could just program a flag.. as it is not needed everywhere
+		selfSpace.register(asEventListener) // Listen to a self-internal space
+		providers.put(this.ID, selfSpace) 	// // Listen to its own results To send results to itself @FIXME maybe we could just program a flag.. as it is not needed everywhere
 	}
 
 	on Destroy {
@@ -108,26 +104,27 @@ behavior ObserverRole {
 	on HyperParametersRequest {
 
 		info("received sensitivity request from -" + occurrence.source.UUID.toString.substring(0, 5) + " will send the following sensitivity" + sensitivity)
-		var missionSpace = (missionSpaceList.filter[p1, p2|p2.spaceID == occurrence.source.spaceID]).values.get(0) // @FIXME weird
+		var missionSpace = (listeners.filter[p1, p2|p2.spaceID == occurrence.source.spaceID]).values.get(0) // @FIXME weird
 		var s = isMaster ? sensitivity:newLinkedList(sensitivity.pop) // @FIXME weird
 		missionSpace.emit(this.ID, new MissionSensitivity(s))[it.UUID == occurrence.source.UUID]
 	}
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on AddMission {
-		//info("Received Mission Space " + (occurrence.SourceEventSpace.spaceID) +" from " + occurrence.source.UUID)
+		
+		
+		info("Received Mission Space " + (occurrence.SourceEventSpace.spaceID) +" from " + occurrence.source.UUID)
 		
 		var clientID = occurrence.source.UUID
-		missionSpaceList.put(clientID, occurrence.SourceEventSpace as OpenEventSpace) // @FIXME maybe there is a huge mistunderstanding of the use of Spaces, maybe we could have address which is simpler
+		listeners.put(clientID, occurrence.SourceEventSpace as OpenEventSpace) // @FIXME maybe there is a huge mistunderstanding of the use of Spaces, maybe we could have address which is simpler
 		(occurrence.SourceEventSpace as OpenEventSpace).register(asEventListener)
-		if (!listeners.contains(clientID)) {
-			listeners.add(clientID)
-			missionSpaceList.get(clientID).emit(this.ID, new HyperParametersRequest)[it.UUID == clientID]
+		if (!listeners.keySet.contains(clientID)) {
+			listeners.get(clientID).emit(this.ID, new HyperParametersRequest)[it.UUID == clientID]
 			info("Requesting missinParameters")
 			}
 	}
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on StopMission {
-		if (listeners.contains(occurrence.source.UUID)){
+		if (listeners.keySet.contains(occurrence.source.UUID)){
 			info("I received the StopMission")
 			emit(new StopMission(occurrence.expertID))
 			emit(new LeavePlatform)[it==me]

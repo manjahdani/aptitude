@@ -18,10 +18,12 @@ import be.uclouvain.organisation.platform.LeavePlatform;
 import be.uclouvain.organisation.platform.MissionSensitivity;
 import be.uclouvain.organisation.told.util.AlgorithmInfo;
 import com.google.common.base.Objects;
+import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Lifecycle;
 import io.sarl.core.Logging;
 import io.sarl.core.OpenEventSpace;
+import io.sarl.core.OpenEventSpaceSpecification;
 import io.sarl.core.Schedules;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
@@ -31,16 +33,15 @@ import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AtomicSkillReference;
-import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.util.SerializableProxy;
 import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Set;
 import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
-import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -95,8 +96,9 @@ public class TrackerRole extends PythonObserverRole {
   private void $behaviorUnit$LastFrame$1(final LastFrame occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Receveived last frame " + this.listeners));
-    for (final UUID l : this.listeners) {
-      OpenEventSpace _get = this.missionSpaceList.get(l);
+    Set<UUID> _keySet = this.listeners.keySet();
+    for (final UUID l : _keySet) {
+      OpenEventSpace _get = this.listeners.get(l);
       String _concat = "F:\\Database\\".concat(this.getOwner().getID().toString());
       LastFrame _lastFrame = new LastFrame(occurrence.frameNumber, (_concat + ".txt"), this.totalDetectorTime, 
         this.totalTrackerTime);
@@ -248,30 +250,38 @@ public class TrackerRole extends PythonObserverRole {
   }
   
   private void $behaviorUnit$SignalID$4(final SignalID occurrence) {
-    EventSpace _get = ((EventSpace[])Conversions.unwrapArray(this.missionSpaceList.values(), EventSpace.class))[0];
-    AddMission _addMission = new AddMission(_get, null);
+    final UUID dataSource = occurrence.signalID;
+    final OpenEventSpace comChannel = this.platformContext.<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, UUID.randomUUID());
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    comChannel.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    this.providers.put(dataSource, comChannel);
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    OpenEventSpace _get = this.providers.get(dataSource);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("received the provider ID \n sending the missionSpace" + _get));
+    OpenEventSpace _get_1 = this.providers.get(dataSource);
+    AddMission _addMission = new AddMission(_get_1, null);
     class $SerializableClosureProxy implements Scope<Address> {
       
-      private final UUID $_signalID;
+      private final UUID dataSource;
       
-      public $SerializableClosureProxy(final UUID $_signalID) {
-        this.$_signalID = $_signalID;
+      public $SerializableClosureProxy(final UUID dataSource) {
+        this.dataSource = dataSource;
       }
       
       @Override
       public boolean matches(final Address it) {
         UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, $_signalID);
+        return Objects.equal(_uUID, dataSource);
       }
     }
     final Scope<Address> _function = new Scope<Address>() {
       @Override
       public boolean matches(final Address it) {
         UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, occurrence.signalID);
+        return Objects.equal(_uUID, dataSource);
       }
       private Object writeReplace() throws ObjectStreamException {
-        return new SerializableProxy($SerializableClosureProxy.class, occurrence.signalID);
+        return new SerializableProxy($SerializableClosureProxy.class, dataSource);
       }
     };
     this.platformContext.getDefaultSpace().emit(this.getOwner().getID(), _addMission, _function);
@@ -308,8 +318,9 @@ public class TrackerRole extends PythonObserverRole {
         tmp.add(_bBoxe2D);
       }
     }
-    for (final UUID l : this.listeners) {
-      OpenEventSpace _get = this.missionSpaceList.get(l);
+    Set<UUID> _keySet = this.listeners.keySet();
+    for (final UUID l : _keySet) {
+      OpenEventSpace _get = this.listeners.get(l);
       TrackingPerception _trackingPerception = new TrackingPerception(tmp);
       class $SerializableClosureProxy implements Scope<Address> {
         
@@ -365,8 +376,9 @@ public class TrackerRole extends PythonObserverRole {
         }
       };
       _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_lastFrame, _function_1);
-      for (final UUID p : this.providers) {
-        DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+      Set<UUID> _keySet_1 = this.providers.keySet();
+      for (final UUID p : _keySet_1) {
+        OpenEventSpace _get_1 = this.providers.get(p);
         LeavePlatform _leavePlatform = new LeavePlatform();
         class $SerializableClosureProxy_2 implements Scope<Address> {
           
@@ -392,7 +404,7 @@ public class TrackerRole extends PythonObserverRole {
             return new SerializableProxy($SerializableClosureProxy_2.class, p);
           }
         };
-        _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1.emit(_leavePlatform, _function_2);
+        _get_1.emit(this.getOwner().getID(), _leavePlatform, _function_2);
       }
       Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.killMe();
@@ -401,9 +413,9 @@ public class TrackerRole extends PythonObserverRole {
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$BBoxes2DResult$6(final BBoxes2DResult occurrence) {
-    boolean _contains = this.providers.contains(occurrence.getSource().getUUID());
+    boolean _contains = this.providers.keySet().contains(occurrence.getSource().getUUID());
     if ((!_contains)) {
-      this.providers.add(occurrence.getSource().getUUID());
+      this.providers.put(occurrence.getSource().getUUID(), null);
     }
     PythonTwinObserverAccessCapacity _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESSCAPACITY$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESSCAPACITY$CALLER();
     _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_PYTHONTWINOBSERVERACCESSCAPACITY$CALLER.Signal2Perception(occurrence.bboxes2D);
@@ -477,6 +489,20 @@ public class TrackerRole extends PythonObserverRole {
       this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES = $getSkill(Schedules.class);
     }
     return $castSkill(Schedules.class, this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES);
+  }
+  
+  @Extension
+  @ImportedCapacityFeature(Behaviors.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_BEHAVIORS;
+  
+  @SyntheticMember
+  @Pure
+  private Behaviors $CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS == null || this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS = $getSkill(Behaviors.class);
+    }
+    return $castSkill(Behaviors.class, this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS);
   }
   
   @SyntheticMember

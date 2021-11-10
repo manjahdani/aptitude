@@ -36,10 +36,8 @@ import java.io.ObjectStreamException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
@@ -92,11 +90,9 @@ public class ObserverRole extends Behavior {
   
   protected Boolean isMaster = Boolean.valueOf(false);
   
-  protected Set<UUID> listeners = Collections.<UUID>synchronizedSet(new HashSet<UUID>());
+  protected final Map<UUID, OpenEventSpace> listeners = Collections.<UUID, OpenEventSpace>synchronizedMap(new HashMap<UUID, OpenEventSpace>());
   
-  protected Set<UUID> providers = Collections.<UUID>synchronizedSet(new HashSet<UUID>());
-  
-  protected Map<UUID, OpenEventSpace> missionSpaceList = Collections.<UUID, OpenEventSpace>synchronizedMap(new HashMap<UUID, OpenEventSpace>());
+  protected final Map<UUID, OpenEventSpace> providers = Collections.<UUID, OpenEventSpace>synchronizedMap(new HashMap<UUID, OpenEventSpace>());
   
   protected String platformName;
   
@@ -106,8 +102,7 @@ public class ObserverRole extends Behavior {
     this.observerADN = ((AlgorithmInfo) _get);
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     this.selfSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
-    this.listeners.add(this.getOwner().getID());
-    this.missionSpaceList.put(this.getOwner().getID(), this.selfSpace);
+    this.providers.put(this.getOwner().getID(), this.selfSpace);
   }
   
   private void $behaviorUnit$Destroy$1(final Destroy occurrence) {
@@ -143,7 +138,7 @@ public class ObserverRole extends Behavior {
       SpaceID _spaceID_1 = occurrence.getSource().getSpaceID();
       return Boolean.valueOf(Objects.equal(_spaceID, _spaceID_1));
     };
-    OpenEventSpace missionSpace = ((OpenEventSpace[])Conversions.unwrapArray(MapExtensions.<UUID, OpenEventSpace>filter(this.missionSpaceList, _function).values(), OpenEventSpace.class))[0];
+    OpenEventSpace missionSpace = ((OpenEventSpace[])Conversions.unwrapArray(MapExtensions.<UUID, OpenEventSpace>filter(this.listeners, _function).values(), OpenEventSpace.class))[0];
     LinkedList<Integer> _xifexpression = null;
     if (((this.isMaster) == null ? false : (this.isMaster).booleanValue())) {
       _xifexpression = this.sensitivity;
@@ -182,14 +177,17 @@ public class ObserverRole extends Behavior {
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$AddMission$5(final AddMission occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    SpaceID _spaceID = occurrence.SourceEventSpace.getSpaceID();
+    UUID _uUID = occurrence.getSource().getUUID();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("Received Mission Space " + _spaceID) + " from ") + _uUID));
     UUID clientID = occurrence.getSource().getUUID();
-    this.missionSpaceList.put(clientID, ((OpenEventSpace) occurrence.SourceEventSpace));
+    this.listeners.put(clientID, ((OpenEventSpace) occurrence.SourceEventSpace));
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     ((OpenEventSpace) occurrence.SourceEventSpace).register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
-    boolean _contains = this.listeners.contains(clientID);
+    boolean _contains = this.listeners.keySet().contains(clientID);
     if ((!_contains)) {
-      this.listeners.add(clientID);
-      OpenEventSpace _get = this.missionSpaceList.get(clientID);
+      OpenEventSpace _get = this.listeners.get(clientID);
       HyperParametersRequest _hyperParametersRequest = new HyperParametersRequest();
       class $SerializableClosureProxy implements Scope<Address> {
         
@@ -216,14 +214,14 @@ public class ObserverRole extends Behavior {
         }
       };
       _get.emit(this.getOwner().getID(), _hyperParametersRequest, _function);
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Requesting missinParameters");
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Requesting missinParameters");
     }
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$StopMission$6(final StopMission occurrence) {
-    boolean _contains = this.listeners.contains(occurrence.getSource().getUUID());
+    boolean _contains = this.listeners.keySet().contains(occurrence.getSource().getUUID());
     if (_contains) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("I received the StopMission");

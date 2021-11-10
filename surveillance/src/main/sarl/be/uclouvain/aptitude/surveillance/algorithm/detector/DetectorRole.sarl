@@ -36,8 +36,8 @@ behavior DetectorRole extends PythonObserverRole {
 		
 		//info("Detector - frameNumber- lastframe " + occurrence.bboxes2D.frameNumber + occurrence.bboxes2D.lastFrame)
 		
-		for (l : listeners){
-			missionSpaceList.get(l).emit(this.ID, new BBoxes2DResult(occurrence.bboxes2D))[it.UUID == l]
+		for (l : listeners.keySet){
+			listeners.get(l).emit(this.ID, new BBoxes2DResult(occurrence.bboxes2D))[it.UUID == l]
 		}
 	}
 
@@ -45,12 +45,12 @@ behavior DetectorRole extends PythonObserverRole {
 	on RestartDetector{
 		if (occurrence.bel == observerADN.name){
 		info("Restarting")
-		missionSpaceList.put(occurrence.source.UUID,missionSpaceList.get(listeners.get(0)))
+		var spaceToSend = listeners.get(listeners.get(0))
 		listeners.clear
-		listeners.add(occurrence.source.UUID)
+		listeners.put(occurrence.source.UUID, spaceToSend )
 		//UpdateStreamAccess(3)
 		UpdateStreamAccess(5)
-		UpdateStreamAccess(1)}
+		UpdateStreamAccess(1)} //@FIXME not robust ! 
 	}
 	on Destroy {
 		info("The behavior was stopped.")
