@@ -10,7 +10,6 @@ import be.uclouvain.organisation.told.entity.EntityRole;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
 import io.sarl.core.ContextJoined;
-import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.Initialize;
 import io.sarl.core.InnerContextAccess;
@@ -152,7 +151,7 @@ public class Expert extends Paraddis {
     ConcurrentLinkedDeque<AgentContext> _allContexts = _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.getAllContexts();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("all experts context -- " + _allContexts));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("DefaultSpaceJoined -- " + occurrence.defaultSpaceID));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("defaultSpaceJoined -- " + occurrence.defaultSpaceID));
   }
   
   @Pure
@@ -209,20 +208,6 @@ public class Expert extends Paraddis {
       this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS = $getSkill(ExternalContextAccess.class);
     }
     return $castSkill(ExternalContextAccess.class, this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS);
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(DefaultContextInteractions.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS;
-  
-  @SyntheticMember
-  @Pure
-  private DefaultContextInteractions $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);
-    }
-    return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
   }
   
   @Extension

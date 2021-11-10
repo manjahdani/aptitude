@@ -40,7 +40,7 @@ public class AlgorithmEntity extends EntityRole {
       UUID _iD = this.getOwner().getID();
       FileWriter _fileWriter = new FileWriter(this.predfile);
       AddEntry _addEntry = new AddEntry(_iD, _fileWriter);
-      occurrence.spaceID.emit(this.getOwner().getID(), _addEntry, null);
+      occurrence.privateCommunicationChannel.emit(this.getOwner().getID(), _addEntry, null);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

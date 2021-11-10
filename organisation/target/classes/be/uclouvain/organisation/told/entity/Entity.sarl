@@ -40,7 +40,7 @@ behavior EntityRole {
 	on TOLDOrganisationInfo {
 		info("met TOLD - " + occurrence.context.ID.toString.substring(0, 5))
 		TOLDContext = occurrence.context
-		TOLDSpace = occurrence.spaceID
+		TOLDSpace = occurrence.privateCommunicationChannel
 		
 		//TOLDSpace.register(asEventListener)
 	}

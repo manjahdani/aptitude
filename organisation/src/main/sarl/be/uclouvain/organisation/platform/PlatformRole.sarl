@@ -57,9 +57,12 @@ behavior PlatformRole {
 		info("met TOLD organisation - " + TOLDID.toString.substring(0, 5))
 		if (!privateSpacesListeners.containsKey(TOLDID)) { // Not Encountered
 			info("TOLD was not encountered")
-			privateSpacesListeners.put(TOLDID,occurrence.spaceID)
-			occurrence.spaceID.register(asEventListener)
-			occurrence.spaceID.emit(new PlatformOrganisationInfo(innerContext, privateSpacesListeners.get(TOLDID), location.get))[it.UUID==TOLDID]
+			privateSpacesListeners.put(TOLDID, occurrence.privateCommunicationChannel)
+			occurrence.privateCommunicationChannel.register(asEventListener)
+			occurrence.privateCommunicationChannel.emit(
+				new PlatformOrganisationInfo(innerContext, privateSpacesListeners.get(TOLDID), location.get)) [
+				it.UUID == TOLDID
+			]
 		//PlatformTOLDSpace.register(asEventListener)
 		//PlatformTOLDSpace.emit(new JoinOrganisation(innerContext))
 	}}
@@ -80,6 +83,7 @@ behavior PlatformRole {
 	}
 	
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	
 	on RequestToJoin {
 		info("receives a request to welcome a new agent")
 		occurrence.emitterSpace.emit(this.ID, 

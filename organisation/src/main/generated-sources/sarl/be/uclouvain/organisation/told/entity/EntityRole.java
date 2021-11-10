@@ -51,7 +51,7 @@ public class EntityRole extends Behavior {
     String _substring = occurrence.context.getID().toString().substring(0, 5);
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("met TOLD - " + _substring));
     this.TOLDContext = occurrence.context;
-    this.TOLDSpace = occurrence.spaceID;
+    this.TOLDSpace = occurrence.privateCommunicationChannel;
   }
   
   @Extension

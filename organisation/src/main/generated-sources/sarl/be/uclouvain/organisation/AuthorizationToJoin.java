@@ -47,7 +47,7 @@ public class AuthorizationToJoin extends Event {
   /**
    * Default Space of the holon that fired the event
    */
-  public final OpenEventSpace defaultSpaceID;
+  public final OpenEventSpace defaultSpace;
   
   public final UUID entityID;
   
@@ -60,7 +60,7 @@ public class AuthorizationToJoin extends Event {
    */
   public AuthorizationToJoin(final AgentContext ctxt, final OpenEventSpace sid, final UUID id) {
     this.contextID = ctxt;
-    this.defaultSpaceID = sid;
+    this.defaultSpace = sid;
     this.entityID = id;
   }
   
@@ -98,10 +98,10 @@ public class AuthorizationToJoin extends Event {
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
     builder.add("contextID", this.contextID);
-    builder.add("defaultSpaceID", this.defaultSpaceID);
+    builder.add("defaultSpace", this.defaultSpace);
     builder.add("entityID", this.entityID);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = -430642085L;
+  private static final long serialVersionUID = -1084055424L;
 }

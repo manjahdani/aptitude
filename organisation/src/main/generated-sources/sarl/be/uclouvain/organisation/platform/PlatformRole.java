@@ -80,9 +80,9 @@ public class PlatformRole extends Behavior {
     if ((!_containsKey)) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("TOLD was not encountered");
-      this.privateSpacesListeners.put(this.TOLDID, occurrence.spaceID);
+      this.privateSpacesListeners.put(this.TOLDID, occurrence.privateCommunicationChannel);
       Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-      occurrence.spaceID.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+      occurrence.privateCommunicationChannel.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
       ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
       InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
       AgentContext _innerContext = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext();
@@ -113,7 +113,7 @@ public class PlatformRole extends Behavior {
           return new SerializableProxy($SerializableClosureProxy.class, PlatformRole.this.TOLDID);
         }
       };
-      _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(occurrence.spaceID, _platformOrganisationInfo, _function);
+      _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(occurrence.privateCommunicationChannel, _platformOrganisationInfo, _function);
     }
   }
   

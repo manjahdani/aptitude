@@ -8,7 +8,6 @@ import be.uclouvain.organisation.platform.StopMission
 import be.uclouvain.organisation.told.entity.EntityRole
 import io.sarl.core.Behaviors
 import io.sarl.core.ContextJoined
-import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
@@ -36,7 +35,7 @@ import java.util.UUID
 
 agent Expert extends Paraddis {
 	
-	uses Logging, Behaviors, ExternalContextAccess, DefaultContextInteractions, InnerContextAccess
+	uses Logging, Behaviors, ExternalContextAccess, InnerContextAccess
 	
 	var missionList = new HashMap<UUID, String> // The different Mission its responsible the first entry is the mission list and the second the ContextID
 	var encounteredPlatforms = new HashMap<String, OpenEventSpace>
@@ -93,7 +92,7 @@ agent Expert extends Paraddis {
 	
 	on ContextJoined {
 		info("all experts context -- " + allContexts)
-		info("DefaultSpaceJoined -- " + occurrence.defaultSpaceID)
+		info("defaultSpaceJoined -- " + occurrence.defaultSpaceID)
 	}
 
 	def isInContext(contextID : UUID) {

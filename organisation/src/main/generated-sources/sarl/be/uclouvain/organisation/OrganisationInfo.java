@@ -36,14 +36,14 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class OrganisationInfo extends Event {
   /**
-   * The context joined
+   * Joined Context
    */
   public final AgentContext context;
   
   /**
    * A private space used for the communication
    */
-  public final OpenEventSpace spaceID;
+  public final OpenEventSpace privateCommunicationChannel;
   
   /**
    * Constructor
@@ -52,7 +52,7 @@ public class OrganisationInfo extends Event {
    */
   public OrganisationInfo(final AgentContext ctxt, final OpenEventSpace sid) {
     this.context = ctxt;
-    this.spaceID = sid;
+    this.privateCommunicationChannel = sid;
   }
   
   @Override
@@ -78,9 +78,9 @@ public class OrganisationInfo extends Event {
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
     builder.add("context", this.context);
-    builder.add("spaceID", this.spaceID);
+    builder.add("privateCommunicationChannel", this.privateCommunicationChannel);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = -944164767L;
+  private static final long serialVersionUID = 187548208L;
 }

@@ -25,7 +25,7 @@ behavior AlgorithmEntity extends EntityRole {
 
 	on TOLDOrganisationInfo {
 		info("Creating new file to register prediction")
-		occurrence.spaceID.emit(this.ID, new AddEntry(this.ID, new FileWriter(predfile)))
+		occurrence.privateCommunicationChannel.emit(this.ID, new AddEntry(this.ID, new FileWriter(predfile)))
 	}
 	on TrackingPerception {
 		//info("receives tracking")

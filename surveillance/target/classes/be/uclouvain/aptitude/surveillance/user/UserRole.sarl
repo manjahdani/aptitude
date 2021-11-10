@@ -25,6 +25,7 @@ import java.util.LinkedList
 import java.util.UUID
 import be.uclouvain.organisation.platform.util.MissionParameters
 
+
 /** 
  * @TODO : provide a description
  * 

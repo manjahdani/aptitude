@@ -222,7 +222,7 @@ public class Algorithm extends Paraddis {
     UUID _uUID = occurrence.getSource().getUUID();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("receives authorisation to join" + _uUID));
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.join(occurrence.contextID.getID(), occurrence.defaultSpaceID.getSpaceID().getID());
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.join(occurrence.contextID.getID(), occurrence.defaultSpace.getSpaceID().getID());
   }
   
   @Extension

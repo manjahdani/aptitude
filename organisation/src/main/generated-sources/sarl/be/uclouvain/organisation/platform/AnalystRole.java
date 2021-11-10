@@ -64,11 +64,11 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class AnalystRole extends Behavior {
   protected AgentContext platformContext;
   
-  protected OpenEventSpace platformSpace;
+  protected OpenEventSpace privatePlatformSpace;
   
   protected AgentContext TOLDContext;
   
-  protected OpenEventSpace TOLDSpace;
+  protected OpenEventSpace privateTOLDSpace;
   
   protected MissionData missionData;
   
@@ -79,8 +79,7 @@ public class AnalystRole extends Behavior {
   /**
    * Receiving this event, the behavior has to update its fields of perception.
    */
-  private final ArrayList<String> availableObservers = CollectionLiterals.<String>newArrayList("careful", "dynamic", "dynamic ", 
-    "balanced");
+  private final ArrayList<String> availableObservers = CollectionLiterals.<String>newArrayList("careful", "dynamic", "dynamic ", "balanced");
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
@@ -94,7 +93,8 @@ public class AnalystRole extends Behavior {
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$PlatformOrganisationInfo$1(final PlatformOrganisationInfo occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((((("Joined platform organisation: " + occurrence.spaceID) + " (") + occurrence.context) + ")."));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((((("Joined platform organisation: " + occurrence.privateCommunicationChannel) + " (") + occurrence.context) + 
+      ")."));
     UUID _iD = occurrence.context.getID();
     UUID _platformID = this.missionData.getPlatformID();
     boolean _equals = Objects.equal(_iD, _platformID);
@@ -103,9 +103,9 @@ public class AnalystRole extends Behavior {
       UUID _iD_1 = occurrence.context.getID();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("Sending add mission to - " + _iD_1));
       this.platformContext = occurrence.context;
-      this.platformSpace = occurrence.spaceID;
+      this.privatePlatformSpace = occurrence.privateCommunicationChannel;
       Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-      this.platformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+      this.privatePlatformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       UUID _missionID = this.missionData.getMissionID();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("starts mission with spaceID - " + _missionID));
@@ -138,7 +138,7 @@ public class AnalystRole extends Behavior {
           return new SerializableProxy($SerializableClosureProxy.class, AnalystRole.this.missionData.getPlatformID());
         }
       };
-      _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.platformSpace, _addMission, _function);
+      _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.privatePlatformSpace, _addMission, _function);
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3.info("asks for algorithm performing vehicle counting to platform");
     }
@@ -156,7 +156,7 @@ public class AnalystRole extends Behavior {
     AlgorithmInfo _algorithmInfo = new AlgorithmInfo("APTITUDE", "COUNTER");
     AlgorithmInfo _algorithmInfo_1 = new AlgorithmInfo("EXPERT", "ROADANALYST");
     AddObserver _addObserver = new AddObserver(_algorithmInfo, _algorithmInfo_1);
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.platformSpace, _addObserver);
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.privatePlatformSpace, _addObserver);
   }
   
   private void $behaviorUnit$SignalID$3(final SignalID occurrence) {
@@ -193,18 +193,18 @@ public class AnalystRole extends Behavior {
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$TOLDOrganisationInfo$4(final TOLDOrganisationInfo occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((((("Joined TOLD organisation: " + occurrence.spaceID) + " (") + occurrence.context) + ")."));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((((("Joined TOLD organisation: " + occurrence.privateCommunicationChannel) + " (") + occurrence.context) + ")."));
     this.TOLDContext = occurrence.context;
-    this.TOLDSpace = occurrence.spaceID;
+    this.privateTOLDSpace = occurrence.privateCommunicationChannel;
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    this.TOLDSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    this.privateTOLDSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$HyperParametersRequest$5(final HyperParametersRequest occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     String _get = this.availableObservers.get(this.missionData.getSensitivity());
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("received a request for mission parameters \n will send the \r\nuser sensitivity : " + _get));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("received a request for mission parameters \n will send the user sensitivity : " + _get));
     this.providerID = occurrence.getSource().getUUID();
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     LinkedList<Integer> _newLinkedList = CollectionLiterals.<Integer>newLinkedList(Integer.valueOf(this.missionData.getSensitivity()));

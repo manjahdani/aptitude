@@ -42,7 +42,7 @@ event AuthorizationToJoin {
 	/** 
 	 * Default Space of the holon that fired the event    
 	 */
-	val defaultSpaceID : OpenEventSpace
+	val defaultSpace : OpenEventSpace
 	
 	val entityID : UUID
 
@@ -55,7 +55,7 @@ event AuthorizationToJoin {
 	 */
 	new(ctxt : AgentContext, sid : OpenEventSpace, id : UUID) {
 		this.contextID = ctxt
-		this.defaultSpaceID = sid
+		this.defaultSpace = sid
 		this.entityID = id
 	}
 }

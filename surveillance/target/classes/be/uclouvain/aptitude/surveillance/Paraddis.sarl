@@ -3,7 +3,7 @@
  */
 package be.uclouvain.aptitude.surveillance
 
-import be.uclouvain.organisation.Hello
+
 import io.sarl.core.Destroy
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
@@ -23,7 +23,7 @@ import io.sarl.core.ParticipantJoined
  * 
  */
  
-event CommitSuicide
+
 
 agent Paraddis {
 	uses Lifecycle, Logging, InnerContextAccess, Schedules
@@ -97,10 +97,12 @@ agent Paraddis {
 		}
 	}
 
+	
 	def KillMembers {
 		
 		
 		for (h : memberAgents) {
+			
 			innerContext.defaultSpace.emit(this.ID, new CommitSuicide)[it.UUID == h]
 		}
 		val waitTask = task("wait-member-killed-task")

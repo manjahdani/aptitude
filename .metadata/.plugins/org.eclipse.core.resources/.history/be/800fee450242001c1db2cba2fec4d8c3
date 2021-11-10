@@ -1,0 +1,73 @@
+/** 
+
+ */
+package be.uclouvain.aptitude.surveillance.platform
+
+import be.uclouvain.aptitude.surveillance.Paraddis
+import be.uclouvain.organisation.platform.PlatformCapacity
+import be.uclouvain.organisation.platform.PlatformSkill
+import be.uclouvain.organisation.platform.util.PlatformConfig
+import io.sarl.core.AgentSpawned
+import io.sarl.core.Behaviors
+import io.sarl.core.ContextJoined
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.OpenEventSpaceSpecification
+import java.util.UUID
+import be.uclouvain.organisation.LocalDatabaseRequest
+
+/**
+ * 
+ * @FIXME It is not clear whether for sub-platforms the agent should play the role of TOLD as well ? 
+ * Or do we need, another agent ??? The way we do it, is quite unclear... Because, it reveils the 
+ * 
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ */
+
+agent PlatformAgent extends Paraddis {
+
+	uses Logging, Behaviors, InnerContextAccess, Lifecycle, DefaultContextInteractions
+
+	 
+	var openChanel : OpenEventSpace
+	var platformConfig :PlatformConfig
+	
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on Initialize {
+
+		platformConfig = occurrence.parameters.get(0) as PlatformConfig
+		loggingName = this.ID + "-Platform-" + platformConfig.location + "-" + platformConfig.getLevel()
+		
+		for (swc : platformConfig.subPlatformConfig) {
+			val randomID = UUID.randomUUID
+			spawnInContextWithID(PlatformAgent, randomID, innerContext, swc)}
+		if (platformConfig.getLevel > 0) {
+			info("Ready to receive operating mission")
+			openChanel = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
+			openChanel.register(asEventListener)
+			emit(new AgentPlatform(platformConfig.location, this.ID, openChanel))
+			emit(new LocalDatabaseRequest (innerContext))[it.UUID==occurrence.spawner] // parentID
+			setSkill(new PlatformSkill(platformConfig), PlatformCapacity)
+			registerBehavior(new SurveillancePlatformRole(this), platformConfig.getLocation) 
+		} else {
+			registerBehavior(new ManagerPlatformRole(this), platformConfig.getLocation)
+		}
+	}
+	
+	on AgentSpawned {
+		//info("AgentSpawned : " + occurrence.agentID + occurrence.agentType)
+	}
+
+	on ContextJoined {
+		//info("ContextJoined : " + occurrence.holonContextID)
+	}
+}

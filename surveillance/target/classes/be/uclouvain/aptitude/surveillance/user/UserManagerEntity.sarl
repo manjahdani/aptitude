@@ -45,7 +45,7 @@ behavior UserManagerEntity extends EntityRole {
 	on PlatformOrganisationInfo {
 		info("User manager met platform Organisation")
 		platformContext = occurrence.context
-		platformSpace = occurrence.spaceID
+		platformSpace = occurrence.privateCommunicationChannel
 		platformSpace.register(asEventListener)
 	}
 	

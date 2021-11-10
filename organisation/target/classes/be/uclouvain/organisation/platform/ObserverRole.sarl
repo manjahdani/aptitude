@@ -89,7 +89,7 @@ behavior ObserverRole {
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on PlatformOrganisationInfo  { 
 		platformContext = occurrence.context
-		privatePlatformSpace = occurrence.spaceID
+		privatePlatformSpace = occurrence.privateCommunicationChannel
 		privatePlatformSpace.register(asEventListener)
 		platformName = occurrence.platformName
 		emit(platformContext.defaultSpace,new Identification(observerADN.name)) //@ FIXME not general in the sens of it should whenever it joins a context
@@ -97,7 +97,7 @@ behavior ObserverRole {
 	
 	on TOLDOrganisationInfo {
 		TOLDContext = occurrence.context
-		privateTOLDSpace = occurrence.spaceID
+		privateTOLDSpace = occurrence.privateCommunicationChannel
 		privateTOLDSpace.register(asEventListener)
 	}
 

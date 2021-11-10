@@ -129,7 +129,7 @@ agent Algorithm extends Paraddis{
 	// @FIXME : AuthorizationToJoin is too vague
 	on AuthorizationToJoin {
 		info("receives authorisation to join" + occurrence.source.UUID)
-		join(occurrence.contextID.getID, occurrence.defaultSpaceID.getSpaceID.getID)
+		join(occurrence.contextID.getID, occurrence.defaultSpace.getSpaceID.getID)
 	}
 }
 

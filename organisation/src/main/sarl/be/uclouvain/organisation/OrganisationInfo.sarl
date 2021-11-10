@@ -32,14 +32,14 @@ import io.sarl.core.OpenEventSpace
 event OrganisationInfo {
 
 	/** 
-	 * The context joined 
+	 * Joined Context
 	 */
 	val context : AgentContext
 
 	/** 
 	 * A private space used for the communication
 	 */
-	val spaceID : OpenEventSpace // UUID
+	val privateCommunicationChannel : OpenEventSpace 
 
 	/* 
 	 * Constructor
@@ -48,7 +48,7 @@ event OrganisationInfo {
 	 */
 	new (ctxt : AgentContext, sid : OpenEventSpace) {
 		this.context = ctxt
-		this.spaceID = sid
+		this.privateCommunicationChannel = sid
 	}
 }
 

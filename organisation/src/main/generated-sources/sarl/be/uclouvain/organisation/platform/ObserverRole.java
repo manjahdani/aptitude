@@ -116,7 +116,7 @@ public class ObserverRole extends Behavior {
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$PlatformOrganisationInfo$2(final PlatformOrganisationInfo occurrence) {
     this.platformContext = occurrence.context;
-    this.privatePlatformSpace = occurrence.spaceID;
+    this.privatePlatformSpace = occurrence.privateCommunicationChannel;
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     this.privatePlatformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
     this.platformName = occurrence.platformName;
@@ -128,7 +128,7 @@ public class ObserverRole extends Behavior {
   
   private void $behaviorUnit$TOLDOrganisationInfo$3(final TOLDOrganisationInfo occurrence) {
     this.TOLDContext = occurrence.context;
-    this.privateTOLDSpace = occurrence.spaceID;
+    this.privateTOLDSpace = occurrence.privateCommunicationChannel;
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     this.privateTOLDSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
   }
