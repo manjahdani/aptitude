@@ -6,8 +6,11 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value=""/>
+		<item key="selection" value="missionSpace"/>
 		<list key="findhistory">
+			<item value="missionSpace"/>
+			<item value="recruiting agent algorithm"/>
+			<item value="Received authorisation to perform a mission"/>
 			<item value="Activating access"/>
 			<item value="receives authorisation to join"/>
 			<item value="clones image with intention :"/>
@@ -20,9 +23,6 @@
 			<item value="Received authorization to perform a mission"/>
 			<item value="receives authorisation to join the context"/>
 			<item value="Context"/>
-			<item value="ae299"/>
-			<item value="d5ca4"/>
-			<item value="2c38fb7f-f363-4f6e-877b-110b1f07cc77"/>
 		</list>
 		<list key="replacehistory">
 			<item value="TOLD"/>
