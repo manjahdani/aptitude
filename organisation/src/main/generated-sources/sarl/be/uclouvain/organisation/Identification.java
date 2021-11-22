@@ -56,4 +56,7 @@ public class Identification extends Event {
     super.toString(builder);
     builder.add("fullName", this.fullName);
   }
+  
+  @SyntheticMember
+  private static final long serialVersionUID = 1512822015L;
 }

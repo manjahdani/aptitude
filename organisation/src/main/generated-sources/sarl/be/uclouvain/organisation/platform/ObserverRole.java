@@ -1,5 +1,6 @@
 package be.uclouvain.organisation.platform;
 
+import be.uclouvain.organisation.Identification;
 import be.uclouvain.organisation.PlatformOrganisationInfo;
 import be.uclouvain.organisation.TOLDOrganisationInfo;
 import be.uclouvain.organisation.platform.AddMission;
@@ -104,8 +105,15 @@ public class ObserverRole extends Behavior {
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$PlatformOrganisationInfo$2(final PlatformOrganisationInfo occurrence) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nType mismatch: cannot convert from Identification to Event");
+    this.platformContext = occurrence.context;
+    this.privatePlatformSpace = occurrence.privateCommunicationChannel;
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    this.privatePlatformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    this.platformName = occurrence.platformName;
+    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
+    String _fullName = this.observerADN.getFullName();
+    Identification _identification = new Identification(_fullName);
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.platformContext.getDefaultSpace(), _identification);
   }
   
   private void $behaviorUnit$TOLDOrganisationInfo$3(final TOLDOrganisationInfo occurrence) {
