@@ -9,19 +9,17 @@ import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Destroy
+import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
+import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.AgentContext
 import java.util.Collections
 import java.util.HashMap
-import java.util.HashSet
 import java.util.LinkedList
 import java.util.UUID
-import io.sarl.core.OpenEventSpaceSpecification
-import io.sarl.core.InnerContextAccess
-import io.sarl.core.ContextJoined
-import io.sarl.core.ExternalContextAccess
 
 /** 
  * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 
@@ -88,7 +86,7 @@ behavior ObserverRole {
 		privatePlatformSpace = occurrence.privateCommunicationChannel
 		privatePlatformSpace.register(asEventListener)
 		platformName = occurrence.platformName
-		emit(platformContext.defaultSpace,new Identification(observerADN.name)) //@ FIXME not general in the sens of it should whenever it joins a context
+		emit(platformContext.defaultSpace,new Identification(observerADN.fullName)) //@ FIXME not general in the sens of it should whenever it joins a context
 	}	
 	
 	on TOLDOrganisationInfo {
@@ -102,24 +100,30 @@ behavior ObserverRole {
 	
 	
 	on HyperParametersRequest {
-
-		info("received sensitivity request from -" + occurrence.source.UUID.toString.substring(0, 5) + " will send the following sensitivity" + sensitivity)
-		var missionSpace = (listeners.filter[p1, p2|p2.spaceID == occurrence.source.spaceID]).values.get(0) // @FIXME weird
-		var s = isMaster ? sensitivity:newLinkedList(sensitivity.pop) // @FIXME weird
-		missionSpace.emit(this.ID, new MissionSensitivity(s))[it.UUID == occurrence.source.UUID]
+		
+		var providerID = occurrence.source.UUID 
+		info(
+			"received sensitivity request from -" + providerID.toString.substring(0, 5) +
+				" .... \n  sending the following sensitivity" + sensitivity)
+			
+		
+		providers.get(providerID).emit(this.ID, new ProcessingHyperParameters(sensitivity))[it.UUID == providerID]
 	}
-	@SuppressWarnings("discouraged_occurrence_readonly_use")
+
 	on AddMission {
 		
-		
-		info("Received Mission Space " + (occurrence.SourceEventSpace.spaceID) +" from " + occurrence.source.UUID)
-		
+		var missionSpace = occurrence.communicationChannel
 		var clientID = occurrence.source.UUID
-		listeners.put(clientID, occurrence.SourceEventSpace as OpenEventSpace) // @FIXME maybe there is a huge mistunderstanding of the use of Spaces, maybe we could have address which is simpler
-		(occurrence.SourceEventSpace as OpenEventSpace).register(asEventListener)
-		if (!listeners.keySet.contains(clientID)) {
-			listeners.get(clientID).emit(this.ID, new HyperParametersRequest)[it.UUID == clientID]
-			info("Requesting missinParameters")
+		
+		info("requested to add missionID " + (missionSpace.spaceID.toString.substring(0, 5)) + " from " +
+			clientID.toString.substring(0, 5))
+		listeners.put(clientID, missionSpace) // @FIXME maybe there is a huge mistunderstanding of the use of Spaces, maybe we could have address which is simpler
+		missionSpace.register(asEventListener)
+		
+		var accepted = true // @TODO develop criteria for the acceptation of mission 
+		if (accepted) {
+			missionSpace.emit(this.ID, new HyperParametersRequest)[it.UUID == clientID]
+			info("requests missionParameters")
 			}
 	}
 	@SuppressWarnings("potential_field_synchronization_problem")

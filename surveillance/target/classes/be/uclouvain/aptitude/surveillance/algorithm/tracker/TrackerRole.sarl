@@ -15,7 +15,6 @@ import be.uclouvain.organisation.SignalID
 import be.uclouvain.organisation.platform.AddMission
 import be.uclouvain.organisation.platform.AddObserver
 import be.uclouvain.organisation.platform.LeavePlatform
-import be.uclouvain.organisation.platform.MissionSensitivity
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
 import io.sarl.core.Behaviors
@@ -27,6 +26,7 @@ import io.sarl.core.Schedules
 import java.util.ArrayList
 import java.util.LinkedList
 import java.util.UUID
+import be.uclouvain.organisation.platform.ProcessingHyperParameters
 
 /** 
  * @FIXME : IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -106,7 +106,7 @@ behavior TrackerRole extends PythonObserverRole {
 	
 	
 
-	on MissionSensitivity {
+	on ProcessingHyperParameters {
 		
 		//@FIXME We could totally generalize that. 
 		sensitivity= new LinkedList(occurrence.s)
@@ -130,9 +130,11 @@ behavior TrackerRole extends PythonObserverRole {
 		else {
 			for(s : sensitivity)
 			{
-				info("Come here : " + observerADN.name)
-				privatePlatformSpace.emit(this.ID, new AddObserver(new AlgorithmInfo(observerADN.name.concat(sensitivity.toString), "TRACKER"),
-					new AlgorithmInfo(observerADN.name, "TRACKER")))[it.UUID == platformContext.ID]
+				info("Come here : " + observerADN.name.concat(s.toString))
+				privatePlatformSpace.emit(this.ID, new AddObserver(new AlgorithmInfo(observerADN.name, "TRACKER", observerADN.level+1),
+					new AlgorithmInfo(observerADN.name, "TRACKER", observerADN.level))) [
+					it.UUID == platformContext.ID
+				]
 			}//@FIXME Probably the trackers will accumulate in platforms. Remember to deal with that by removing if one ends its duty.  
 		}
 	}

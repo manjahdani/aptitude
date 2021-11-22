@@ -6,13 +6,17 @@ package be.uclouvain.organisation.platform
 import be.uclouvain.organisation.platform.util.PlatformConfig
 import java.util.LinkedList
 import be.uclouvain.organisation.platform.util.MembershipRule
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import io.sarl.core.Logging
 
 /** 
  * @author manjah
  * 
  */
 skill PlatformSkill implements PlatformCapacity {
-
+	
+	uses Logging
+	
 	protected val WC : PlatformConfig
 	
 	val ObserversList = new LinkedList<String> 
@@ -23,12 +27,9 @@ skill PlatformSkill implements PlatformCapacity {
 
 	def RuleManagement(info : Object) : boolean {
 		if (info instanceof MembershipRule){
-			if (ObserversList.contains(info.m1.concat(info.m2))) {
-				return false
-			}
-			else {
-				ObserversList.add(info.m1.concat(info.m2))
-			}
+			
+			return (noDoubleMembership(info.m1, info.m2))
+
 		}
 		else {
 			throw new UnsupportedOperationException("Unknown Rule")
@@ -38,5 +39,20 @@ skill PlatformSkill implements PlatformCapacity {
 
 	def getPlatformConfig : PlatformConfig {
 		return this.WC
+	}
+	
+	def noDoubleMembership(m1 : AlgorithmInfo, m2:AlgorithmInfo ){
+		
+		
+		if (ObserversList.contains(m1.fullName.concat(m2.fullName))) {
+			
+			info("\n Partnership of " + m1.fullName.concat(m2.fullName) + "is not legal ")
+			return false
+		}
+		else {
+			info("\n Partnership of " + m1.fullName.concat(m2.fullName) + "is not legal ")
+			ObserversList.add(m1.name.concat(m2.name))
+			return true
+		}			
 	}
 }

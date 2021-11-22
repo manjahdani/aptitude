@@ -43,7 +43,7 @@ behavior TOLDRole {
 
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on AddEntry{
-		info("Creating entry for " + occurrence.key + occurrence.data)
+		info("creating entry for " + occurrence.key.toString.substring(0,5))
 		create(occurrence.key, occurrence.data)
 	}
 	on DeleteEntry{
@@ -63,7 +63,7 @@ behavior TOLDRole {
 	on AddMember{
 		info("received add member from " + occurrence.source.UUID.toString.substring(0, 5))
 		
-		occurrence.SourceEventSpace.emit(this.ID,
+		occurrence.communicationChannel.emit(this.ID,
 			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID))
 	}
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
@@ -71,7 +71,6 @@ behavior TOLDRole {
 		privateSpacesListeners.get(occurrence.source.UUID).emit(this.ID, new QueryAnswer(read(this.ID)))
 	}
 	on MemberJoined {
-				
 		var memberID = occurrence.agentID;
 		privateSpacesListeners.put(memberID,
 			innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID))
@@ -79,7 +78,6 @@ behavior TOLDRole {
 			it.UUID == memberID
 		]
 		privateSpacesListeners.get(memberID).register(asEventListener)
-
 	}
 
 	on PlatformOrganisationInfo {

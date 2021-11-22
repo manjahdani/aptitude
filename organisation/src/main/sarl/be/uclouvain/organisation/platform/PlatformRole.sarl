@@ -68,18 +68,18 @@ behavior PlatformRole {
 	}}
 
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
-	on AddMission {
+	
+	on Request2PerformMission {
 		// RuleManagement(new MembershipInfoRule(occurrence.source, occurrence.SourceEventSpace, occurrence.entityData))
 		// if (true) {
 		
-		info("Received the request to add a mission " + occurrence.source.UUID + occurrence.MissionData.location)
+		var clientID = occurrence.source.getUUID
+		info("received request to add a mission from " + clientID.toString.substring(0,5) + " " + occurrence.missionData.location)
 		
-		missionSpace.put(occurrence.MissionData.missionID,
-			innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, occurrence.MissionData.missionID))
-		emit(
-			occurrence.SourceEventSpace,
-			new AuthorizationToPerformMission(missionSpace.get(occurrence.MissionData.missionID))
-		)[it.UUID == occurrence.source.getUUID]
+		missionSpace.put(occurrence.missionData.missionID, innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, occurrence.missionData.missionID))
+
+		privateSpacesListeners.get(clientID).emit(new AuthorizationToPerformMission(missionSpace.get(occurrence.missionData.missionID))
+		)[it.UUID == clientID]
 	}
 	
 	@SuppressWarnings("discouraged_occurrence_readonly_use")

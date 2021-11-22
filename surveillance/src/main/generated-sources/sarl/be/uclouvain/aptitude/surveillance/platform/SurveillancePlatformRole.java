@@ -72,18 +72,18 @@ public class SurveillancePlatformRole extends PlatformRole {
   
   private void $behaviorUnit$Identification$1(final Identification occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("new participant: " + occurrence.name));
-    this.participants.put(occurrence.name, occurrence.getSource().getUUID());
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("new participant: " + occurrence.fullName));
+    this.participants.put(occurrence.fullName, occurrence.getSource().getUUID());
   }
   
   @SuppressWarnings({ "discouraged_occurrence_readonly_use", "potential_field_synchronization_problem" })
   private void $behaviorUnit$AddObserver$2(final AddObserver occurrence) {
-    String signal = occurrence.signalProvider.getName();
-    String receiver = occurrence.signalReceiver.getName();
+    String signal = occurrence.signalProvider.getFullName();
+    String receiver = occurrence.signalReceiver.getFullName();
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("Adding observer from -" + signal) + "- to ") + receiver));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("adding observer from  " + signal) + " to ") + receiver));
     PlatformCapacity _$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY$CALLER();
-    MembershipRule _membershipRule = new MembershipRule(signal, receiver);
+    MembershipRule _membershipRule = new MembershipRule(occurrence.signalProvider, occurrence.signalReceiver);
     boolean _RuleManagement = _$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY$CALLER.RuleManagement(_membershipRule);
     if (_RuleManagement) {
       synchronized (this) {
@@ -118,47 +118,54 @@ public class SurveillancePlatformRole extends PlatformRole {
     this.agentAlgorithm.put(occurrence.name, occurrence.topic);
   }
   
-  public synchronized AgentTask waitfor(final String signal, final UUID dest) {
-    Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
-    Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
-    final Procedure1<Agent> _function = (Agent it) -> {
-      boolean _contains = this.participants.keySet().contains(signal);
-      if (_contains) {
-        ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-        OpenEventSpace _get = this.privateSpacesListeners.get(dest);
-        UUID _get_1 = this.participants.get(signal);
-        SignalID _signalID = new SignalID(_get_1);
-        class $SerializableClosureProxy implements Scope<Address> {
-          
-          private final UUID dest;
-          
-          public $SerializableClosureProxy(final UUID dest) {
-            this.dest = dest;
+  public synchronized AgentTask waitfor(final String fullName, final UUID dest) {
+    AgentTask _xblockexpression = null;
+    {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      String _substring = dest.toString().substring(0, 5);
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("starts of the wait for" + fullName) + " for ") + _substring));
+      Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+      Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+      final Procedure1<Agent> _function = (Agent it) -> {
+        boolean _contains = this.participants.keySet().contains(fullName);
+        if (_contains) {
+          ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
+          OpenEventSpace _get = this.privateSpacesListeners.get(dest);
+          UUID _get_1 = this.participants.get(fullName);
+          SignalID _signalID = new SignalID(_get_1);
+          class $SerializableClosureProxy implements Scope<Address> {
+            
+            private final UUID dest;
+            
+            public $SerializableClosureProxy(final UUID dest) {
+              this.dest = dest;
+            }
+            
+            @Override
+            public boolean matches(final Address it) {
+              UUID _uUID = it.getUUID();
+              return Objects.equal(_uUID, dest);
+            }
           }
-          
-          @Override
-          public boolean matches(final Address it) {
-            UUID _uUID = it.getUUID();
-            return Objects.equal(_uUID, dest);
-          }
+          final Scope<Address> _function_1 = new Scope<Address>() {
+            @Override
+            public boolean matches(final Address it) {
+              UUID _uUID = it.getUUID();
+              return Objects.equal(_uUID, dest);
+            }
+            private Object writeReplace() throws ObjectStreamException {
+              return new SerializableProxy($SerializableClosureProxy.class, dest);
+            }
+          };
+          _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(_get, _signalID, _function_1);
+          Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+          Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+          _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_2.cancel(_$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_3.task("waitingfor".concat(fullName).concat(dest.toString())));
         }
-        final Scope<Address> _function_1 = new Scope<Address>() {
-          @Override
-          public boolean matches(final Address it) {
-            UUID _uUID = it.getUUID();
-            return Objects.equal(_uUID, dest);
-          }
-          private Object writeReplace() throws ObjectStreamException {
-            return new SerializableProxy($SerializableClosureProxy.class, dest);
-          }
-        };
-        _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(_get, _signalID, _function_1);
-        Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
-        Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
-        _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_2.cancel(_$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_3.task("waitingfor".concat(signal).concat(dest.toString())));
-      }
-    };
-    return _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER.every(_$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1.task("waitingfor".concat(signal).concat(dest.toString())), 500, _function);
+      };
+      _xblockexpression = _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER.every(_$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1.task("waitingfor".concat(fullName).concat(dest.toString())), 500, _function);
+    }
+    return _xblockexpression;
   }
   
   @Extension

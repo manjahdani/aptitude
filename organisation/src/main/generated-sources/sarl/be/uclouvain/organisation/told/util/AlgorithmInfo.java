@@ -27,11 +27,11 @@ public class AlgorithmInfo implements Cloneable {
   
   private int level;
   
-  public AlgorithmInfo(final String n, final String b, final String t, final Integer l) {
+  public AlgorithmInfo(final String n, final String b, final String t, final int l) {
     this.name = n;
     this.belief = b;
     this.task = t;
-    this.level = ((l) == null ? 0 : (l).intValue());
+    this.level = l;
   }
   
   public AlgorithmInfo(final String n, final String t) {
@@ -46,6 +46,13 @@ public class AlgorithmInfo implements Cloneable {
     this.belief = b;
     this.task = t;
     this.level = 0;
+  }
+  
+  public AlgorithmInfo(final String n, final String t, final int l) {
+    this.name = n;
+    this.belief = null;
+    this.task = t;
+    this.level = l;
   }
   
   public void setLevel(final int a) {
@@ -64,6 +71,11 @@ public class AlgorithmInfo implements Cloneable {
   @Pure
   public int getLevel() {
     return this.level;
+  }
+  
+  @Pure
+  public String getFullName() {
+    return this.name.concat("_").concat(Integer.valueOf(this.level).toString());
   }
   
   @Pure

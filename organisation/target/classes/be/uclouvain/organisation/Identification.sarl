@@ -11,10 +11,10 @@ import java.util.UUID
  */
 event Identification{
 	
-	val name : String
+	val fullName : String
 	new (n : String)
 	{
-		this.name=n
+		this.fullName=n
 	}
 }
 

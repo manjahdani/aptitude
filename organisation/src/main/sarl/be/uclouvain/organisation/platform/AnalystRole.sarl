@@ -37,7 +37,7 @@ import java.util.UUID
  */
 behavior AnalystRole {
 	
-	uses Logging, Behaviors,DefaultContextInteractions, ExternalContextAccess
+	uses Logging, Behaviors, ExternalContextAccess
 	
 	protected var platformContext : AgentContext // Context of local platform
 	protected var privatePlatformSpace : OpenEventSpace // Private channel between the agent and local Platform
@@ -69,12 +69,14 @@ behavior AnalystRole {
 		info("Joined platform organisation: " + occurrence.privateCommunicationChannel + " (" + occurrence.context +
 			").")
 		if (occurrence.context.ID == missionData.platformID) {
-			info("Sending add mission to - " + occurrence.context.ID)
+			info("sends add mission to - " + occurrence.context.ID.toString.substring(0,5))
 			platformContext = occurrence.context
 			privatePlatformSpace = occurrence.privateCommunicationChannel
 			privatePlatformSpace.register(asEventListener)
 			info("starts mission with spaceID - " + missionData.missionID)
-			privatePlatformSpace.emit(new AddMission(getDefaultSpace(), missionData))[it.UUID == missionData.platformID]
+			privatePlatformSpace.emit(new Request2PerformMission(missionData)) [
+				it.UUID == missionData.platformID
+			] // @FIXME AddMission 
 			info("asks for algorithm performing vehicle counting to platform")
 		}
 	}
@@ -91,7 +93,6 @@ behavior AnalystRole {
 	on SignalID {
 		
 		info("received the provider ID \n sending the missionSpace")
-		
 		platformContext.defaultSpace.emit(this.ID, new AddMission(missionSpace, null)) [
 			it.UUID == occurrence.signalID
 		] 	// @FIXME : I am sending null ? 
@@ -109,7 +110,7 @@ behavior AnalystRole {
 		providerID=occurrence.source.UUID
 		emit(
 			platformContext.defaultSpace,
-			new MissionSensitivity(newLinkedList(missionData.sensitivity)) //@FIXME TO GENERALIZE As it is not only mission sensitivity 
+			new ProcessingHyperParameters(newLinkedList(missionData.sensitivity))
 		)[it.UUID==providerID]
 	}
 }

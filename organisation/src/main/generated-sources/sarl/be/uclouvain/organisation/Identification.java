@@ -15,10 +15,10 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlElementType(15)
 @SuppressWarnings("all")
 public class Identification extends Event {
-  public final String name;
+  public final String fullName;
   
   public Identification(final String n) {
-    this.name = n;
+    this.fullName = n;
   }
   
   @Override
@@ -32,7 +32,7 @@ public class Identification extends Event {
     if (getClass() != obj.getClass())
       return false;
     Identification other = (Identification) obj;
-    if (!Objects.equals(this.name, other.name))
+    if (!Objects.equals(this.fullName, other.fullName))
       return false;
     return super.equals(obj);
   }
@@ -43,7 +43,7 @@ public class Identification extends Event {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
-    result = prime * result + Objects.hashCode(this.name);
+    result = prime * result + Objects.hashCode(this.fullName);
     return result;
   }
   
@@ -54,9 +54,6 @@ public class Identification extends Event {
   @Pure
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
-    builder.add("name", this.name);
+    builder.add("fullName", this.fullName);
   }
-  
-  @SyntheticMember
-  private static final long serialVersionUID = 185343440L;
 }

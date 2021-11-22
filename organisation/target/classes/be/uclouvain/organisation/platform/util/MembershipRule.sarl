@@ -3,25 +3,27 @@
  */
 package be.uclouvain.organisation.platform.util
 
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+
 /** 
  * @author manjah
  * 
  */
 class MembershipRule {
 
-	var Member1 : String
-	var Member2 : String
+	var member1 : AlgorithmInfo
+	var member2 : AlgorithmInfo
 
-	new (m1 : String, m2 : String) {
-		this.Member1 = m1
-		this.Member2 = m2
+	new (m1 : AlgorithmInfo, m2 : AlgorithmInfo) {
+		this.member1 = m1
+		this.member2 = m2
 	}
 
 	def getM1 {
-		return this.Member1
+		return this.member1
 	}
 
 	def getM2 {
-		return this.Member2
+		return this.member2
 	}
 }

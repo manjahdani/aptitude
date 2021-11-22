@@ -2,10 +2,10 @@ package be.uclouvain.organisation.platform;
 
 import be.uclouvain.organisation.AddMember;
 import be.uclouvain.organisation.platform.util.MissionData;
+import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
-import io.sarl.lang.core.EventSpace;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -35,11 +35,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlElementType(15)
 @SuppressWarnings("all")
 public class AddMission extends AddMember {
-  public final MissionData MissionData;
+  public final MissionData missionData;
   
-  public AddMission(final EventSpace sourceEventSpace, final MissionData missionData) {
+  public AddMission(final OpenEventSpace sourceEventSpace, final MissionData missionData) {
     super(sourceEventSpace);
-    this.MissionData = missionData;
+    this.missionData = missionData;
   }
   
   @Override
@@ -64,9 +64,9 @@ public class AddMission extends AddMember {
   @Pure
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
-    builder.add("MissionData", this.MissionData);
+    builder.add("missionData", this.missionData);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = -889105359L;
+  private static final long serialVersionUID = 2600266431L;
 }

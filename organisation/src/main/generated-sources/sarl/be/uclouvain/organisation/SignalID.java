@@ -54,7 +54,4 @@ public class SignalID extends Event {
     super.toString(builder);
     builder.add("signalID", this.signalID);
   }
-  
-  @SyntheticMember
-  private static final long serialVersionUID = 3014291400L;
 }

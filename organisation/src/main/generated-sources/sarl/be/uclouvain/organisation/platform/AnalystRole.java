@@ -7,12 +7,12 @@ import be.uclouvain.organisation.TOLDOrganisationInfo;
 import be.uclouvain.organisation.platform.AddMission;
 import be.uclouvain.organisation.platform.AddObserver;
 import be.uclouvain.organisation.platform.HyperParametersRequest;
-import be.uclouvain.organisation.platform.MissionSensitivity;
+import be.uclouvain.organisation.platform.ProcessingHyperParameters;
+import be.uclouvain.organisation.platform.Request2PerformMission;
 import be.uclouvain.organisation.platform.util.MissionData;
 import be.uclouvain.organisation.told.util.AlgorithmInfo;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
-import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.Initialize;
 import io.sarl.core.Logging;
@@ -27,7 +27,6 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.Behavior;
-import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.util.SerializableProxy;
 import java.io.ObjectStreamException;
@@ -100,8 +99,8 @@ public class AnalystRole extends Behavior {
     boolean _equals = Objects.equal(_iD, _platformID);
     if (_equals) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      UUID _iD_1 = occurrence.context.getID();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("Sending add mission to - " + _iD_1));
+      String _substring = occurrence.context.getID().toString().substring(0, 5);
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("sends add mission to - " + _substring));
       this.platformContext = occurrence.context;
       this.privatePlatformSpace = occurrence.privateCommunicationChannel;
       Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
@@ -110,9 +109,7 @@ public class AnalystRole extends Behavior {
       UUID _missionID = this.missionData.getMissionID();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("starts mission with spaceID - " + _missionID));
       ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-      DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-      EventSpace _defaultSpace = _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultSpace();
-      AddMission _addMission = new AddMission(_defaultSpace, this.missionData);
+      Request2PerformMission _request2PerformMission = new Request2PerformMission(this.missionData);
       class $SerializableClosureProxy implements Scope<Address> {
         
         private final UUID $_platformID_1;
@@ -138,7 +135,7 @@ public class AnalystRole extends Behavior {
           return new SerializableProxy($SerializableClosureProxy.class, AnalystRole.this.missionData.getPlatformID());
         }
       };
-      _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.privatePlatformSpace, _addMission, _function);
+      _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.privatePlatformSpace, _request2PerformMission, _function);
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3.info("asks for algorithm performing vehicle counting to platform");
     }
@@ -208,7 +205,7 @@ public class AnalystRole extends Behavior {
     this.providerID = occurrence.getSource().getUUID();
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     LinkedList<Integer> _newLinkedList = CollectionLiterals.<Integer>newLinkedList(Integer.valueOf(this.missionData.getSensitivity()));
-    MissionSensitivity _missionSensitivity = new MissionSensitivity(_newLinkedList);
+    ProcessingHyperParameters _processingHyperParameters = new ProcessingHyperParameters(_newLinkedList);
     class $SerializableClosureProxy implements Scope<Address> {
       
       private final UUID $_providerID;
@@ -234,7 +231,7 @@ public class AnalystRole extends Behavior {
       }
     };
     _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(
-      this.platformContext.getDefaultSpace(), _missionSensitivity, _function);
+      this.platformContext.getDefaultSpace(), _processingHyperParameters, _function);
   }
   
   @Extension
@@ -263,20 +260,6 @@ public class AnalystRole extends Behavior {
       this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS = $getSkill(Behaviors.class);
     }
     return $castSkill(Behaviors.class, this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS);
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(DefaultContextInteractions.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS;
-  
-  @SyntheticMember
-  @Pure
-  private DefaultContextInteractions $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);
-    }
-    return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
   }
   
   @Extension

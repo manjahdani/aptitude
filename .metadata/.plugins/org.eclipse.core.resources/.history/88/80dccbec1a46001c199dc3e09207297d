@@ -1,0 +1,94 @@
+package be.uclouvain.aptitude.surveillance.platform
+
+import be.uclouvain.organisation.AddMember
+import be.uclouvain.organisation.Identification
+import be.uclouvain.organisation.LocalDatabaseRequest
+import be.uclouvain.organisation.SignalID
+import be.uclouvain.organisation.platform.AddObserver
+import be.uclouvain.organisation.platform.AlgorithmJoinPlatform
+import be.uclouvain.organisation.platform.PlatformCapacity
+import be.uclouvain.organisation.platform.PlatformRole
+import be.uclouvain.organisation.platform.util.MembershipRule
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Logging
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.Schedules
+import java.util.Collections
+import java.util.HashMap
+import java.util.LinkedList
+import java.util.UUID
+
+/** 
+ * 
+ * @TODO
+ * @author $Author: manjahdani$
+ * @version $0.0.3$
+ * @date $11/06/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ * 
+ */
+behavior SurveillancePlatformRole extends PlatformRole {
+	uses InnerContextAccess, ExternalContextAccess, Logging, PlatformCapacity, Schedules
+	
+	protected val participants = Collections.synchronizedMap(new HashMap<String, UUID>) // @FIXME clarify MAP - Lists and so on. clarify also if the variables must be concurrent or not
+	val request = Collections.synchronizedList(new LinkedList<String>)
+	protected val agentAlgorithm = new HashMap<String, OpenEventSpace>
+	
+	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
+	on LocalDatabaseRequest {
+		info("received a request from " + occurrence.source.UUID.toString.substring(0, 5) + " to connect with a database ")
+		privateSpacesListeners.get(TOLDID).emit(new AddMember(privateSpacesListeners.get(occurrence.source.UUID)))
+	}
+
+	
+	on Identification {
+		
+		info("new participant: " + occurrence.name )
+		participants.put(occurrence.name, occurrence.source.UUID)
+	}
+
+//	@SuppressWarnings("potential_field_synchronization_problem")
+//	on AddAlgorithm {
+//		info("recruiting agent algorithm "+ occurrence.algorithmInfo.name + " to join our platform ")
+//		agentAlgorithm.get(occurrence.algorithmInfo.task).emit(
+//			new AlgorithmJoinPlatform(innerContext, occurrence.missionSpace, occurrence.algorithmInfo.name,
+//			occurrence.algorithmInfo.task,
+//				occurrence.source.UUID))
+//	} //Revoir @FIXME Obsolete 
+	
+	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
+	on AddObserver {
+		
+		var signal = occurrence.signalProvider.name
+		var receiver = occurrence.signalReceiver.name
+		info("Adding observer from -" + signal + "- to " + receiver)
+		if (RuleManagement(new MembershipRule(signal, receiver))) {
+			synchronized (this) {
+				if (!participants.keySet.contains(signal)) {
+					if (!request.contains(signal)) {
+						request.add(signal)
+						agentAlgorithm.get(occurrence.signalProvider.task).emit(
+							new AlgorithmJoinPlatform(innerContext, signal))}
+					waitfor(signal, occurrence.source.UUID)
+				} else {
+					privateSpacesListeners.get(occurrence.source.UUID).emit(
+						new SignalID(participants.get(occurrence.signalProvider.name)))
+				}
+			}
+		}
+	}
+	on AgentAlgorithm {
+		info("encountered : " + occurrence.name + " - " + occurrence.source.UUID.toString.substring(0,5))
+		agentAlgorithm.put(occurrence.name,occurrence.topic)
+	}
+	synchronized def waitfor(signal : String, dest : UUID) {
+		task("waitingfor".concat(signal).concat(dest.toString)).every(500) [
+			if (participants.keySet.contains(signal)) {
+				privateSpacesListeners.get(dest).emit(new SignalID(participants.get(signal)))[it.UUID == dest]
+				task("waitingfor".concat(signal).concat(dest.toString)).cancel
+			}
+		]
+	}
+}

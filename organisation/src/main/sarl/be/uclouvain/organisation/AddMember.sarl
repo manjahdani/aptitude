@@ -3,7 +3,8 @@
  */
 package be.uclouvain.organisation
 
-import io.sarl.lang.core.EventSpace
+
+import io.sarl.core.OpenEventSpace
 
 /** 
  * Request to add a Member 
@@ -32,10 +33,10 @@ import io.sarl.lang.core.EventSpace
 
 event AddMember {
 	
-	val SourceEventSpace : EventSpace
+	val communicationChannel : OpenEventSpace
 
-	new(sourceEventSpace : EventSpace) {
-		this.SourceEventSpace = sourceEventSpace
+	new(comChannel : OpenEventSpace) {
+		this.communicationChannel = comChannel
 	}
 	
 }

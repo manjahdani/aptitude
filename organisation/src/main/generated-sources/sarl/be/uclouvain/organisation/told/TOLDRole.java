@@ -61,7 +61,8 @@ public class TOLDRole extends Behavior {
   @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$AddEntry$0(final AddEntry occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((("Creating entry for " + occurrence.key) + occurrence.data));
+    String _substring = occurrence.key.toString().substring(0, 5);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("creating entry for " + _substring));
     AccessDatabaseCapacity _$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_TOLD_ACCESSDATABASECAPACITY$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_TOLD_ACCESSDATABASECAPACITY$CALLER();
     _$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_TOLD_ACCESSDATABASECAPACITY$CALLER.create(occurrence.key, occurrence.data);
   }

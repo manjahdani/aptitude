@@ -5,8 +5,8 @@ import be.uclouvain.organisation.AuthorizationToPerformMission;
 import be.uclouvain.organisation.PlatformOrganisationInfo;
 import be.uclouvain.organisation.RequestToJoin;
 import be.uclouvain.organisation.TOLDOrganisationInfo;
-import be.uclouvain.organisation.platform.AddMission;
 import be.uclouvain.organisation.platform.LeavePlatform;
+import be.uclouvain.organisation.platform.Request2PerformMission;
 import be.uclouvain.organisation.platform.StopMission;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
@@ -118,44 +118,44 @@ public class PlatformRole extends Behavior {
   }
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
-  private void $behaviorUnit$AddMission$2(final AddMission occurrence) {
+  private void $behaviorUnit$Request2PerformMission$2(final Request2PerformMission occurrence) {
+    UUID clientID = occurrence.getSource().getUUID();
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    UUID _uUID = occurrence.getSource().getUUID();
-    String _location = occurrence.MissionData.getLocation();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((("Received the request to add a mission " + _uUID) + _location));
+    String _substring = clientID.toString().substring(0, 5);
+    String _plus = (("received request to add a mission from " + _substring) + " ");
+    String _location = occurrence.missionData.getLocation();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((_plus + _location));
     InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-    this.missionSpace.put(occurrence.MissionData.getMissionID(), 
-      _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, occurrence.MissionData.getMissionID()));
+    this.missionSpace.put(occurrence.missionData.getMissionID(), _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, occurrence.missionData.getMissionID()));
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    OpenEventSpace _get = this.missionSpace.get(occurrence.MissionData.getMissionID());
-    AuthorizationToPerformMission _authorizationToPerformMission = new AuthorizationToPerformMission(_get);
+    OpenEventSpace _get = this.privateSpacesListeners.get(clientID);
+    OpenEventSpace _get_1 = this.missionSpace.get(occurrence.missionData.getMissionID());
+    AuthorizationToPerformMission _authorizationToPerformMission = new AuthorizationToPerformMission(_get_1);
     class $SerializableClosureProxy implements Scope<Address> {
       
-      private final UUID $_uUID;
+      private final UUID clientID;
       
-      public $SerializableClosureProxy(final UUID $_uUID) {
-        this.$_uUID = $_uUID;
+      public $SerializableClosureProxy(final UUID clientID) {
+        this.clientID = clientID;
       }
       
       @Override
       public boolean matches(final Address it) {
         UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, $_uUID);
+        return Objects.equal(_uUID, clientID);
       }
     }
     final Scope<Address> _function = new Scope<Address>() {
       @Override
       public boolean matches(final Address it) {
         UUID _uUID = it.getUUID();
-        UUID _uUID_1 = occurrence.getSource().getUUID();
-        return Objects.equal(_uUID, _uUID_1);
+        return Objects.equal(_uUID, clientID);
       }
       private Object writeReplace() throws ObjectStreamException {
-        return new SerializableProxy($SerializableClosureProxy.class, occurrence.getSource().getUUID());
+        return new SerializableProxy($SerializableClosureProxy.class, clientID);
       }
     };
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(
-      occurrence.SourceEventSpace, _authorizationToPerformMission, _function);
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(_get, _authorizationToPerformMission, _function);
   }
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
@@ -323,18 +323,18 @@ public class PlatformRole extends Behavior {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$AddMission(final AddMission occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
-    assert occurrence != null;
-    assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AddMission$2(occurrence));
-  }
-  
-  @SyntheticMember
-  @PerceptGuardEvaluator
   private void $guardEvaluator$RequestToJoin(final RequestToJoin occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$RequestToJoin$3(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$Request2PerformMission(final Request2PerformMission occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Request2PerformMission$2(occurrence));
   }
   
   @SyntheticMember

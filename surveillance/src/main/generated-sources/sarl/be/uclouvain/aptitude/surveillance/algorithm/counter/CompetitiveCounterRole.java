@@ -5,8 +5,8 @@ import be.uclouvain.aptitude.surveillance.evaluation.AlgorithmSelectorRole;
 import be.uclouvain.organisation.SignalID;
 import be.uclouvain.organisation.platform.AddMission;
 import be.uclouvain.organisation.platform.AddObserver;
-import be.uclouvain.organisation.platform.MissionSensitivity;
 import be.uclouvain.organisation.platform.ObserverRole;
+import be.uclouvain.organisation.platform.ProcessingHyperParameters;
 import be.uclouvain.organisation.told.util.AlgorithmInfo;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
@@ -60,7 +60,7 @@ public class CompetitiveCounterRole extends ObserverRole {
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
-  private void $behaviorUnit$MissionSensitivity$1(final MissionSensitivity occurrence) {
+  private void $behaviorUnit$ProcessingHyperParameters$1(final ProcessingHyperParameters occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I received sensitivity - " + occurrence.s));
     this.expertSensitivity = occurrence.s.get(0);
@@ -120,10 +120,10 @@ public class CompetitiveCounterRole extends ObserverRole {
     comChannel.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
     this.providers.put(dataSource, comChannel);
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    String _substring = this.providers.get(dataSource).getSpaceID().getID().toString().substring(0, 5);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("received provider ID \n sending the missionSpace" + _substring));
     OpenEventSpace _get = this.providers.get(dataSource);
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("received the provider ID \n sending the missionSpace" + _get));
-    OpenEventSpace _get_1 = this.providers.get(dataSource);
-    AddMission _addMission = new AddMission(_get_1, null);
+    AddMission _addMission = new AddMission(_get, null);
     class $SerializableClosureProxy implements Scope<Address> {
       
       private final UUID dataSource;
@@ -203,18 +203,18 @@ public class CompetitiveCounterRole extends ObserverRole {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$MissionSensitivity(final MissionSensitivity occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
-    assert occurrence != null;
-    assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$MissionSensitivity$1(occurrence));
-  }
-  
-  @SyntheticMember
-  @PerceptGuardEvaluator
   private void $guardEvaluator$SignalID(final SignalID occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$SignalID$2(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$ProcessingHyperParameters(final ProcessingHyperParameters occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$ProcessingHyperParameters$1(occurrence));
   }
   
   @Override

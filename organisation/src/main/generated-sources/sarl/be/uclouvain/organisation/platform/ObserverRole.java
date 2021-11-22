@@ -1,12 +1,11 @@
 package be.uclouvain.organisation.platform;
 
-import be.uclouvain.organisation.Identification;
 import be.uclouvain.organisation.PlatformOrganisationInfo;
 import be.uclouvain.organisation.TOLDOrganisationInfo;
 import be.uclouvain.organisation.platform.AddMission;
 import be.uclouvain.organisation.platform.HyperParametersRequest;
 import be.uclouvain.organisation.platform.LeavePlatform;
-import be.uclouvain.organisation.platform.MissionSensitivity;
+import be.uclouvain.organisation.platform.ProcessingHyperParameters;
 import be.uclouvain.organisation.platform.StopMission;
 import be.uclouvain.organisation.told.util.AlgorithmInfo;
 import com.google.common.base.Objects;
@@ -30,7 +29,6 @@ import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Scope;
-import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.SerializableProxy;
 import java.io.ObjectStreamException;
 import java.util.Collection;
@@ -39,11 +37,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
-import org.eclipse.xtext.xbase.lib.CollectionLiterals;
-import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.Functions.Function2;
-import org.eclipse.xtext.xbase.lib.MapExtensions;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -110,15 +104,8 @@ public class ObserverRole extends Behavior {
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$PlatformOrganisationInfo$2(final PlatformOrganisationInfo occurrence) {
-    this.platformContext = occurrence.context;
-    this.privatePlatformSpace = occurrence.privateCommunicationChannel;
-    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    this.privatePlatformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
-    this.platformName = occurrence.platformName;
-    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    String _name = this.observerADN.getName();
-    Identification _identification = new Identification(_name);
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.platformContext.getDefaultSpace(), _identification);
+    throw new Error("Unresolved compilation problems:"
+      + "\nType mismatch: cannot convert from Identification to Event");
   }
   
   private void $behaviorUnit$TOLDOrganisationInfo$3(final TOLDOrganisationInfo occurrence) {
@@ -130,64 +117,54 @@ public class ObserverRole extends Behavior {
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$HyperParametersRequest$4(final HyperParametersRequest occurrence) {
+    UUID providerID = occurrence.getSource().getUUID();
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    String _substring = occurrence.getSource().getUUID().toString().substring(0, 5);
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("received sensitivity request from -" + _substring) + " will send the following sensitivity") + this.sensitivity));
-    final Function2<UUID, OpenEventSpace, Boolean> _function = (UUID p1, OpenEventSpace p2) -> {
-      SpaceID _spaceID = p2.getSpaceID();
-      SpaceID _spaceID_1 = occurrence.getSource().getSpaceID();
-      return Boolean.valueOf(Objects.equal(_spaceID, _spaceID_1));
-    };
-    OpenEventSpace missionSpace = ((OpenEventSpace[])Conversions.unwrapArray(MapExtensions.<UUID, OpenEventSpace>filter(this.listeners, _function).values(), OpenEventSpace.class))[0];
-    LinkedList<Integer> _xifexpression = null;
-    if (((this.isMaster) == null ? false : (this.isMaster).booleanValue())) {
-      _xifexpression = this.sensitivity;
-    } else {
-      _xifexpression = CollectionLiterals.<Integer>newLinkedList(this.sensitivity.pop());
-    }
-    LinkedList<Integer> s = _xifexpression;
-    MissionSensitivity _missionSensitivity = new MissionSensitivity(s);
+    String _substring = providerID.toString().substring(0, 5);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(
+      ((("received sensitivity request from -" + _substring) + 
+        " .... \n  sending the following sensitivity") + this.sensitivity));
+    OpenEventSpace _get = this.providers.get(providerID);
+    ProcessingHyperParameters _processingHyperParameters = new ProcessingHyperParameters(this.sensitivity);
     class $SerializableClosureProxy implements Scope<Address> {
       
-      private final UUID $_uUID;
+      private final UUID providerID;
       
-      public $SerializableClosureProxy(final UUID $_uUID) {
-        this.$_uUID = $_uUID;
+      public $SerializableClosureProxy(final UUID providerID) {
+        this.providerID = providerID;
       }
       
       @Override
       public boolean matches(final Address it) {
         UUID _uUID = it.getUUID();
-        return Objects.equal(_uUID, $_uUID);
+        return Objects.equal(_uUID, providerID);
       }
     }
-    final Scope<Address> _function_1 = new Scope<Address>() {
+    final Scope<Address> _function = new Scope<Address>() {
       @Override
       public boolean matches(final Address it) {
         UUID _uUID = it.getUUID();
-        UUID _uUID_1 = occurrence.getSource().getUUID();
-        return Objects.equal(_uUID, _uUID_1);
+        return Objects.equal(_uUID, providerID);
       }
       private Object writeReplace() throws ObjectStreamException {
-        return new SerializableProxy($SerializableClosureProxy.class, occurrence.getSource().getUUID());
+        return new SerializableProxy($SerializableClosureProxy.class, providerID);
       }
     };
-    missionSpace.emit(this.getOwner().getID(), _missionSensitivity, _function_1);
+    _get.emit(this.getOwner().getID(), _processingHyperParameters, _function);
   }
   
-  @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$AddMission$5(final AddMission occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    SpaceID _spaceID = occurrence.SourceEventSpace.getSpaceID();
-    UUID _uUID = occurrence.getSource().getUUID();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("Received Mission Space " + _spaceID) + " from ") + _uUID));
+    OpenEventSpace missionSpace = occurrence.communicationChannel;
     UUID clientID = occurrence.getSource().getUUID();
-    this.listeners.put(clientID, ((OpenEventSpace) occurrence.SourceEventSpace));
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    String _substring = missionSpace.getSpaceID().toString().substring(0, 5);
+    String _plus = (("requested to add missionID " + _substring) + " from ");
+    String _substring_1 = clientID.toString().substring(0, 5);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((_plus + _substring_1));
+    this.listeners.put(clientID, missionSpace);
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    ((OpenEventSpace) occurrence.SourceEventSpace).register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
-    boolean _contains = this.listeners.keySet().contains(clientID);
-    if ((!_contains)) {
-      OpenEventSpace _get = this.listeners.get(clientID);
+    missionSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    boolean accepted = true;
+    if (accepted) {
       HyperParametersRequest _hyperParametersRequest = new HyperParametersRequest();
       class $SerializableClosureProxy implements Scope<Address> {
         
@@ -213,9 +190,9 @@ public class ObserverRole extends Behavior {
           return new SerializableProxy($SerializableClosureProxy.class, clientID);
         }
       };
-      _get.emit(this.getOwner().getID(), _hyperParametersRequest, _function);
+      missionSpace.emit(this.getOwner().getID(), _hyperParametersRequest, _function);
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Requesting missinParameters");
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("requests missionParameters");
     }
   }
   

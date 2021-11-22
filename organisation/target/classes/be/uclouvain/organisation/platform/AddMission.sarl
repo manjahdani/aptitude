@@ -3,9 +3,9 @@
  */
 package be.uclouvain.organisation.platform
 
-import io.sarl.lang.core.EventSpace
 import be.uclouvain.organisation.AddMember
 import be.uclouvain.organisation.platform.util.MissionData
+import io.sarl.core.OpenEventSpace
 
 /** 
  * Request to perform a Mission on Platform 
@@ -33,10 +33,19 @@ import be.uclouvain.organisation.platform.util.MissionData
 
 event AddMission extends AddMember {
 	
-	val MissionData : MissionData
+	val missionData : MissionData
 
-	new(sourceEventSpace : EventSpace, missionData : MissionData) {
+	new(sourceEventSpace : OpenEventSpace, missionData : MissionData) {
 		super(sourceEventSpace)
-		this.MissionData = missionData
+		this.missionData = missionData
+	}
+}
+
+event Request2PerformMission {
+
+	val missionData : MissionData
+
+	new(missionData : MissionData) {
+		this.missionData = missionData
 	}
 }

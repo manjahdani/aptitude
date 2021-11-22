@@ -115,7 +115,7 @@ agent Algorithm extends Paraddis{
 			if (occurrence.name === ADN.name) {
 			info(
 				"clones image with intention :" + occurrence.task + " - name - " + occurrence.name + "& belief : " +
-					occurrence.belief + "from " + occurrence.source.UUID.toString.substring(0, 5))
+					occurrence.belief + " \n to answer the request of " + occurrence.source.UUID.toString.substring(0, 5))
 			val cloneID = UUID.randomUUID
 			subHolons.put(occurrence.contextID, cloneID)
 			spawnInContextWithID(Algorithm, cloneID, occurrence.contextID, ADN.cloneChild) //@FIXME : improper names // Maybe the clone should directly integrate the incrementandLevel

@@ -15,7 +15,7 @@ import be.uclouvain.organisation.SignalID;
 import be.uclouvain.organisation.platform.AddMission;
 import be.uclouvain.organisation.platform.AddObserver;
 import be.uclouvain.organisation.platform.LeavePlatform;
-import be.uclouvain.organisation.platform.MissionSensitivity;
+import be.uclouvain.organisation.platform.ProcessingHyperParameters;
 import be.uclouvain.organisation.told.util.AlgorithmInfo;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
@@ -156,7 +156,7 @@ public class TrackerRole extends PythonObserverRole {
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
-  private void $behaviorUnit$MissionSensitivity$3(final MissionSensitivity occurrence) {
+  private void $behaviorUnit$ProcessingHyperParameters$3(final ProcessingHyperParameters occurrence) {
     LinkedList<Integer> _linkedList = new LinkedList<Integer>(occurrence.s);
     this.sensitivity = _linkedList;
     int _size = this.sensitivity.size();
@@ -211,12 +211,14 @@ public class TrackerRole extends PythonObserverRole {
       for (final Integer s : this.sensitivity) {
         {
           Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+          String _concat = this.observerADN.getName().concat(s.toString());
+          _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Come here : " + _concat));
           String _name_1 = this.observerADN.getName();
-          _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Come here : " + _name_1));
-          String _concat = this.observerADN.getName().concat(this.sensitivity.toString());
-          AlgorithmInfo _algorithmInfo_2 = new AlgorithmInfo(_concat, "TRACKER");
+          int _level = this.observerADN.getLevel();
+          AlgorithmInfo _algorithmInfo_2 = new AlgorithmInfo(_name_1, "TRACKER", (_level + 1));
           String _name_2 = this.observerADN.getName();
-          AlgorithmInfo _algorithmInfo_3 = new AlgorithmInfo(_name_2, "TRACKER");
+          int _level_1 = this.observerADN.getLevel();
+          AlgorithmInfo _algorithmInfo_3 = new AlgorithmInfo(_name_2, "TRACKER", _level_1);
           AddObserver _addObserver_1 = new AddObserver(_algorithmInfo_2, _algorithmInfo_3);
           class $SerializableClosureProxy_1 implements Scope<Address> {
             
@@ -507,14 +509,6 @@ public class TrackerRole extends PythonObserverRole {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$MissionSensitivity(final MissionSensitivity occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
-    assert occurrence != null;
-    assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$MissionSensitivity$3(occurrence));
-  }
-  
-  @SyntheticMember
-  @PerceptGuardEvaluator
   private void $guardEvaluator$LeavePlatform(final LeavePlatform occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
@@ -559,6 +553,14 @@ public class TrackerRole extends PythonObserverRole {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$LastFrame$1(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$ProcessingHyperParameters(final ProcessingHyperParameters occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$ProcessingHyperParameters$3(occurrence));
   }
   
   @Override

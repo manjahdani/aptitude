@@ -45,8 +45,8 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	
 	on Identification {
 		
-		info("new participant: " + occurrence.name )
-		participants.put(occurrence.name, occurrence.source.UUID)
+		info("new participant: " + occurrence.fullName )
+		participants.put(occurrence.fullName, occurrence.source.UUID)
 	}
 
 //	@SuppressWarnings("potential_field_synchronization_problem")
@@ -61,10 +61,10 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
 	on AddObserver {
 		
-		var signal = occurrence.signalProvider.name
-		var receiver = occurrence.signalReceiver.name
-		info("Adding observer from -" + signal + "- to " + receiver)
-		if (RuleManagement(new MembershipRule(signal, receiver))) {
+		var signal = occurrence.signalProvider.fullName
+		var receiver = occurrence.signalReceiver.fullName
+		info("adding observer from  " + signal + " to " + receiver)
+		if (RuleManagement(new MembershipRule(occurrence.signalProvider, occurrence.signalReceiver))) {
 			synchronized (this) {
 				if (!participants.keySet.contains(signal)) {
 					if (!request.contains(signal)) {
@@ -83,11 +83,12 @@ behavior SurveillancePlatformRole extends PlatformRole {
 		info("encountered : " + occurrence.name + " - " + occurrence.source.UUID.toString.substring(0,5))
 		agentAlgorithm.put(occurrence.name,occurrence.topic)
 	}
-	synchronized def waitfor(signal : String, dest : UUID) {
-		task("waitingfor".concat(signal).concat(dest.toString)).every(500) [
-			if (participants.keySet.contains(signal)) {
-				privateSpacesListeners.get(dest).emit(new SignalID(participants.get(signal)))[it.UUID == dest]
-				task("waitingfor".concat(signal).concat(dest.toString)).cancel
+	synchronized def waitfor(fullName : String, dest : UUID) {
+		info("starts of the wait for" + fullName +" for " + dest.toString.substring(0,5))
+		task("waitingfor".concat(fullName).concat(dest.toString)).every(500) [
+			if (participants.keySet.contains(fullName)) {
+				privateSpacesListeners.get(dest).emit(new SignalID(participants.get(fullName)))[it.UUID == dest]
+				task("waitingfor".concat(fullName).concat(dest.toString)).cancel
 			}
 		]
 	}

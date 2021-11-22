@@ -198,7 +198,7 @@ public class Algorithm extends Paraddis {
       String _substring = occurrence.getSource().getUUID().toString().substring(0, 5);
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(
         ((((((("clones image with intention :" + occurrence.task) + " - name - ") + occurrence.name) + "& belief : ") + 
-          occurrence.belief) + "from ") + _substring));
+          occurrence.belief) + " \n to answer the request of ") + _substring));
       final UUID cloneID = UUID.randomUUID();
       this.subHolons.put(occurrence.contextID, cloneID);
       Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();

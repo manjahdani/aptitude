@@ -1,0 +1,55 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import be.uclouvain.organisation.platform.util.PlatformConfig
+import java.util.LinkedList
+import be.uclouvain.organisation.platform.util.MembershipRule
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import io.sarl.core.Logging
+
+/** 
+ * @author manjah
+ * 
+ */
+skill PlatformSkill implements PlatformCapacity {
+	
+	uses Logging
+	
+	protected val WC : PlatformConfig
+	
+	val ObserversList = new LinkedList<String> 
+	
+	new(wc : PlatformConfig) {
+		this.WC=wc
+	}
+
+	def RuleManagement(info : Object) : boolean {
+		if (info instanceof MembershipRule){
+			
+			return (noDoubleMembership(info.m1, info.m2))
+
+		}
+		else {
+			throw new UnsupportedOperationException("Unknown Rule")
+		}
+
+	}
+
+	def getPlatformConfig : PlatformConfig {
+		return this.WC
+	}
+	
+	def noDoubleMembership(m1 : AlgorithmInfo, m2:AlgorithmInfo ){
+		
+		info("\n Assert if partnership is legal of " + m1.fullName.concat(m2.fullName))
+		if (ObserversList.contains(m1.fullName.concat(m2.fullName))) {
+			return false
+		}
+		else {
+			ObserversList.add(m1.name.concat(m2.name))
+			return true
+		}			
+	}
+}

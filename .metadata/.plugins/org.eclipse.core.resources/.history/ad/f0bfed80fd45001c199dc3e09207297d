@@ -1,0 +1,41 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation
+
+import io.sarl.lang.core.EventSpace
+
+/** 
+ * Request to add a Member 
+ * The source of this event is the role Analyst
+ * 
+ * <h4>For an Agent</h4>
+ * No particular agent 
+ * 
+ * <h4>For a Behavior</h4>
+ * PlatformRole 
+ * 
+ * <h4>For a Skill</h4>
+ * No skill receives this event.
+ * 
+ * <h4>For Agent Members</h4>
+ * Not applicable
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ * 
+ */
+
+
+event AddMember {
+	
+	val sourceEventSpace : EventSpace
+
+	new(sourceEventSpace : EventSpace) {
+		this.sourceEventSpace = sourceEventSpace
+	}
+	
+}

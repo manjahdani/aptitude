@@ -1,9 +1,9 @@
 package be.uclouvain.organisation.platform.util;
 
+import be.uclouvain.organisation.told.util.AlgorithmInfo;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
-import java.util.Objects;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -13,40 +13,29 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlElementType(10)
 @SuppressWarnings("all")
 public class MembershipRule {
-  private String Member1;
+  private AlgorithmInfo member1;
   
-  private String Member2;
+  private AlgorithmInfo member2;
   
-  public MembershipRule(final String m1, final String m2) {
-    this.Member1 = m1;
-    this.Member2 = m2;
+  public MembershipRule(final AlgorithmInfo m1, final AlgorithmInfo m2) {
+    this.member1 = m1;
+    this.member2 = m2;
   }
   
   @Pure
-  public String getM1() {
-    return this.Member1;
+  public AlgorithmInfo getM1() {
+    return this.member1;
   }
   
   @Pure
-  public String getM2() {
-    return this.Member2;
+  public AlgorithmInfo getM2() {
+    return this.member2;
   }
   
   @Override
   @Pure
   @SyntheticMember
   public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    MembershipRule other = (MembershipRule) obj;
-    if (!Objects.equals(this.Member1, other.Member1))
-      return false;
-    if (!Objects.equals(this.Member2, other.Member2))
-      return false;
     return super.equals(obj);
   }
   
@@ -55,9 +44,6 @@ public class MembershipRule {
   @SyntheticMember
   public int hashCode() {
     int result = super.hashCode();
-    final int prime = 31;
-    result = prime * result + Objects.hashCode(this.Member1);
-    result = prime * result + Objects.hashCode(this.Member2);
     return result;
   }
 }

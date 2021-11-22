@@ -1,10 +1,10 @@
 package be.uclouvain.organisation;
 
+import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Event;
-import io.sarl.lang.core.EventSpace;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -34,10 +34,10 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlElementType(15)
 @SuppressWarnings("all")
 public class AddMember extends Event {
-  public final EventSpace SourceEventSpace;
+  public final OpenEventSpace communicationChannel;
   
-  public AddMember(final EventSpace sourceEventSpace) {
-    this.SourceEventSpace = sourceEventSpace;
+  public AddMember(final OpenEventSpace comChannel) {
+    this.communicationChannel = comChannel;
   }
   
   @Override
@@ -62,9 +62,9 @@ public class AddMember extends Event {
   @Pure
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
-    builder.add("SourceEventSpace", this.SourceEventSpace);
+    builder.add("communicationChannel", this.communicationChannel);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = 1776955116L;
+  private static final long serialVersionUID = 1124324306L;
 }
