@@ -5,3 +5,7 @@ tags
 generated-sources/sarl
 
 *.log
+
+*.sarlbin
+
+*.java._trace
