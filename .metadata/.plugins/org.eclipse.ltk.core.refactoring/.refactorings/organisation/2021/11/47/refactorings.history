@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;organisation/src/main/sarl/be/uclouvain/organisation/platform/MissionSensitivity.sarl&apos; to &apos;ProcessingHyperParameters.sarl&apos;" description="Rename resource &apos;MissionSensitivity.sarl&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/sarl/be/uclouvain/organisation/platform/MissionSensitivity.sarl" name="ProcessingHyperParameters.sarl" stamp="1636976735126" updateReferences="true"/>
-</session>

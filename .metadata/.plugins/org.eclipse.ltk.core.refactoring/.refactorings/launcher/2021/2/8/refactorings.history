@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;launcher/src/main/sarl/be/uclouvain/launcher/GUI.sarl&apos; to &apos;gui.sarl&apos;" description="Rename resource &apos;GUI.sarl&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/sarl/be/uclouvain/launcher/GUI.sarl" name="gui.sarl" stamp="1613488871722" updateReferences="true"/>
-</session>
