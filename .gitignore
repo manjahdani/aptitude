@@ -3,3 +3,5 @@ tags
 .metadata/
 
 generated-sources/sarl
+
+*.log
