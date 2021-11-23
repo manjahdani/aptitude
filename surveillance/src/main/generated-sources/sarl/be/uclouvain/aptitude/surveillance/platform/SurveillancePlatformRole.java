@@ -123,7 +123,7 @@ public class SurveillancePlatformRole extends PlatformRole {
     {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       String _substring = dest.toString().substring(0, 5);
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("starts of the wait for" + fullName) + " for ") + _substring));
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("starts of the wait for - " + fullName) + " for -  ") + _substring));
       Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
       Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
       final Procedure1<Agent> _function = (Agent it) -> {

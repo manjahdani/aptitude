@@ -1,6 +1,6 @@
 package be.uclouvain.python_access;
 
-import be.uclouvain.python_access.PythonAccess;
+import be.uclouvain.python_access.PythonTwinAccess;
 import be.uclouvain.python_access.messages.ActionMessage;
 import be.uclouvain.python_access.messages.BBoxes2DMessage;
 import be.uclouvain.python_access.messages.BBoxes2DTrackMessage;
@@ -91,7 +91,7 @@ public class CommunicationManager {
     return _xblockexpression;
   }
   
-  public String subscribeTopic(final String topicName, final PythonAccess observer) {
+  public String subscribeTopic(final String topicName, final PythonTwinAccess observer) {
     abstract class __CommunicationManager_0 implements MessageListener<BaseMessage> {
       public abstract void onMessage(final Message<BaseMessage> m);
     }

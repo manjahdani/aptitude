@@ -132,7 +132,7 @@ public class ObserverRole extends Behavior {
       ((("received sensitivity request from -" + _substring) + 
         " .... \n  sending the following sensitivity") + this.sensitivity));
     OpenEventSpace _get = this.providers.get(providerID);
-    ProcessingHyperParameters _processingHyperParameters = new ProcessingHyperParameters(this.sensitivity);
+    ProcessingHyperParameters _processingHyperParameters = new ProcessingHyperParameters(this.sensitivity, ((this.isMaster) == null ? false : (this.isMaster).booleanValue()));
     class $SerializableClosureProxy implements Scope<Address> {
       
       private final UUID providerID;

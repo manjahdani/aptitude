@@ -1,0 +1,61 @@
+/** 
+ * 
+ */
+package be.uclouvain.python_access
+
+import io.sarl.core.Initialize
+import io.sarl.core.Schedules
+import java.io.FileReader
+import java.util.HashMap
+import org.json.simple.JSONObject
+import org.json.simple.parser.JSONParser
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior PythonAccessorRole{
+	
+	uses Schedules, PythonTwinAccessCapacity
+	
+	protected var parser = new JSONParser();
+	protected var jsonConfig : JSONObject;
+	protected var partnerName : String;
+	
+	on Initialize {
+		
+		assert occurrence.parameters.get(0) !== null, "Belief is null";
+		assert occurrence.parameters.get(1) !== null, "PlatformName is null";
+		
+		var belief = occurrence.parameters.get(0) as String
+		var platformName = occurrence.parameters.get(1) as String
+
+		var configPath = belief // occurrence.parameters.get(0).toString
+		var jsonConfigtmp = parser.parse(new FileReader(configPath)) as JSONObject;
+		var video = (new HashMap<String, String>)
+		video.put("path", "F:/data/".concat(platformName).concat("/vdo.avi"))
+		var pathRoi = new HashMap<String, String>
+		pathRoi.put("path", "F:/data/".concat(platformName).concat("/roi.jpg"))
+		var a = jsonConfigtmp.get("Preproc") as HashMap<String, HashMap<String, String>>
+		a.put("roi", pathRoi)
+		jsonConfigtmp.put("Video", video)
+		jsonConfig = jsonConfigtmp
+		activateAccess(jsonConfig)
+	}
+
+	on PartnerTrackingFound {
+		synchronized(this)
+		this.partnerName = occurrence.partnerName
+		//info("Tracking Partner found: " + this.partnerTrackingName)
+	}
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on PartnerDetectionFound {
+		this.partnerName = occurrence.partnerName
+		// info("Detection partner found: " + this.partnerDetectionName)
+		task("wait").in(2000) [
+			updateStreamAccess(1)
+			task("wait").cancel // PLAY
+			]
+	}
+
+}

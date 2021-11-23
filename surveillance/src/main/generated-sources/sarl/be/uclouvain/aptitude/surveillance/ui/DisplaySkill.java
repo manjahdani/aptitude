@@ -2,7 +2,7 @@ package be.uclouvain.aptitude.surveillance.ui;
 
 import be.uclouvain.aptitude.surveillance.ui.DisplayCapacity;
 import be.uclouvain.python_access.CommunicationManager;
-import be.uclouvain.python_access.PythonAccess;
+import be.uclouvain.python_access.PythonTwinAccess;
 import be.uclouvain.python_access.messages.BBoxes2DTrackMessage;
 import be.uclouvain.python_access.messages.BaseMessage;
 import be.uclouvain.python_access.messages.DisplayMessage;
@@ -20,7 +20,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlSpecification("0.11")
 @SarlElementType(22)
 @SuppressWarnings("all")
-public class DisplaySkill extends PythonAccess implements DisplayCapacity {
+public class DisplaySkill extends PythonTwinAccess implements DisplayCapacity {
   private String topicDisplaySub;
   
   private String pendingRequestID;

@@ -1,10 +1,10 @@
 package be.uclouvain.aptitude.surveillance.evaluation;
 
-import be.uclouvain.aptitude.surveillance.algorithm.EvaluationResult;
-import be.uclouvain.aptitude.surveillance.algorithm.PartnerEvaluationFound;
 import be.uclouvain.aptitude.surveillance.evaluation.Evaluation;
 import be.uclouvain.python_access.CommunicationManager;
-import be.uclouvain.python_access.PythonAccess;
+import be.uclouvain.python_access.EvaluationResult;
+import be.uclouvain.python_access.PartnerEvaluationFound;
+import be.uclouvain.python_access.PythonTwinAccess;
 import be.uclouvain.python_access.messages.BaseMessage;
 import be.uclouvain.python_access.messages.EvaluationMessage;
 import be.uclouvain.python_access.messages.RequestMessage;
@@ -33,7 +33,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlSpecification("0.11")
 @SarlElementType(22)
 @SuppressWarnings("all")
-public class EvaluationImpl extends PythonAccess implements Evaluation {
+public class EvaluationImpl extends PythonTwinAccess implements Evaluation {
   public void update(final BaseMessage m) {
     if ((m instanceof EvaluationMessage)) {
       boolean _isAck = ((EvaluationMessage)m).isAck();

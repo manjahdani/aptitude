@@ -99,7 +99,7 @@ public class CounterRole extends Behavior {
     }
     DisplayCapacity _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_UI_DISPLAYCAPACITY$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_UI_DISPLAYCAPACITY$CALLER();
     final ArrayList<Integer> _converted_counts = (ArrayList<Integer>)counts;
-    _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_UI_DISPLAYCAPACITY$CALLER.sendDisplayMessage(occurrence.bboxes2DTrack, this.getOwner().getID().toString(), "F:/data/S02C006/vdo.avi", null, ((int[])Conversions.unwrapArray(this.lineCoords, int.class)), ((int[])Conversions.unwrapArray(_converted_counts, int.class)), occurrence.ObserverName, this.getOwner().getID().toString(), occurrence.Sensitivity);
+    _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_UI_DISPLAYCAPACITY$CALLER.sendDisplayMessage(occurrence.bboxes2DTrack, this.getOwner().getID().toString(), "F:/data/S02C006/vdo.avi", null, ((int[])Conversions.unwrapArray(this.lineCoords, int.class)), ((int[])Conversions.unwrapArray(_converted_counts, int.class)), occurrence.observerName, this.getOwner().getID().toString(), occurrence.sensitivity);
   }
   
   @Extension

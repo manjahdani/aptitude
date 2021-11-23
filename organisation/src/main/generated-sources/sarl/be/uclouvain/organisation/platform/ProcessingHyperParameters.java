@@ -37,14 +37,26 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 public class ProcessingHyperParameters extends Event {
   public final LinkedList<Integer> s;
   
-  public ProcessingHyperParameters(final LinkedList<Integer> s) {
+  public final boolean OptimalSearchEnabled;
+  
+  public ProcessingHyperParameters(final LinkedList<Integer> s, final boolean optimalFlag) {
     this.s = s;
+    this.OptimalSearchEnabled = optimalFlag;
   }
   
   @Override
   @Pure
   @SyntheticMember
   public boolean equals(final Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    ProcessingHyperParameters other = (ProcessingHyperParameters) obj;
+    if (other.OptimalSearchEnabled != this.OptimalSearchEnabled)
+      return false;
     return super.equals(obj);
   }
   
@@ -53,6 +65,8 @@ public class ProcessingHyperParameters extends Event {
   @SyntheticMember
   public int hashCode() {
     int result = super.hashCode();
+    final int prime = 31;
+    result = prime * result + Boolean.hashCode(this.OptimalSearchEnabled);
     return result;
   }
   
@@ -64,8 +78,9 @@ public class ProcessingHyperParameters extends Event {
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
     builder.add("s", this.s);
+    builder.add("OptimalSearchEnabled", this.OptimalSearchEnabled);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = 653283896L;
+  private static final long serialVersionUID = -2163663777L;
 }

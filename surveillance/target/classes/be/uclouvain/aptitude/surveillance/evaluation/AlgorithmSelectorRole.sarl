@@ -4,10 +4,8 @@
 package be.uclouvain.aptitude.surveillance.evaluation
 
 
-import be.uclouvain.aptitude.surveillance.algorithm.EvaluationResult
+
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
-import be.uclouvain.aptitude.surveillance.algorithm.PartnerEvaluationFound
-import be.uclouvain.aptitude.surveillance.algorithm.TrackingRequest
 import be.uclouvain.aptitude.surveillance.algorithm.util.EvaluationResults
 import be.uclouvain.aptitude.surveillance.algorithm.util.Metric
 import be.uclouvain.python_access.messages.EvaluationMessage
@@ -22,6 +20,9 @@ import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import io.sarl.core.DefaultContextInteractions
 import be.uclouvain.aptitude.surveillance.algorithm.counter.CounterRole
+import be.uclouvain.python_access.EvaluationResult
+import be.uclouvain.python_access.PartnerEvaluationFound
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingRequest
 
 /** 
  * @TODO : To complete
@@ -56,7 +57,7 @@ behavior AlgorithmSelectorRole {
 		var configPathEvaluator = configPath
 		var jsonEvaluator = parser.parse(new FileReader(configPathEvaluator)) as JSONObject;
 		info("Activating access")
-		ActivateAccess(jsonEvaluator)
+		activateAccess(jsonEvaluator)
 		info("Access activated")
 }
 

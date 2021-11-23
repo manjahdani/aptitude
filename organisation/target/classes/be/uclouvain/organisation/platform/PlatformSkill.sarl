@@ -46,7 +46,7 @@ skill PlatformSkill implements PlatformCapacity {
 		
 		if (ObserversList.contains(m1.fullName.concat(m2.fullName))) {
 			
-			info("\n Partnership of " + m1.fullName.concat(m2.fullName) + "is not legal ")
+			info("\n Partnership of - " + m1.fullName.concat(m2.fullName) + " - is not legal ")
 			return false
 		}
 		else {

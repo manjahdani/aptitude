@@ -1,6 +1,6 @@
 package be.uclouvain.aptitude.surveillance.ui;
 
-import be.uclouvain.python_access.PythonAccessCapacity;
+import be.uclouvain.python_access.PythonTwinAccessCapacity;
 import be.uclouvain.python_access.messages.BBoxes2DTrackMessage;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
@@ -12,13 +12,13 @@ import io.sarl.lang.core.AgentTrait;
 @SarlSpecification("0.11")
 @SarlElementType(20)
 @SuppressWarnings("all")
-public interface DisplayCapacity extends PythonAccessCapacity {
+public interface DisplayCapacity extends PythonTwinAccessCapacity {
   public abstract void sendDisplayMessage(final BBoxes2DTrackMessage bboxes2dTrack, final String streamID, final String streamPath, final String roi, final int[] countingLines, final int[] counts, final String name, final String observer, final int sensitivity);
   
   /**
    * @ExcludeFromApidoc
    */
-  public static class ContextAwareCapacityWrapper<C extends DisplayCapacity> extends PythonAccessCapacity.ContextAwareCapacityWrapper<C> implements DisplayCapacity {
+  public static class ContextAwareCapacityWrapper<C extends DisplayCapacity> extends PythonTwinAccessCapacity.ContextAwareCapacityWrapper<C> implements DisplayCapacity {
     public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {
       super(capacity, caller);
     }

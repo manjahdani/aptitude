@@ -123,7 +123,7 @@ public class CompetitiveCounterRole extends ObserverRole {
     String _substring = this.providers.get(dataSource).getSpaceID().getID().toString().substring(0, 5);
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("received provider ID \n sending the missionSpace" + _substring));
     OpenEventSpace _get = this.providers.get(dataSource);
-    AddMission _addMission = new AddMission(_get, null);
+    AddMission _addMission = new AddMission(_get);
     class $SerializableClosureProxy implements Scope<Address> {
       
       private final UUID dataSource;

@@ -1,13 +1,17 @@
 /** 
  * 
  */
-package be.uclouvain.aptitude.surveillance.algorithm
+package be.uclouvain.aptitude.surveillance.algorithm.detector
 
 import be.uclouvain.organisation.platform.LeavePlatform
+import be.uclouvain.organisation.platform.ObserverRole
+import be.uclouvain.python_access.BBoxes2DResult
+import be.uclouvain.python_access.PythonAccessorRole
+import be.uclouvain.python_access.PythonTwinAccessCapacity
+import io.sarl.core.Behaviors
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
-import io.sarl.core.Schedules
 
 /** 
  * @TODO: write a description
@@ -19,25 +23,28 @@ import io.sarl.core.Schedules
  * @mavenartifactid $surveillance$
  * 
  */
-behavior DetectorRole extends PythonObserverRole {
+behavior DetectorRole extends ObserverRole {
 	
-	uses Logging, PythonTwinObserverAccessCapacity , Schedules
+	uses Logging, PythonTwinAccessCapacity, Behaviors
 
 	on Initialize {
-		task("waitforConfig").every(500) [  
+
+		setSkill(new DetectorPythonTwin)
+		registerBehavior(new PythonAccessorRole(this.owner), observerADN.name, platformName)
+		/**task("waitforConfig").every(500) [  
 			if (jsonConfig !== null) {
-				setSkill(new DetectorPythonTwin)
-				ActivateAccess(jsonConfig)
+				
+				activateAccess(jsonConfig)
 				task("waitforConfig").cancel
 			}
-		]
+		]*/
 	}
 	on BBoxes2DResult {
 		
 		//info("Detector - frameNumber- lastframe " + occurrence.bboxes2D.frameNumber + occurrence.bboxes2D.lastFrame)
 		
-		for (l : listeners.keySet){
-			listeners.get(l).emit(this.ID, new BBoxes2DResult(occurrence.bboxes2D))[it.UUID == l]
+		for (listenersSpace : listeners.values) {
+			listenersSpace.emit(this.ID, new BBoxes2DResult(occurrence.bboxes2D, observerADN.name))[it.UUID !== this.ID]
 		}
 	}
 
@@ -47,10 +54,10 @@ behavior DetectorRole extends PythonObserverRole {
 		info("Restarting")
 		var spaceToSend = listeners.get(listeners.get(0))
 		listeners.clear
-		listeners.put(occurrence.source.UUID, spaceToSend )
+		listeners.put(occurrence.source.UUID, spaceToSend)
 		//UpdateStreamAccess(3)
-		UpdateStreamAccess(5)
-		UpdateStreamAccess(1)} //@FIXME not robust ! 
+		updateStreamAccess(5)
+		updateStreamAccess(1)} //@FIXME not robust ! 
 	}
 	on Destroy {
 		info("The behavior was stopped.")
@@ -59,7 +66,7 @@ behavior DetectorRole extends PythonObserverRole {
 	on LeavePlatform {
 		// join(BaseContext.ID, BaseSpace.spaceID.ID)
 		//info("Detector Leaving")
-		UpdateStreamAccess(4)
+		updateStreamAccess(4)
 		//leave(PlatformID)
 	}
 }
@@ -120,4 +127,4 @@ event RestartDetector{
 //			{
 //				info("MissionSpace null")
 //			}
-//else{ 
+//else{  

@@ -146,12 +146,6 @@ public class Expert extends Paraddis {
   }
   
   private void $behaviorUnit$ContextJoined$4(final ContextJoined occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    ConcurrentLinkedDeque<AgentContext> _allContexts = _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.getAllContexts();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("all experts context -- " + _allContexts));
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("defaultSpaceJoined -- " + occurrence.defaultSpaceID));
   }
   
   @Pure

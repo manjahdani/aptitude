@@ -31,15 +31,31 @@ import io.sarl.core.OpenEventSpace
  * 
  */
 
-event AddMission extends AddMember {
-	
-	val missionData : MissionData
+/**
+ * 
+ * event AddMission extends AddMember {
+ * 
+ * val missionData : MissionData
 
-	new(sourceEventSpace : OpenEventSpace, missionData : MissionData) {
-		super(sourceEventSpace)
-		this.missionData = missionData
+ * new(sourceEventSpace : OpenEventSpace, missionData : MissionData) {
+ * super(sourceEventSpace)
+ * this.missionData = missionData
+ * }
+ * 
+ * new (sourceEventSpace : OpenEventSpace)
+ * }
+ */
+
+
+event AddMission {
+	
+	val communicationChannel : OpenEventSpace
+
+	new(sourceEventSpace : OpenEventSpace) {
+		this.communicationChannel = sourceEventSpace
 	}
 }
+
 
 event Request2PerformMission {
 

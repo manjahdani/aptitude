@@ -3,15 +3,16 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm
 
-import be.uclouvain.python_access.PythonAccess
+import be.uclouvain.python_access.PythonTwinAccess
 import be.uclouvain.python_access.messages.BaseMessage
 import be.uclouvain.python_access.CommunicationManager
+import be.uclouvain.organisation.platform.ObserverCapacity
 
 /** 
  * @author manjah
  * 
  */
-abstract skill ObserverPythonAccess extends PythonAccess implements PythonTwinObserverAccessCapacity {
+abstract skill ObserverPythonAccess extends PythonTwinAccess implements ObserverCapacity {
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	def Signal2Perception(detectionMessage : Object) {

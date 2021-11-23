@@ -46,4 +46,7 @@ class MissionData {
 	def getSensitivity() {
 		return this.missionParam.sensitivity
 	}
+	def isOptimalSearchEnabled {
+		return this.missionParam.isOptimalSearchEnabled
+	}
 }

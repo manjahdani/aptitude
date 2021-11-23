@@ -84,7 +84,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 		agentAlgorithm.put(occurrence.name,occurrence.topic)
 	}
 	synchronized def waitfor(fullName : String, dest : UUID) {
-		info("starts of the wait for" + fullName +" for " + dest.toString.substring(0,5))
+		info("starts of the wait for - " + fullName +" for -  " + dest.toString.substring(0,5))
 		task("waitingfor".concat(fullName).concat(dest.toString)).every(500) [
 			if (participants.keySet.contains(fullName)) {
 				privateSpacesListeners.get(dest).emit(new SignalID(participants.get(fullName)))[it.UUID == dest]

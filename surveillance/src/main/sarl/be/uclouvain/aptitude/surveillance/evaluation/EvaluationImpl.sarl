@@ -3,15 +3,16 @@
  */
 package be.uclouvain.aptitude.surveillance.evaluation
 
-import be.uclouvain.aptitude.surveillance.algorithm.EvaluationResult
-import be.uclouvain.aptitude.surveillance.algorithm.PartnerEvaluationFound
+
 import be.uclouvain.python_access.CommunicationManager
-import be.uclouvain.python_access.PythonAccess
 import be.uclouvain.python_access.messages.BaseMessage
 import be.uclouvain.python_access.messages.EvaluationMessage
 import be.uclouvain.python_access.messages.RequestMessage
 import io.sarl.core.Behaviors
 import io.sarl.core.Schedules
+import be.uclouvain.python_access.PythonTwinAccess
+import be.uclouvain.python_access.EvaluationResult
+import be.uclouvain.python_access.PartnerEvaluationFound
 
 /** 
  * @TODO: write a description
@@ -23,7 +24,7 @@ import io.sarl.core.Schedules
  * @mavenartifactid $surveillance$
  * 
  */
-skill EvaluationImpl extends PythonAccess implements Evaluation {
+skill EvaluationImpl extends PythonTwinAccess implements Evaluation {
 
 	uses Behaviors, Schedules
 	

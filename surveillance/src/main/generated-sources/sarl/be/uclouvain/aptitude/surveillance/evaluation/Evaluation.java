@@ -1,6 +1,6 @@
 package be.uclouvain.aptitude.surveillance.evaluation;
 
-import be.uclouvain.python_access.PythonAccessCapacity;
+import be.uclouvain.python_access.PythonTwinAccessCapacity;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.core.AgentTrait;
@@ -17,7 +17,7 @@ import io.sarl.lang.core.AgentTrait;
 @SarlSpecification("0.11")
 @SarlElementType(20)
 @SuppressWarnings("all")
-public interface Evaluation extends PythonAccessCapacity {
+public interface Evaluation extends PythonTwinAccessCapacity {
   public abstract void sendEvaluationRequest(final String requestID, final String predictions, final String gts);
   
   public abstract void sendEvaluationRequest(final String requestID, final String predictions, final String gts, final int maxFrame);
@@ -25,7 +25,7 @@ public interface Evaluation extends PythonAccessCapacity {
   /**
    * @ExcludeFromApidoc
    */
-  public static class ContextAwareCapacityWrapper<C extends Evaluation> extends PythonAccessCapacity.ContextAwareCapacityWrapper<C> implements Evaluation {
+  public static class ContextAwareCapacityWrapper<C extends Evaluation> extends PythonTwinAccessCapacity.ContextAwareCapacityWrapper<C> implements Evaluation {
     public ContextAwareCapacityWrapper(final C capacity, final AgentTrait caller) {
       super(capacity, caller);
     }

@@ -1,0 +1,75 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.tracker
+
+import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
+import be.uclouvain.organisation.platform.AddMission
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import be.uclouvain.python_access.BBoxes2DResult
+import io.sarl.core.Behaviors
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.OpenEventSpaceSpecification
+import java.util.Collections
+import java.util.HashMap
+import java.util.LinkedList
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior CompetitiveMultiTrackerRole {
+	uses Logging, Lifecycle, InnerContextAccess, Behaviors
+	
+	val detectors = newArrayList("TinyYOLO", "YOLO") // @FIXME its logiciel parameters or not ?
+	
+	protected val providers = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
+	protected val parrallelProcess = Collections.synchronizedMap(new HashMap<String, UUID>)
+	
+	on Initialize {
+		info("Competitive multi-tracker role started.")
+		
+		var hyperParametersToBeTested = occurrence.parameters.get(0) as LinkedList<Integer>
+		var observerADN = occurrence.parameters.get(1) as AlgorithmInfo
+		
+		for (m : hyperParametersToBeTested) {
+		var cloneID = UUID.randomUUID
+		spawnInContextWithID(Algorithm, cloneID, innerContext, observerADN.cloneChild)
+			info("created the provider ID \n sending the missionSpace")
+
+		var comSpace: OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID) // An internal space to communicate with other roles.
+			providers.put(cloneID, comSpace)
+			parrallelProcess.put(detectors.get(m), cloneID)
+		wake(new AddMission(comSpace)) [it.UUID == cloneID]}
+	}
+	
+	
+
+	on Destroy {
+		// Event trigger when the behavior is destroyed from the system.
+		// You should put all the resource releasing statements in this block of code.
+		info("The behavior was stopped.")
+	}
+
+
+
+	on BBoxes2DResult {
+		
+		info("Sending results from " + occurrence.providerName + "parrallelProcess.get(occurrence.providerName)")
+		// We send to the sub-process meant to analyse the data of the provider. For example, agent 1 process the data sent from detector A. 
+		wake(new BBoxes2DResult(occurrence.bboxes2D))[it.UUID == parrallelProcess.get(occurrence.providerName)] 
+	
+
+	/* 
+	 * if (!providers.keySet.contains(occurrence.source.UUID)) {
+	 * providers.put(occurrence.source.UUID, null) 	// @FIXME HIGH to correct;
+	 * } // @FIXME It is not necessary
+	 */
+	}
+}

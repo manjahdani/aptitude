@@ -94,7 +94,9 @@ public class UserRole extends ElementRole {
       final UUID entityID = UUID.fromString(((UDP_Message_RequestSpawn)msg).actorUID);
       UUID _randomUUID = UUID.randomUUID();
       String _get = this.availablePlatforms.get(((UDP_Message_RequestSpawn)msg).sceneID);
-      MissionParameters _missionParameters = new MissionParameters(this.entityList.get(entityID).evolution);
+      MissionParameters _missionParameters = new MissionParameters(
+        this.entityList.get(entityID).evolution, 
+        true);
       MissionData _missionData = new MissionData(_randomUUID, entityID, _get, _missionParameters);
       NewMission _newMission = new NewMission(_missionData);
       class $SerializableClosureProxy implements Scope<Address> {

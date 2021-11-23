@@ -14,8 +14,16 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class MissionParameters {
   private int sensitivity;
   
-  public MissionParameters(final int s) {
+  private boolean optimalSearchEnabled;
+  
+  public MissionParameters(final int s, final boolean o) {
     this.sensitivity = s;
+    this.optimalSearchEnabled = o;
+  }
+  
+  @Pure
+  public boolean isOptimalSearchEnabled() {
+    return this.optimalSearchEnabled;
   }
   
   @Pure
@@ -36,6 +44,8 @@ public class MissionParameters {
     MissionParameters other = (MissionParameters) obj;
     if (other.sensitivity != this.sensitivity)
       return false;
+    if (other.optimalSearchEnabled != this.optimalSearchEnabled)
+      return false;
     return super.equals(obj);
   }
   
@@ -46,6 +56,7 @@ public class MissionParameters {
     int result = super.hashCode();
     final int prime = 31;
     result = prime * result + Integer.hashCode(this.sensitivity);
+    result = prime * result + Boolean.hashCode(this.optimalSearchEnabled);
     return result;
   }
 }

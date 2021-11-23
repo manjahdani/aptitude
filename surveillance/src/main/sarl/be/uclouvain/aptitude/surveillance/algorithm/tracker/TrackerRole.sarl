@@ -1,32 +1,29 @@
 
 package be.uclouvain.aptitude.surveillance.algorithm.tracker
 
-import be.uclouvain.aptitude.surveillance.algorithm.BBoxes2DResult
-import be.uclouvain.aptitude.surveillance.algorithm.BBoxes2DTrackResult
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
-import be.uclouvain.aptitude.surveillance.algorithm.PythonObserverRole
-import be.uclouvain.aptitude.surveillance.algorithm.PythonTwinObserverAccessCapacity
-import be.uclouvain.aptitude.surveillance.algorithm.RestartDetector
 import be.uclouvain.aptitude.surveillance.algorithm.TrackingPerception
 import be.uclouvain.aptitude.surveillance.algorithm.TrackingRequest
-import be.uclouvain.aptitude.surveillance.algorithm.util.BBOX
+import be.uclouvain.aptitude.surveillance.algorithm.detector.RestartDetector
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.organisation.SignalID
 import be.uclouvain.organisation.platform.AddMission
 import be.uclouvain.organisation.platform.AddObserver
 import be.uclouvain.organisation.platform.LeavePlatform
+import be.uclouvain.organisation.platform.ObserverRole
+import be.uclouvain.organisation.platform.ProcessingHyperParameters
 import be.uclouvain.organisation.told.util.AlgorithmInfo
+import be.uclouvain.python_access.BBoxes2DTrackResult
+import be.uclouvain.python_access.PythonAccessorRole
 import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpaceSpecification
-import io.sarl.core.Schedules
 import java.util.ArrayList
 import java.util.LinkedList
 import java.util.UUID
-import be.uclouvain.organisation.platform.ProcessingHyperParameters
 
 /** 
  * @FIXME : IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -48,98 +45,77 @@ import be.uclouvain.organisation.platform.ProcessingHyperParameters
  * @mavenartifactid $surveillance$
  * 
  */
-behavior TrackerRole extends PythonObserverRole {
+behavior TrackerRole extends ObserverRole {
 	
-	uses Logging, PythonTwinObserverAccessCapacity, DefaultContextInteractions,Lifecycle, Schedules, Behaviors
-	
-	
-	val availableObservers = newArrayList("TinyYOLO", "YOLO") //@FIXME should be given by the Analyst which makes it configurable ? 
-	var totalTrackerTime : double = 0
-	var totalDetectorTime: double = 0
-	
-	//val dynamicTrackingMemory = Collections.synchronizedList(new LinkedList<ArrayList<BBoxes2D>>)
-	var championName = "None"
-	var championSensitivity = 5
-	var LastFrame : int = 10000
-	val FRAME_WIDTH = 1920.0 // @FIXME hardcoded value
-	var FRAME_HEIGHT = 1080.0 // @FIXME hardcoded value
-	
-	@SuppressWarnings("potential_field_synchronization_problem")
+	uses Logging, TrackerPythonTwinCapacity, DefaultContextInteractions, Lifecycle, Behaviors
 
-	on LeavePlatform {
-		// join(BaseContext.ID, BaseSpace.spaceID.ID)
-		info("ObserverTrackerLeaving")
-		UpdateStreamAccess(4)
-		// leave(PlatformID)
-	}
+
+	val detectors = newArrayList("TinyYOLO", "YOLO") // @FIXME should be given by the Analyst which makes it configurable ?
+	
+	var totalTrackerTime : double = 0
+	var totalDetectorTime : double = 0
+
+
+	var FrameLimit : int
 	
 	on LastFrame {
-		info("Receveived last frame " + listeners)
+		info("Received last frame " + listeners)
 		
-		for (l : listeners.keySet){
-				listeners.get(l).emit(this.ID,
-					new LastFrame(occurrence.frameNumber, ("F:\\Database\\".concat(this.ID.toString) + ".txt"), totalDetectorTime,
-					totalTrackerTime)) [
-					it.UUID == l
-				] //@FIXME could we be listener.value based ? It's a bit strange that one could not listen to its own message.. ^^ 
-	}}
-	
-	on TrackingRequest{
-		// info("ReactivatingAccess")
-		setSkill(new TrackerPythonTwin)
-		ActivateAccess(jsonConfig)
-		if (occurrence.bel.contains("Tiny")) {
-			info("My Champion is SORT and TinyYOLO")
-			championSensitivity = 1
-			championName = "tinyYOLO" //@FIXME Its a hack
-			emit(new RestartDetector("TinyYOLO"))
-		}
-		else{
-			info("My Champion is SORT and YOLO")
-			championSensitivity = 0
-			championName = "YOLO" 
-			emit(new RestartDetector("YOLO"))
-		}
-	}
-	
+		for (listenersSpace : listeners.values) {
+			
+			listenersSpace.emit(this.ID,
+					new LastFrame(
+						occurrence.frameNumber, 
+						("F:\\Database\\".concat(this.ID.toString) + ".txt"), 
+						totalDetectorTime,
+						totalTrackerTime)) [it.UUID !== this.ID]
+						
+						}
+	   }
 	@SuppressWarnings("potential_field_synchronization_problem")
 	
 	
-
 	on ProcessingHyperParameters {
+
+		sensitivity = new LinkedList(occurrence.s)
+
+		if (occurrence.OptimalSearchEnabled) {
+			registerBehavior(new CompetitiveMultiTrackerRole(this.owner), sensitivity, this.observerADN)
+		} 
+		else {
+			setSkill(new TrackerPythonTwin)
+			registerBehavior(new PythonAccessorRole(this.owner), observerADN.name,platformName)
+		} 
 		
-		//@FIXME We could totally generalize that. 
-		sensitivity= new LinkedList(occurrence.s)
-		if(sensitivity.size==1)
-		{
-			LastFrame = 50
-			task("waitforConfig").every(500) [
-				if (jsonConfig !== null) {
-					setSkill(new TrackerPythonTwin)
-					ActivateAccess(jsonConfig)
-					task("waitforConfig").cancel
-				}
-			]
-			// val ObserverName = availableObservers.get(intensityMap.get(sensitivity.get))
-			val DetectorName = availableObservers.get(sensitivity.get(0))
-			//info("Come here : " + DetectorName)	
-			privatePlatformSpace.emit(this.ID,
-				new AddObserver(new AlgorithmInfo(DetectorName, "DETECTOR"),
+		for (s : sensitivity) {
+			var detector = detectors.get(s)
+			info("Come here : " + detector)
+			privatePlatformSpace.emit(this.ID, new AddObserver(
+				new AlgorithmInfo(detector, "DETECTOR"),
 				new AlgorithmInfo(observerADN.name, "TRACKER")))[it.UUID == platformContext.ID]
 		}
-		else {
-			for(s : sensitivity)
-			{
-				info("Come here : " + observerADN.name.concat(s.toString))
-				privatePlatformSpace.emit(this.ID, new AddObserver(new AlgorithmInfo(observerADN.name, "TRACKER", observerADN.level+1),
-					new AlgorithmInfo(observerADN.name, "TRACKER", observerADN.level))) [
-					it.UUID == platformContext.ID
-				]
-			}//@FIXME Probably the trackers will accumulate in platforms. Remember to deal with that by removing if one ends its duty.  
-		}
 	}
-	
-	
+
+	on TrackingRequest {
+		// info("ReactivatingAccess")
+		unregisterBehavior(CompetitiveMultiTrackerRole)
+		setSkill(new TrackerPythonTwin)
+		registerBehavior(new PythonAccessorRole(this.owner), observerADN.name, platformName)
+		
+		sensitivity = 
+		if (occurrence.bel.contains("Tiny")) {
+			info("My Champion is SORT and TinyYOLO")
+			optimalAlgorithmSensitivity = 1
+			optimalName = "tinyYOLO" // @FIXME Its a hack
+			emit(new RestartDetector("TinyYOLO"))
+		} else {
+			info("My Champion is SORT and YOLO")
+			optimalAlgorithmSensitivity = 0
+			optimalName = "YOLO" 
+			emit(new RestartDetector("YOLO"))
+		}
+	}	
+
 	//@FIXME possibly a reaction of the global behavior observer. We could generalize. 
 	on SignalID {
 		val dataSource = occurrence.signalID // provider
@@ -148,85 +124,93 @@ behavior TrackerRole extends PythonObserverRole {
 		comChannel.register(asEventListener)
 		providers.put(dataSource, comChannel)
 		info("received the provider ID \n sending the missionSpace" + providers.get(dataSource))
-		platformContext.defaultSpace.emit(this.ID, new AddMission(providers.get(dataSource), null)) [
+		platformContext.defaultSpace.emit(this.ID, new AddMission(providers.get(dataSource))) [
 			it.UUID == dataSource
-		] 	// @FIXME : I am sending null ?
+		]
 	}
+
 	
-
-	on BBoxes2DTrackResult{
-		
-		totalDetectorTime += occurrence.bboxes2DTrack.detectionTime
-		totalTrackerTime += occurrence.bboxes2DTrack.trackingTime 
-		
-		var ratio_width = FRAME_WIDTH / occurrence.bboxes2DTrack.dimWidth 
-		var ratio_height = FRAME_HEIGHT / occurrence.bboxes2DTrack.dimHeight 
-		
-		var frameNumber = occurrence.bboxes2DTrack.frameNumber
-		
-		
-		var tmp : ArrayList<BBoxe2D> = newArrayList 
-		
-		for (var i = 0; i < occurrence.bboxes2DTrack.numberObjects; i++) {
-			var X = occurrence.bboxes2DTrack.bboxes.get(4 * i) * ratio_width
-			var Y = occurrence.bboxes2DTrack.bboxes.get(4 * i + 1) * ratio_height
-			var W = occurrence.bboxes2DTrack.bboxes.get(4 * i + 2) * ratio_width
-			var H = occurrence.bboxes2DTrack.bboxes.get(4 * i + 3) * ratio_height
-			var classID = occurrence.bboxes2DTrack.classIDs.get(i)
-			var globalID = occurrence.bboxes2DTrack.globalIDs.get(i)
-			var conf = occurrence.bboxes2DTrack.detConfs.get(i)
-			tmp.add(new BBoxe2D(new BBOX(X, Y, W, H), conf, globalID, classID, frameNumber))
-			}
-			
-			//dynamicTrackingMemory.add(frameNumber,tmp)
-			
-			for (l : listeners.keySet){
-				listeners.get(l).emit(this.ID, new TrackingPerception(tmp))[it.UUID == l]
-				}
-			
-			if (occurrence.bboxes2DTrack.lastFrame || frameNumber > LastFrame) {
-				
-				emit(new LastFrame(frameNumber))[it==me]
-				for(p : providers.keySet){
-				providers.get(p).emit(this.ID, new LeavePlatform)[it.UUID==p]}
-				killMe
-			}
-			// println("***********************")
-			 // println("* Tracking " + occurrence.bboxes2DTrack.frameNumber)
-			 // println("*  " + occurrence.bboxes2DTrack.trackingTime)
-			 // println("*  " + Arrays.toString(occurrence.bboxes2DTrack.globalIDs))
-			 // println("*  " + Arrays.toString(occurrence.bboxes2DTrack.bboxes))
-			 // println("*  " + Arrays.toString(occurrence.bboxes2DTrack.classIDs))
-			 // println("*  " + Arrays.toString(occurrence.bboxes2DTrack.detConfs))
-			 // println("*  " + occurrence.bboxes2DTrack.lastFrame)
-			 // println("***********************")
+	on LeavePlatform {
+		// join(BaseContext.ID, BaseSpace.spaceID.ID)
+		info("ObserverTrackerLeaving")
+		updateStreamAccess(4)
+		// leave(PlatformID)
 	}
-	@SuppressWarnings("discouraged_occurrence_readonly_use")
 
+	on BBoxes2DTrackResult {
 
-	on BBoxes2DResult {
-		if(!providers.keySet.contains(occurrence.source.UUID)){
-			providers.put(occurrence.source.UUID,null) // @FIXME HIGH to correct;
-		}// @FIXME It is not necessary
-		Signal2Perception(occurrence.bboxes2D)
+		totalDetectorTime += occurrence.bboxes2DTrack.detectionTime
+		totalTrackerTime += occurrence.bboxes2DTrack.trackingTime
+		
+		var tmp : ArrayList<BBoxe2D> = formatConversion(occurrence.bboxes2DTrack)
+
+		//dynamicTrackingMemory.add(frameNumber,tmp)
+		for (l : listeners.values) {
+			l.emit(this.ID, new TrackingPerception(tmp))[it != me]
+		}
+
+		if (occurrence.bboxes2DTrack.lastFrame || occurrence.bboxes2DTrack.frameNumber > FrameLimit) {
+
+			emit(new LastFrame(occurrence.bboxes2DTrack.frameNumber))[it.UUID == this.ID]
+			for (p : providers.keySet) {
+				providers.get(p).emit(this.ID, new LeavePlatform)[it.UUID == p]
+			}
+			killMe
+		}
 	}
 }
 
 event BBoxes2DTrackResultToCounter extends BBoxes2DTrackResult{ //@FIXME : Nonsens
 	
-	var ObserverName : String
-	var Sensitivity : int
+	var observerName : String
+	var sensitivity : int
 	
 	new (t : BBoxes2DTrackMessage, o : String, s: int){
 		super(t)
-		this.ObserverName = o
-		this.Sensitivity=s
+		this.observerName = o
+		this.sensitivity=s
 	}
 	
 }
 
+/** 
+ * on ProcessingHyperParameters {
+ * 
+ * //@FIXME We could totally generalize that. 
+ * sensitivity= new LinkedList(occurrence.s)
+ * if(sensitivity.size==1)
+ * {
+ * LastFrame = 50
+ * task("waitforConfig").every(500) [
+ * if (jsonConfig !== null) {
+ * setSkill(new TrackerPythonTwin)
+ * ActivateAccess(jsonConfig)
+ * task("waitforConfig").cancel
+ * }
+ * ]
+ * // val ObserverName = availableObservers.get(intensityMap.get(sensitivity.get))
+ * val DetectorName = availableObservers.get(sensitivity.get(0))
+ * //info("Come here : " + DetectorName)	
+ * privatePlatformSpace.emit(this.ID,
+ * new AddObserver(new AlgorithmInfo(DetectorName, "DETECTOR"),
+ * new AlgorithmInfo(observerADN.name, "TRACKER")))[it.UUID == platformContext.ID]
+ * }
+ * else {
+ * for(s : sensitivity)
+ * {
+ * info("Come here : " + observerADN.name.concat(s.toString))
+ * privatePlatformSpace.emit(this.ID, new AddObserver(new AlgorithmInfo(observerADN.name, "TRACKER", observerADN.level+1),
+ * new AlgorithmInfo(observerADN.name, "TRACKER", observerADN.level))) [
+ * it.UUID == platformContext.ID
+ * ]
+ * }//@FIXME Probably the trackers will accumulate in platforms. Remember to deal with that by removing if one ends its duty.  
+ * }
+ * }
+ */
+ 
+ 
 
-/*
+/* 
  * synchronized (this)
  * try {
  * gt.write(

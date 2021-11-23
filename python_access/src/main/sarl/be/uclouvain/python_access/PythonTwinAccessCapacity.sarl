@@ -1,0 +1,22 @@
+/** 
+ * 
+ */
+package be.uclouvain.python_access
+
+import org.json.simple.JSONObject
+import be.uclouvain.python_access.messages.BaseMessage
+
+/** 
+ * @author manjah
+ * 
+ */
+capacity PythonTwinAccessCapacity {
+
+	def activateAccess(j : JSONObject)
+
+	def update(m : BaseMessage)
+
+	def updateStreamAccess(a : int)
+
+	def updateStreamAccess(actionID : int, newFrameNumber : int);
+}

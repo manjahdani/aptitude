@@ -93,13 +93,13 @@ behavior AnalystRole {
 	on SignalID {
 		
 		info("received the provider ID \n sending the missionSpace")
-		platformContext.defaultSpace.emit(this.ID, new AddMission(missionSpace, null)) [
+		platformContext.defaultSpace.emit(this.ID, new AddMission(missionSpace)) [
 			it.UUID == occurrence.signalID
-		] 	// @FIXME : I am sending null ? 
+		] 
 	}
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on TOLDOrganisationInfo {
-		info("Joined TOLD organisation: " + occurrence.privateCommunicationChannel + " (" + occurrence.context + ").")
+		//info("Joined TOLD organisation: " + occurrence.privateCommunicationChannel + " (" + occurrence.context + ").")
 		TOLDContext = occurrence.context
 		privateTOLDSpace = occurrence.privateCommunicationChannel
 		privateTOLDSpace.register(asEventListener)
@@ -110,7 +110,8 @@ behavior AnalystRole {
 		providerID=occurrence.source.UUID
 		emit(
 			platformContext.defaultSpace,
-			new ProcessingHyperParameters(newLinkedList(missionData.sensitivity))
-		)[it.UUID==providerID]
+			new ProcessingHyperParameters(
+				newLinkedList(missionData.sensitivity),  
+				missionData.optimalSearchEnabled))[it.UUID==providerID]
 	}
 }

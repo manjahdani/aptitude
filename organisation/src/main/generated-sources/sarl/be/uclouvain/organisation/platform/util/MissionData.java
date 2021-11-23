@@ -68,6 +68,11 @@ public class MissionData {
     return this.missionParam.getSensitivity();
   }
   
+  @Pure
+  public boolean isOptimalSearchEnabled() {
+    return this.missionParam.isOptimalSearchEnabled();
+  }
+  
   @Override
   @Pure
   @SyntheticMember

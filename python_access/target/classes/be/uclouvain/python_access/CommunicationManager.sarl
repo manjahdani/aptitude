@@ -65,7 +65,7 @@ class CommunicationManager {
 		this.hzInstance = Hazelcast.newHazelcastInstance(hzConfig)
 	}
 
-	def subscribeTopic(topicName : String, observer : PythonAccess) {
+	def subscribeTopic(topicName : String, observer : PythonTwinAccess) {
 		val topic = this.hzInstance.getTopic(topicName)
 		val subscribtionID : String = topic.addMessageListener(new MessageListener<BaseMessage>() {
 			def onMessage(m : Message<BaseMessage>) {

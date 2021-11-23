@@ -107,7 +107,7 @@ behavior ObserverRole {
 				" .... \n  sending the following sensitivity" + sensitivity)
 			
 		
-		providers.get(providerID).emit(this.ID, new ProcessingHyperParameters(sensitivity))[it.UUID == providerID]
+		providers.get(providerID).emit(this.ID, new ProcessingHyperParameters(sensitivity, isMaster))[it.UUID == providerID]
 	}
 
 	on AddMission {

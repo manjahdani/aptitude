@@ -1,16 +1,16 @@
 package be.uclouvain.aptitude.surveillance.evaluation;
 
-import be.uclouvain.aptitude.surveillance.algorithm.EvaluationResult;
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame;
-import be.uclouvain.aptitude.surveillance.algorithm.PartnerEvaluationFound;
-import be.uclouvain.aptitude.surveillance.algorithm.TrackingRequest;
 import be.uclouvain.aptitude.surveillance.algorithm.counter.CounterRole;
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingRequest;
 import be.uclouvain.aptitude.surveillance.algorithm.util.EvaluationResults;
 import be.uclouvain.aptitude.surveillance.algorithm.util.Metric;
 import be.uclouvain.aptitude.surveillance.evaluation.AlgorithmSelection;
 import be.uclouvain.aptitude.surveillance.evaluation.AlgorithmSelectionSkill;
 import be.uclouvain.aptitude.surveillance.evaluation.Evaluation;
 import be.uclouvain.aptitude.surveillance.evaluation.EvaluationImpl;
+import be.uclouvain.python_access.EvaluationResult;
+import be.uclouvain.python_access.PartnerEvaluationFound;
 import be.uclouvain.python_access.messages.EvaluationMessage;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
@@ -85,7 +85,7 @@ public class AlgorithmSelectorRole extends Behavior {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Activating access");
       Evaluation _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_EVALUATION_EVALUATION$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_EVALUATION_EVALUATION$CALLER();
-      _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_EVALUATION_EVALUATION$CALLER.ActivateAccess(jsonEvaluator);
+      _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_EVALUATION_EVALUATION$CALLER.activateAccess(jsonEvaluator);
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Access activated");
     } catch (Throwable _e) {
@@ -274,6 +274,14 @@ public class AlgorithmSelectorRole extends Behavior {
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$0(occurrence));
   }
   
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$LastFrame(final LastFrame occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$LastFrame$2(occurrence));
+  }
+  
   /**
    * @FIXME Not general
    */
@@ -291,14 +299,6 @@ public class AlgorithmSelectorRole extends Behavior {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$PartnerEvaluationFound$1(occurrence));
-  }
-  
-  @SyntheticMember
-  @PerceptGuardEvaluator
-  private void $guardEvaluator$LastFrame(final LastFrame occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
-    assert occurrence != null;
-    assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$LastFrame$2(occurrence));
   }
   
   @Override

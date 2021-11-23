@@ -1,45 +1,34 @@
 package be.uclouvain.organisation.platform;
 
-import be.uclouvain.organisation.AddMember;
-import be.uclouvain.organisation.platform.util.MissionData;
 import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
+import io.sarl.lang.core.Event;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Request to perform a Mission on Platform
- * The source of this event is the role Analyst
+ * event AddMission extends AddMember {
  * 
- * <h4>For an Agent</h4>
- * No particular agent
+ * val missionData : MissionData
  * 
- * <h4>For a Behavior</h4>
- * PlatformRole
+ * new(sourceEventSpace : OpenEventSpace, missionData : MissionData) {
+ * super(sourceEventSpace)
+ * this.missionData = missionData
+ * }
  * 
- * <h4>For a Skill</h4>
- * No skill receives this event.
- * 
- * <h4>For Agent Members</h4>
- * Not applicable
- * 
- * @author $Author: manjahdani$
- * @version $0.0.1$
- * @date $31/03/2021$
- * @mavengroupid $be.uclouvain.aptitude$
- * @mavenartifactid $organisation$
+ * new (sourceEventSpace : OpenEventSpace)
+ * }
  */
 @SarlSpecification("0.11")
 @SarlElementType(15)
 @SuppressWarnings("all")
-public class AddMission extends AddMember {
-  public final MissionData missionData;
+public class AddMission extends Event {
+  public final OpenEventSpace communicationChannel;
   
-  public AddMission(final OpenEventSpace sourceEventSpace, final MissionData missionData) {
-    super(sourceEventSpace);
-    this.missionData = missionData;
+  public AddMission(final OpenEventSpace sourceEventSpace) {
+    this.communicationChannel = sourceEventSpace;
   }
   
   @Override
@@ -64,9 +53,9 @@ public class AddMission extends AddMember {
   @Pure
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
-    builder.add("missionData", this.missionData);
+    builder.add("communicationChannel", this.communicationChannel);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = 2600266431L;
+  private static final long serialVersionUID = 1124324306L;
 }

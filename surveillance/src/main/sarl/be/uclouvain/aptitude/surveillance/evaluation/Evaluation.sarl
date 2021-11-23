@@ -3,7 +3,8 @@
  */
 package be.uclouvain.aptitude.surveillance.evaluation
 
-import be.uclouvain.python_access.PythonAccessCapacity
+
+import be.uclouvain.python_access.PythonTwinAccessCapacity
 
 /** 
  * @TODO: write a description
@@ -15,7 +16,7 @@ import be.uclouvain.python_access.PythonAccessCapacity
  * @mavenartifactid $surveillance$
  * 
  */
-capacity Evaluation extends PythonAccessCapacity {
+capacity Evaluation extends PythonTwinAccessCapacity {
 
 	def sendEvaluationRequest(requestID : String, predictions : String, gts : String)
 

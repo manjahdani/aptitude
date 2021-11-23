@@ -1,0 +1,33 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.tracker
+
+
+import be.uclouvain.organisation.platform.ObserverRole
+import be.uclouvain.python_access.BBoxes2DResult
+
+/** 
+ * @author manjah
+ * 
+ */
+//val dynamicTrackingMemory = Collections.synchronizedList(new LinkedList<ArrayList<BBoxes2D>>)
+
+behavior SingleTrackerRole extends ObserverRole {
+	
+	uses TrackerPythonTwinCapacity
+
+	on BBoxes2DResult {
+		
+		Signal2Perception(occurrence.bboxes2D)
+
+	/* 
+	 * if (!providers.keySet.contains(occurrence.source.UUID)) {
+	 * providers.put(occurrence.source.UUID, null) 	// @FIXME HIGH to correct;
+	 * } // @FIXME It is not necessary
+	 */
+	}
+
+	
+	
+}

@@ -48,7 +48,7 @@ public class PlatformSkill extends Skill implements PlatformCapacity {
     if (_contains) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       String _concat = m1.getFullName().concat(m2.getFullName());
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((("\n Partnership of " + _concat) + "is not legal "));
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((("\n Partnership of - " + _concat) + " - is not legal "));
       return false;
     } else {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();

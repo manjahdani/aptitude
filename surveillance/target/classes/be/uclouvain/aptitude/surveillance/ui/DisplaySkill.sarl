@@ -4,17 +4,17 @@
 package be.uclouvain.aptitude.surveillance.ui
 
 import be.uclouvain.python_access.CommunicationManager
-import be.uclouvain.python_access.PythonAccess
 import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
 import be.uclouvain.python_access.messages.BaseMessage
 import be.uclouvain.python_access.messages.DisplayMessage
 import io.sarl.core.AgentTask
+import be.uclouvain.python_access.PythonTwinAccess
 
 /** 
  * @author manjah
  * 
  */
-skill DisplaySkill extends PythonAccess implements DisplayCapacity {
+skill DisplaySkill extends PythonTwinAccess implements DisplayCapacity {
 	
 
 	var topicDisplaySub : String

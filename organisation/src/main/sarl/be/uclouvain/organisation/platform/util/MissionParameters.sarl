@@ -10,9 +10,14 @@ package be.uclouvain.organisation.platform.util
 class MissionParameters {
 	
 	var sensitivity : int
-
-	new (s : int) {
+	var optimalSearchEnabled : boolean
+	new (s : int, o : boolean) {
 		this.sensitivity = s
+		this.optimalSearchEnabled = o
+	}
+	
+	def isOptimalSearchEnabled : boolean{
+		return optimalSearchEnabled
 	}
 
 	def getSensitivity() {

@@ -33,8 +33,9 @@ import java.util.LinkedList
 event ProcessingHyperParameters{
 	
 	val s : LinkedList<Integer>
-	
-	new(s : LinkedList<Integer>) {
-		this.s=s
+	val OptimalSearchEnabled : boolean
+	new(s : LinkedList<Integer>, optimalFlag : boolean ) {
+		this.s = s
+		this.OptimalSearchEnabled = optimalFlag
 	}
 }

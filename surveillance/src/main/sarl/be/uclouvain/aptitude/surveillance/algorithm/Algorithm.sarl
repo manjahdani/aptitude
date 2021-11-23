@@ -23,6 +23,7 @@ import java.util.HashMap
 import java.util.UUID
 import io.sarl.lang.core.AgentContext
 import be.uclouvain.aptitude.surveillance.algorithm.counter.CompetitiveCounterRole
+import be.uclouvain.aptitude.surveillance.algorithm.detector.DetectorRole
 
 /** 
  * Agent with a set of tasks (Goals) and a model (Belief). 

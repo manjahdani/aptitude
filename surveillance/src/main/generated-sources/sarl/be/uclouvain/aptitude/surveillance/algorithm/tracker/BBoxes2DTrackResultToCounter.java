@@ -1,6 +1,6 @@
 package be.uclouvain.aptitude.surveillance.algorithm.tracker;
 
-import be.uclouvain.aptitude.surveillance.algorithm.BBoxes2DTrackResult;
+import be.uclouvain.python_access.BBoxes2DTrackResult;
 import be.uclouvain.python_access.messages.BBoxes2DTrackMessage;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
@@ -13,14 +13,14 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlElementType(15)
 @SuppressWarnings("all")
 public class BBoxes2DTrackResultToCounter extends BBoxes2DTrackResult {
-  public String ObserverName;
+  public String observerName;
   
-  public int Sensitivity;
+  public int sensitivity;
   
   public BBoxes2DTrackResultToCounter(final BBoxes2DTrackMessage t, final String o, final int s) {
     super(t);
-    this.ObserverName = o;
-    this.Sensitivity = s;
+    this.observerName = o;
+    this.sensitivity = s;
   }
   
   @Override
@@ -34,9 +34,9 @@ public class BBoxes2DTrackResultToCounter extends BBoxes2DTrackResult {
     if (getClass() != obj.getClass())
       return false;
     BBoxes2DTrackResultToCounter other = (BBoxes2DTrackResultToCounter) obj;
-    if (!Objects.equals(this.ObserverName, other.ObserverName))
+    if (!Objects.equals(this.observerName, other.observerName))
       return false;
-    if (other.Sensitivity != this.Sensitivity)
+    if (other.sensitivity != this.sensitivity)
       return false;
     return super.equals(obj);
   }
@@ -47,8 +47,8 @@ public class BBoxes2DTrackResultToCounter extends BBoxes2DTrackResult {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
-    result = prime * result + Objects.hashCode(this.ObserverName);
-    result = prime * result + Integer.hashCode(this.Sensitivity);
+    result = prime * result + Objects.hashCode(this.observerName);
+    result = prime * result + Integer.hashCode(this.sensitivity);
     return result;
   }
   
@@ -59,10 +59,10 @@ public class BBoxes2DTrackResultToCounter extends BBoxes2DTrackResult {
   @Pure
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
-    builder.add("ObserverName", this.ObserverName);
-    builder.add("Sensitivity", this.Sensitivity);
+    builder.add("observerName", this.observerName);
+    builder.add("sensitivity", this.sensitivity);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = -2815043851L;
+  private static final long serialVersionUID = -538773830L;
 }

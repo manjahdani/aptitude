@@ -87,8 +87,8 @@ behavior PlatformRole {
 	on RequestToJoin {
 		
 		info("receives a request to welcome a new agent")
-		
 		occurrence.emitterSpace.emit(this.ID, 
+			
 			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID)) [
 				it.UUID == occurrence.source.getUUID
 			]
