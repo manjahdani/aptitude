@@ -1,8 +1,5 @@
 package be.uclouvain.aptitude.surveillance.algorithm.tracker;
 
-import be.uclouvain.aptitude.surveillance.algorithm.Algorithm;
-import be.uclouvain.organisation.platform.AddMission;
-import be.uclouvain.organisation.told.util.AlgorithmInfo;
 import be.uclouvain.python_access.BBoxes2DResult;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
@@ -12,7 +9,6 @@ import io.sarl.core.InnerContextAccess;
 import io.sarl.core.Lifecycle;
 import io.sarl.core.Logging;
 import io.sarl.core.OpenEventSpace;
-import io.sarl.core.OpenEventSpaceSpecification;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
@@ -29,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
@@ -50,53 +45,8 @@ public class CompetitiveMultiTrackerRole extends Behavior {
   protected final Map<String, UUID> parrallelProcess = Collections.<String, UUID>synchronizedMap(new HashMap<String, UUID>());
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Competitive multi-tracker role started.");
-    Object _get = occurrence.parameters[0];
-    LinkedList<Integer> hyperParametersToBeTested = ((LinkedList<Integer>) _get);
-    Object _get_1 = occurrence.parameters[1];
-    AlgorithmInfo observerADN = ((AlgorithmInfo) _get_1);
-    for (final Integer m : hyperParametersToBeTested) {
-      {
-        UUID cloneID = UUID.randomUUID();
-        Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-        InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-        _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(Algorithm.class, cloneID, _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext(), observerADN.cloneChild());
-        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("created the provider ID \n sending the missionSpace");
-        InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-        OpenEventSpace comSpace = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1.getInnerContext().<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, UUID.randomUUID());
-        this.providers.put(cloneID, comSpace);
-        this.parrallelProcess.put(this.detectors.get(((m) == null ? 0 : (m).intValue())), cloneID);
-        Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-        AddMission _addMission = new AddMission(comSpace);
-        class $SerializableClosureProxy implements Scope<Address> {
-          
-          private final UUID cloneID;
-          
-          public $SerializableClosureProxy(final UUID cloneID) {
-            this.cloneID = cloneID;
-          }
-          
-          @Override
-          public boolean matches(final Address it) {
-            UUID _uUID = it.getUUID();
-            return Objects.equal(_uUID, cloneID);
-          }
-        }
-        final Scope<Address> _function = new Scope<Address>() {
-          @Override
-          public boolean matches(final Address it) {
-            UUID _uUID = it.getUUID();
-            return Objects.equal(_uUID, cloneID);
-          }
-          private Object writeReplace() throws ObjectStreamException {
-            return new SerializableProxy($SerializableClosureProxy.class, cloneID);
-          }
-        };
-        _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_addMission, _function);
-      }
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\n\'var\' is a reserved keyword which is not allowed as identifier. Please choose another word or alternatively confuse your co-workers by escaping it like this: \"^var\".");
   }
   
   private void $behaviorUnit$Destroy$1(final Destroy occurrence) {

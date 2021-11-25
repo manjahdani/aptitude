@@ -1,9 +1,9 @@
 package be.uclouvain.aptitude.surveillance.algorithm.counter;
 
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame;
-import be.uclouvain.aptitude.surveillance.algorithm.TrackingPerception;
 import be.uclouvain.aptitude.surveillance.algorithm.counter.CountingSkill;
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.BBoxes2DTrackResultToCounter;
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingPerception;
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D;
 import be.uclouvain.aptitude.surveillance.ui.DisplayCapacity;
 import be.uclouvain.aptitude.surveillance.ui.DisplaySkill;

@@ -1,0 +1,33 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.util
+
+import java.util.LinkedList
+
+/** 
+ * @author manjah
+ * 
+ */
+class HyperParameters {
+
+	var sensitivity : LinkedList <Integer>
+	var optimalSearchEnabled : boolean
+
+	new (s : LinkedList<Integer>, o : boolean) {
+		this.sensitivity = s
+		this.optimalSearchEnabled = o
+	}
+
+	new (s : LinkedList<Integer>) {
+		this.sensitivity = s
+		this.optimalSearchEnabled = false
+	}
+	def isOptimalSearchEnabled : boolean {
+		return optimalSearchEnabled
+	}
+
+	def getSensitivity() {
+		return this.sensitivity
+	}
+}

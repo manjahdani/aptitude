@@ -3,10 +3,6 @@
  */
 package be.uclouvain.organisation.platform
 
-
-import java.util.LinkedList
-
-
 /** 
  * Communicate the MissionSensitivity 
  *   
@@ -32,9 +28,9 @@ import java.util.LinkedList
  */
 event ProcessingHyperParameters{
 	
-	val s : LinkedList<Integer>
+	val s : int
 	val OptimalSearchEnabled : boolean
-	new(s : LinkedList<Integer>, optimalFlag : boolean ) {
+	new(s : int, optimalFlag : boolean ) {
 		this.s = s
 		this.OptimalSearchEnabled = optimalFlag
 	}

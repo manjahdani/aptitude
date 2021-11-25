@@ -61,8 +61,8 @@ agent Paraddis {
 
 	on MemberJoined {
 		
-		//@DEBUG
-		info(" noticed " + occurrence.agentType.replaceAll("be.uclouvain.aptitude.surveillance.", " - ") +
+		
+		debug(" noticed " + occurrence.agentType.replaceAll("be.uclouvain.aptitude.surveillance.", " - ") +
 				" - &ID : " + occurrence.agentID.toString.substring(0, 5))
 	}
 

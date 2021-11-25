@@ -5,12 +5,12 @@ package be.uclouvain.aptitude.surveillance.algorithm.detector
 
 import be.uclouvain.organisation.platform.LeavePlatform
 import be.uclouvain.organisation.platform.ObserverRole
+import be.uclouvain.organisation.platform.ProcessingHyperParameters
 import be.uclouvain.python_access.BBoxes2DResult
 import be.uclouvain.python_access.PythonAccessorRole
 import be.uclouvain.python_access.PythonTwinAccessCapacity
 import io.sarl.core.Behaviors
 import io.sarl.core.Destroy
-import io.sarl.core.Initialize
 import io.sarl.core.Logging
 
 /** 
@@ -26,29 +26,18 @@ import io.sarl.core.Logging
 behavior DetectorRole extends ObserverRole {
 	
 	uses Logging, PythonTwinAccessCapacity, Behaviors
-
-	on Initialize {
-
-		setSkill(new DetectorPythonTwin)
-		registerBehavior(new PythonAccessorRole(this.owner), observerADN.name, platformName)
-		/**task("waitforConfig").every(500) [  
-			if (jsonConfig !== null) {
-				
-				activateAccess(jsonConfig)
-				task("waitforConfig").cancel
-			}
-		]*/
-	}
+	
 	on BBoxes2DResult {
-		
 		//info("Detector - frameNumber- lastframe " + occurrence.bboxes2D.frameNumber + occurrence.bboxes2D.lastFrame)
-		
 		for (listenersSpace : listeners.values) {
 			listenersSpace.emit(this.ID, new BBoxes2DResult(occurrence.bboxes2D, observerADN.name))[it.UUID !== this.ID]
 		}
 	}
 
-	
+	on ProcessingHyperParameters {
+		setSkill(new DetectorPythonTwin)
+		registerBehavior(new PythonAccessorRole(this.owner), observerADN.belief, platformName)
+	}
 	on RestartDetector{
 		if (occurrence.bel == observerADN.name){
 		info("Restarting")
@@ -71,36 +60,14 @@ behavior DetectorRole extends ObserverRole {
 	}
 }
 event RestartDetector{
-	
 	var bel : String
 	new (a : String){
-		this.bel = a
+		this.bel = a}
 }
-}
-//emit(new BBoxes2DResult(occurrence.bboxes2D))[it.UUID == observerID]
-// println("***********************")
-// println("---- etectionD " + occurrence.bboxes2D.frameNumber)
-// println("*  " + Arrays.toString(occurrence.bboxes2D.bboxes))
-// println("*  " + Arrays.toString(occurrence.bboxes2D.classIDs))
-// println("*  " + Arrays.toString(occurrence.bboxes2D.detConfs))
-// println("*  " + occurrence.bboxes2D.lastFrame)
-// println("***********************")
-// if (occurrence.bboxes2D.lastFrame) {
-// info("That was it!")
-// val totalTime = (((System.currentTimeMillis() - this.start) / 1000))
-// info("It took " + totalTime.toString + " seconds")
-// info("Average FPS : " + (occurrence.bboxes2D.frameNumber / totalTime).toString)
-// }
-// if (occurrence.bboxes2D.frameNumber != this.expectedFrame) {
-// println("UNEXPECTED")
-// }
-// this.expectedFrame = occurrence.bboxes2D.frameNumber +1
-
-
 //
-//		
-//		var configPathDetector =	ObserverADN.belief // occurrence.parameters.get(0).toString
-//		var jsonDetector = parser.parse(new FileReader(configPathDetector)) as JSONObject;
+//
+// var configPathDetector =	ObserverADN.belief // occurrence.parameters.get(0).toString
+// var jsonDetector = parser.parse(new FileReader(configPathDetector)) as JSONObject;
 //		var video = (new HashMap<String, String>)
 //		video.put("path", "F:/data/".concat(PlatformName).concat("/vdo.avi"))
 //		var pathRoi = new HashMap<String, String>
@@ -127,4 +94,4 @@ event RestartDetector{
 //			{
 //				info("MissionSpace null")
 //			}
-//else{  
+// else{  

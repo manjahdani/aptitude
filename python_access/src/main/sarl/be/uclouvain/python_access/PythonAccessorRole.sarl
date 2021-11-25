@@ -14,7 +14,7 @@ import org.json.simple.parser.JSONParser
  * @author manjah
  * 
  */
-behavior PythonAccessorRole{
+behavior PythonAccessorRole {
 	
 	uses Schedules, PythonTwinAccessCapacity
 	

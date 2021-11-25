@@ -4,10 +4,12 @@
 package be.uclouvain.aptitude.surveillance.algorithm
 
 import be.uclouvain.aptitude.surveillance.Paraddis
+import be.uclouvain.aptitude.surveillance.algorithm.counter.CompetitiveCounterRole
+import be.uclouvain.aptitude.surveillance.algorithm.detector.DetectorRole
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerRole
 import be.uclouvain.aptitude.surveillance.platform.AgentAlgorithm
 import be.uclouvain.aptitude.surveillance.platform.AgentPlatform
-import be.uclouvain.organisation.AuthorizationToJoin
+import be.uclouvain.organisation.AuthorizationToJoinContext
 import be.uclouvain.organisation.platform.AlgorithmJoinPlatform
 import be.uclouvain.organisation.told.entity.EntityRole
 import be.uclouvain.organisation.told.util.AlgorithmInfo
@@ -19,11 +21,9 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
+import io.sarl.lang.core.AgentContext
 import java.util.HashMap
 import java.util.UUID
-import io.sarl.lang.core.AgentContext
-import be.uclouvain.aptitude.surveillance.algorithm.counter.CompetitiveCounterRole
-import be.uclouvain.aptitude.surveillance.algorithm.detector.DetectorRole
 
 /** 
  * Agent with a set of tasks (Goals) and a model (Belief). 
@@ -122,15 +122,13 @@ agent Algorithm extends Paraddis{
 			spawnInContextWithID(Algorithm, cloneID, occurrence.contextID, ADN.cloneChild) //@FIXME : improper names // Maybe the clone should directly integrate the incrementandLevel
 		}}//@FIXME we could have a table of each child, so that we could direct the information to it. 
 	on AlgorithmJoinPlatform {
-		info("receives request to join platform from : " + occurrence.source.UUID.toString.substring(0, 5))
-		wake(
-			new AlgorithmNeeded(occurrence.contextID, occurrence.name, ADN.task, ADN.belief)
-		)
+		info("asked to deploy " + ADN.task + " with name" + occurrence.name + "to perform for  " + occurrence.source.UUID.toString.substring(0, 5))
+		wake(new AlgorithmNeeded(occurrence.contextID, occurrence.name, ADN.task, ADN.belief))
 	}
-	// @FIXME : AuthorizationToJoin is too vague
-	on AuthorizationToJoin {
+
+	on AuthorizationToJoinContext {
 		info("receives authorisation to join" + occurrence.source.UUID)
-		join(occurrence.contextID.getID, occurrence.defaultSpace.getSpaceID.getID)
+		join(occurrence.contextID, occurrence.defaultSpaceID)
 	}
 }
 

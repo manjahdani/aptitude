@@ -7,7 +7,6 @@ import be.uclouvain.organisation.TOLDOrganisationInfo
 import be.uclouvain.organisation.platform.util.MissionData
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
-import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
@@ -66,7 +65,7 @@ behavior AnalystRole {
 	
 	// @FIXME There are global behavior organisational Behavior
 	on PlatformOrganisationInfo {
-		info("Joined platform organisation: " + occurrence.privateCommunicationChannel + " (" + occurrence.context +
+		debug("Joined platform organisation: " + occurrence.privateCommunicationChannel + " (" + occurrence.context +
 			").")
 		if (occurrence.context.ID == missionData.platformID) {
 			info("sends add mission to - " + occurrence.context.ID.toString.substring(0,5))
@@ -111,7 +110,7 @@ behavior AnalystRole {
 		emit(
 			platformContext.defaultSpace,
 			new ProcessingHyperParameters(
-				newLinkedList(missionData.sensitivity),  
+				missionData.sensitivity,  
 				missionData.optimalSearchEnabled))[it.UUID==providerID]
 	}
 }

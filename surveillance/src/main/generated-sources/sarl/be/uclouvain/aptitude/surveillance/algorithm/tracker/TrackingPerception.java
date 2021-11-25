@@ -1,4 +1,4 @@
-package be.uclouvain.aptitude.surveillance.algorithm;
+package be.uclouvain.aptitude.surveillance.algorithm.tracker;
 
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D;
 import io.sarl.lang.annotation.SarlElementType;

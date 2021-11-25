@@ -10,6 +10,7 @@ import be.uclouvain.organisation.platform.AlgorithmJoinPlatform;
 import be.uclouvain.organisation.platform.PlatformCapacity;
 import be.uclouvain.organisation.platform.PlatformRole;
 import be.uclouvain.organisation.platform.util.MembershipRule;
+import be.uclouvain.organisation.told.util.AlgorithmInfo;
 import com.google.common.base.Objects;
 import io.sarl.core.AgentTask;
 import io.sarl.core.ExternalContextAccess;
@@ -78,28 +79,34 @@ public class SurveillancePlatformRole extends PlatformRole {
   
   @SuppressWarnings({ "discouraged_occurrence_readonly_use", "potential_field_synchronization_problem" })
   private void $behaviorUnit$AddObserver$2(final AddObserver occurrence) {
-    String signal = occurrence.signalProvider.getFullName();
-    String receiver = occurrence.signalReceiver.getFullName();
+    AlgorithmInfo signal = occurrence.signalProvider;
+    AlgorithmInfo receiver = occurrence.signalReceiver;
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("adding observer from  " + signal) + " to ") + receiver));
+    String _name = signal.getName();
+    String _name_1 = receiver.getName();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("adding observer from  " + _name) + " to ") + _name_1));
     PlatformCapacity _$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY$CALLER();
     MembershipRule _membershipRule = new MembershipRule(occurrence.signalProvider, occurrence.signalReceiver);
     boolean _RuleManagement = _$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_PLATFORM_PLATFORMCAPACITY$CALLER.RuleManagement(_membershipRule);
     if (_RuleManagement) {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      String _concat = signal.getName().concat("-").concat(receiver.getName());
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info((("\n Partnership of " + _concat) + "legal "));
       synchronized (this) {
         boolean _contains = this.participants.keySet().contains(signal);
         if ((!_contains)) {
           boolean _contains_1 = this.request.contains(signal);
           if ((!_contains_1)) {
-            this.request.add(signal);
+            this.request.add(signal.getName());
             ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
             OpenEventSpace _get = this.agentAlgorithm.get(occurrence.signalProvider.getTask());
             InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
             AgentContext _innerContext = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext();
-            AlgorithmJoinPlatform _algorithmJoinPlatform = new AlgorithmJoinPlatform(_innerContext, signal);
+            String _name_2 = signal.getName();
+            AlgorithmJoinPlatform _algorithmJoinPlatform = new AlgorithmJoinPlatform(_innerContext, _name_2);
             _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(_get, _algorithmJoinPlatform);
           }
-          this.waitfor(signal, occurrence.getSource().getUUID());
+          this.waitfor(signal.getName(), occurrence.getSource().getUUID());
         } else {
           ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
           OpenEventSpace _get_1 = this.privateSpacesListeners.get(occurrence.getSource().getUUID());
@@ -108,6 +115,10 @@ public class SurveillancePlatformRole extends PlatformRole {
           _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER_1.emit(_get_1, _signalID);
         }
       }
+    } else {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      String _concat_1 = signal.getName().concat("-").concat(receiver.getName());
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info((("\n Partnership of " + _concat_1) + "is not legal "));
     }
   }
   
@@ -123,7 +134,7 @@ public class SurveillancePlatformRole extends PlatformRole {
     {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       String _substring = dest.toString().substring(0, 5);
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("starts of the wait for - " + fullName) + " for -  ") + _substring));
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("Waiting " + fullName) + " as an original request from -  ") + _substring));
       Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
       Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
       final Procedure1<Agent> _function = (Agent it) -> {

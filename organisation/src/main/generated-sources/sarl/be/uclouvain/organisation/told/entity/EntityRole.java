@@ -49,7 +49,7 @@ public class EntityRole extends Behavior {
   private void $behaviorUnit$TOLDOrganisationInfo$0(final TOLDOrganisationInfo occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     String _substring = occurrence.context.getID().toString().substring(0, 5);
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("met TOLD - " + _substring));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.debug(("met TOLD - " + _substring));
     this.TOLDContext = occurrence.context;
     this.TOLDSpace = occurrence.privateCommunicationChannel;
   }

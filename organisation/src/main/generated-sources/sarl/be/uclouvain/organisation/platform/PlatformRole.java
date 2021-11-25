@@ -75,7 +75,7 @@ public class PlatformRole extends Behavior {
     this.TOLDID = occurrence.getSource().getUUID();
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     String _substring = this.TOLDID.toString().substring(0, 5);
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("met TOLD organisation - " + _substring));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.debug(("met TOLD organisation - " + _substring));
     boolean _containsKey = this.privateSpacesListeners.containsKey(this.TOLDID);
     if ((!_containsKey)) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();

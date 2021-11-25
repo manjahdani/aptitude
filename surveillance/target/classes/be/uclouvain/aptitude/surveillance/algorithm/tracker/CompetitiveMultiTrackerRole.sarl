@@ -24,6 +24,7 @@ import java.util.UUID
  * @author manjah
  * 
  */
+ 
 behavior CompetitiveMultiTrackerRole {
 	uses Logging, Lifecycle, InnerContextAccess, Behaviors
 	
@@ -35,6 +36,7 @@ behavior CompetitiveMultiTrackerRole {
 	on Initialize {
 		info("Competitive multi-tracker role started.")
 		
+		assert
 		var hyperParametersToBeTested = occurrence.parameters.get(0) as LinkedList<Integer>
 		var observerADN = occurrence.parameters.get(1) as AlgorithmInfo
 		

@@ -9,8 +9,8 @@ import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.HashMap
-import be.uclouvain.aptitude.surveillance.algorithm.TrackingPerception
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingPerception
 
 /** 
  * The CounterRole is a behaviour that an agent Algorithm endorses upon a mission to count vehicles
@@ -35,6 +35,7 @@ behavior CounterRole { //extends ObserverRole { //@FIXME Should the CounterRole 
 	// end
 	on Initialize {
 		info("The counting starts from now !")
+		
 		setSkill(new DisplaySkill)
 		setSkill(new CountingSkill, CounterObserverCapacity)
 	}

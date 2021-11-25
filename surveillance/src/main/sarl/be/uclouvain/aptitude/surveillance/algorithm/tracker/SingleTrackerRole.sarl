@@ -13,6 +13,7 @@ import be.uclouvain.python_access.BBoxes2DResult
  */
 //val dynamicTrackingMemory = Collections.synchronizedList(new LinkedList<ArrayList<BBoxes2D>>)
 
+
 behavior SingleTrackerRole extends ObserverRole {
 	
 	uses TrackerPythonTwinCapacity

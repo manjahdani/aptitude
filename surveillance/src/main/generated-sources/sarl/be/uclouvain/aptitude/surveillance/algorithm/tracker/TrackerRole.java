@@ -1,19 +1,17 @@
 package be.uclouvain.aptitude.surveillance.algorithm.tracker;
 
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame;
-import be.uclouvain.aptitude.surveillance.algorithm.TrackingPerception;
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.CompetitiveMultiTrackerRole;
+import be.uclouvain.aptitude.surveillance.algorithm.detector.RestartDetector;
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwin;
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinCapacity;
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingPerception;
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingRequest;
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D;
 import be.uclouvain.organisation.SignalID;
 import be.uclouvain.organisation.platform.AddMission;
-import be.uclouvain.organisation.platform.AddObserver;
 import be.uclouvain.organisation.platform.LeavePlatform;
 import be.uclouvain.organisation.platform.ObserverRole;
 import be.uclouvain.organisation.platform.ProcessingHyperParameters;
-import be.uclouvain.organisation.told.util.AlgorithmInfo;
 import be.uclouvain.python_access.BBoxes2DTrackResult;
 import be.uclouvain.python_access.PythonAccessorRole;
 import com.google.common.base.Objects;
@@ -36,7 +34,6 @@ import io.sarl.lang.util.SerializableProxy;
 import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Set;
 import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
@@ -115,69 +112,31 @@ public class TrackerRole extends ObserverRole {
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$ProcessingHyperParameters$1(final ProcessingHyperParameters occurrence) {
-    LinkedList<Integer> _linkedList = new LinkedList<Integer>(occurrence.s);
-    this.sensitivity = _linkedList;
-    if (occurrence.OptimalSearchEnabled) {
-      Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-      Agent _owner = this.getOwner();
-      CompetitiveMultiTrackerRole _competitiveMultiTrackerRole = new CompetitiveMultiTrackerRole(_owner);
-      _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_competitiveMultiTrackerRole, this.sensitivity, this.observerADN);
-    } else {
-      TrackerPythonTwin _trackerPythonTwin = new TrackerPythonTwin();
-      this.<TrackerPythonTwin>setSkill(_trackerPythonTwin);
-      Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-      Agent _owner_1 = this.getOwner();
-      PythonAccessorRole _pythonAccessorRole = new PythonAccessorRole(_owner_1);
-      _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.registerBehavior(_pythonAccessorRole, this.observerADN.getName(), this.platformName);
-    }
-    for (final Integer s : this.sensitivity) {
-      {
-        String detector = this.detectors.get(((s) == null ? 0 : (s).intValue()));
-        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Come here : " + detector));
-        AlgorithmInfo _algorithmInfo = new AlgorithmInfo(detector, "DETECTOR");
-        String _name = this.observerADN.getName();
-        AlgorithmInfo _algorithmInfo_1 = new AlgorithmInfo(_name, "TRACKER");
-        AddObserver _addObserver = new AddObserver(_algorithmInfo, _algorithmInfo_1);
-        class $SerializableClosureProxy implements Scope<Address> {
-          
-          private final UUID $_iD_1;
-          
-          public $SerializableClosureProxy(final UUID $_iD_1) {
-            this.$_iD_1 = $_iD_1;
-          }
-          
-          @Override
-          public boolean matches(final Address it) {
-            UUID _uUID = it.getUUID();
-            return Objects.equal(_uUID, $_iD_1);
-          }
-        }
-        final Scope<Address> _function = new Scope<Address>() {
-          @Override
-          public boolean matches(final Address it) {
-            UUID _uUID = it.getUUID();
-            UUID _iD = TrackerRole.this.platformContext.getID();
-            return Objects.equal(_uUID, _iD);
-          }
-          private Object writeReplace() throws ObjectStreamException {
-            return new SerializableProxy($SerializableClosureProxy.class, TrackerRole.this.platformContext.getID());
-          }
-        };
-        this.privatePlatformSpace.emit(this.getOwner().getID(), _addObserver, _function);
-      }
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nType mismatch: cannot convert from Agent to Agent");
   }
   
   private void $behaviorUnit$TrackingRequest$2(final TrackingRequest occurrence) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nThe method optimalAlgorithmSensitivity(int) is undefined"
-      + "\nThe method optimalName(String) is undefined"
-      + "\nThe method optimalAlgorithmSensitivity(int) is undefined"
-      + "\nThe method optimalName(String) is undefined"
-      + "\nType mismatch: cannot convert from Class<CompetitiveMultiTrackerRole> to Behavior"
-      + "\nType mismatch: cannot convert from void to LinkedList<Integer>"
-      + "\nType mismatch: cannot convert from void to LinkedList<Integer>");
+    TrackerPythonTwin _trackerPythonTwin = new TrackerPythonTwin();
+    this.<TrackerPythonTwin>setSkill(_trackerPythonTwin);
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    Agent _owner = this.getOwner();
+    PythonAccessorRole _pythonAccessorRole = new PythonAccessorRole(_owner);
+    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_pythonAccessorRole, this.observerADN.getBelief(), this.platformName);
+    int _xifexpression = (int) 0;
+    boolean _contains = occurrence.bel.contains("Tiny");
+    if (_contains) {
+      _xifexpression = 0;
+    } else {
+      _xifexpression = 1;
+    }
+    int s = _xifexpression;
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Come here detectors.get(s)");
+    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+    String _get = this.detectors.get(s);
+    RestartDetector _restartDetector = new RestartDetector(_get);
+    _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_restartDetector);
   }
   
   private void $behaviorUnit$SignalID$3(final SignalID occurrence) {
@@ -187,10 +146,10 @@ public class TrackerRole extends ObserverRole {
     comChannel.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
     this.providers.put(dataSource, comChannel);
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    UUID _iD = this.providers.get(dataSource).getSpaceID().getID();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("\n received the provider ID \n sending the missionSpace" + _iD));
     OpenEventSpace _get = this.providers.get(dataSource);
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("received the provider ID \n sending the missionSpace" + _get));
-    OpenEventSpace _get_1 = this.providers.get(dataSource);
-    AddMission _addMission = new AddMission(_get_1);
+    AddMission _addMission = new AddMission(_get);
     class $SerializableClosureProxy implements Scope<Address> {
       
       private final UUID dataSource;
@@ -263,10 +222,15 @@ public class TrackerRole extends ObserverRole {
       };
       l.emit(this.getOwner().getID(), _trackingPerception, _function);
     }
+    int _frameNumber = occurrence.bboxes2DTrack.getFrameNumber();
+    if (((_frameNumber % 10) == 0)) {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Processed %d frames", Integer.valueOf(occurrence.bboxes2DTrack.getFrameNumber()));
+    }
     if ((occurrence.bboxes2DTrack.isLastFrame() || (occurrence.bboxes2DTrack.getFrameNumber() > this.FrameLimit))) {
       DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-      int _frameNumber = occurrence.bboxes2DTrack.getFrameNumber();
-      LastFrame _lastFrame = new LastFrame(_frameNumber);
+      int _frameNumber_1 = occurrence.bboxes2DTrack.getFrameNumber();
+      LastFrame _lastFrame = new LastFrame(_frameNumber_1);
       class $SerializableClosureProxy_1 implements Scope<Address> {
         
         private final UUID $_iD;

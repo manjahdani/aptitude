@@ -3,19 +3,19 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm.detector
 
-
+import be.uclouvain.aptitude.surveillance.algorithm.ObserverPythonAccess
+import be.uclouvain.organisation.platform.ObserverCapacity
+import be.uclouvain.python_access.BBoxes2DResult
+import be.uclouvain.python_access.CommunicationManager
+import be.uclouvain.python_access.PartnerDetectionFound
+import be.uclouvain.python_access.messages.ActionMessage
+import be.uclouvain.python_access.messages.BBoxes2DMessage
+import be.uclouvain.python_access.messages.BaseMessage
+import be.uclouvain.python_access.messages.RequestMessage
 import io.sarl.core.Behaviors
 import io.sarl.core.Schedules
-import be.uclouvain.python_access.messages.BaseMessage
-import be.uclouvain.python_access.messages.BBoxes2DMessage
-import be.uclouvain.python_access.messages.RequestMessage
-import be.uclouvain.python_access.messages.ActionMessage
-import be.uclouvain.python_access.CommunicationManager
-import be.uclouvain.aptitude.surveillance.algorithm.ObserverPythonAccess
-import be.uclouvain.python_access.BBoxes2DResult
-import be.uclouvain.python_access.PartnerDetectionFound
-import be.uclouvain.organisation.platform.ObserverCapacity
-import be.uclouvain.python_access.PythonTwinAccessCapacity
+import io.sarl.core.Logging
+import java.util.Arrays
 
 /** 
  * @TODO: write a description
@@ -29,7 +29,7 @@ import be.uclouvain.python_access.PythonTwinAccessCapacity
  */
 skill DetectorPythonTwin extends ObserverPythonAccess implements ObserverCapacity {
 	
-	uses Behaviors, Schedules
+	uses Behaviors, Schedules, Logging
 
 	def update(m : BaseMessage) {
 		if (m instanceof BBoxes2DMessage) {
@@ -53,4 +53,25 @@ skill DetectorPythonTwin extends ObserverPythonAccess implements ObserverCapacit
 			wake(new PartnerDetectionFound(message.clientName))
 		}
 	}
+	
+	def print(bboxes2D : BBoxes2DMessage) {
+	//emit(new BBoxes2DResult(occurrence.bboxes2D))[it.UUID == observerID]
+	println("***********************")
+	println("---- Detection " + bboxes2D.frameNumber)
+	println("*  " + Arrays.toString(bboxes2D.bboxes))
+	println("*  " + Arrays.toString(bboxes2D.classIDs))
+	println("*  " + Arrays.toString(bboxes2D.detConfs))
+	println("*  " + bboxes2D.lastFrame)
+	println("***********************")
+	if (bboxes2D.lastFrame) {
+		info("That was it!")
+		//val totalTime = (((System.currentTimeMillis() - this.start) / 1000))
+		//info("It took " + totalTime.toString + " seconds")
+		//info("Average FPS : " + (bboxes2D.frameNumber / totalTime).toString)
+	}}
+//	if (bboxes2D.frameNumber != this.expectedFrame) {
+//		println("UNEXPECTED")
+//	}
+//	this.expectedFrame = occurrence.bboxes2D.frameNumber + 1
+//	}	
 }

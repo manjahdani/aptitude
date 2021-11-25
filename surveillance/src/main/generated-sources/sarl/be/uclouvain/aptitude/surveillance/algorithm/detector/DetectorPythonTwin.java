@@ -11,6 +11,7 @@ import be.uclouvain.python_access.messages.BaseMessage;
 import be.uclouvain.python_access.messages.RequestMessage;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
+import io.sarl.core.Logging;
 import io.sarl.core.Schedules;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.SarlElementType;
@@ -18,7 +19,9 @@ import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AtomicSkillReference;
+import java.util.Arrays;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -69,6 +72,26 @@ public class DetectorPythonTwin extends ObserverPythonAccess implements Observer
     }
   }
   
+  public void print(final BBoxes2DMessage bboxes2D) {
+    InputOutput.<String>println("***********************");
+    int _frameNumber = bboxes2D.getFrameNumber();
+    InputOutput.<String>println(("---- Detection " + Integer.valueOf(_frameNumber)));
+    String _string = Arrays.toString(bboxes2D.getBboxes());
+    InputOutput.<String>println(("*  " + _string));
+    String _string_1 = Arrays.toString(bboxes2D.getClassIDs());
+    InputOutput.<String>println(("*  " + _string_1));
+    String _string_2 = Arrays.toString(bboxes2D.getDetConfs());
+    InputOutput.<String>println(("*  " + _string_2));
+    boolean _isLastFrame = bboxes2D.isLastFrame();
+    InputOutput.<String>println(("*  " + Boolean.valueOf(_isLastFrame)));
+    InputOutput.<String>println("***********************");
+    boolean _isLastFrame_1 = bboxes2D.isLastFrame();
+    if (_isLastFrame_1) {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("That was it!");
+    }
+  }
+  
   @Extension
   @ImportedCapacityFeature(Behaviors.class)
   @SyntheticMember
@@ -95,6 +118,20 @@ public class DetectorPythonTwin extends ObserverPythonAccess implements Observer
       this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES = $getSkill(Schedules.class);
     }
     return $castSkill(Schedules.class, this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES);
+  }
+  
+  @Extension
+  @ImportedCapacityFeature(Logging.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_LOGGING;
+  
+  @SyntheticMember
+  @Pure
+  private Logging $CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = $getSkill(Logging.class);
+    }
+    return $castSkill(Logging.class, this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
   }
   
   @SyntheticMember

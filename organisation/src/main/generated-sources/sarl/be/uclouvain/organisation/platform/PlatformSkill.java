@@ -44,19 +44,12 @@ public class PlatformSkill extends Skill implements PlatformCapacity {
   }
   
   public boolean noDoubleMembership(final AlgorithmInfo m1, final AlgorithmInfo m2) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    String _fullName = m1.getFullName();
+    String _fullName_1 = m2.getFullName();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.debug(((("\n Checking the membership of " + _fullName) + " and ") + _fullName_1));
     boolean _contains = this.ObserversList.contains(m1.getFullName().concat(m2.getFullName()));
-    if (_contains) {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      String _concat = m1.getFullName().concat(m2.getFullName());
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((("\n Partnership of - " + _concat) + " - is not legal "));
-      return false;
-    } else {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      String _concat_1 = m1.getFullName().concat(m2.getFullName());
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info((("\n Partnership of " + _concat_1) + "is not legal "));
-      this.ObserversList.add(m1.getName().concat(m2.getName()));
-      return true;
-    }
+    return (!_contains);
   }
   
   @Extension

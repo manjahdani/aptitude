@@ -35,7 +35,6 @@ import java.io.ObjectStreamException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -79,7 +78,7 @@ public class ObserverRole extends Behavior {
   protected OpenEventSpace selfSpace = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER().getInnerContext().<OpenEventSpace>getOrCreateSpaceWithID(OpenEventSpaceSpecification.class, 
     UUID.randomUUID());
   
-  protected LinkedList<Integer> sensitivity = new LinkedList<Integer>();
+  protected int sensitivity;
   
   protected AlgorithmInfo observerADN;
   
@@ -111,8 +110,8 @@ public class ObserverRole extends Behavior {
     this.privatePlatformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
     this.platformName = occurrence.platformName;
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    String _fullName = this.observerADN.getFullName();
-    Identification _identification = new Identification(_fullName);
+    String _name = this.observerADN.getName();
+    Identification _identification = new Identification(_name);
     _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.platformContext.getDefaultSpace(), _identification);
   }
   
@@ -130,7 +129,7 @@ public class ObserverRole extends Behavior {
     String _substring = providerID.toString().substring(0, 5);
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(
       ((("received sensitivity request from -" + _substring) + 
-        " .... \n  sending the following sensitivity") + this.sensitivity));
+        " .... \n  sending the following sensitivity") + Integer.valueOf(this.sensitivity)));
     OpenEventSpace _get = this.providers.get(providerID);
     ProcessingHyperParameters _processingHyperParameters = new ProcessingHyperParameters(this.sensitivity, ((this.isMaster) == null ? false : (this.isMaster).booleanValue()));
     class $SerializableClosureProxy implements Scope<Address> {
@@ -200,7 +199,8 @@ public class ObserverRole extends Behavior {
       };
       missionSpace.emit(this.getOwner().getID(), _hyperParametersRequest, _function);
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("requests missionParameters");
+      String _substring_2 = clientID.toString().substring(0, 5);
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("requests missionParameters to " + _substring_2));
     }
   }
   
@@ -392,6 +392,8 @@ public class ObserverRole extends Behavior {
     if (getClass() != obj.getClass())
       return false;
     ObserverRole other = (ObserverRole) obj;
+    if (other.sensitivity != this.sensitivity)
+      return false;
     if (other.isMaster == null) {
       if (this.isMaster != null)
         return false;
@@ -410,6 +412,7 @@ public class ObserverRole extends Behavior {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
+    result = prime * result + Integer.hashCode(this.sensitivity);
     result = prime * result + java.util.Objects.hashCode(this.isMaster);
     result = prime * result + java.util.Objects.hashCode(this.platformName);
     return result;

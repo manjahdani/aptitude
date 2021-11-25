@@ -2,8 +2,6 @@
 package be.uclouvain.aptitude.surveillance.algorithm.tracker
 
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
-import be.uclouvain.aptitude.surveillance.algorithm.TrackingPerception
-import be.uclouvain.aptitude.surveillance.algorithm.TrackingRequest
 import be.uclouvain.aptitude.surveillance.algorithm.detector.RestartDetector
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.organisation.SignalID
@@ -22,7 +20,6 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpaceSpecification
 import java.util.ArrayList
-import java.util.LinkedList
 import java.util.UUID
 
 /** 
@@ -76,44 +73,40 @@ behavior TrackerRole extends ObserverRole {
 	
 	
 	on ProcessingHyperParameters {
-
-		sensitivity = new LinkedList(occurrence.s)
-
-		if (occurrence.OptimalSearchEnabled) {
-			registerBehavior(new CompetitiveMultiTrackerRole(this.owner), sensitivity, this.observerADN)
-		} 
-		else {
-			setSkill(new TrackerPythonTwin)
-			registerBehavior(new PythonAccessorRole(this.owner), observerADN.name,platformName)
-		} 
+		sensitivity = occurrence.s
 		
-		for (s : sensitivity) {
-			var detector = detectors.get(s)
-			info("Come here : " + detector)
-			privatePlatformSpace.emit(this.ID, new AddObserver(
-				new AlgorithmInfo(detector, "DETECTOR"),
-				new AlgorithmInfo(observerADN.name, "TRACKER")))[it.UUID == platformContext.ID]
+		if (occurrence.OptimalSearchEnabled) {
+			
+			for (detector : detectors) {
+				info("Come here : " + detector)
+				privatePlatformSpace.emit(
+					this.ID, 
+					new AddObserver(new AlgorithmInfo(detector, "DETECTOR"),
+					new AlgorithmInfo(observerADN.name, "TRACKER")))[it.UUID == platformContext.ID]
+			}
+			
+			registerBehavior(new CompetitiveMultiTrackerRole(this.owner), sensitivity, this.observerADN)
 		}
+		else {
+		setSkill(new TrackerPythonTwin)
+		registerBehavior(new PythonAccessorRole(this.owner), observerADN.belief, platformName)
+		info("Come here : " + detectors.get(sensitivity))
+		privatePlatformSpace.emit(
+			this.ID,
+			new AddObserver(new AlgorithmInfo(detectors.get(sensitivity), "DETECTOR"),
+				new AlgorithmInfo(observerADN.name, "TRACKER")
+			))[it.UUID == platformContext.ID]
+			}
 	}
 
 	on TrackingRequest {
 		// info("ReactivatingAccess")
-		unregisterBehavior(CompetitiveMultiTrackerRole)
+		//unregisterBehavior(CompetitiveMultiTrackerRole)
 		setSkill(new TrackerPythonTwin)
-		registerBehavior(new PythonAccessorRole(this.owner), observerADN.name, platformName)
-		
-		sensitivity = 
-		if (occurrence.bel.contains("Tiny")) {
-			info("My Champion is SORT and TinyYOLO")
-			optimalAlgorithmSensitivity = 1
-			optimalName = "tinyYOLO" // @FIXME Its a hack
-			emit(new RestartDetector("TinyYOLO"))
-		} else {
-			info("My Champion is SORT and YOLO")
-			optimalAlgorithmSensitivity = 0
-			optimalName = "YOLO" 
-			emit(new RestartDetector("YOLO"))
-		}
+		registerBehavior(new PythonAccessorRole(this.owner), observerADN.belief, platformName)
+		var s = (occurrence.bel.contains("Tiny")) ? 0: 1
+		info("Come here detectors.get(s)")
+		emit(new RestartDetector(detectors.get(s)))
 	}	
 
 	//@FIXME possibly a reaction of the global behavior observer. We could generalize. 
@@ -123,7 +116,7 @@ behavior TrackerRole extends ObserverRole {
 		val comChannel = platformContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
 		comChannel.register(asEventListener)
 		providers.put(dataSource, comChannel)
-		info("received the provider ID \n sending the missionSpace" + providers.get(dataSource))
+		info("\n received the provider ID \n sending the missionSpace" + providers.get(dataSource).spaceID.ID)
 		platformContext.defaultSpace.emit(this.ID, new AddMission(providers.get(dataSource))) [
 			it.UUID == dataSource
 		]
@@ -148,7 +141,10 @@ behavior TrackerRole extends ObserverRole {
 		for (l : listeners.values) {
 			l.emit(this.ID, new TrackingPerception(tmp))[it != me]
 		}
-
+		
+		if (occurrence.bboxes2DTrack.frameNumber % 10 ==0){
+			info("Processed %d frames", occurrence.bboxes2DTrack.frameNumber)
+		}
 		if (occurrence.bboxes2DTrack.lastFrame || occurrence.bboxes2DTrack.frameNumber > FrameLimit) {
 
 			emit(new LastFrame(occurrence.bboxes2DTrack.frameNumber))[it.UUID == this.ID]

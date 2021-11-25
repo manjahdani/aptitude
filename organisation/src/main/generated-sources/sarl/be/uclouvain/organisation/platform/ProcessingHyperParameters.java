@@ -4,7 +4,6 @@ import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Event;
-import java.util.LinkedList;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -35,11 +34,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlElementType(15)
 @SuppressWarnings("all")
 public class ProcessingHyperParameters extends Event {
-  public final LinkedList<Integer> s;
+  public final int s;
   
   public final boolean OptimalSearchEnabled;
   
-  public ProcessingHyperParameters(final LinkedList<Integer> s, final boolean optimalFlag) {
+  public ProcessingHyperParameters(final int s, final boolean optimalFlag) {
     this.s = s;
     this.OptimalSearchEnabled = optimalFlag;
   }
@@ -55,6 +54,8 @@ public class ProcessingHyperParameters extends Event {
     if (getClass() != obj.getClass())
       return false;
     ProcessingHyperParameters other = (ProcessingHyperParameters) obj;
+    if (other.s != this.s)
+      return false;
     if (other.OptimalSearchEnabled != this.OptimalSearchEnabled)
       return false;
     return super.equals(obj);
@@ -66,6 +67,7 @@ public class ProcessingHyperParameters extends Event {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
+    result = prime * result + Integer.hashCode(this.s);
     result = prime * result + Boolean.hashCode(this.OptimalSearchEnabled);
     return result;
   }
@@ -82,5 +84,5 @@ public class ProcessingHyperParameters extends Event {
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = -2163663777L;
+  private static final long serialVersionUID = 3233134347L;
 }

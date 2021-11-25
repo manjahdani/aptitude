@@ -42,17 +42,7 @@ skill PlatformSkill implements PlatformCapacity {
 	}
 	
 	def noDoubleMembership(m1 : AlgorithmInfo, m2:AlgorithmInfo ){
-		
-		
-		if (ObserversList.contains(m1.fullName.concat(m2.fullName))) {
-			
-			info("\n Partnership of - " + m1.fullName.concat(m2.fullName) + " - is not legal ")
-			return false
-		}
-		else {
-			info("\n Partnership of " + m1.fullName.concat(m2.fullName) + "is not legal ")
-			ObserversList.add(m1.name.concat(m2.name))
-			return true
-		}			
+		debug("\n Checking the membership of " + m1.fullName + " and " + m2.fullName)
+		return !ObserversList.contains(m1.fullName.concat(m2.fullName))
 	}
 }

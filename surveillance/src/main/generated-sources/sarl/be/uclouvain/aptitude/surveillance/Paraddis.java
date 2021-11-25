@@ -57,7 +57,7 @@ public class Paraddis extends Agent {
     String _plus = ((" noticed " + _replaceAll) + 
       " - &ID : ");
     String _substring = occurrence.agentID.toString().substring(0, 5);
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((_plus + _substring));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.debug((_plus + _substring));
   }
   
   private void $behaviorUnit$ParticipantJoined$2(final ParticipantJoined occurrence) {

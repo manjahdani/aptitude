@@ -38,7 +38,7 @@ behavior EntityRole {
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on TOLDOrganisationInfo {
-		info("met TOLD - " + occurrence.context.ID.toString.substring(0, 5))
+		debug("met TOLD - " + occurrence.context.ID.toString.substring(0, 5))
 		TOLDContext = occurrence.context
 		TOLDSpace = occurrence.privateCommunicationChannel
 		

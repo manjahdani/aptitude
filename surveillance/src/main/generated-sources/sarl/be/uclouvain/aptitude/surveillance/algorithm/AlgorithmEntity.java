@@ -1,7 +1,7 @@
 package be.uclouvain.aptitude.surveillance.algorithm;
 
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame;
-import be.uclouvain.aptitude.surveillance.algorithm.TrackingPerception;
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingPerception;
 import be.uclouvain.organisation.TOLDOrganisationInfo;
 import be.uclouvain.organisation.told.AddEntry;
 import be.uclouvain.organisation.told.DataEntry;

@@ -4,13 +4,13 @@ import be.uclouvain.aptitude.surveillance.algorithm.detector.DetectorPythonTwin;
 import be.uclouvain.aptitude.surveillance.algorithm.detector.RestartDetector;
 import be.uclouvain.organisation.platform.LeavePlatform;
 import be.uclouvain.organisation.platform.ObserverRole;
+import be.uclouvain.organisation.platform.ProcessingHyperParameters;
 import be.uclouvain.python_access.BBoxes2DResult;
 import be.uclouvain.python_access.PythonAccessorRole;
 import be.uclouvain.python_access.PythonTwinAccessCapacity;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
 import io.sarl.core.Destroy;
-import io.sarl.core.Initialize;
 import io.sarl.core.Logging;
 import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
@@ -42,16 +42,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlElementType(21)
 @SuppressWarnings("all")
 public class DetectorRole extends ObserverRole {
-  private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
-    DetectorPythonTwin _detectorPythonTwin = new DetectorPythonTwin();
-    this.<DetectorPythonTwin>setSkill(_detectorPythonTwin);
-    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
-    Agent _owner = this.getOwner();
-    PythonAccessorRole _pythonAccessorRole = new PythonAccessorRole(_owner);
-    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_pythonAccessorRole, this.observerADN.getName(), this.platformName);
-  }
-  
-  private void $behaviorUnit$BBoxes2DResult$1(final BBoxes2DResult occurrence) {
+  private void $behaviorUnit$BBoxes2DResult$0(final BBoxes2DResult occurrence) {
     Collection<OpenEventSpace> _values = this.listeners.values();
     for (final OpenEventSpace listenersSpace : _values) {
       String _name = this.observerADN.getName();
@@ -83,6 +74,15 @@ public class DetectorRole extends ObserverRole {
       };
       listenersSpace.emit(this.getOwner().getID(), _bBoxes2DResult, _function);
     }
+  }
+  
+  private void $behaviorUnit$ProcessingHyperParameters$1(final ProcessingHyperParameters occurrence) {
+    DetectorPythonTwin _detectorPythonTwin = new DetectorPythonTwin();
+    this.<DetectorPythonTwin>setSkill(_detectorPythonTwin);
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    Agent _owner = this.getOwner();
+    PythonAccessorRole _pythonAccessorRole = new PythonAccessorRole(_owner);
+    _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_pythonAccessorRole, this.observerADN.getBelief(), this.platformName);
   }
   
   private void $behaviorUnit$RestartDetector$2(final RestartDetector occurrence) {
@@ -155,14 +155,6 @@ public class DetectorRole extends ObserverRole {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
-    assert occurrence != null;
-    assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$0(occurrence));
-  }
-  
-  @SyntheticMember
-  @PerceptGuardEvaluator
   private void $guardEvaluator$LeavePlatform(final LeavePlatform occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
@@ -174,7 +166,7 @@ public class DetectorRole extends ObserverRole {
   private void $guardEvaluator$BBoxes2DResult(final BBoxes2DResult occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$BBoxes2DResult$1(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$BBoxes2DResult$0(occurrence));
   }
   
   @SyntheticMember
@@ -191,6 +183,14 @@ public class DetectorRole extends ObserverRole {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Destroy$3(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$ProcessingHyperParameters(final ProcessingHyperParameters occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$ProcessingHyperParameters$1(occurrence));
   }
   
   @SyntheticMember

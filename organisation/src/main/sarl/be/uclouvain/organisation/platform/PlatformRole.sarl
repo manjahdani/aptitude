@@ -54,7 +54,7 @@ behavior PlatformRole {
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on TOLDOrganisationInfo {
 		TOLDID = occurrence.source.UUID
-		info("met TOLD organisation - " + TOLDID.toString.substring(0, 5))
+		debug("met TOLD organisation - " + TOLDID.toString.substring(0, 5))
 		if (!privateSpacesListeners.containsKey(TOLDID)) { // Not Encountered
 			info("TOLD was not encountered")
 			privateSpacesListeners.put(TOLDID, occurrence.privateCommunicationChannel)

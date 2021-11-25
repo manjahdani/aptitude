@@ -49,23 +49,17 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class CompetitiveCounterRole extends ObserverRole {
   private final ArrayList<String> AVAILABLE_TRACKERS = CollectionLiterals.<String>newArrayList("SORT");
   
-  private Integer expertSensitivity;
-  
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
-    this.sensitivity.add(Integer.valueOf(0));
-    this.sensitivity.add(Integer.valueOf(1));
     this.isMaster = Boolean.valueOf(true);
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Let the competition start !");
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$ProcessingHyperParameters$1(final ProcessingHyperParameters occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I received sensitivity - " + occurrence.s));
-    this.expertSensitivity = occurrence.s.get(0);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("I received sensitivity - " + Integer.valueOf(occurrence.s)));
+    this.sensitivity = occurrence.s;
     ArrayList<String> parameters = new ArrayList<String>();
-    parameters.add(this.expertSensitivity.toString());
+    parameters.add(Integer.valueOf(this.sensitivity).toString());
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     Agent _owner = this.getOwner();
     AlgorithmSelectorRole _algorithmSelectorRole = new AlgorithmSelectorRole(_owner);
@@ -73,42 +67,46 @@ public class CompetitiveCounterRole extends ObserverRole {
     final ArrayList<String> _converted_parameters = (ArrayList<String>)parameters;
     Metric _metric = new Metric("APTITUDE", _concat, ((String[])Conversions.unwrapArray(_converted_parameters, String.class)));
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(_algorithmSelectorRole, _metric);
-    for (final String tracker : this.AVAILABLE_TRACKERS) {
-      {
-        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("requests tracker: " + tracker));
-        ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-        AlgorithmInfo _algorithmInfo = new AlgorithmInfo(tracker, "TRACKER");
-        String _name = this.observerADN.getName();
-        String _task = this.observerADN.getTask();
-        AlgorithmInfo _algorithmInfo_1 = new AlgorithmInfo(_name, _task);
-        AddObserver _addObserver = new AddObserver(_algorithmInfo, _algorithmInfo_1);
-        class $SerializableClosureProxy implements Scope<Address> {
-          
-          private final UUID $_iD_1;
-          
-          public $SerializableClosureProxy(final UUID $_iD_1) {
-            this.$_iD_1 = $_iD_1;
+    if (((this.isMaster) == null ? false : (this.isMaster).booleanValue())) {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Let the competition start !");
+      for (final String tracker : this.AVAILABLE_TRACKERS) {
+        {
+          Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+          _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("requests tracker: " + tracker));
+          ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
+          AlgorithmInfo _algorithmInfo = new AlgorithmInfo(tracker, "TRACKER");
+          String _name = this.observerADN.getName();
+          String _task = this.observerADN.getTask();
+          AlgorithmInfo _algorithmInfo_1 = new AlgorithmInfo(_name, _task);
+          AddObserver _addObserver = new AddObserver(_algorithmInfo, _algorithmInfo_1);
+          class $SerializableClosureProxy implements Scope<Address> {
+            
+            private final UUID $_iD_1;
+            
+            public $SerializableClosureProxy(final UUID $_iD_1) {
+              this.$_iD_1 = $_iD_1;
+            }
+            
+            @Override
+            public boolean matches(final Address it) {
+              UUID _uUID = it.getUUID();
+              return Objects.equal(_uUID, $_iD_1);
+            }
           }
-          
-          @Override
-          public boolean matches(final Address it) {
-            UUID _uUID = it.getUUID();
-            return Objects.equal(_uUID, $_iD_1);
-          }
+          final Scope<Address> _function = new Scope<Address>() {
+            @Override
+            public boolean matches(final Address it) {
+              UUID _uUID = it.getUUID();
+              UUID _iD = CompetitiveCounterRole.this.platformContext.getID();
+              return Objects.equal(_uUID, _iD);
+            }
+            private Object writeReplace() throws ObjectStreamException {
+              return new SerializableProxy($SerializableClosureProxy.class, CompetitiveCounterRole.this.platformContext.getID());
+            }
+          };
+          _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.privatePlatformSpace, _addObserver, _function);
         }
-        final Scope<Address> _function = new Scope<Address>() {
-          @Override
-          public boolean matches(final Address it) {
-            UUID _uUID = it.getUUID();
-            UUID _iD = CompetitiveCounterRole.this.platformContext.getID();
-            return Objects.equal(_uUID, _iD);
-          }
-          private Object writeReplace() throws ObjectStreamException {
-            return new SerializableProxy($SerializableClosureProxy.class, CompetitiveCounterRole.this.platformContext.getID());
-          }
-        };
-        _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.emit(this.privatePlatformSpace, _addObserver, _function);
       }
     }
   }
@@ -221,20 +219,6 @@ public class CompetitiveCounterRole extends ObserverRole {
   @Pure
   @SyntheticMember
   public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    CompetitiveCounterRole other = (CompetitiveCounterRole) obj;
-    if (other.expertSensitivity == null) {
-      if (this.expertSensitivity != null)
-        return false;
-    } else if (this.expertSensitivity == null)
-      return false;
-    if (other.expertSensitivity != null && other.expertSensitivity.intValue() != this.expertSensitivity.intValue())
-      return false;
     return super.equals(obj);
   }
   
@@ -243,8 +227,6 @@ public class CompetitiveCounterRole extends ObserverRole {
   @SyntheticMember
   public int hashCode() {
     int result = super.hashCode();
-    final int prime = 31;
-    result = prime * result + java.util.Objects.hashCode(this.expertSensitivity);
     return result;
   }
   

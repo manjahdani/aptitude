@@ -61,22 +61,27 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
 	on AddObserver {
 		
-		var signal = occurrence.signalProvider.fullName
-		var receiver = occurrence.signalReceiver.fullName
-		info("adding observer from  " + signal + " to " + receiver)
+		var signal = occurrence.signalProvider
+		var receiver = occurrence.signalReceiver
+		info("adding observer from  " + signal.name + " to " + receiver.name)
 		if (RuleManagement(new MembershipRule(occurrence.signalProvider, occurrence.signalReceiver))) {
+
+			info("\n Partnership of " + signal.name.concat("-").concat(receiver.name) + "legal ")
 			synchronized (this) {
 				if (!participants.keySet.contains(signal)) {
 					if (!request.contains(signal)) {
-						request.add(signal)
+						request.add(signal.name)
 						agentAlgorithm.get(occurrence.signalProvider.task).emit(
-							new AlgorithmJoinPlatform(innerContext, signal))}
-					waitfor(signal, occurrence.source.UUID)
+							new AlgorithmJoinPlatform(innerContext, signal.name))}
+					waitfor(signal.name, occurrence.source.UUID)
 				} else {
 					privateSpacesListeners.get(occurrence.source.UUID).emit(
 						new SignalID(participants.get(occurrence.signalProvider.name)))
 				}
 			}
+		}
+		else {
+			info("\n Partnership of " + signal.name.concat("-").concat(receiver.name) + "is not legal ")
 		}
 	}
 	on AgentAlgorithm {
@@ -84,7 +89,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 		agentAlgorithm.put(occurrence.name,occurrence.topic)
 	}
 	synchronized def waitfor(fullName : String, dest : UUID) {
-		info("starts of the wait for - " + fullName +" for -  " + dest.toString.substring(0,5))
+		info("Waiting " + fullName +" as an original request from -  " + dest.toString.substring(0,5))
 		task("waitingfor".concat(fullName).concat(dest.toString)).every(500) [
 			if (participants.keySet.contains(fullName)) {
 				privateSpacesListeners.get(dest).emit(new SignalID(participants.get(fullName)))[it.UUID == dest]

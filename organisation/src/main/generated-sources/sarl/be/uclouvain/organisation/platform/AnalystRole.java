@@ -32,7 +32,6 @@ import io.sarl.lang.util.SerializableProxy;
 import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -92,7 +91,7 @@ public class AnalystRole extends Behavior {
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$PlatformOrganisationInfo$1(final PlatformOrganisationInfo occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((((("Joined platform organisation: " + occurrence.privateCommunicationChannel) + " (") + occurrence.context) + 
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.debug((((("Joined platform organisation: " + occurrence.privateCommunicationChannel) + " (") + occurrence.context) + 
       ")."));
     UUID _iD = occurrence.context.getID();
     UUID _platformID = this.missionData.getPlatformID();
@@ -202,9 +201,9 @@ public class AnalystRole extends Behavior {
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("received a request for mission parameters \n will send the user sensitivity : " + _get));
     this.providerID = occurrence.getSource().getUUID();
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    LinkedList<Integer> _newLinkedList = CollectionLiterals.<Integer>newLinkedList(Integer.valueOf(this.missionData.getSensitivity()));
+    int _sensitivity = this.missionData.getSensitivity();
     boolean _isOptimalSearchEnabled = this.missionData.isOptimalSearchEnabled();
-    ProcessingHyperParameters _processingHyperParameters = new ProcessingHyperParameters(_newLinkedList, _isOptimalSearchEnabled);
+    ProcessingHyperParameters _processingHyperParameters = new ProcessingHyperParameters(_sensitivity, _isOptimalSearchEnabled);
     class $SerializableClosureProxy implements Scope<Address> {
       
       private final UUID $_providerID;

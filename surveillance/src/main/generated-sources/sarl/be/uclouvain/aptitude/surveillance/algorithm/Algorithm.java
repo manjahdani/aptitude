@@ -8,7 +8,7 @@ import be.uclouvain.aptitude.surveillance.algorithm.detector.DetectorRole;
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerRole;
 import be.uclouvain.aptitude.surveillance.platform.AgentAlgorithm;
 import be.uclouvain.aptitude.surveillance.platform.AgentPlatform;
-import be.uclouvain.organisation.AuthorizationToJoin;
+import be.uclouvain.organisation.AuthorizationToJoinContext;
 import be.uclouvain.organisation.platform.AlgorithmJoinPlatform;
 import be.uclouvain.organisation.told.entity.EntityRole;
 import be.uclouvain.organisation.told.util.AlgorithmInfo;
@@ -208,21 +208,22 @@ public class Algorithm extends Paraddis {
   
   private void $behaviorUnit$AlgorithmJoinPlatform$3(final AlgorithmJoinPlatform occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    String _substring = occurrence.getSource().getUUID().toString().substring(0, 5);
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("receives request to join platform from : " + _substring));
-    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     String _task = this.ADN.getTask();
+    String _substring = occurrence.getSource().getUUID().toString().substring(0, 5);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((((("asked to deploy " + _task) + " with name") + occurrence.name) + "to perform for  ") + _substring));
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    String _task_1 = this.ADN.getTask();
     String _belief = this.ADN.getBelief();
-    AlgorithmNeeded _algorithmNeeded = new AlgorithmNeeded(occurrence.contextID, occurrence.name, _task, _belief);
+    AlgorithmNeeded _algorithmNeeded = new AlgorithmNeeded(occurrence.contextID, occurrence.name, _task_1, _belief);
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.wake(_algorithmNeeded);
   }
   
-  private void $behaviorUnit$AuthorizationToJoin$4(final AuthorizationToJoin occurrence) {
+  private void $behaviorUnit$AuthorizationToJoinContext$4(final AuthorizationToJoinContext occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     UUID _uUID = occurrence.getSource().getUUID();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("receives authorisation to join" + _uUID));
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.join(occurrence.contextID.getID(), occurrence.defaultSpace.getSpaceID().getID());
+    _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER.join(occurrence.contextID, occurrence.defaultSpaceID);
   }
   
   @Extension
@@ -305,18 +306,18 @@ public class Algorithm extends Paraddis {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$AgentPlatform(final AgentPlatform occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+  private void $guardEvaluator$AuthorizationToJoinContext(final AuthorizationToJoinContext occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AgentPlatform$1(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AuthorizationToJoinContext$4(occurrence));
   }
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$AuthorizationToJoin(final AuthorizationToJoin occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+  private void $guardEvaluator$AgentPlatform(final AgentPlatform occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AuthorizationToJoin$4(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AgentPlatform$1(occurrence));
   }
   
   @SyntheticMember

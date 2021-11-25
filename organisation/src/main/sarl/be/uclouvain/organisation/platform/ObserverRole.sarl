@@ -18,7 +18,6 @@ import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.AgentContext
 import java.util.Collections
 import java.util.HashMap
-import java.util.LinkedList
 import java.util.UUID
 
 /** 
@@ -58,7 +57,7 @@ behavior ObserverRole {
 	protected var selfSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification,
 		UUID.randomUUID)// An internal space to communicate with other roles. 
 
-	protected var sensitivity= new LinkedList<Integer>
+	protected var sensitivity : int
 	
 	protected var observerADN : AlgorithmInfo	
 	
@@ -86,7 +85,7 @@ behavior ObserverRole {
 		privatePlatformSpace = occurrence.privateCommunicationChannel
 		privatePlatformSpace.register(asEventListener)
 		platformName = occurrence.platformName
-		emit(platformContext.defaultSpace,new Identification(observerADN.fullName)) //@ FIXME not general in the sens of it should whenever it joins a context
+		emit(platformContext.defaultSpace,new Identification(observerADN.name)) //@ FIXME not general in the sens of it should whenever it joins a context
 	}	
 	
 	on TOLDOrganisationInfo {
@@ -123,7 +122,7 @@ behavior ObserverRole {
 		var accepted = true // @TODO develop criteria for the acceptation of mission 
 		if (accepted) {
 			missionSpace.emit(this.ID, new HyperParametersRequest)[it.UUID == clientID]
-			info("requests missionParameters")
+			info("requests missionParameters to " + clientID.toString.substring(0,5))
 			}
 	}
 	@SuppressWarnings("potential_field_synchronization_problem")
