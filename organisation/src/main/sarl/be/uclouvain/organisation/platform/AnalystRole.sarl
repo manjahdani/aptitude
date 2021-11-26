@@ -91,7 +91,7 @@ behavior AnalystRole {
 
 	on SignalID {
 		
-		info("received the provider ID \n sending the missionSpace")
+		debug("received the provider ID \n sending the missionSpace")
 		platformContext.defaultSpace.emit(this.ID, new AddMission(missionSpace)) [
 			it.UUID == occurrence.signalID
 		] 

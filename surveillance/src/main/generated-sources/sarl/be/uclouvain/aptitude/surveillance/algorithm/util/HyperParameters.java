@@ -3,7 +3,6 @@ package be.uclouvain.aptitude.surveillance.algorithm.util;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
-import java.util.LinkedList;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -13,16 +12,16 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlElementType(10)
 @SuppressWarnings("all")
 public class HyperParameters {
-  private LinkedList<Integer> sensitivity;
+  private int sensitivity;
   
   private boolean optimalSearchEnabled;
   
-  public HyperParameters(final LinkedList<Integer> s, final boolean o) {
+  public HyperParameters(final int s, final boolean o) {
     this.sensitivity = s;
     this.optimalSearchEnabled = o;
   }
   
-  public HyperParameters(final LinkedList<Integer> s) {
+  public HyperParameters(final int s) {
     this.sensitivity = s;
     this.optimalSearchEnabled = false;
   }
@@ -33,7 +32,7 @@ public class HyperParameters {
   }
   
   @Pure
-  public LinkedList<Integer> getSensitivity() {
+  public int getSensitivity() {
     return this.sensitivity;
   }
   
@@ -48,6 +47,8 @@ public class HyperParameters {
     if (getClass() != obj.getClass())
       return false;
     HyperParameters other = (HyperParameters) obj;
+    if (other.sensitivity != this.sensitivity)
+      return false;
     if (other.optimalSearchEnabled != this.optimalSearchEnabled)
       return false;
     return super.equals(obj);
@@ -59,6 +60,7 @@ public class HyperParameters {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
+    result = prime * result + Integer.hashCode(this.sensitivity);
     result = prime * result + Boolean.hashCode(this.optimalSearchEnabled);
     return result;
   }

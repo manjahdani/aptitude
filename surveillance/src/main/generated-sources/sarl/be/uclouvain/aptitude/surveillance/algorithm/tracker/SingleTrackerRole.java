@@ -1,8 +1,8 @@
 package be.uclouvain.aptitude.surveillance.algorithm.tracker;
 
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinCapacity;
-import be.uclouvain.organisation.platform.ObserverRole;
 import be.uclouvain.python_access.BBoxes2DResult;
+import be.uclouvain.python_access.PythonAccessorRole;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
@@ -20,7 +20,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SarlSpecification("0.11")
 @SarlElementType(21)
 @SuppressWarnings("all")
-public class SingleTrackerRole extends ObserverRole {
+public class SingleTrackerRole extends PythonAccessorRole {
   private void $behaviorUnit$BBoxes2DResult$0(final BBoxes2DResult occurrence) {
     TrackerPythonTwinCapacity _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_TRACKER_TRACKERPYTHONTWINCAPACITY$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_TRACKER_TRACKERPYTHONTWINCAPACITY$CALLER();
     _$CAPACITY_USE$BE_UCLOUVAIN_APTITUDE_SURVEILLANCE_ALGORITHM_TRACKER_TRACKERPYTHONTWINCAPACITY$CALLER.Signal2Perception(occurrence.bboxes2D);

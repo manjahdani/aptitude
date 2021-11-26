@@ -32,7 +32,6 @@ capacity ObserverCapacity {
 
 // @TODO this is non-sens ? why create such a specific capacity for that at least not the way we use it ? Maybe it is the analyst ? Or at least provide another name if we want it to be an Observer Capacity
 // As it is mainly a debug option...
-
 capacity CounterObserverCapacity extends ObserverCapacity {
 
 		/** 

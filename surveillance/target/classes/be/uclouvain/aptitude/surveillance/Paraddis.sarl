@@ -60,8 +60,6 @@ agent Paraddis {
 	}
 
 	on MemberJoined {
-		
-		
 		debug(" noticed " + occurrence.agentType.replaceAll("be.uclouvain.aptitude.surveillance.", " - ") +
 				" - &ID : " + occurrence.agentID.toString.substring(0, 5))
 	}
@@ -102,7 +100,6 @@ agent Paraddis {
 		
 		
 		for (h : memberAgents) {
-			
 			innerContext.defaultSpace.emit(this.ID, new CommitSuicide)[it.UUID == h]
 		}
 		val waitTask = task("wait-member-killed-task")

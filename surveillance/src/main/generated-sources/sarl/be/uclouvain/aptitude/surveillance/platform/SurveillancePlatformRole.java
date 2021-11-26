@@ -73,7 +73,7 @@ public class SurveillancePlatformRole extends PlatformRole {
   
   private void $behaviorUnit$Identification$1(final Identification occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("new participant: " + occurrence.fullName));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.debug(("new participant: " + occurrence.fullName));
     this.participants.put(occurrence.fullName, occurrence.getSource().getUUID());
   }
   
@@ -91,7 +91,7 @@ public class SurveillancePlatformRole extends PlatformRole {
     if (_RuleManagement) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       String _concat = signal.getName().concat("-").concat(receiver.getName());
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info((("\n Partnership of " + _concat) + "legal "));
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.debug((("\n Partnership of " + _concat) + "legal "));
       synchronized (this) {
         boolean _contains = this.participants.keySet().contains(signal);
         if ((!_contains)) {
@@ -118,7 +118,7 @@ public class SurveillancePlatformRole extends PlatformRole {
     } else {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       String _concat_1 = signal.getName().concat("-").concat(receiver.getName());
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info((("\n Partnership of " + _concat_1) + "is not legal "));
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.debug((("\n Partnership of " + _concat_1) + "is not legal "));
     }
   }
   
@@ -134,7 +134,7 @@ public class SurveillancePlatformRole extends PlatformRole {
     {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       String _substring = dest.toString().substring(0, 5);
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("Waiting " + fullName) + " as an original request from -  ") + _substring));
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.debug(((("Waiting " + fullName) + " as an original request from -  ") + _substring));
       Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
       Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
       final Procedure1<Agent> _function = (Agent it) -> {

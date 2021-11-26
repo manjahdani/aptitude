@@ -85,10 +85,9 @@ behavior PlatformRole {
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	
 	on RequestToJoin {
-		
 		info("receives a request to welcome a new agent")
+		
 		occurrence.emitterSpace.emit(this.ID, 
-			
 			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID)) [
 				it.UUID == occurrence.source.getUUID
 			]
@@ -110,7 +109,7 @@ behavior PlatformRole {
 	}
 	
 	def sendOrganisationinfo(memberID : UUID) {
-		info("sending organisation info - " + memberID.toString.substring(0, 5))
+		debug("sending organisation info - " + memberID.toString.substring(0, 5))
 		wake(new PlatformOrganisationInfo(innerContext, privateSpacesListeners.get(memberID), location.get)) [
 			it.UUID == memberID
 		]

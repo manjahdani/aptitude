@@ -84,7 +84,8 @@ agent Algorithm extends Paraddis{
 			for (e : toSpawn.keySet) {spawnInContextWithID(Algorithm, e, innerContext, toSpawn.get(e).IncrementLevelAndGet)}}
 		
 		if(ADN.level>1){
-			info("new atomic agent with intention: " + ADN.task + " & belief : "+ ADN.belief)
+			info("new atomic agent with intention: " + ADN.task + " & belief : " +
+				ADN.belief.replace("F:/aptitude/surveillance/src/main/resources/", ""))
 			registerBehavior(new AlgorithmEntity(this))
 			switch(ADN.task){
 				case "COUNTER": {
@@ -104,7 +105,7 @@ agent Algorithm extends Paraddis{
 	}
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on AgentPlatform {
-		info("encounters : " + occurrence.name + " agent")
+		debug("encounters : " + occurrence.name + " agent")
 		agentPlatformSpaces.put(occurrence.name, occurrence.topic)
 		occurrence.topic.register(asEventListener)
 		occurrence.topic.emit(this.ID, new AgentAlgorithm(ADN.name, openChanel))
@@ -115,14 +116,14 @@ agent Algorithm extends Paraddis{
 	on AlgorithmNeeded  { //
 			if (occurrence.name === ADN.name) {
 			info(
-				"clones image with intention :" + occurrence.task + " - name - " + occurrence.name + "& belief : " +
-					occurrence.belief + " \n to answer the request of " + occurrence.source.UUID.toString.substring(0, 5))
+				"clones a " + occurrence.task + " named " + occurrence.name + " and belief : " +
+					occurrence.belief.replace("F:/aptitude/surveillance/src/main/resources/", "") + " \n to answer the request of " + occurrence.source.UUID.toString.substring(0, 5))
 			val cloneID = UUID.randomUUID
 			subHolons.put(occurrence.contextID, cloneID)
 			spawnInContextWithID(Algorithm, cloneID, occurrence.contextID, ADN.cloneChild) //@FIXME : improper names // Maybe the clone should directly integrate the incrementandLevel
 		}}//@FIXME we could have a table of each child, so that we could direct the information to it. 
 	on AlgorithmJoinPlatform {
-		info("asked to deploy " + ADN.task + " with name" + occurrence.name + "to perform for  " + occurrence.source.UUID.toString.substring(0, 5))
+		info("Deploying a " + ADN.task + " named " + occurrence.name + " performing for " + occurrence.source.UUID.toString.substring(0, 5))
 		wake(new AlgorithmNeeded(occurrence.contextID, occurrence.name, ADN.task, ADN.belief))
 	}
 

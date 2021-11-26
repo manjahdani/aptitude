@@ -1,6 +1,8 @@
 package be.uclouvain.aptitude.surveillance.algorithm.counter
 
+import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.BBoxes2DTrackResultToCounter
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingPerception
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.aptitude.surveillance.ui.DisplayCapacity
 import be.uclouvain.aptitude.surveillance.ui.DisplaySkill
@@ -9,8 +11,6 @@ import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.HashMap
-import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingPerception
 
 /** 
  * The CounterRole is a behaviour that an agent Algorithm endorses upon a mission to count vehicles
@@ -30,9 +30,9 @@ behavior CounterRole { //extends ObserverRole { //@FIXME Should the CounterRole 
 	
 	val objectPresentInframe = new HashMap<Integer, BBoxe2D>
 	val objectToBeAnalyzed = new ArrayList<BBoxe2D>;
-
 	var lineCoords = #[1235, 700, 309, 664, 1477, 324, 1676, 310]
 	// end
+	
 	on Initialize {
 		info("The counting starts from now !")
 		
@@ -73,9 +73,11 @@ behavior CounterRole { //extends ObserverRole { //@FIXME Should the CounterRole 
 			}
 		}
 		//info(counts)
+		
 		sendDisplayMessage(occurrence.bboxes2DTrack, this.ID.toString, "F:/data/S02C006/vdo.avi", null, lineCoords,
 			counts, occurrence.observerName, this.ID.toString, occurrence.sensitivity)
 	}
+
 	
 	//	@SuppressWarnings("potential_field_synchronization_problem")
 //	on BBoxes2DTrackResult {

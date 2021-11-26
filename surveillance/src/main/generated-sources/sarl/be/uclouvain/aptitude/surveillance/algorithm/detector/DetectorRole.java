@@ -2,6 +2,7 @@ package be.uclouvain.aptitude.surveillance.algorithm.detector;
 
 import be.uclouvain.aptitude.surveillance.algorithm.detector.DetectorPythonTwin;
 import be.uclouvain.aptitude.surveillance.algorithm.detector.RestartDetector;
+import be.uclouvain.organisation.platform.HyperParametersRequest;
 import be.uclouvain.organisation.platform.LeavePlatform;
 import be.uclouvain.organisation.platform.ObserverRole;
 import be.uclouvain.organisation.platform.ProcessingHyperParameters;
@@ -106,7 +107,42 @@ public class DetectorRole extends ObserverRole {
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The behavior was stopped.");
   }
   
-  private void $behaviorUnit$LeavePlatform$4(final LeavePlatform occurrence) {
+  private void $behaviorUnit$HyperParametersRequest$4(final HyperParametersRequest occurrence) {
+    UUID providerID = occurrence.getSource().getUUID();
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    String _substring = providerID.toString().substring(0, 5);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("received sensitivity request from -" + _substring) + 
+      " .... \n  sending the following sensitivity") + Integer.valueOf(this.sensitivity)));
+    OpenEventSpace _get = this.providers.get(providerID);
+    ProcessingHyperParameters _processingHyperParameters = new ProcessingHyperParameters(this.sensitivity, ((this.isMaster) == null ? false : (this.isMaster).booleanValue()));
+    class $SerializableClosureProxy implements Scope<Address> {
+      
+      private final UUID providerID;
+      
+      public $SerializableClosureProxy(final UUID providerID) {
+        this.providerID = providerID;
+      }
+      
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, providerID);
+      }
+    }
+    final Scope<Address> _function = new Scope<Address>() {
+      @Override
+      public boolean matches(final Address it) {
+        UUID _uUID = it.getUUID();
+        return Objects.equal(_uUID, providerID);
+      }
+      private Object writeReplace() throws ObjectStreamException {
+        return new SerializableProxy($SerializableClosureProxy.class, providerID);
+      }
+    };
+    _get.emit(this.getOwner().getID(), _processingHyperParameters, _function);
+  }
+  
+  private void $behaviorUnit$LeavePlatform$5(final LeavePlatform occurrence) {
     PythonTwinAccessCapacity _$CAPACITY_USE$BE_UCLOUVAIN_PYTHON_ACCESS_PYTHONTWINACCESSCAPACITY$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_PYTHON_ACCESS_PYTHONTWINACCESSCAPACITY$CALLER();
     _$CAPACITY_USE$BE_UCLOUVAIN_PYTHON_ACCESS_PYTHONTWINACCESSCAPACITY$CALLER.updateStreamAccess(4);
   }
@@ -158,7 +194,15 @@ public class DetectorRole extends ObserverRole {
   private void $guardEvaluator$LeavePlatform(final LeavePlatform occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$LeavePlatform$4(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$LeavePlatform$5(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$HyperParametersRequest(final HyperParametersRequest occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$HyperParametersRequest$4(occurrence));
   }
   
   @SyntheticMember

@@ -96,19 +96,6 @@ behavior ObserverRole {
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	
-	
-	
-	on HyperParametersRequest {
-		
-		var providerID = occurrence.source.UUID 
-		info(
-			"received sensitivity request from -" + providerID.toString.substring(0, 5) +
-				" .... \n  sending the following sensitivity" + sensitivity)
-			
-		
-		providers.get(providerID).emit(this.ID, new ProcessingHyperParameters(sensitivity, isMaster))[it.UUID == providerID]
-	}
-
 	on AddMission {
 		
 		var missionSpace = occurrence.communicationChannel
@@ -121,6 +108,7 @@ behavior ObserverRole {
 		
 		var accepted = true // @TODO develop criteria for the acceptation of mission 
 		if (accepted) {
+			
 			missionSpace.emit(this.ID, new HyperParametersRequest)[it.UUID == clientID]
 			info("requests missionParameters to " + clientID.toString.substring(0,5))
 			}
@@ -138,6 +126,13 @@ behavior ObserverRole {
 		//join(BaseContext.ID, BaseSpace.spaceID.ID)
 		//info("ObserverLeaving")
 		//leave(PlatformContext.ID)
+	}
+
+	synchronized def requestAlgorithm(algoName : String, algoTask : String) {
+		privatePlatformSpace.emit(new AddObserver(
+			new AlgorithmInfo(algoName, algoTask),
+			new AlgorithmInfo(observerADN.name, observerADN.task)
+		))[it.UUID == platformContext.ID]
 	}
 }
 

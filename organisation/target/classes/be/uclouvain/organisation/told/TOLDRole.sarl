@@ -64,7 +64,8 @@ behavior TOLDRole {
 		info("received add member from " + occurrence.source.UUID.toString.substring(0, 5))
 		
 		occurrence.communicationChannel.emit(this.ID,
-			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID))
+			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID)
+		)
 	}
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on ReadEntry {

@@ -45,7 +45,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	
 	on Identification {
 		
-		info("new participant: " + occurrence.fullName )
+		debug("new participant: " + occurrence.fullName )
 		participants.put(occurrence.fullName, occurrence.source.UUID)
 	}
 
@@ -66,7 +66,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 		info("adding observer from  " + signal.name + " to " + receiver.name)
 		if (RuleManagement(new MembershipRule(occurrence.signalProvider, occurrence.signalReceiver))) {
 
-			info("\n Partnership of " + signal.name.concat("-").concat(receiver.name) + "legal ")
+			debug("\n Partnership of " + signal.name.concat("-").concat(receiver.name) + "legal ")
 			synchronized (this) {
 				if (!participants.keySet.contains(signal)) {
 					if (!request.contains(signal)) {
@@ -81,7 +81,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 			}
 		}
 		else {
-			info("\n Partnership of " + signal.name.concat("-").concat(receiver.name) + "is not legal ")
+			debug("\n Partnership of " + signal.name.concat("-").concat(receiver.name) + "is not legal ")
 		}
 	}
 	on AgentAlgorithm {
@@ -89,7 +89,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 		agentAlgorithm.put(occurrence.name,occurrence.topic)
 	}
 	synchronized def waitfor(fullName : String, dest : UUID) {
-		info("Waiting " + fullName +" as an original request from -  " + dest.toString.substring(0,5))
+		debug("Waiting " + fullName +" as an original request from -  " + dest.toString.substring(0,5))
 		task("waitingfor".concat(fullName).concat(dest.toString)).every(500) [
 			if (participants.keySet.contains(fullName)) {
 				privateSpacesListeners.get(dest).emit(new SignalID(participants.get(fullName)))[it.UUID == dest]

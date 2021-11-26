@@ -13,7 +13,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlSpecification("0.11")
 @SarlElementType(15)
 @SuppressWarnings("all")
-public class PlatformOrganisationInfo extends OrganisationInfo {
+public final class PlatformOrganisationInfo extends OrganisationInfo {
   public final String platformName;
   
   public PlatformOrganisationInfo(final AgentContext ctxt, final OpenEventSpace sid, final String name) {

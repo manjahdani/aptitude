@@ -4,15 +4,14 @@ package be.uclouvain.aptitude.surveillance.algorithm.tracker
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
 import be.uclouvain.aptitude.surveillance.algorithm.detector.RestartDetector
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
+import be.uclouvain.aptitude.surveillance.algorithm.util.HyperParameters
 import be.uclouvain.organisation.SignalID
 import be.uclouvain.organisation.platform.AddMission
-import be.uclouvain.organisation.platform.AddObserver
+import be.uclouvain.organisation.platform.HyperParametersRequest
 import be.uclouvain.organisation.platform.LeavePlatform
 import be.uclouvain.organisation.platform.ObserverRole
 import be.uclouvain.organisation.platform.ProcessingHyperParameters
-import be.uclouvain.organisation.told.util.AlgorithmInfo
 import be.uclouvain.python_access.BBoxes2DTrackResult
-import be.uclouvain.python_access.PythonAccessorRole
 import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
@@ -20,6 +19,7 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpaceSpecification
 import java.util.ArrayList
+import java.util.LinkedList
 import java.util.UUID
 
 /** 
@@ -73,37 +73,49 @@ behavior TrackerRole extends ObserverRole {
 	
 	
 	on ProcessingHyperParameters {
+		
 		sensitivity = occurrence.s
 		
 		if (occurrence.OptimalSearchEnabled) {
-			
+			var hyperParatermersToBeTested = new LinkedList<HyperParameters>
+			var iter = 0 // @FIXME @FLAG : Low Quick but not robust strategy as if the order of detectors change the system could get confused. 
 			for (detector : detectors) {
+				hyperParatermersToBeTested.add(new HyperParameters(iter))
 				info("Come here : " + detector)
-				privatePlatformSpace.emit(
-					this.ID, 
-					new AddObserver(new AlgorithmInfo(detector, "DETECTOR"),
-					new AlgorithmInfo(observerADN.name, "TRACKER")))[it.UUID == platformContext.ID]
+				requestAlgorithm(detector,"DETECTOR")
+				iter += 1
 			}
 			
-			registerBehavior(new CompetitiveMultiTrackerRole(this.owner), sensitivity, this.observerADN)
+			registerBehavior(new CompetitiveMultiTrackerRole(this.owner), hyperParatermersToBeTested, this.observerADN)
 		}
 		else {
 		setSkill(new TrackerPythonTwin)
-		registerBehavior(new PythonAccessorRole(this.owner), observerADN.belief, platformName)
+		registerBehavior(new SingleTrackerRole(this.owner), observerADN.belief, platformName)
 		info("Come here : " + detectors.get(sensitivity))
-		privatePlatformSpace.emit(
-			this.ID,
-			new AddObserver(new AlgorithmInfo(detectors.get(sensitivity), "DETECTOR"),
-				new AlgorithmInfo(observerADN.name, "TRACKER")
-			))[it.UUID == platformContext.ID]
-			}
+		
+		if(isMaster){
+			requestAlgorithm(detectors.get(sensitivity),"DETECTOR")
+		}
 	}
+ }
+	on HyperParametersRequest {
+		
+		if (providers.keySet.contains(occurrence.source.UUID)) { // That means that he is single tracker. No subprocesses
+		var providerID = occurrence.source.UUID
+		info("received sensitivity request from -" + providerID.toString.substring(0, 5) +
+				" .... \n  sending the following sensitivity" + sensitivity)
+
+		providers.get(providerID).emit(this.ID, new ProcessingHyperParameters(sensitivity, isMaster)) [
+			it.UUID == providerID
+		]}
+	}
+	
 
 	on TrackingRequest {
 		// info("ReactivatingAccess")
 		//unregisterBehavior(CompetitiveMultiTrackerRole)
 		setSkill(new TrackerPythonTwin)
-		registerBehavior(new PythonAccessorRole(this.owner), observerADN.belief, platformName)
+		registerBehavior(new SingleTrackerRole(this.owner), observerADN.belief, platformName)
 		var s = (occurrence.bel.contains("Tiny")) ? 0: 1
 		info("Come here detectors.get(s)")
 		emit(new RestartDetector(detectors.get(s)))
@@ -154,7 +166,10 @@ behavior TrackerRole extends ObserverRole {
 			killMe
 		}
 	}
+	
+
 }
+
 
 event BBoxes2DTrackResultToCounter extends BBoxes2DTrackResult{ //@FIXME : Nonsens
 	

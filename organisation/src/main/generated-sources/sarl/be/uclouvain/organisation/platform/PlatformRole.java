@@ -215,7 +215,7 @@ public class PlatformRole extends Behavior {
   public void sendOrganisationinfo(final UUID memberID) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     String _substring = memberID.toString().substring(0, 5);
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("sending organisation info - " + _substring));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.debug(("sending organisation info - " + _substring));
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
     AgentContext _innerContext = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext();

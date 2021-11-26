@@ -118,8 +118,8 @@ public class Algorithm extends Paraddis {
     if ((_level_2 > 1)) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       String _task = this.ADN.getTask();
-      String _belief = this.ADN.getBelief();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(((("new atomic agent with intention: " + _task) + " & belief : ") + _belief));
+      String _replace = this.ADN.getBelief().replace("F:/aptitude/surveillance/src/main/resources/", "");
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(((("new atomic agent with intention: " + _task) + " & belief : ") + _replace));
       Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
       AlgorithmEntity _algorithmEntity = new AlgorithmEntity(this);
       _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_2.registerBehavior(_algorithmEntity);
@@ -153,7 +153,7 @@ public class Algorithm extends Paraddis {
   @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$AgentPlatform$1(final AgentPlatform occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((("encounters : " + occurrence.name) + " agent"));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.debug((("encounters : " + occurrence.name) + " agent"));
     this.agentPlatformSpaces.put(occurrence.name, occurrence.topic);
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     occurrence.topic.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
@@ -195,10 +195,11 @@ public class Algorithm extends Paraddis {
     String _name = this.ADN.getName();
     if ((occurrence.name == _name)) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      String _replace = occurrence.belief.replace("F:/aptitude/surveillance/src/main/resources/", "");
+      String _plus = (((((("clones a " + occurrence.task) + " named ") + occurrence.name) + " and belief : ") + _replace) + " \n to answer the request of ");
       String _substring = occurrence.getSource().getUUID().toString().substring(0, 5);
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(
-        ((((((("clones image with intention :" + occurrence.task) + " - name - ") + occurrence.name) + "& belief : ") + 
-          occurrence.belief) + " \n to answer the request of ") + _substring));
+        (_plus + _substring));
       final UUID cloneID = UUID.randomUUID();
       this.subHolons.put(occurrence.contextID, cloneID);
       Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
@@ -210,7 +211,7 @@ public class Algorithm extends Paraddis {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     String _task = this.ADN.getTask();
     String _substring = occurrence.getSource().getUUID().toString().substring(0, 5);
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((((("asked to deploy " + _task) + " with name") + occurrence.name) + "to perform for  ") + _substring));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((((("Deploying a " + _task) + " named ") + occurrence.name) + " performing for ") + _substring));
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     String _task_1 = this.ADN.getTask();
     String _belief = this.ADN.getBelief();

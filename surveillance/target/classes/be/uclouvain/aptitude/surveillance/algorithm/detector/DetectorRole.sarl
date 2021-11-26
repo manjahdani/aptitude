@@ -12,6 +12,7 @@ import be.uclouvain.python_access.PythonTwinAccessCapacity
 import io.sarl.core.Behaviors
 import io.sarl.core.Destroy
 import io.sarl.core.Logging
+import be.uclouvain.organisation.platform.HyperParametersRequest
 
 /** 
  * @TODO: write a description
@@ -51,6 +52,18 @@ behavior DetectorRole extends ObserverRole {
 	on Destroy {
 		info("The behavior was stopped.")
 	}
+
+	on HyperParametersRequest {
+
+		var providerID = occurrence.source.UUID
+		info("received sensitivity request from -" + providerID.toString.substring(0, 5) +
+				" .... \n  sending the following sensitivity" + sensitivity)
+
+		providers.get(providerID).emit(this.ID, new ProcessingHyperParameters(sensitivity, isMaster)) [
+			it.UUID == providerID
+		]
+	}
+	
 
 	on LeavePlatform {
 		// join(BaseContext.ID, BaseSpace.spaceID.ID)

@@ -157,7 +157,7 @@ public class AnalystRole extends Behavior {
   
   private void $behaviorUnit$SignalID$3(final SignalID occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("received the provider ID \n sending the missionSpace");
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.debug("received the provider ID \n sending the missionSpace");
     AddMission _addMission = new AddMission(this.missionSpace);
     class $SerializableClosureProxy implements Scope<Address> {
       

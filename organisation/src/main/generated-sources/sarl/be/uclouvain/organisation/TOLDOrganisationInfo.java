@@ -12,7 +12,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlSpecification("0.11")
 @SarlElementType(15)
 @SuppressWarnings("all")
-public class TOLDOrganisationInfo extends OrganisationInfo {
+public final class TOLDOrganisationInfo extends OrganisationInfo {
   public final Object storedData;
   
   public TOLDOrganisationInfo(final AgentContext ctxt, final OpenEventSpace sid, final Object data) {

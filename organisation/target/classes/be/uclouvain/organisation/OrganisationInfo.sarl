@@ -52,8 +52,7 @@ event OrganisationInfo {
 	}
 }
 
-
-event TOLDOrganisationInfo extends OrganisationInfo {
+final event TOLDOrganisationInfo extends OrganisationInfo {
 	
 	val storedData : Object
 	new (ctxt : AgentContext, sid : OpenEventSpace, data : Object ) {
@@ -62,7 +61,7 @@ event TOLDOrganisationInfo extends OrganisationInfo {
 	}
 }
 
-event PlatformOrganisationInfo extends OrganisationInfo{
+final event PlatformOrganisationInfo extends OrganisationInfo{
 	
 	val platformName : String
 
@@ -71,4 +70,4 @@ event PlatformOrganisationInfo extends OrganisationInfo{
 		this.platformName = name
 	}
 }
-event InteractivittyOrganisationInfo extends OrganisationInfo
+final event InteractivittyOrganisationInfo extends OrganisationInfo

@@ -10,7 +10,7 @@ import io.sarl.lang.core.AgentContext;
 @SarlSpecification("0.11")
 @SarlElementType(15)
 @SuppressWarnings("all")
-public class InteractivittyOrganisationInfo extends OrganisationInfo {
+public final class InteractivittyOrganisationInfo extends OrganisationInfo {
   /**
    * Constructor
    * @param	ctxt	The context to join

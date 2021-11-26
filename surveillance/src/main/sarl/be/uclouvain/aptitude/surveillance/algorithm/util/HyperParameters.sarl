@@ -3,23 +3,21 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm.util
 
-import java.util.LinkedList
-
 /** 
  * @author manjah
  * 
  */
 class HyperParameters {
 
-	var sensitivity : LinkedList <Integer>
+	var sensitivity : int
 	var optimalSearchEnabled : boolean
 
-	new (s : LinkedList<Integer>, o : boolean) {
+	new (s : int, o : boolean) {
 		this.sensitivity = s
 		this.optimalSearchEnabled = o
 	}
 
-	new (s : LinkedList<Integer>) {
+	new (s : int) {
 		this.sensitivity = s
 		this.optimalSearchEnabled = false
 	}

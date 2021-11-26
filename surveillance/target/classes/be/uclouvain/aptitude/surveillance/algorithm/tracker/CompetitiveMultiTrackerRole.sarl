@@ -4,6 +4,7 @@
 package be.uclouvain.aptitude.surveillance.algorithm.tracker
 
 import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
+import be.uclouvain.aptitude.surveillance.algorithm.util.HyperParameters
 import be.uclouvain.organisation.platform.AddMission
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import be.uclouvain.python_access.BBoxes2DResult
@@ -17,8 +18,10 @@ import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
 import java.util.Collections
 import java.util.HashMap
-import java.util.LinkedList
 import java.util.UUID
+import be.uclouvain.organisation.platform.HyperParametersRequest
+import java.util.LinkedList
+import be.uclouvain.organisation.platform.ProcessingHyperParameters
 
 /** 
  * @author manjah
@@ -30,28 +33,60 @@ behavior CompetitiveMultiTrackerRole {
 	
 	val detectors = newArrayList("TinyYOLO", "YOLO") // @FIXME its logiciel parameters or not ?
 	
-	protected val providers = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
+	protected val sub_processes = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
 	protected val parrallelProcess = Collections.synchronizedMap(new HashMap<String, UUID>)
+	protected val providers_HP = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>)
 	
 	on Initialize {
 		info("Competitive multi-tracker role started.")
-		
-		assert
-		var hyperParametersToBeTested = occurrence.parameters.get(0) as LinkedList<Integer>
-		var observerADN = occurrence.parameters.get(1) as AlgorithmInfo
-		
-		for (m : hyperParametersToBeTested) {
-		var cloneID = UUID.randomUUID
-		spawnInContextWithID(Algorithm, cloneID, innerContext, observerADN.cloneChild)
-			info("created the provider ID \n sending the missionSpace")
 
-		var comSpace: OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID) // An internal space to communicate with other roles.
-			providers.put(cloneID, comSpace)
-			parrallelProcess.put(detectors.get(m), cloneID)
+		var hyperParametersToBeTested : LinkedList<HyperParameters>
+		var observerADN : AlgorithmInfo
+		try {hyperParametersToBeTested = occurrence.parameters.get(0) as LinkedList<HyperParameters>}
+		catch (e: ClassCastException){
+			info("Could not cast Initialise parameters 0 to a LinkedList")
+		}
+		try {
+			observerADN = occurrence.parameters.get(1) as AlgorithmInfo
+		} 
+		catch (e : ClassCastException) {
+			info("Could not cast Initialise parameters 0 to a LinkedList")
+		}
+
+		
+		for (param : hyperParametersToBeTested) {
+		var cloneID = UUID.randomUUID
+		providers_HP.put(cloneID, param)
+		spawnInContextWithID(Algorithm, cloneID, innerContext, observerADN.cloneChild) // Spawn a sub-process specialised using the hyperParameters s
+		var comSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID) // An internal space to communicate with other roles.
+		comSpace.register(asEventListener)
+		sub_processes.put(cloneID, comSpace)
+		parrallelProcess.put(detectors.get(param.sensitivity), cloneID)
 		wake(new AddMission(comSpace)) [it.UUID == cloneID]}
 	}
-	
-	
+
+	on HyperParametersRequest {
+		
+		var providerID = occurrence.source.UUID
+		
+		
+				
+		if(sub_processes.containsKey(providerID)) //Its one of his child
+		{
+			info("")
+			var param = providers_HP.get(providerID)
+			info("sensitivity request from -" + providerID.toString.substring(0, 5) +
+					" .... sending the following sensitivity :" + param.sensitivity)
+			sub_processes.get(providerID).emit(this.ID,
+				new ProcessingHyperParameters(
+					param.sensitivity, 
+					param.optimalSearchEnabled)) [it.UUID == providerID]
+		}
+		else{
+			info("Request from -" + providerID.toString.substring(0, 5) + "it is not in the child")
+		}
+
+	}
 
 	on Destroy {
 		// Event trigger when the behavior is destroyed from the system.
@@ -63,7 +98,7 @@ behavior CompetitiveMultiTrackerRole {
 
 	on BBoxes2DResult {
 		
-		info("Sending results from " + occurrence.providerName + "parrallelProcess.get(occurrence.providerName)")
+		info("Sending results from " + occurrence.providerName + " to " + parrallelProcess.get(occurrence.providerName))
 		// We send to the sub-process meant to analyse the data of the provider. For example, agent 1 process the data sent from detector A. 
 		wake(new BBoxes2DResult(occurrence.bboxes2D))[it.UUID == parrallelProcess.get(occurrence.providerName)] 
 	
