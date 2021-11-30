@@ -54,7 +54,7 @@ behavior UserRole extends ElementRole {
 		
 		availablePlatforms.addAll(occurrence.parameters.get(0) as LinkedList<String>)
 		
-		info(" initial platforms " + availablePlatforms)
+		debug("initial platforms " + availablePlatforms)
 		for (var i = 0; i < AVAILABLE_EXPERTS; i++) {
 			val id = UUID.randomUUID
 			entityList.put(id, new CharacterData(id.toString, EXPERTISE_DEGREE.get(i), 0, -1))

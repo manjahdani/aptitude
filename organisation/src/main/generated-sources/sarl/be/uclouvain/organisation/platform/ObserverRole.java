@@ -5,6 +5,7 @@ import be.uclouvain.organisation.PlatformOrganisationInfo;
 import be.uclouvain.organisation.TOLDOrganisationInfo;
 import be.uclouvain.organisation.platform.AddMission;
 import be.uclouvain.organisation.platform.AddObserver;
+import be.uclouvain.organisation.platform.HyperParametersRequest;
 import be.uclouvain.organisation.platform.LeavePlatform;
 import be.uclouvain.organisation.platform.StopMission;
 import be.uclouvain.organisation.told.util.AlgorithmInfo;
@@ -91,8 +92,11 @@ public class ObserverRole extends Behavior {
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nType mismatch: cannot convert from UUID to UUID");
+    Object _get = occurrence.parameters[0];
+    this.observerADN = ((AlgorithmInfo) _get);
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    this.selfSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    this.providers.put(this.getOwner().getID(), this.selfSpace);
   }
   
   private void $behaviorUnit$Destroy$1(final Destroy occurrence) {
@@ -105,6 +109,7 @@ public class ObserverRole extends Behavior {
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     this.privatePlatformSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
     this.platformName = occurrence.platformName;
+    this.observerADN.setPlatformName(occurrence.platformName);
     ExternalContextAccess _$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_EXTERNALCONTEXTACCESS$CALLER();
     String _name = this.observerADN.getName();
     Identification _identification = new Identification(_name);
@@ -120,14 +125,87 @@ public class ObserverRole extends Behavior {
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$AddMission$4(final AddMission occurrence) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nType mismatch: cannot convert from UUID to UUID");
+    OpenEventSpace missionSpace = occurrence.communicationChannel;
+    UUID clientID = occurrence.getSource().getUUID();
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    String _substring = missionSpace.getSpaceID().toString().substring(0, 5);
+    String _plus = (("requested to add missionID " + _substring) + " from ");
+    String _substring_1 = clientID.toString().substring(0, 5);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((_plus + _substring_1));
+    this.listeners.put(clientID, missionSpace);
+    Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
+    missionSpace.register(_$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.asEventListener());
+    boolean accepted = true;
+    if (accepted) {
+      HyperParametersRequest _hyperParametersRequest = new HyperParametersRequest();
+      class $SerializableClosureProxy implements Scope<Address> {
+        
+        private final UUID clientID;
+        
+        public $SerializableClosureProxy(final UUID clientID) {
+          this.clientID = clientID;
+        }
+        
+        @Override
+        public boolean matches(final Address it) {
+          UUID _uUID = it.getUUID();
+          return Objects.equal(_uUID, clientID);
+        }
+      }
+      final Scope<Address> _function = new Scope<Address>() {
+        @Override
+        public boolean matches(final Address it) {
+          UUID _uUID = it.getUUID();
+          return Objects.equal(_uUID, clientID);
+        }
+        private Object writeReplace() throws ObjectStreamException {
+          return new SerializableProxy($SerializableClosureProxy.class, clientID);
+        }
+      };
+      missionSpace.emit(this.getOwner().getID(), _hyperParametersRequest, _function);
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      String _substring_2 = clientID.toString().substring(0, 5);
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("requests missionParameters to " + _substring_2));
+    }
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")
   private void $behaviorUnit$StopMission$5(final StopMission occurrence) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nType mismatch: cannot convert implicit first argument from Address to Address");
+    boolean _contains = this.listeners.keySet().contains(occurrence.getSource().getUUID());
+    if (_contains) {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("I received the StopMission");
+      DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+      StopMission _stopMission = new StopMission(occurrence.expertID);
+      _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_stopMission);
+      DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+      LeavePlatform _leavePlatform = new LeavePlatform();
+      class $SerializableClosureProxy implements Scope<Address> {
+        
+        private final ObserverRole $_ObserverRole;
+        
+        public $SerializableClosureProxy(final ObserverRole $_ObserverRole) {
+          this.$_ObserverRole = $_ObserverRole;
+        }
+        
+        @Override
+        public boolean matches(final Address it) {
+          boolean _isMe = $_ObserverRole.isMe(it);
+          return Objects.equal(it, Boolean.valueOf(_isMe));
+        }
+      }
+      final Scope<Address> _function = new Scope<Address>() {
+        @Override
+        public boolean matches(final Address it) {
+          boolean _isMe = ObserverRole.this.isMe(it);
+          return Objects.equal(it, Boolean.valueOf(_isMe));
+        }
+        private Object writeReplace() throws ObjectStreamException {
+          return new SerializableProxy($SerializableClosureProxy.class, ObserverRole.this);
+        }
+      };
+      _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1.emit(_leavePlatform, _function);
+    }
   }
   
   @SuppressWarnings("potential_field_synchronization_problem")

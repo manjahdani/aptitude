@@ -131,18 +131,19 @@ public class CompetitiveMultiTrackerRole extends Behavior {
     boolean _containsKey = this.sub_processes.containsKey(providerID);
     if (_containsKey) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("");
+      String _substring = providerID.toString().substring(0, 5);
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((("Request from -" + _substring) + "a the child"));
       HyperParameters param = this.providers_HP.get(providerID);
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      String _substring = providerID.toString().substring(0, 5);
-      String _plus = (("sensitivity request from -" + _substring) + 
+      String _substring_1 = providerID.toString().substring(0, 5);
+      String _plus = (("sensitivity request from -" + _substring_1) + 
         " .... sending the following sensitivity :");
       int _sensitivity = param.getSensitivity();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info((_plus + Integer.valueOf(_sensitivity)));
       OpenEventSpace _get = this.sub_processes.get(providerID);
       int _sensitivity_1 = param.getSensitivity();
-      boolean _isOptimalSearchEnabled = param.isOptimalSearchEnabled();
-      ProcessingHyperParameters _processingHyperParameters = new ProcessingHyperParameters(_sensitivity_1, _isOptimalSearchEnabled);
+      ProcessingHyperParameters _processingHyperParameters = new ProcessingHyperParameters(_sensitivity_1, 
+        false);
       class $SerializableClosureProxy implements Scope<Address> {
         
         private final UUID providerID;
@@ -170,8 +171,8 @@ public class CompetitiveMultiTrackerRole extends Behavior {
       _get.emit(this.getOwner().getID(), _processingHyperParameters, _function);
     } else {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      String _substring_1 = providerID.toString().substring(0, 5);
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info((("Request from -" + _substring_1) + "it is not in the child"));
+      String _substring_2 = providerID.toString().substring(0, 5);
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info((("Request from -" + _substring_2) + "it is not in the child"));
     }
   }
   
@@ -181,9 +182,12 @@ public class CompetitiveMultiTrackerRole extends Behavior {
   }
   
   private void $behaviorUnit$BBoxes2DResult$3(final BBoxes2DResult occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    UUID _get = this.parrallelProcess.get(occurrence.providerName);
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("Sending results from " + occurrence.providerName) + " to ") + _get));
+    int _frameNumber = occurrence.bboxes2D.getFrameNumber();
+    if ((_frameNumber < 5)) {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      UUID _get = this.parrallelProcess.get(occurrence.providerName);
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("Sending results from " + occurrence.providerName) + " to ") + _get));
+    }
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
     BBoxes2DResult _bBoxes2DResult = new BBoxes2DResult(occurrence.bboxes2D);
     class $SerializableClosureProxy implements Scope<Address> {

@@ -27,6 +27,16 @@ public class AlgorithmInfo implements Cloneable {
   
   private int level;
   
+  private String platformName;
+  
+  public AlgorithmInfo(final String n, final String b, final String t, final int l, final String pName) {
+    this.name = n;
+    this.belief = b;
+    this.task = t;
+    this.level = l;
+    this.platformName = pName;
+  }
+  
   public AlgorithmInfo(final String n, final String b, final String t, final int l) {
     this.name = n;
     this.belief = b;
@@ -78,6 +88,15 @@ public class AlgorithmInfo implements Cloneable {
     return this.name.concat("_").concat(Integer.valueOf(this.level).toString());
   }
   
+  public void setPlatformName(final String pName) {
+    this.platformName = pName;
+  }
+  
+  @Pure
+  public String getPlatformName() {
+    return this.platformName;
+  }
+  
   @Pure
   public String getName() {
     return this.name;
@@ -112,6 +131,8 @@ public class AlgorithmInfo implements Cloneable {
       return false;
     if (other.level != this.level)
       return false;
+    if (!Objects.equals(this.platformName, other.platformName))
+      return false;
     return super.equals(obj);
   }
   
@@ -125,6 +146,7 @@ public class AlgorithmInfo implements Cloneable {
     result = prime * result + Objects.hashCode(this.belief);
     result = prime * result + Objects.hashCode(this.task);
     result = prime * result + Integer.hashCode(this.level);
+    result = prime * result + Objects.hashCode(this.platformName);
     return result;
   }
   

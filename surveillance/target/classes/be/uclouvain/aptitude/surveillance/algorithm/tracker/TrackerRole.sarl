@@ -90,7 +90,7 @@ behavior TrackerRole extends ObserverRole {
 		}
 		else {
 		setSkill(new TrackerPythonTwin)
-		registerBehavior(new SingleTrackerRole(this.owner), observerADN.belief, platformName)
+		registerBehavior(new SingleTrackerRole(this.owner), observerADN.belief, observerADN.platformName)
 		info("Come here : " + detectors.get(sensitivity))
 		
 		if(isMaster){

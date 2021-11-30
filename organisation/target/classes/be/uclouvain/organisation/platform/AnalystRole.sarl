@@ -86,6 +86,7 @@ behavior AnalystRole {
 		missionSpace.register(asEventListener)
 		//platformSpace.emit(new LocalDatabaseRequest(defaultContext))[it.UUID == platformContext.ID]
 		privatePlatformSpace.emit(
+			
 			new AddObserver(new AlgorithmInfo("APTITUDE", "COUNTER"), new AlgorithmInfo("EXPERT", "ROADANALYST")))
 	}
 

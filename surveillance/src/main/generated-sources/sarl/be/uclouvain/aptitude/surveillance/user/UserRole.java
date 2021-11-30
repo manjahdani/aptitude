@@ -70,7 +70,7 @@ public class UserRole extends ElementRole {
     Object _get = occurrence.parameters[0];
     this.availablePlatforms.addAll(((LinkedList<String>) _get));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((" initial platforms " + this.availablePlatforms));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.debug(("initial platforms " + this.availablePlatforms));
     for (int i = 0; (i < this.AVAILABLE_EXPERTS); i++) {
       {
         final UUID id = UUID.randomUUID();

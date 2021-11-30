@@ -38,27 +38,29 @@ public class PythonAccessorRole extends Behavior {
   protected String partnerName;
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
+    Object _get = occurrence.parameters[0];
+    String belief = (_get == null ? null : _get.toString());
+    Object _get_1 = occurrence.parameters[1];
+    String platformName = (_get_1 == null ? null : _get_1.toString());
+    this.connectToPython(belief, platformName);
+  }
+  
+  public void connectToPython(final String belief, final String platformName) {
     try {
       class $AssertEvaluator$ {
         final boolean $$result;
         $AssertEvaluator$() {
-          Object _get = occurrence.parameters[0];
-          this.$$result = (_get != null);
+          this.$$result = (belief != null);
         }
       }
       assert new $AssertEvaluator$().$$result : "Belief is null";
       class $AssertEvaluator$_1 {
         final boolean $$result;
         $AssertEvaluator$_1() {
-          Object _get = occurrence.parameters[1];
-          this.$$result = (_get != null);
+          this.$$result = (platformName != null);
         }
       }
       assert new $AssertEvaluator$_1().$$result : "PlatformName is null";
-      Object _get = occurrence.parameters[0];
-      String belief = (_get == null ? null : _get.toString());
-      Object _get_1 = occurrence.parameters[1];
-      String platformName = (_get_1 == null ? null : _get_1.toString());
       String configPath = belief;
       FileReader _fileReader = new FileReader(configPath);
       Object _parse = this.parser.parse(_fileReader);
@@ -67,8 +69,8 @@ public class PythonAccessorRole extends Behavior {
       video.put("path", "F:/data/".concat(platformName).concat("/vdo.avi"));
       HashMap<String, String> pathRoi = new HashMap<String, String>();
       pathRoi.put("path", "F:/data/".concat(platformName).concat("/roi.jpg"));
-      Object _get_2 = jsonConfigtmp.get("Preproc");
-      HashMap<String, HashMap<String, String>> a = ((HashMap<String, HashMap<String, String>>) _get_2);
+      Object _get = jsonConfigtmp.get("Preproc");
+      HashMap<String, HashMap<String, String>> a = ((HashMap<String, HashMap<String, String>>) _get);
       a.put("roi", pathRoi);
       jsonConfigtmp.put("Video", video);
       this.jsonConfig = jsonConfigtmp;

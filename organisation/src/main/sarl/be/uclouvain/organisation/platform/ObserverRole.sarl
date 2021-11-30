@@ -50,22 +50,15 @@ behavior ObserverRole {
 
 	protected var privateTOLDSpace : OpenEventSpace
 	protected var TOLDContext : AgentContext
-	
 	protected var privatePlatformSpace : OpenEventSpace
 	protected var platformContext : AgentContext
-	
 	protected var selfSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification,
 		UUID.randomUUID)// An internal space to communicate with other roles. 
-
 	protected var sensitivity : int
-	
 	protected var observerADN : AlgorithmInfo	
-	
 	protected var isMaster : Boolean = false
-	
 	protected val listeners = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the client and the role 
 	protected val providers = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
-	
 	protected var platformName : String
 
 	@SuppressWarnings("potential_field_synchronization_problem")
@@ -85,6 +78,7 @@ behavior ObserverRole {
 		privatePlatformSpace = occurrence.privateCommunicationChannel
 		privatePlatformSpace.register(asEventListener)
 		platformName = occurrence.platformName
+		observerADN.platformName = occurrence.platformName
 		emit(platformContext.defaultSpace,new Identification(observerADN.name)) //@ FIXME not general in the sens of it should whenever it joins a context
 	}	
 	

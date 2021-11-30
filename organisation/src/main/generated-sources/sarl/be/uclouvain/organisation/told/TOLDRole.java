@@ -1,12 +1,14 @@
 package be.uclouvain.organisation.told;
 
 import be.uclouvain.organisation.AddMember;
+import be.uclouvain.organisation.AuthorizationToJoinContext;
 import be.uclouvain.organisation.PlatformOrganisationInfo;
 import be.uclouvain.organisation.TOLDOrganisationInfo;
 import be.uclouvain.organisation.told.AccessDatabaseCapacity;
 import be.uclouvain.organisation.told.AddEntry;
 import be.uclouvain.organisation.told.DataEntry;
 import be.uclouvain.organisation.told.DeleteEntry;
+import be.uclouvain.organisation.told.QueryAnswer;
 import be.uclouvain.organisation.told.ReadEntry;
 import com.google.common.base.Objects;
 import io.sarl.core.Behaviors;
@@ -80,18 +82,23 @@ public class TOLDRole extends Behavior {
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$AddMember$3(final AddMember occurrence) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nType mismatch: cannot convert from UUID to Event"
-      + "\nType mismatch: cannot convert from UUID to UUID"
-      + "\nType mismatch: cannot convert from AuthorizationToJoinContext to Scope<Address>");
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    String _substring = occurrence.getSource().getUUID().toString().substring(0, 5);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("received add member from " + _substring));
+    UUID _iD = this.getOwner().getID();
+    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+    UUID _iD_1 = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().getDefaultSpace().getSpaceID().getID();
+    AuthorizationToJoinContext _authorizationToJoinContext = new AuthorizationToJoinContext(_iD, _iD_1);
+    occurrence.communicationChannel.emit(this.getOwner().getID(), _authorizationToJoinContext, null);
   }
   
   @SuppressWarnings("discouraged_occurrence_readonly_use")
   private void $behaviorUnit$ReadEntry$4(final ReadEntry occurrence) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nType mismatch: cannot convert from UUID to Event"
-      + "\nType mismatch: cannot convert from UUID to UUID"
-      + "\nType mismatch: cannot convert from QueryAnswer to Scope<Address>");
+    OpenEventSpace _get = this.privateSpacesListeners.get(occurrence.getSource().getUUID());
+    AccessDatabaseCapacity _$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_TOLD_ACCESSDATABASECAPACITY$CALLER = this.$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_TOLD_ACCESSDATABASECAPACITY$CALLER();
+    Object _read = _$CAPACITY_USE$BE_UCLOUVAIN_ORGANISATION_TOLD_ACCESSDATABASECAPACITY$CALLER.read(this.getOwner().getID());
+    QueryAnswer _queryAnswer = new QueryAnswer(_read);
+    _get.emit(this.getOwner().getID(), _queryAnswer, null);
   }
   
   private void $behaviorUnit$MemberJoined$5(final MemberJoined occurrence) {

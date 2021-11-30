@@ -21,7 +21,16 @@ class AlgorithmInfo implements Cloneable {
 	var belief : String
 	val task : String
 	var level: int
+	var platformName : String 
 	
+	new (n : String, b : String, t : String, l : int, pName : String) {
+		this.name = n
+		this.belief = b
+		this.task = t
+		this.level = l
+		this.platformName=pName
+	}
+
 	new (n : String, b : String, t : String, l : int) {
 		this.name = n
 		this.belief = b
@@ -68,6 +77,12 @@ class AlgorithmInfo implements Cloneable {
 	
 	def getFullName{
 		return this.name.concat("_").concat(level.toString)
+	}
+	def setPlatformName (pName : String){
+		this.platformName = pName
+	}
+	def getPlatformName{
+		return this.platformName
 	}
 	
 	def getName {

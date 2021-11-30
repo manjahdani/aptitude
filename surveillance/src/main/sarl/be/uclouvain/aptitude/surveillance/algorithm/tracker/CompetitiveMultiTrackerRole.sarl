@@ -68,19 +68,17 @@ behavior CompetitiveMultiTrackerRole {
 	on HyperParametersRequest {
 		
 		var providerID = occurrence.source.UUID
-		
-		
 				
 		if(sub_processes.containsKey(providerID)) //Its one of his child
 		{
-			info("")
+			info("Request from -" + providerID.toString.substring(0, 5) + "a the child")
 			var param = providers_HP.get(providerID)
 			info("sensitivity request from -" + providerID.toString.substring(0, 5) +
 					" .... sending the following sensitivity :" + param.sensitivity)
 			sub_processes.get(providerID).emit(this.ID,
 				new ProcessingHyperParameters(
 					param.sensitivity, 
-					param.optimalSearchEnabled)) [it.UUID == providerID]
+					false)) [it.UUID == providerID]
 		}
 		else{
 			info("Request from -" + providerID.toString.substring(0, 5) + "it is not in the child")
@@ -98,7 +96,8 @@ behavior CompetitiveMultiTrackerRole {
 
 	on BBoxes2DResult {
 		
-		info("Sending results from " + occurrence.providerName + " to " + parrallelProcess.get(occurrence.providerName))
+		if(occurrence.bboxes2D.frameNumber <5){
+		info("Sending results from " + occurrence.providerName + " to " + parrallelProcess.get(occurrence.providerName))}
 		// We send to the sub-process meant to analyse the data of the provider. For example, agent 1 process the data sent from detector A. 
 		wake(new BBoxes2DResult(occurrence.bboxes2D))[it.UUID == parrallelProcess.get(occurrence.providerName)] 
 	

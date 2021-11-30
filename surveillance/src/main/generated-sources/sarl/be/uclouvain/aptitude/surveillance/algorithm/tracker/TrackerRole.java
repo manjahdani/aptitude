@@ -140,7 +140,7 @@ public class TrackerRole extends ObserverRole {
       Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER();
       Agent _owner_1 = this.getOwner();
       SingleTrackerRole _singleTrackerRole = new SingleTrackerRole(_owner_1);
-      _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.registerBehavior(_singleTrackerRole, this.observerADN.getBelief(), this.platformName);
+      _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER_1.registerBehavior(_singleTrackerRole, this.observerADN.getBelief(), this.observerADN.getPlatformName());
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       String _get = this.detectors.get(this.sensitivity);
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Come here : " + _get));

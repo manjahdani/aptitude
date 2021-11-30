@@ -3,12 +3,12 @@
  */
 package be.uclouvain.python_access
 
-import io.sarl.core.Initialize
 import io.sarl.core.Schedules
 import java.io.FileReader
 import java.util.HashMap
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
+import io.sarl.core.Initialize
 
 /** 
  * @author manjah
@@ -21,16 +21,18 @@ behavior PythonAccessorRole {
 	protected var parser = new JSONParser();
 	protected var jsonConfig : JSONObject;
 	protected var partnerName : String;
-	
+
 	on Initialize {
-		
-		assert occurrence.parameters.get(0) !== null, "Belief is null";
-		assert occurrence.parameters.get(1) !== null, "PlatformName is null";
-		
 		var belief = occurrence.parameters.get(0) as String
 		var platformName = occurrence.parameters.get(1) as String
+		connectToPython(belief,platformName)
+	}
+	def connectToPython(belief : String, platformName : String) {
 
-		var configPath = belief // occurrence.parameters.get(0).toString
+		assert belief !== null, "Belief is null";
+		assert platformName !== null, "PlatformName is null";
+		
+		var configPath = belief
 		var jsonConfigtmp = parser.parse(new FileReader(configPath)) as JSONObject;
 		var video = (new HashMap<String, String>)
 		video.put("path", "F:/data/".concat(platformName).concat("/vdo.avi"))
