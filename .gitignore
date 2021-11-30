@@ -1,6 +1,6 @@
 tags
 
-./*/src/main/generated-sources/
+**/src/main/generated-sources/
 
 #NetBean / Eclipse
 bin
