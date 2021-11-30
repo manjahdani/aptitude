@@ -1,7 +1,5 @@
 tags
 
-
-
 generated-sources/sarl
 
 
@@ -10,5 +8,10 @@ bin
 *.log
 *.sarlbin
 *.java._trace
-**/.metadata/
+**/.metadata
 **/.settings
+**/.classpath
+**/.project
+
+# Compiled files
+**/*.class
