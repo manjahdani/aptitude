@@ -1,11 +1,14 @@
 tags
 
-.metadata/
+
 
 generated-sources/sarl
 
+
+#NetBean / Eclipse
+bin
 *.log
-
 *.sarlbin
-
 *.java._trace
+**/.metadata/
+**/.settings
