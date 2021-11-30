@@ -1,7 +1,6 @@
 tags
 
-generated-sources/sarl
-
+./*/src/main/generated-sources
 
 #NetBean / Eclipse
 bin
@@ -15,3 +14,4 @@ bin
 
 # Compiled files
 **/*.class
+
