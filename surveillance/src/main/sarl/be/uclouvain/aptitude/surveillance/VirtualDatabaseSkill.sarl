@@ -23,6 +23,8 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 
 	protected val database : HashMap<UUID, Object> = new HashMap<UUID, Object> // UUID has been chosen to ensure privacy @TODO : Develop
 	
+
+	
 	def install {
 		database.put(UUID.randomUUID,
 			new AlgorithmInfo("YOLO", "F:/aptitude/surveillance/src/main/resources/config/test-YOLO.json", "DETECTOR"))
@@ -48,24 +50,54 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 	}
 
 	override delete(key : UUID) {
+
+		info("Deleting..." + key)
+		assert database.keySet.contains(key),"Cannot remove a key not present in database"
+		
+		if (database.get(key) instanceof FileWriter) {
+			(database.get(key) as FileWriter).close
+			info("I closed the file of " + key)
+		}
+		else {
+			info("Object of " + key + " not FileWriter")
+		}
 		database.remove(key)
 	}
 
 	def create(id : UUID, data : Object){
+		info("creating for " + id.toString.substring(0,5) + " an object " + data)
 		database.put(id, data)
 	}
 
-	def read(key:UUID) : Object {
+	def read(key : UUID) : Object {
+		info("reading for " + key.toString.substring(0, 5))
+		if (!database.keySet.contains(key)) {
+			info("The key is not in the data-base, temporarily added a null object")
+			database.put(key,null)
+			return null
+		}
+		else if (database.get(key) === null){
+			info("key present but value is null")
+			return null
+		}
+		info("Access OK returning - " + database.get(key))
 		return database.get(key)
 	}
 	
 	def getdatabase{
 		return this.database
 	}
-	override update(id : UUID, data : Object) {
+	override update(key : UUID, data : Object) {
+
+		debug("updating for " + key)
 		
-		if(data instanceof BBoxe2D[]){
-			updateGroundtruth(database.get(id) as FileWriter, data)
+		assert database.keySet.contains(key), "The key is not present"
+		
+		if (data instanceof BBoxe2D[]) {
+			updateGroundtruth(database.get(key) as FileWriter, data)
+		}
+		else{
+			info("I do not recognize the class" + data.class)
 		}
 	}
 	synchronized def updateGroundtruth(gt : FileWriter, perception : BBoxe2D[]) {

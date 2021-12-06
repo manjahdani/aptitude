@@ -5,6 +5,7 @@ package be.uclouvain.organisation
 
 
 import io.sarl.core.OpenEventSpace
+import java.util.UUID
 
 /** 
  * Request to add a Member 
@@ -33,10 +34,13 @@ import io.sarl.core.OpenEventSpace
 
 event AddMember {
 	
+	var memberID : UUID
 	val communicationChannel : OpenEventSpace
 
-	new(comChannel : OpenEventSpace) {
+	new(mID : UUID, comChannel : OpenEventSpace) {
 		this.communicationChannel = comChannel
+		this.memberID = mID
 	}
+	
 	
 }

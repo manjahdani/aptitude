@@ -69,7 +69,7 @@ behavior AlgorithmSelectorRole {
 	}
 
 	on LastFrame {
-		info("Receveid " + occurrence.pred_file_Path + occurrence.frameNumber)
+		info("Obtained the path to observations " + occurrence.pred_file_Path + " that stopped at frame " + occurrence.frameNumber)
 		info("Sending to evaluation")
 		var predictions = new String(Files.readAllBytes(Paths.get(occurrence.pred_file_Path)));
 		var testID = UUID.randomUUID

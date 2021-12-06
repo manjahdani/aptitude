@@ -123,12 +123,12 @@ agent Algorithm extends Paraddis{
 			spawnInContextWithID(Algorithm, cloneID, occurrence.contextID, ADN.cloneChild) //@FIXME : improper names // Maybe the clone should directly integrate the incrementandLevel
 		}}//@FIXME we could have a table of each child, so that we could direct the information to it. 
 	on AlgorithmJoinPlatform {
-		info("Deploying a " + ADN.task + " named " + occurrence.name + " performing for " + occurrence.source.UUID.toString.substring(0, 5))
+		info("deploys " + ADN.task + " named " + occurrence.name + " performing for " + occurrence.source.UUID.toString.substring(0, 5))
 		wake(new AlgorithmNeeded(occurrence.contextID, occurrence.name, ADN.task, ADN.belief))
 	}
 
 	on AuthorizationToJoinContext {
-		info("receives authorisation to join" + occurrence.source.UUID)
+		info("receives authorisation to join - " + occurrence.source.UUID)
 		join(occurrence.contextID, occurrence.defaultSpaceID)
 	}
 }

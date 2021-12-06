@@ -13,6 +13,7 @@ import io.sarl.core.Schedules
 import be.uclouvain.python_access.PythonTwinAccess
 import be.uclouvain.python_access.EvaluationResult
 import be.uclouvain.python_access.PartnerEvaluationFound
+import io.sarl.core.Logging
 
 /** 
  * @TODO: write a description
@@ -26,7 +27,7 @@ import be.uclouvain.python_access.PartnerEvaluationFound
  */
 skill EvaluationImpl extends PythonTwinAccess implements Evaluation {
 
-	uses Behaviors, Schedules
+	uses Behaviors, Schedules, Logging
 	
 	def update(m : BaseMessage) {
 		if (m instanceof EvaluationMessage) {
@@ -60,7 +61,7 @@ skill EvaluationImpl extends PythonTwinAccess implements Evaluation {
 		if (maxFrame != -1) {
 			evalMessage.maxFrame = maxFrame
 		}
-		print("EvalMessage - "+ evalMessage)
+		info("Accesor role - sending the evalMessage - "+ evalMessage.toString)
 		CommunicationManager.instance.publishMessage(topicSignalAcquisition, evalMessage)
 	}
 }

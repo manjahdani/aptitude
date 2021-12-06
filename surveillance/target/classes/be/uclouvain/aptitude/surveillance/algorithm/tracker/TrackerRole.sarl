@@ -2,6 +2,7 @@
 package be.uclouvain.aptitude.surveillance.algorithm.tracker
 
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
+import be.uclouvain.aptitude.surveillance.algorithm.TrackingTaskOver
 import be.uclouvain.aptitude.surveillance.algorithm.detector.RestartDetector
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.aptitude.surveillance.algorithm.util.HyperParameters
@@ -12,7 +13,6 @@ import be.uclouvain.organisation.platform.LeavePlatform
 import be.uclouvain.organisation.platform.ObserverRole
 import be.uclouvain.organisation.platform.ProcessingHyperParameters
 import be.uclouvain.python_access.BBoxes2DTrackResult
-import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Lifecycle
@@ -21,6 +21,7 @@ import io.sarl.core.OpenEventSpaceSpecification
 import java.util.ArrayList
 import java.util.LinkedList
 import java.util.UUID
+import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
 
 /** 
  * @FIXME : IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -53,21 +54,23 @@ behavior TrackerRole extends ObserverRole {
 	var totalDetectorTime : double = 0
 
 
-	var FrameLimit : int
+	var FrameLimit : int = 15
 	
 	on LastFrame {
-		info("Received last frame " + listeners)
+
 		
-		for (listenersSpace : listeners.values) {
+		
+		for (l : listeners.keySet) {
+			if (l != this.ID) {
+				info("Transmitting to " + l)
+			listeners.get(l).emit(this.ID,
+				new LastFrame(occurrence.frameNumber,
+					occurrence.pred_file_Path,
+			occurrence.total_time_detection, occurrence.total_time_tracking))[it.UUID == l]
+
+		}}
 			
-			listenersSpace.emit(this.ID,
-					new LastFrame(
-						occurrence.frameNumber, 
-						("F:\\Database\\".concat(this.ID.toString) + ".txt"), 
-						totalDetectorTime,
-						totalTrackerTime)) [it.UUID !== this.ID]
-						
-						}
+
 	   }
 	@SuppressWarnings("potential_field_synchronization_problem")
 	
@@ -86,7 +89,7 @@ behavior TrackerRole extends ObserverRole {
 				iter += 1
 			}
 			
-			registerBehavior(new CompetitiveMultiTrackerRole(this.owner), hyperParatermersToBeTested, this.observerADN)
+			registerBehavior(new CompetitiveMultiTrackerRole(this.owner), hyperParatermersToBeTested, this.observerADN, TOLDContext, privateTOLDSpace)
 		}
 		else {
 		setSkill(new TrackerPythonTwin)
@@ -128,7 +131,7 @@ behavior TrackerRole extends ObserverRole {
 		val comChannel = platformContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
 		comChannel.register(asEventListener)
 		providers.put(dataSource, comChannel)
-		info("\n received the provider ID \n sending the missionSpace" + providers.get(dataSource).spaceID.ID)
+		debug("\n received the provider ID \n sending the missionSpace" + providers.get(dataSource).spaceID.ID)
 		platformContext.defaultSpace.emit(this.ID, new AddMission(providers.get(dataSource))) [
 			it.UUID == dataSource
 		]
@@ -150,25 +153,51 @@ behavior TrackerRole extends ObserverRole {
 		var tmp : ArrayList<BBoxe2D> = formatConversion(occurrence.bboxes2DTrack)
 
 		//dynamicTrackingMemory.add(frameNumber,tmp)
-		for (l : listeners.values) {
-			l.emit(this.ID, new TrackingPerception(tmp))[it != me]
+		for (l : listeners.keySet) {
+			
+			listeners.get(l).emit(this.ID, new TrackingPerception(tmp))[it.UUID ==l]
 		}
 		
 		if (occurrence.bboxes2DTrack.frameNumber % 10 ==0){
-			info("Processed %d frames", occurrence.bboxes2DTrack.frameNumber)
+			info("Processed #" + occurrence.bboxes2DTrack.frameNumber +"frames")
 		}
 		if (occurrence.bboxes2DTrack.lastFrame || occurrence.bboxes2DTrack.frameNumber > FrameLimit) {
 
-			emit(new LastFrame(occurrence.bboxes2DTrack.frameNumber))[it.UUID == this.ID]
-			for (p : providers.keySet) {
-				providers.get(p).emit(this.ID, new LeavePlatform)[it.UUID == p]
+		
+			info("Tracking job done... ")
+			selfSpace.emit(this.ID, new TrackingTaskOver)
+			
+			listeners.remove(this.ID)
+			
+			info("sending the information to " + listeners.keySet)
+			for (l : listeners.keySet) {
+			listeners.get(l).emit(this.ID,
+			new LastFrame(occurrence.bboxes2DTrack.frameNumber, 
+				("F:\\Database\\".concat(this.ID.toString) + ".txt"),
+			totalDetectorTime, totalTrackerTime))[it.UUID == l]
+		
 			}
-			killMe
+			//@FIXME HIGH WEIRD 
+			providers.remove(this.ID)
+			
+			for (p : providers.keySet) {
+				if (p != this.ID) {
+					providers.get(p).emit(this.ID, new LeavePlatform)[it.UUID == p]
+				}
+			}
+			
+			
 		}
-	}
 	
+	}
 
 }
+
+
+
+	
+
+
 
 
 event BBoxes2DTrackResultToCounter extends BBoxes2DTrackResult{ //@FIXME : Nonsens

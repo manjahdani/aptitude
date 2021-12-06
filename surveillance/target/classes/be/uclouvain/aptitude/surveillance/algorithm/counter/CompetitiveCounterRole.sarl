@@ -39,8 +39,8 @@ behavior CompetitiveCounterRole extends ObserverRole {
 	on HyperParametersRequest {
 
 		var providerID = occurrence.source.UUID
-		info("received sensitivity request from -" + providerID.toString.substring(0, 5) +
-				" .... \n sending the following sensitivity" + sensitivity)
+		info("Param request from -" + providerID.toString.substring(0, 5) +
+				" .. sending s " + sensitivity)
 
 		providers.get(providerID).emit(this.ID, new ProcessingHyperParameters(sensitivity, isMaster)) [
 			it.UUID == providerID
@@ -49,7 +49,7 @@ behavior CompetitiveCounterRole extends ObserverRole {
 	
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on ProcessingHyperParameters {
-		info("I received sensitivity - " + occurrence.s)
+		info("received - " + occurrence.s)
 		sensitivity = occurrence.s
 		var parameters = new ArrayList<String>
 		parameters.add(sensitivity.toString)

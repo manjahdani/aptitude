@@ -84,7 +84,7 @@ class CommunicationManager {
 
 	def publishMessage(topicSub : String, message : BaseMessage) {
 		val topic = subscribtionTopic.get(topicSub)
-		assert topic !== null
+		assert topic !== null, "topic is null"
 		topic.publish(message)
 	}
 

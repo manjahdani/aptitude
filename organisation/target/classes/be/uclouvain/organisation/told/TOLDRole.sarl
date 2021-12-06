@@ -43,7 +43,7 @@ behavior TOLDRole {
 
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on AddEntry{
-		info("creating entry for " + occurrence.key.toString.substring(0,5))
+		debug("creating entry for " + occurrence.key.toString.substring(0,5))
 		create(occurrence.key, occurrence.data)
 	}
 	on DeleteEntry{
@@ -61,23 +61,35 @@ behavior TOLDRole {
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	
 	on AddMember{
-		info("received add member from " + occurrence.source.UUID.toString.substring(0, 5))
+		info("received add member from " + occurrence.source.UUID.toString.substring(0, 5) + "to invite within my context " + occurrence.memberID)
 		
 		occurrence.communicationChannel.emit(this.ID,
-			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID)
-		)
+			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID))[it.UUID==occurrence.memberID]
 	}
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on ReadEntry {
-		privateSpacesListeners.get(occurrence.source.UUID).emit(this.ID, new QueryAnswer(read(this.ID)))
+		debug("Reading entry and sending -" + read(occurrence.key))
+		privateSpacesListeners.get(occurrence.source.UUID).emit(this.ID, new QueryAnswer(read(occurrence.key)))
 	}
 	on MemberJoined {
 		var memberID = occurrence.agentID;
 		privateSpacesListeners.put(memberID,
 			innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID))
-		emit(new TOLDOrganisationInfo(innerContext, privateSpacesListeners.get(memberID), read(memberID))) [
-			it.UUID == memberID
-		]
+		
+		
+		if(occurrence.inDefaultSpace){
+			emit(new TOLDOrganisationInfo(innerContext, privateSpacesListeners.get(memberID), read(memberID))) [
+			it.UUID == memberID]
+		} 
+		else {
+			wake(new TOLDOrganisationInfo(innerContext, privateSpacesListeners.get(memberID), read(memberID))) [
+				it.UUID == memberID
+			]
+		}
+		
+		
+		
+		info("MemberJoined" + occurrence.agentID.toString.substring(0,5))
 		privateSpacesListeners.get(memberID).register(asEventListener)
 	}
 

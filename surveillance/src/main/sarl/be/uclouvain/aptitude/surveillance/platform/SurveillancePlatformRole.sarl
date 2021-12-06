@@ -39,7 +39,8 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
 	on LocalDatabaseRequest {
 		info("received a request from " + occurrence.source.UUID.toString.substring(0, 5) + " to connect with a database ")
-		privateSpacesListeners.get(TOLDID).emit(new AddMember(privateSpacesListeners.get(occurrence.source.UUID)))
+		privateSpacesListeners.get(TOLDID).emit(
+			new AddMember(occurrence.source.UUID,privateSpacesListeners.get(occurrence.source.UUID)))
 	}
 
 	

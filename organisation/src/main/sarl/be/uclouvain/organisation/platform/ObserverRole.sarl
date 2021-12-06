@@ -65,7 +65,8 @@ behavior ObserverRole {
 	on Initialize {
 		observerADN = occurrence.parameters.get(0) as AlgorithmInfo
 		selfSpace.register(asEventListener) // Listen to a self-internal space
-		providers.put(this.ID, selfSpace) 	// // Listen to its own results To send results to itself @FIXME maybe we could just program a flag.. as it is not needed everywhere
+		providers.put(this.ID, selfSpace)
+		listeners.put(this.ID, selfSpace) 	// // Listen to its own results To send results to itself @FIXME maybe we could just program a flag.. as it is not needed everywhere
 	}
 
 	on Destroy {
@@ -91,14 +92,15 @@ behavior ObserverRole {
 	@SuppressWarnings("potential_field_synchronization_problem")
 	
 	on AddMission {
-		
+
+		occurrence.communicationChannel.register(asEventListener)
 		var missionSpace = occurrence.communicationChannel
 		var clientID = occurrence.source.UUID
 		
 		info("requested to add missionID " + (missionSpace.spaceID.toString.substring(0, 5)) + " from " +
 			clientID.toString.substring(0, 5))
 		listeners.put(clientID, missionSpace) // @FIXME maybe there is a huge mistunderstanding of the use of Spaces, maybe we could have address which is simpler
-		missionSpace.register(asEventListener)
+		
 		
 		var accepted = true // @TODO develop criteria for the acceptation of mission 
 		if (accepted) {
