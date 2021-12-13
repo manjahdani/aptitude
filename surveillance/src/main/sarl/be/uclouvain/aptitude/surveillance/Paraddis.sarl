@@ -66,13 +66,13 @@ agent Paraddis {
 
 	on ParticipantJoined {
 		//@DEBUG
-		//info("Participant  - " + occurrence.source.UUID.toString.substring(0, 5) + " - Joined space -" +
+		//info("Participant  - " + occurrence.source.ID.toString.substring(0, 5) + " - Joined space -" +
 			//occurrence.spaceID)
 	}
 
 	on CommitSuicide {
 		
-		//info("received commitSuicide : " + occurrence.fromMe + " : " + occurrence.source.UUID) 
+		//info("received commitSuicide : " + occurrence.fromMe + " : " + occurrence.source.ID) 
 		terminateAgent
 	}
 
@@ -100,7 +100,7 @@ agent Paraddis {
 		
 		
 		for (h : memberAgents) {
-			innerContext.defaultSpace.emit(this.ID, new CommitSuicide)[it.UUID == h]
+			innerContext.defaultSpace.emit(this.ID, new CommitSuicide)[it.ID == h]
 		}
 		val waitTask = task("wait-member-killed-task")
 		waitTask.every(2000) [

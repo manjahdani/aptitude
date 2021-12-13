@@ -47,17 +47,20 @@ agent TOLDAgent extends Paraddis {
 	
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on Initialize {
+		
+		info("ready to share my stored knowledge.")
+		
+		S = setSkill(new VirtualDatabaseSkill, AccessDatabaseCapacity)
+		registerBehavior(new TOLDRole(this))
 		config = occurrence.parameters.get(0) as TOLDConfig
 		loggingName = this.ID + "-TOLD" + "-" + config.level
 		info("ready to share my stored knowledge.")
-		S = setSkill(new VirtualDatabaseSkill, AccessDatabaseCapacity)
-		registerBehavior(new TOLDRole(this))
-		var registeredAlgorithms : HashMap<UUID, AlgorithmInfo> = new HashMap(S.database.filter [ p1, p2 |
+		var registerStrongParticipantedAlgorithms : HashMap<UUID, AlgorithmInfo> = new HashMap(S.database.filter [ p1, p2 |
 			p2 instanceof AlgorithmInfo
 		])
 		for (t : config.init_tasks) {
 			spawnInContext(Algorithm, innerContext, new AlgorithmInfo(t, "none", t),
-				new HashMap(registeredAlgorithms.filter[p1, p2|p2.task == t]))
+				new HashMap(registerStrongParticipantedAlgorithms.filter[p1, p2|p2.task == t]))
 		}
 	}
 	
@@ -66,8 +69,8 @@ agent TOLDAgent extends Paraddis {
 	on AgentPlatform {
 		info("encounters " + occurrence.name + " agent platform")
 		agentPlatformSpaces.put(occurrence.name, occurrence.topic)
-		occurrence.topic.register(asEventListener)
-		wake(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it.UUID !== this.ID]
+		occurrence.topic.registerStrongParticipant(asEventListener)
+		wake(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it.ID !== this.ID]
 	}
 	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
 	on JoinPlatform {

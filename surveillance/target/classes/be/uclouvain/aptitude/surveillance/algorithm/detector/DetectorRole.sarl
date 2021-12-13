@@ -3,16 +3,11 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm.detector
 
-import be.uclouvain.organisation.platform.LeavePlatform
 import be.uclouvain.organisation.platform.ObserverRole
-import be.uclouvain.organisation.platform.ProcessingHyperParameters
 import be.uclouvain.python_access.BBoxes2DResult
-import be.uclouvain.python_access.PythonAccessorRole
-import be.uclouvain.python_access.PythonTwinAccessCapacity
 import io.sarl.core.Behaviors
 import io.sarl.core.Destroy
 import io.sarl.core.Logging
-import be.uclouvain.organisation.platform.HyperParametersRequest
 
 /** 
  * @TODO: write a description
@@ -26,85 +21,34 @@ import be.uclouvain.organisation.platform.HyperParametersRequest
  */
 behavior DetectorRole extends ObserverRole {
 	
-	uses Logging, PythonTwinAccessCapacity, Behaviors
+	uses Logging, Behaviors
 	
 	on BBoxes2DResult {
 		//info("Detector - frameNumber- lastframe " + occurrence.bboxes2D.frameNumber + occurrence.bboxes2D.lastFrame)
 		for (listenersSpace : listeners.values) {
-			listenersSpace.emit(this.ID, new BBoxes2DResult(occurrence.bboxes2D, observerADN.name))[it.UUID !== this.ID]
+			listenersSpace.emit(this.ID, new BBoxes2DResult(occurrence.bboxes2D, observerADN.name))[it.ID !== this.ID]
 		}
 	}
-
-	on ProcessingHyperParameters {
-		setSkill(new DetectorPythonTwin)
-		registerBehavior(new PythonAccessorRole(this.owner), observerADN.belief, platformName)
-	}
-	on RestartDetector{
-		if (occurrence.bel == observerADN.name){
-		info("Restarting")
-		var spaceToSend = listeners.get(listeners.get(0))
-		listeners.clear
-		listeners.put(occurrence.source.UUID, spaceToSend)
-		//UpdateStreamAccess(3)
-		updateStreamAccess(5)
-		updateStreamAccess(1)} //@FIXME not robust ! 
-	}
+	//on RestartDetector{
+		//info("Restarting")
+		//var spaceToSend = listeners.get(listeners.get(0))
+		//listeners.clear
+		
+		//listeners.put(occurrence.source.ID, spaceToSend)
+	 //@FIXME not robust ! 
+	//}
 	on Destroy {
 		info("The behavior was stopped.")
 	}
-
-	on HyperParametersRequest {
-
-		var providerID = occurrence.source.UUID
-		info("received sensitivity request from -" + providerID.toString.substring(0, 5) +
-				" .... \n  sending the following sensitivity" + sensitivity)
-
-		providers.get(providerID).emit(this.ID, new ProcessingHyperParameters(sensitivity, isMaster)) [
-			it.UUID == providerID
-		]
+	
+	override startProcessingRole() {
+		setSkill(new DetectorPythonTwin)
+		registerBehavior(new SingleDetectorRole(this.owner), observerADN.belief, platformName, computation_location)
 	}
 	
-
-	on LeavePlatform {
-		// join(BaseContext.ID, BaseSpace.spaceID.ID)
-		//info("Detector Leaving")
-		updateStreamAccess(4)
-		//leave(PlatformID)
-	}
 }
 event RestartDetector{
 	var bel : String
 	new (a : String){
 		this.bel = a}
-}
-//
-//
-// var configPathDetector =	ObserverADN.belief // occurrence.parameters.get(0).toString
-// var jsonDetector = parser.parse(new FileReader(configPathDetector)) as JSONObject;
-//		var video = (new HashMap<String, String>)
-//		video.put("path", "F:/data/".concat(PlatformName).concat("/vdo.avi"))
-//		var pathRoi = new HashMap<String, String>
-//		pathRoi.put("path", "F:/data/".concat(PlatformName).concat("/roi.jpg"))
-//		var a= jsonDetector.get("Preproc") as HashMap<String,HashMap<String,String>>
-//		a.put("roi",pathRoi)
-// jsonDetector.put("Video",video)
-		
-		// ActivateAccess(jsonDetector)
-		
-// if(Listeners==null)
-//			{
-//				info("Listeners null" )
-//			}
-//			else if (MissionSpaceList == null)
-//			{
-//				info("MissionSpaceList null")
-//			}
-//			else if (occurrence.bboxes2D==null)
-//			{
-//				info("BB null")
-//			}
-//			else if (MissionSpaceList.get(l)==null)
-//			{
-//				info("MissionSpace null")
-//			}
-// else{  
+} 

@@ -1,19 +1,17 @@
-
 package be.uclouvain.aptitude.surveillance.algorithm.counter
 
-import be.uclouvain.aptitude.surveillance.algorithm.util.Metric
-import be.uclouvain.aptitude.surveillance.evaluation.AlgorithmSelectorRole
+import be.uclouvain.aptitude.surveillance.evaluation.Evaluation
+import be.uclouvain.aptitude.surveillance.evaluation.EvaluationImpl
 import be.uclouvain.organisation.SignalID
 import be.uclouvain.organisation.platform.AddMission
-import be.uclouvain.organisation.platform.HyperParametersRequest
 import be.uclouvain.organisation.platform.ObserverRole
-import be.uclouvain.organisation.platform.ProcessingHyperParameters
+import be.uclouvain.python_access.PythonTwinAccessCapacity
 import io.sarl.core.Behaviors
-import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpaceSpecification
-import java.util.ArrayList
 import java.util.UUID
+import be.uclouvain.aptitude.surveillance.algorithm.util.Metric
+import be.uclouvain.aptitude.surveillance.evaluation.AlgorithmSelectorRole
 
 /** 
  * @TODO : To complete
@@ -29,55 +27,39 @@ behavior CompetitiveCounterRole extends ObserverRole {
 	
 	uses Logging, Behaviors
 
-	val AVAILABLE_TRACKERS = newArrayList("SORT")//"DeepSORT") // "SORT", //@FIXME its logiciel parameters or not ? 
+	val AVAILABLE_TRACKERS = newArrayList("SORT") // "DeepSORT") // "SORT", //@FIXME its logiciel parameters or not ?
+	val CONFIG_PATH = "F:/aptitude/surveillance/src/main/resources/config/evalconfig.json"
 	
-	
-	on Initialize {
-		isMaster = true;
-	}
-
-	on HyperParametersRequest {
-
-		var providerID = occurrence.source.UUID
-		info("Param request from -" + providerID.toString.substring(0, 5) +
-				" .. sending s " + sensitivity)
-
-		providers.get(providerID).emit(this.ID, new ProcessingHyperParameters(sensitivity, isMaster)) [
-			it.UUID == providerID
-		]
-	}
-	
-	@SuppressWarnings("potential_field_synchronization_problem")
-	on ProcessingHyperParameters {
-		info("received - " + occurrence.s)
-		sensitivity = occurrence.s
-		var parameters = new ArrayList<String>
-		parameters.add(sensitivity.toString)
-		registerBehavior(new AlgorithmSelectorRole(this.owner), new Metric("APTITUDE", "F:/data/".concat(platformName).concat("/gt/gt.txt"), parameters))
-		if (isMaster) {
-			info("Let the competition start !")
-		for (tracker : AVAILABLE_TRACKERS) {
-			info("requests tracker: " + tracker)
-			requestAlgorithm(tracker,"TRACKER")
-			}
-		}
-	}
 
 	on SignalID {
 		val dataSource = occurrence.signalID // provider
 		
 		// Creation of a communication space between the data source and the role @FIXME is it allowed to use the platform Context?
 		val comChannel = platformContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID) 
-		comChannel.register(asEventListener)
+		comChannel.registerStrongParticipant(asEventListener)
 		providers.put(dataSource,comChannel)
 		info("received provider ID \n sending the missionSpace" + providers.get(dataSource).spaceID.ID.toString.substring(0,5))
 		platformContext.defaultSpace.emit(this.ID, new AddMission(providers.get(dataSource))) [
-			it.UUID == dataSource
+			it.ID == dataSource
 		] 	// @FIXME : I am sending null ?
 	}
-
 	
+	override startProcessingRole {
+		setSkill(new EvaluationImpl, Evaluation, PythonTwinAccessCapacity)
+		
+		registerBehavior(new AlgorithmSelectorRole(this.owner), 
+			CONFIG_PATH, observerADN.name, computation_location,
+			new Metric("APTITUDE", "F:/pythonToolbox/pytb-agent/videos/".concat(platformName).concat("/gt/gt.txt"),
+			processingParameters))
+			
+		if (isMaster.get) {
+			info("Let the competition start !")
+		for (tracker : AVAILABLE_TRACKERS) {
+				info("requests tracker: " + tracker)
+				requestAlgorithm(tracker, "TRACKER")
+			}
+		}
 
-	
+	}
 
 }

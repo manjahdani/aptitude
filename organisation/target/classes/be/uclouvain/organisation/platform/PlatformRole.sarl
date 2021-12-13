@@ -18,6 +18,7 @@ import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
 import be.uclouvain.organisation.AuthorizationToPerformMission
+import io.sarl.core.DefaultContextInteractions
 
 /** 
  * The Platform manages the storage and/or computing of resources. A Platform could include sub-Platforms (holonic). 
@@ -39,7 +40,7 @@ import be.uclouvain.organisation.AuthorizationToPerformMission
 
 
 behavior PlatformRole {
-	uses Behaviors, InnerContextAccess, ExternalContextAccess, Logging
+	uses Behaviors, InnerContextAccess, ExternalContextAccess, Logging, DefaultContextInteractions
 
 	protected var TOLDID : UUID
 	protected val privateSpacesListeners = new HashMap<UUID, OpenEventSpace>
@@ -53,17 +54,17 @@ behavior PlatformRole {
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on TOLDOrganisationInfo {
-		TOLDID = occurrence.source.UUID
-		debug("met TOLD organisation - " + TOLDID.toString.substring(0, 5))
+		TOLDID = occurrence.source.ID
+		info("met TOLD organisation - " + TOLDID.toString.substring(0, 5))
 		if (!privateSpacesListeners.containsKey(TOLDID)) { // Not Encountered
 			info("TOLD was not encountered")
 			privateSpacesListeners.put(TOLDID, occurrence.privateCommunicationChannel)
-			occurrence.privateCommunicationChannel.register(asEventListener)
+			occurrence.privateCommunicationChannel.registerStrongParticipant(asEventListener)
 			occurrence.privateCommunicationChannel.emit(
 				new PlatformOrganisationInfo(innerContext, privateSpacesListeners.get(TOLDID), location.get)) [
-				it.UUID == TOLDID
+				it.ID == TOLDID
 			]
-		//PlatformTOLDSpace.register(asEventListener)
+		//PlatformTOLDSpace.registerStrongParticipant(asEventListener)
 		//PlatformTOLDSpace.emit(new JoinOrganisation(innerContext))
 	}}
 
@@ -73,23 +74,22 @@ behavior PlatformRole {
 		// RuleManagement(new MembershipInfoRule(occurrence.source, occurrence.SourceEventSpace, occurrence.entityData))
 		// if (true) {
 		
-		var clientID = occurrence.source.getUUID
+		var clientID = occurrence.source.ID
 		info("received request to add a mission from " + clientID.toString.substring(0,5) + " " + occurrence.missionData.location)
 		
 		missionSpace.put(occurrence.missionData.missionID, innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, occurrence.missionData.missionID))
 
 		privateSpacesListeners.get(clientID).emit(new AuthorizationToPerformMission(missionSpace.get(occurrence.missionData.missionID))
-		)[it.UUID == clientID]
+		)[it.ID == clientID]
 	}
 	
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	
 	on RequestToJoin {
 		info("receives a request to welcome a new agent")
-		
 		occurrence.emitterSpace.emit(this.ID, 
 			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID)) [
-				it.UUID == occurrence.source.getUUID
+				it.ID == occurrence.source.ID
 			]
 	}
 	
@@ -98,7 +98,7 @@ behavior PlatformRole {
 		val memberID = occurrence.agentID
 		privateSpacesListeners.put(memberID,
 			innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID))
-		privateSpacesListeners.get(memberID).register(asEventListener)
+		privateSpacesListeners.get(memberID).registerStrongParticipant(asEventListener)
 		
 		sendOrganisationinfo(memberID);
 	}
@@ -110,9 +110,15 @@ behavior PlatformRole {
 	
 	def sendOrganisationinfo(memberID : UUID) {
 		debug("sending organisation info - " + memberID.toString.substring(0, 5))
+		if(getMemberAgents.contains(memberID)){
 		wake(new PlatformOrganisationInfo(innerContext, privateSpacesListeners.get(memberID), location.get)) [
-			it.UUID == memberID
-		]
+			it.ID == memberID
+		]}
+		else {
+			emit(new PlatformOrganisationInfo(innerContext, privateSpacesListeners.get(memberID), location.get)) [
+				it.ID == memberID
+			]
+		}
 	}
 }
 

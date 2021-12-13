@@ -1,21 +1,18 @@
+/** 
+ * 
+ */
 package be.uclouvain.aptitude.surveillance
 
-import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.organisation.told.AccessDatabaseCapacity
-import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Logging
-import java.io.FileWriter
-import java.util.HashMap
 import java.util.UUID
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import java.util.HashMap
+import java.io.FileWriter
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 
 /** 
- * @TODO : Descrribe
- * 
- * @author $Author: manjahdani$
- * @version $0.0.2$
- * @date $16/04/2021$
- * @mavengroupid $be.uclouvain.aptitude$
- * @mavenartifactid $organisation$
+ * @author manjah
  * 
  */
 skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
@@ -23,8 +20,8 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 
 	protected val database : HashMap<UUID, Object> = new HashMap<UUID, Object> // UUID has been chosen to ensure privacy @TODO : Develop
 	
+	val A = ","+"-1"+","+"-1"+","+"-1"+","+"-1"+"\n"
 
-	
 	def install {
 		database.put(UUID.randomUUID,
 			new AlgorithmInfo("YOLO", "F:/aptitude/surveillance/src/main/resources/config/test-YOLO.json", "DETECTOR"))
@@ -36,76 +33,71 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 		database.put(UUID.randomUUID,new AlgorithmInfo("APTITUDE", "NoneForTheMoment","COUNTER"))
 		database.put(UUID.randomUUID,"a")
 	}
+	override update(key : UUID, data : Object) {
+		debug("updating for " + key)
 
-	def prepareUninstallation {
-		// Function invoked when the skill is preparing to be uninstalled from the owner, but before the owner is destroyed.
-		// You should put all the resource release statements that should be executed before the owner is destroyed.
-		//info("Preparing the uninstallation of the skill")
+		assert database.keySet.contains(key), "The key is not present"
+		
+		if (data instanceof BBoxe2D[]) {
+			updateGroundtruth(database.get(key) as FileWriter, data)
+		} else {
+			debug("I do not recognize the class" + data.class)
+		}
 	}
+	
+	synchronized def updateGroundtruth(writer : FileWriter, boxe2ds : BBoxe2D[]) {
+		
+		
+		for (p:boxe2ds){
+			aux(writer,(p.frame+1).toString, p.globalID.toString, p.x.intValue.toString, p.y.intValue.toString, p.w.intValue.toString, p.h.intValue.toString)
+			
+		}// @FIXME : LOW For historical reason we did this non sens. Something wrong 
+		
+	}
+	
+	synchronized def aux(writer:FileWriter, frame:String, globalID:String, x:String, y:String, w:String, h:String){
+		
+		writer.write(frame+","+globalID+","+x+","+y+","+w+","+h+A)
+	}
+	
+	
 
-	def uninstall {
-		// Function invoked when the skill is uninstalled from the owner, and after the owner is destroyed.
-		// You should put all the resource release statements in this block of code.
-		info("Uninstalling the skill")
-	}
 
 	override delete(key : UUID) {
-
+		// TODO Auto-generated code.
 		info("Deleting..." + key)
 		assert database.keySet.contains(key),"Cannot remove a key not present in database"
 		
 		if (database.get(key) instanceof FileWriter) {
 			(database.get(key) as FileWriter).close
-			info("I closed the file of " + key)
-		}
-		else {
+			info("closed the file of " + key)
+		} else {
 			info("Object of " + key + " not FileWriter")
 		}
 		database.remove(key)
 	}
 
-	def create(id : UUID, data : Object){
-		info("creating for " + id.toString.substring(0,5) + " an object " + data)
-		database.put(id, data)
+	def getdatabase {
+		return this.database
 	}
 
-	def read(key : UUID) : Object {
-		info("reading for " + key.toString.substring(0, 5))
+	override read(key : UUID) : Object {
+		debug("reading for " + key.toString.substring(0, 5))
 		if (!database.keySet.contains(key)) {
-			info("The key is not in the data-base, temporarily added a null object")
-			database.put(key,null)
+			debug("The key is not in the data-base, temporarily added a null object")
+			database.put(key, null)
 			return null
-		}
-		else if (database.get(key) === null){
+		} else if (database.get(key) === null) {
 			info("key present but value is null")
 			return null
 		}
-		info("Access OK returning - " + database.get(key))
+		debug("Access OK returning - " + database.get(key))
 		return database.get(key)
 	}
-	
-	def getdatabase{
-		return this.database
-	}
-	override update(key : UUID, data : Object) {
 
-		debug("updating for " + key)
+	override create(key : UUID, data : Object) {
 		
-		assert database.keySet.contains(key), "The key is not present"
-		
-		if (data instanceof BBoxe2D[]) {
-			updateGroundtruth(database.get(key) as FileWriter, data)
-		}
-		else{
-			info("I do not recognize the class" + data.class)
-		}
+		debug("creating for " + key.toString.substring(0, 5) + " an object " + data)
+		database.put(key, data)
 	}
-	synchronized def updateGroundtruth(gt : FileWriter, perception : BBoxe2D[]) {
-		for (p : perception) {
-			gt.write((p.frame + 1).toString + "," + p.globalID.toString + "," + p.x.intValue.toString + "," +
-					p.y.intValue.toString + "," + p.w.intValue.toString + "," + p.h.intValue.toString + "," + 
-				 "-1" +
-				  "," + "-1" + "," + "-1" + "," + "-1" + "\n")
-			}
-		}
 }

@@ -18,6 +18,6 @@ behavior OutputDeviceRole {
 
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on OutputMsg {
-		outputConversion(occurrence.source.getUUID, occurrence.Information)
+		outputConversion(occurrence.source.ID, occurrence.Information)
 	}
 }

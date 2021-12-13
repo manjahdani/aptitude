@@ -14,6 +14,7 @@ import be.uclouvain.python_access.PythonTwinAccess
 import be.uclouvain.python_access.EvaluationResult
 import be.uclouvain.python_access.PartnerEvaluationFound
 import io.sarl.core.Logging
+import java.util.UUID
 
 /** 
  * @TODO: write a description
@@ -28,7 +29,7 @@ import io.sarl.core.Logging
 skill EvaluationImpl extends PythonTwinAccess implements Evaluation {
 
 	uses Behaviors, Schedules, Logging
-	
+
 	def update(m : BaseMessage) {
 		if (m instanceof EvaluationMessage) {
 			if (m.ack) {
@@ -41,7 +42,7 @@ skill EvaluationImpl extends PythonTwinAccess implements Evaluation {
 	private def onRequestMessage(message : RequestMessage) {
 		if (message.ack && message.requestID == this.pendingRequestID) {
 			requestTask.cancel
-			CommunicationManager.instance.unsubscribeTopic(topicRequestSub)
+			CommunicationManager.instance.unsubscribeTopic(topicRequestSub.toString)
 			topicRequestSub = null
 			val topicName = "evaluation_" + owner.ID.toString + "_" + message.clientName
 			topicSignalAcquisition = CommunicationManager.instance.subscribeTopic(topicName, this)
@@ -55,13 +56,13 @@ skill EvaluationImpl extends PythonTwinAccess implements Evaluation {
 	}
 	def sendEvaluationRequest(requestID : String, predictions : String, gts : String, maxFrame : int) {
 		var evalMessage = new EvaluationMessage()
-		evalMessage.requestID = requestID
+		evalMessage.requestID = UUID.fromString(requestID)
 		evalMessage.predictions = predictions
 		evalMessage.gts = gts
 		if (maxFrame != -1) {
 			evalMessage.maxFrame = maxFrame
 		}
 		info("Accesor role - sending the evalMessage - "+ evalMessage.toString)
-		CommunicationManager.instance.publishMessage(topicSignalAcquisition, evalMessage)
+		CommunicationManager.instance.publishMessage(topicSignalAcquisition.toString, evalMessage)
 	}
 }

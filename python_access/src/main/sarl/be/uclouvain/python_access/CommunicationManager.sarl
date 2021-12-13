@@ -8,9 +8,9 @@ import com.hazelcast.config.Config
 import com.hazelcast.config.SerializationConfig
 import com.hazelcast.core.Hazelcast
 import com.hazelcast.core.HazelcastInstance
-import com.hazelcast.core.ITopic
-import com.hazelcast.core.Message
-import com.hazelcast.core.MessageListener
+import com.hazelcast.topic.ITopic
+import com.hazelcast.topic.Message
+import com.hazelcast.topic.MessageListener
 import be.uclouvain.python_access.messages.BaseMessage
 import be.uclouvain.python_access.messages.RequestMessage
 import be.uclouvain.python_access.messages.ActionMessage
@@ -18,6 +18,7 @@ import be.uclouvain.python_access.messages.BBoxes2DMessage
 import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
 import be.uclouvain.python_access.messages.EvaluationMessage
 import be.uclouvain.python_access.messages.DisplayMessage
+import java.util.UUID
 
 class CommunicationManager {
 	static var instance : CommunicationManager
@@ -60,14 +61,14 @@ class CommunicationManager {
 		)
 		hzConfig.serializationConfig = serialConfig
 		hzConfig.setProperty("hazelcast.rest.enabled", "true")
-		hzConfig.managementCenterConfig.setEnabled(true);
-		hzConfig.managementCenterConfig.setUrl("http://localhost:8080/hazelcast-mancenter/");
+		//hzConfig.managementCenterConfig.setEnabled(true);
+		//hzConfig.managementCenterConfig.setUrl("http://localhost:8080/hazelcast-mancenter/");
 		this.hzInstance = Hazelcast.newHazelcastInstance(hzConfig)
 	}
 
 	def subscribeTopic(topicName : String, observer : PythonTwinAccess) {
 		val topic = this.hzInstance.getTopic(topicName)
-		val subscribtionID : String = topic.addMessageListener(new MessageListener<BaseMessage>() {
+		val subscribtionID : UUID= topic.addMessageListener(new MessageListener<BaseMessage>() {
 			def onMessage(m : Message<BaseMessage>) {
 				observer.update(m.messageObject)
 			}
@@ -79,7 +80,7 @@ class CommunicationManager {
 	def unsubscribeTopic(subscribtionID : String) {
 		val topic = subscribtionTopic.remove(subscribtionID)
 		assert topic !== null
-		topic.removeMessageListener(subscribtionID)
+		topic.removeMessageListener(UUID.fromString(subscribtionID))
 	}
 
 	def publishMessage(topicSub : String, message : BaseMessage) {

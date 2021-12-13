@@ -3,14 +3,22 @@
  */
 package be.uclouvain.aptitude.surveillance.platform
 
+import be.uclouvain.organisation.JoinPlatform
+import be.uclouvain.organisation.LocalDatabaseRequest
 import be.uclouvain.organisation.platform.PlatformRole
 import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.OpenEventSpace
-import java.util.HashMap
-import be.uclouvain.organisation.LocalDatabaseRequest
-import be.uclouvain.organisation.JoinPlatform
-import java.util.UUID
+import io.sarl.core.Initialize
 import io.sarl.core.Logging
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.Schedules
+import java.util.Collections
+import java.util.HashMap
+import java.util.Set
+import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedQueue
+import be.uclouvain.organisation.platform.ComputationalRessources
+import java.util.ArrayList
+import io.sarl.core.Behaviors
 
 /** 
  * @TODO To complete
@@ -18,22 +26,43 @@ import io.sarl.core.Logging
  */
 behavior ManagerPlatformRole extends PlatformRole {
 	
-	uses DefaultContextInteractions, Logging
+	uses DefaultContextInteractions, Schedules, Logging, Behaviors
 
+
+	
 	val subPlatformsOpenSpaces = new HashMap<String, OpenEventSpace> // TreeMap of the sub-worlds composing the world. It is used to be able to communicate with other worlds
 	val subPlatformsIDs = new HashMap<UUID,String>
 	
-	on AgentPlatform { // If it is not in the default, then it is in the InnerContext. That way we transmit the information to higher level while avoiding duplicate.
-		if (!occurrence.isInDefaultSpace){
-		subPlatformsIDs.put(occurrence.id, occurrence.name) // @FIXME maybe the best is that the sub-holons warns the parent.. 
+	val RESSOURCES_AVAILABLE = new ConcurrentLinkedQueue<String>
+	val ALLOCATED_RESSOURCES = Collections.synchronizedMap(new HashMap<UUID,String>)
+
+	on Initialize {
+		RESSOURCES_AVAILABLE.addAll(occurrence.parameters.get(1) as ArrayList<String>)
+	}
+	
+	on AgentPlatform {
+		var a = RESSOURCES_AVAILABLE.poll
+		info("Meeting agent: "+ occurrence.name + " allocating resources number - " + a)
+		subPlatformsIDs.put(occurrence.id, occurrence.name)
+		ALLOCATED_RESSOURCES.put(occurrence.id,a)
+		wake(new ComputationalRessources(a))[it.ID== occurrence.source.ID]	
 		if (!subPlatformsOpenSpaces.containsKey(occurrence.name)) {
 			subPlatformsOpenSpaces.put(occurrence.name, occurrence.topic)
-			emit(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))
+			emit(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it.ID != this.ID]
 		}
-	}} // It is okay to send it to the Universe Context as it is omniscient
+	} // It is okay to send it to the Universe Context as it is omniscient
 
 	on LocalDatabaseRequest {
-		privateSpacesListeners.get(TOLDID).emit(this.ID,
-			new JoinPlatform(occurrence.context, subPlatformsIDs.get(occurrence.source.UUID)))[it.UUID == TOLDID]
-	}
-}
+		
+		task("wait4TOLD".concat(occurrence.source.ID.toString)).every(100) [
+				if (TOLDID !== null) {
+					emit(
+						new JoinPlatform(occurrence.context, subPlatformsIDs.get(occurrence.source.ID))) [
+						it.ID == TOLDID
+					] // privateSpacesListeners.get(TOLDID).
+					task("wait4TOLD".concat(occurrence.source.ID.toString)).cancel
+					}
+			]
+		}
+		uses Logging
+		}

@@ -77,14 +77,14 @@ agent Algorithm extends Paraddis{
 		loggingName = this.ID + "-ALGORITHM-" + ADN.name + "-" + ADN.level 
 		registerBehavior(new EntityRole(this))
 		openChanel = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
-		openChanel.register(asEventListener)
+		openChanel.registerStrongParticipant(asEventListener)
 		
 		if (ADN.level == 0) {
 			var toSpawn = occurrence.parameters.get(1) as HashMap<UUID, AlgorithmInfo>
 			for (e : toSpawn.keySet) {spawnInContextWithID(Algorithm, e, innerContext, toSpawn.get(e).IncrementLevelAndGet)}}
 		
 		if(ADN.level>1){
-			info("new atomic agent with intention: " + ADN.task + " & belief : " +
+			info("atomic agent with task: " + ADN.task + " & belief : " +
 				ADN.belief.replace("F:/aptitude/surveillance/src/main/resources/", ""))
 			registerBehavior(new AlgorithmEntity(this))
 			switch(ADN.task){
@@ -100,35 +100,37 @@ agent Algorithm extends Paraddis{
 			}
 		 }
 		 else {
-			info("I believe in : " + ADN.name)
+			debug("I believe in : " + ADN.name)
 		 }
 	}
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on AgentPlatform {
 		debug("encounters : " + occurrence.name + " agent")
 		agentPlatformSpaces.put(occurrence.name, occurrence.topic)
-		occurrence.topic.register(asEventListener)
+		occurrence.topic.registerStrongParticipant(asEventListener)
 		occurrence.topic.emit(this.ID, new AgentAlgorithm(ADN.name, openChanel))
-		wake(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it.UUID !== this.ID]
+		wake(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it.ID !== this.ID]
 	}
 	
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on AlgorithmNeeded  { //
 			if (occurrence.name === ADN.name) {
-			info(
+			debug(
 				"clones a " + occurrence.task + " named " + occurrence.name + " and belief : " +
-					occurrence.belief.replace("F:/aptitude/surveillance/src/main/resources/", "") + " \n to answer the request of " + occurrence.source.UUID.toString.substring(0, 5))
+					occurrence.belief.replace("F:/aptitude/surveillance/src/main/resources/", "") + " \n to answer the request of " + occurrence.source.ID.toString.substring(0, 5))
 			val cloneID = UUID.randomUUID
 			subHolons.put(occurrence.contextID, cloneID)
-			spawnInContextWithID(Algorithm, cloneID, occurrence.contextID, ADN.cloneChild) //@FIXME : improper names // Maybe the clone should directly integrate the incrementandLevel
+			var cloneADN = ADN.cloneChild
+			cloneADN.setID(cloneID) //@FIXME could better code it
+			spawnInContextWithID(Algorithm, cloneID, occurrence.contextID, cloneADN) //@FIXME : improper names // Maybe the clone should directly integrate the incrementandLevel
 		}}//@FIXME we could have a table of each child, so that we could direct the information to it. 
 	on AlgorithmJoinPlatform {
-		info("deploys " + ADN.task + " named " + occurrence.name + " performing for " + occurrence.source.UUID.toString.substring(0, 5))
+		info("deploys " + ADN.task + " named " + occurrence.name + " performing for " + occurrence.source.ID.toString.substring(0, 5))
 		wake(new AlgorithmNeeded(occurrence.contextID, occurrence.name, ADN.task, ADN.belief))
 	}
 
 	on AuthorizationToJoinContext {
-		info("receives authorisation to join - " + occurrence.source.UUID)
+		info("receives authorisation to join - " + occurrence.source.ID)
 		join(occurrence.contextID, occurrence.defaultSpaceID)
 	}
 }

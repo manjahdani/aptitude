@@ -5,10 +5,11 @@ package be.uclouvain.python_access
 
 import be.uclouvain.python_access.messages.ActionMessage
 import be.uclouvain.python_access.messages.RequestMessage
-import com.hazelcast.util.UuidUtil
 import io.sarl.core.AgentTask
 import io.sarl.core.Schedules
+import java.util.UUID
 import org.json.simple.JSONObject
+import io.sarl.core.Logging
 
 /** 
  * @TODO: write a description
@@ -22,17 +23,16 @@ import org.json.simple.JSONObject
  */
 
 abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
-	uses Schedules
+	uses Schedules, Logging
 	
-	protected var topicRequestSub : String
-	protected var topicSignalAcquisition : String
+	protected var topicRequestSub : UUID
+	protected var topicSignalAcquisition : UUID
 
-	protected var pendingRequestID : String
+	protected var pendingRequestID : UUID
 	protected var requestTask : AgentTask
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	def install {
-		
 		topicRequestSub = CommunicationManager.instance.subscribeTopic("request", this)
 	}
 
@@ -45,25 +45,27 @@ abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 	@SuppressWarnings("potential_field_synchronization_problem")
 	def uninstall {
 		if (topicRequestSub !== null) {
-			CommunicationManager.instance.unsubscribeTopic(topicRequestSub)
+			CommunicationManager.instance.unsubscribeTopic(topicRequestSub.toString)
 			topicRequestSub = null
 		}
 		if (topicSignalAcquisition !== null) {
-			CommunicationManager.instance.unsubscribeTopic(topicSignalAcquisition)
+			CommunicationManager.instance.unsubscribeTopic(topicSignalAcquisition.toString)
 			topicSignalAcquisition = null
 		}
 	}
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	def activateAccess(jsonConfig : JSONObject) {
-		this.pendingRequestID = UuidUtil.newSecureUuidString
+		this.pendingRequestID = UUID.randomUUID
 		this.requestTask = every(1000) [
-			//info("Python partner not found, send discovery message")
+			debug("Python partner not found, send discovery message")
 			var requestMessage = new RequestMessage()
 			requestMessage.requestID = this.pendingRequestID
+			//var a = owner.ID.toString.getBytes()
+			//var b : String = a.toString // @TODO: The hack is to avoid an error cannot convert from String to String. 
 			requestMessage.agentID = owner.ID.toString
 			requestMessage.jsonConfig = jsonConfig.toString
-			CommunicationManager.instance.publishMessage(topicRequestSub, requestMessage)
+			CommunicationManager.instance.publishMessage(topicRequestSub.toString, requestMessage)
 		]
 	}
 
@@ -76,6 +78,7 @@ abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 	 */
 	@SuppressWarnings("potential_field_synchronization_problem")
 	def updateStreamAccess(actionID : int) {
+		debug("Updating Stream Access" + actionID)
 		updateStreamAccess(actionID, -1)
 	}
 
@@ -86,7 +89,7 @@ abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 		if (newFrameNumber != -1) {
 			actionMessage.newFrameNumber = newFrameNumber
 		}
-		CommunicationManager.instance.publishMessage(topicSignalAcquisition, actionMessage)
+		CommunicationManager.instance.publishMessage(topicSignalAcquisition.toString, actionMessage)
 	}
 } 
  

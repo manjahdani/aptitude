@@ -3,7 +3,6 @@
  */
 package be.uclouvain.organisation.platform
 
-import be.uclouvain.organisation.AddMember
 import be.uclouvain.organisation.platform.util.MissionData
 import io.sarl.core.OpenEventSpace
 

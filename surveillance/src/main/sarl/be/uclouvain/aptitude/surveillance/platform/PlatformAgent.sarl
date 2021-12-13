@@ -53,13 +53,13 @@ agent PlatformAgent extends Paraddis {
 		if (platformConfig.getLevel > 0) {
 			info("Ready to receive operating mission")
 			openChanel = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
-			openChanel.register(asEventListener)
-			emit(new AgentPlatform(platformConfig.location, this.ID, openChanel))
-			emit(new LocalDatabaseRequest (innerContext))[it.UUID==occurrence.spawner] // parentID
+			openChanel.registerStrongParticipant(asEventListener)
+			emitToParent(new AgentPlatform(platformConfig.location, this.ID, openChanel))
 			setSkill(new PlatformSkill(platformConfig), PlatformCapacity)
-			registerBehavior(new SurveillancePlatformRole(this), platformConfig.getLocation) 
+			registerBehavior(new SurveillancePlatformRole(this), platformConfig.getLocation)
+			emitToParent(new LocalDatabaseRequest(innerContext)) 
 		} else {
-			registerBehavior(new ManagerPlatformRole(this), platformConfig.getLocation)
+			registerBehavior(new ManagerPlatformRole(this), platformConfig.getLocation, occurrence.parameters.get(1))
 		}
 	}
 	

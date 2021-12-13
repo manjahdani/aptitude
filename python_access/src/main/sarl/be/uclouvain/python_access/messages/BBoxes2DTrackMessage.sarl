@@ -21,7 +21,7 @@ class BBoxes2DTrackMessage extends BBoxes2DMessage {
 		FACTORY_ID
 	}
 	
-	def getId : int {
+	def getClassId : int {
 		CLASS_ID
 	}
 

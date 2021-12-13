@@ -38,7 +38,7 @@ behavior TOLDRole {
 	protected var platformID : UUID
 	protected val privateSpacesListeners = new HashMap<UUID, OpenEventSpace>
 	/*
-	 * The platform register the context of a platform 
+	 * The platform registerStrongParticipant the context of a platform 
 	 */
 
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
@@ -61,17 +61,18 @@ behavior TOLDRole {
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	
 	on AddMember{
-		info("received add member from " + occurrence.source.UUID.toString.substring(0, 5) + "to invite within my context " + occurrence.memberID)
+		debug("received add member from " + occurrence.source.ID.toString.substring(0, 5) + "to invite within my context " + occurrence.memberID)
 		
 		occurrence.communicationChannel.emit(this.ID,
-			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID))[it.UUID==occurrence.memberID]
+			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID))[it.ID==occurrence.memberID]
 	}
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on ReadEntry {
 		debug("Reading entry and sending -" + read(occurrence.key))
-		privateSpacesListeners.get(occurrence.source.UUID).emit(this.ID, new QueryAnswer(read(occurrence.key)))
+		privateSpacesListeners.get(occurrence.source.ID).emit(this.ID, new QueryAnswer(read(occurrence.key)))
 	}
 	on MemberJoined {
+		debug("MemberJoined - " + occurrence.agentID.toString.substring(0, 5))
 		var memberID = occurrence.agentID;
 		privateSpacesListeners.put(memberID,
 			innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID))
@@ -79,34 +80,28 @@ behavior TOLDRole {
 		
 		if(occurrence.inDefaultSpace){
 			emit(new TOLDOrganisationInfo(innerContext, privateSpacesListeners.get(memberID), read(memberID))) [
-			it.UUID == memberID]
+			it.ID == memberID]
 		} 
 		else {
 			wake(new TOLDOrganisationInfo(innerContext, privateSpacesListeners.get(memberID), read(memberID))) [
-				it.UUID == memberID
+				it.ID == memberID
 			]
 		}
-		
-		
-		
-		info("MemberJoined" + occurrence.agentID.toString.substring(0,5))
-		privateSpacesListeners.get(memberID).register(asEventListener)
+		privateSpacesListeners.get(memberID).registerStrongParticipant(asEventListener)
 	}
 
 	on PlatformOrganisationInfo {
 		info("Platform organisation - " + occurrence.platformName + " encountered ")
-		platformID = occurrence.source.UUID
+		platformID = occurrence.source.ID
 		if (!privateSpacesListeners.containsKey(platformID)){
 			info("Platform was not encountered")
-			synchronized (this) {
 				val privateChannel = occurrence.privateCommunicationChannel
 				privateSpacesListeners.put(platformID, privateChannel)
-				privateChannel.register(asEventListener)
+				privateChannel.registerStrongParticipant(asEventListener)
 				privateChannel.emit(
 					new TOLDOrganisationInfo(innerContext, privateSpacesListeners.get(platformID), read(platformID))) [
-					it.UUID == platformID
+					it.ID == platformID
 				]
-			}
 		}	
 	}
 	@SuppressWarnings("discouraged_occurrence_readonly_use")

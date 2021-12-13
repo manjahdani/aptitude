@@ -70,6 +70,8 @@ skill AlgorithmSelectionSkill implements AlgorithmSelection {
 			// println("           reqID \t" + occurrence.result.requestID)
 			// CompResults.get(UUID.fromString(occurrence.result.requestID)).EvaluationPrint
 		}
+		return false
+		
 		}
 }
 

@@ -71,10 +71,10 @@ behavior AnalystRole {
 			info("sends add mission to - " + occurrence.context.ID.toString.substring(0,5))
 			platformContext = occurrence.context
 			privatePlatformSpace = occurrence.privateCommunicationChannel
-			privatePlatformSpace.register(asEventListener)
+			privatePlatformSpace.registerStrongParticipant(asEventListener)
 			info("starts mission with spaceID - " + missionData.missionID)
 			privatePlatformSpace.emit(new Request2PerformMission(missionData)) [
-				it.UUID == missionData.platformID
+				it.ID == missionData.platformID
 			] // @FIXME AddMission 
 			info("asks for algorithm performing vehicle counting to platform")
 		}
@@ -83,8 +83,8 @@ behavior AnalystRole {
 	on AuthorizationToPerformMission {
 		info("Received authorisation to perform a mission within the space : " + occurrence.missionSpace.spaceID.ID)
 		missionSpace = occurrence.missionSpace;
-		missionSpace.register(asEventListener)
-		//platformSpace.emit(new LocalDatabaseRequest(defaultContext))[it.UUID == platformContext.ID]
+		missionSpace.registerStrongParticipant(asEventListener)
+		//platformSpace.emit(new LocalDatabaseRequest(defaultContext))[it.ID == platformContext.ID]
 		privatePlatformSpace.emit(
 			
 			new AddObserver(new AlgorithmInfo("APTITUDE", "COUNTER"), new AlgorithmInfo("EXPERT", "ROADANALYST")))
@@ -93,8 +93,9 @@ behavior AnalystRole {
 	on SignalID {
 		
 		debug("received the provider ID \n sending the missionSpace")
+		
 		platformContext.defaultSpace.emit(this.ID, new AddMission(missionSpace)) [
-			it.UUID == occurrence.signalID
+			it.ID == occurrence.signalID
 		] 
 	}
 	@SuppressWarnings("potential_field_synchronization_problem")
@@ -102,16 +103,16 @@ behavior AnalystRole {
 		//info("Joined TOLD organisation: " + occurrence.privateCommunicationChannel + " (" + occurrence.context + ").")
 		TOLDContext = occurrence.context
 		privateTOLDSpace = occurrence.privateCommunicationChannel
-		privateTOLDSpace.register(asEventListener)
+		privateTOLDSpace.registerStrongParticipant(asEventListener)
 	}
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on HyperParametersRequest {
 		info("received a request for mission parameters \n will send the user sensitivity : " + availableObservers.get(missionData.sensitivity))
-		providerID=occurrence.source.UUID
+		providerID=occurrence.source.ID
 		emit(
 			platformContext.defaultSpace,
 			new ProcessingHyperParameters(
 				missionData.sensitivity,  
-				missionData.optimalSearchEnabled))[it.UUID==providerID]
+				missionData.optimalSearchEnabled))[it.ID==providerID]
 	}
 }

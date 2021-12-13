@@ -66,7 +66,7 @@ skill DeviceNetworkManagerSkill extends InputSkill {
 
 	def authenticateUser (mobileID : UUID, data : UDP_Message_AuthenticateMobile) {
 		
-		emit(new AuthenticateUser(mobileID,data))[it.UUID==parentID]
+		emit(new AuthenticateUser(mobileID,data))[it.ID==parentID]
 	}
 	def getMobileAddress() {
 		return this.mobileAddress
@@ -75,12 +75,12 @@ skill DeviceNetworkManagerSkill extends InputSkill {
 	def requestWithdraw(data : UDP_Message_RequestWithdraw, adrs : String) {
 		var msgOut = new UDP_Message_AckRequestWithdraw(data.sequenceNumber)
 		clientSender.SendData(msgOut, adrs, 65003)
-		emit(new ElementInformation(data))[it.UUID == mobileIPAddress.get(adrs)]
+		emit(new ElementInformation(data))[it.ID == mobileIPAddress.get(adrs)]
 	}
 
 	def requestSpawn(data : UDP_Message_RequestSpawn, adrs : String) {
 		clientSender.SendData(new UDP_Message_AckRequestSpawn(data.sequenceNumber), adrs, 65003)
-		emit(new ElementInformation(data))[it.UUID == mobileIPAddress.get(adrs)]
+		emit(new ElementInformation(data))[it.ID == mobileIPAddress.get(adrs)]
 	}
 
 	def requestStats(data : UDP_Message_RequestStats, adrs : String) {

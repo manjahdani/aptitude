@@ -9,6 +9,7 @@ import be.uclouvain.python_access.messages.BaseMessage
 import be.uclouvain.python_access.messages.DisplayMessage
 import io.sarl.core.AgentTask
 import be.uclouvain.python_access.PythonTwinAccess
+import java.util.UUID
 
 /** 
  * @author manjah
@@ -17,7 +18,7 @@ import be.uclouvain.python_access.PythonTwinAccess
 skill DisplaySkill extends PythonTwinAccess implements DisplayCapacity {
 	
 
-	var topicDisplaySub : String
+	var topicDisplaySub : UUID
 
 	var pendingRequestID : String
 	var requestTask : AgentTask
@@ -28,7 +29,7 @@ skill DisplaySkill extends PythonTwinAccess implements DisplayCapacity {
 
 	override def uninstall {
 		if (topicDisplaySub !== null) {
-			CommunicationManager.instance.unsubscribeTopic(topicDisplaySub)
+			CommunicationManager.instance.unsubscribeTopic(topicDisplaySub.toString)
 			topicDisplaySub = null
 		}
 	}
@@ -45,7 +46,7 @@ skill DisplaySkill extends PythonTwinAccess implements DisplayCapacity {
 		displayMessage.sensitivity = sensitivity
 		if (roi !== null)
 			displayMessage.roiPath = roi
-		CommunicationManager.instance.publishMessage(topicDisplaySub, displayMessage)
+		CommunicationManager.instance.publishMessage(topicDisplaySub.toString, displayMessage)
 	}
 
 

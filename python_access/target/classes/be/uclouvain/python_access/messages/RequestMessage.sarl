@@ -4,7 +4,7 @@ import com.hazelcast.nio.ObjectDataInput
 import java.io.IOException
 import com.hazelcast.nio.ObjectDataOutput
 import org.eclipse.xtend.lib.annotations.Accessors
-
+import java.util.UUID
 
 /** 
  * @author samelson
@@ -12,7 +12,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
  */
 class RequestMessage extends BaseMessage {
 
-	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var requestID : String
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var requestID : UUID
 	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var agentID : String
 	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var clientName : String
 	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var jsonConfig : String
@@ -25,14 +25,14 @@ class RequestMessage extends BaseMessage {
 		FACTORY_ID
 	}
 
-	def getId : int {
+	def getClassId : int {
 		CLASS_ID
 	}
 
 	def readData(odi : ObjectDataInput) throws IOException {
 		super.readData(odi)
 
-		this.requestID = odi.readUTF()
+		this.requestID = UUID.fromString(odi.readUTF())
 		this.agentID = odi.readUTF()
 		this.clientName = odi.readUTF()
 		this.jsonConfig = odi.readUTF()
@@ -42,7 +42,7 @@ class RequestMessage extends BaseMessage {
 	def writeData(odo : ObjectDataOutput) throws IOException {
 		super.writeData(odo)
 
-		odo.writeUTF(requestID)
+		odo.writeUTF(requestID.toString)
 		odo.writeUTF(agentID)
 		odo.writeUTF(clientName)
 		odo.writeUTF(jsonConfig)

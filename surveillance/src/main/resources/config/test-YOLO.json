@@ -6,8 +6,8 @@
         "BBoxes2DDetector":{
             "model_type": "YOLO",
             "pref_implem": "cv2-DetectionModel",
-            "model_path": "F:/pythonToolbox/Models/yolov4-mio.weights",
-            "config_path": "F:/pythonToolbox/Models/yolov4-mio.cfg",
+            "model_path": "./pytb-agent/models/yolov4-mio.weights",
+            "config_path": "./pytb-agent/models/yolov4-mio.cfg",
             "input_width" : 416,
             "input_height" : 416
         },
@@ -34,6 +34,6 @@
             "pref_implem" : "Malisiewicz",
             "nms_thresh" : 0.45
         },
-        "max_height_percentage": 50
+        "max_height": 0.50
     }
 }

@@ -3,6 +3,8 @@
  */
 package be.uclouvain.organisation.told.util
 
+import java.util.UUID
+
 /** 
  * 
  * @TODO : comment  
@@ -17,25 +19,28 @@ package be.uclouvain.organisation.told.util
  
 class AlgorithmInfo implements Cloneable {
 
+	var ID : UUID
 	val name : String
 	var belief : String
 	val task : String
 	var level: int
 	var platformName : String 
 	
-	new (n : String, b : String, t : String, l : int, pName : String) {
+	new (n : String, b : String, t : String, l : int, pName : String, id:UUID) {
 		this.name = n
 		this.belief = b
 		this.task = t
 		this.level = l
 		this.platformName=pName
+		this.ID = ID
 	}
 
-	new (n : String, b : String, t : String, l : int) {
+	new (n : String, b : String, t : String, l : int, id:UUID) {
 		this.name = n
 		this.belief = b
 		this.task = t
 		this.level = l
+		this.ID =id 
 	}
 
 	new (n : String, t : String) {
@@ -63,6 +68,13 @@ class AlgorithmInfo implements Cloneable {
 		this.level=a
 	}
 	
+	def getID{
+		return this.ID
+	}
+	def setID(ID : UUID)
+	{
+		this.ID = ID
+	}
 	def cloneChild {
 		return this.clone.IncrementLevelAndGet
 	}

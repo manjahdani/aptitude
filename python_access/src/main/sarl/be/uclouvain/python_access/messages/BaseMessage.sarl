@@ -5,7 +5,7 @@ import com.hazelcast.nio.serialization.IdentifiedDataSerializable
 import com.hazelcast.nio.ObjectDataInput
 import com.hazelcast.nio.ObjectDataOutput
 import java.io.IOException
-import com.hazelcast.util.UuidUtil
+import java.util.UUID
 
 /** 
  * @author samelson
@@ -13,16 +13,16 @@ import com.hazelcast.util.UuidUtil
  */
 abstract class BaseMessage implements IdentifiedDataSerializable {
 
-	@Accessors(#[PUBLIC_GETTER, PRIVATE_SETTER]) var uuid : String = UuidUtil.newSecureUuidString
+	@Accessors(#[PUBLIC_GETTER, PRIVATE_SETTER]) var uuid : UUID = UUID.randomUUID
 	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var ack : boolean
 
 	def writeData(odo : ObjectDataOutput) throws IOException {
-		odo.writeUTF(this.uuid)
+		odo.writeUTF(this.uuid.toString)
 		odo.writeBoolean(this.ack)
 	}
 
 	def readData(odi : ObjectDataInput) throws IOException {
-		this.uuid = odi.readUTF()
+		this.uuid = UUID.fromString(odi.readUTF())
 		this.ack = odi.readBoolean()
 	}
 

@@ -46,7 +46,7 @@ behavior UserManagerEntity extends EntityRole {
 		info("User manager met platform Organisation")
 		platformContext = occurrence.context
 		platformSpace = occurrence.privateCommunicationChannel
-		platformSpace.register(asEventListener)
+		platformSpace.registerStrongParticipant(asEventListener)
 	}
 	
 	on AgentPlatform {
@@ -66,15 +66,15 @@ behavior UserManagerEntity extends EntityRole {
 	}
 	
 	on NewMission {
-		info("receives external order for a new mission in -" + occurrence.mission.location +" from" + occurrence.source.UUID.toString.substring(0,5))
-		subHolons.get(occurrence.source.UUID).emit(this.ID,
+		debug("receives external order for a new mission in -" + occurrence.mission.location +" from" + occurrence.source.ID.toString.substring(0,5))
+		subHolons.get(occurrence.source.ID).emit(this.ID,
 			new AuthorizedMission(occurrence.mission, PlatformListenersSpaceIDs.get(occurrence.mission.location)))
 	}
 	on MemberJoined {		
 		var privateChanel = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
-		privateChanel.register(asEventListener)
+		privateChanel.registerStrongParticipant(asEventListener)
 		subHolons.put(occurrence.agentID, privateChanel)
-		wake(new HolonicParentInfo(privateChanel))[it.UUID==occurrence.agentID]
+		wake(new HolonicParentInfo(privateChanel))[it.ID==occurrence.agentID]
 	}
 	//@TODO To develop a user rights access ! 
 	def accessRight (s:String){

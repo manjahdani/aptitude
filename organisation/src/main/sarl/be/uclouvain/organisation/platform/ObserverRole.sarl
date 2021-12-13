@@ -15,10 +15,14 @@ import io.sarl.core.InnerContextAccess
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
+import io.sarl.core.Schedules
 import io.sarl.lang.core.AgentContext
+import java.util.ArrayList
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
 
 /** 
  * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 
@@ -44,9 +48,9 @@ import java.util.UUID
  * @mavenartifactid $organisation$
  */
  
-behavior ObserverRole {
+abstract behavior ObserverRole {
 	
-	uses Logging, Behaviors, DefaultContextInteractions, InnerContextAccess, ExternalContextAccess
+	uses Logging, Behaviors, DefaultContextInteractions, InnerContextAccess, ExternalContextAccess, Schedules
 
 	protected var privateTOLDSpace : OpenEventSpace
 	protected var TOLDContext : AgentContext
@@ -54,30 +58,70 @@ behavior ObserverRole {
 	protected var platformContext : AgentContext
 	protected var selfSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification,
 		UUID.randomUUID)// An internal space to communicate with other roles. 
-	protected var sensitivity : int
+	protected var sensitivity = new AtomicInteger()
 	protected var observerADN : AlgorithmInfo	
-	protected var isMaster : Boolean = false
+	protected var isMaster  = new AtomicBoolean(false)
 	protected val listeners = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the client and the role 
 	protected val providers = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
 	protected var platformName : String
-
+	protected var computation_location : String
+	
+	protected var checkList = Collections.synchronizedMap(new HashMap<String, Boolean>)
+	
+	protected var processingParameters = new ArrayList<String>
+	
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on Initialize {
+
 		observerADN = occurrence.parameters.get(0) as AlgorithmInfo
-		selfSpace.register(asEventListener) // Listen to a self-internal space
-		providers.put(this.ID, selfSpace)
-		listeners.put(this.ID, selfSpace) 	// // Listen to its own results To send results to itself @FIXME maybe we could just program a flag.. as it is not needed everywhere
+		selfSpace.registerStrongParticipant(asEventListener) // Listen to a self-internal space
+		
+		providers.put(observerADN.ID, selfSpace)
+		listeners.put(observerADN.ID, selfSpace) // // Listen to its own results To send results to itself @FIXME maybe we could just program a flag.. as it is not needed everywhere
+		checkList.put("isCompLocationKnown", false)
+		checkList.put("paramKnown", false)
+		task("waiting-greenLights").every(1000)[
+			if (areAllTrue(checkList.values)) {
+				info("Start the processing role at location - "+computation_location+". Parameters are: s= "+sensitivity.get+ " isMaster=" + isMaster.get)
+				startProcessingRole
+				task("waiting-greenLights").cancel
+			}
+			else{
+				debug("Waiting for command" + checkList)
+			}
+		]
 	}
 
+	on HyperParametersRequest {
+		
+		var providerID = occurrence.source.ID
+		// We decide that derived role handles the parameters request of inner-agents. 
+		//Removing the flag results in nullException as the role 
+		//receives a request from a innerAgent but did not include it in its providers.
+		
+		if(!getMemberAgents.contains(providerID)){
+		info("param requests from agentID=" + providerID.toString.substring(0, 5) +
+				" sending param:" + " s =" +sensitivity)
+		providers.get(providerID).emit(
+				observerADN.ID, 
+			new ProcessingHyperParameters(sensitivity.get, isMaster.get)
+		) [it.ID == providerID]}
+		
+	}
 	on Destroy {
 		//info("The behavior was stopped.")
+}
+	on ComputationalRessources {
+		debug("received computation_location: " + occurrence.client_id)
+		computation_location = occurrence.client_id
+		checkList.put("isCompLocationKnown",true)
 	}
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on PlatformOrganisationInfo  { 
 		platformContext = occurrence.context
 		privatePlatformSpace = occurrence.privateCommunicationChannel
-		privatePlatformSpace.register(asEventListener)
+		privatePlatformSpace.registerStrongParticipant(asEventListener)
 		platformName = occurrence.platformName
 		observerADN.platformName = occurrence.platformName
 		emit(platformContext.defaultSpace,new Identification(observerADN.name)) //@ FIXME not general in the sens of it should whenever it joins a context
@@ -86,35 +130,32 @@ behavior ObserverRole {
 	on TOLDOrganisationInfo {
 		TOLDContext = occurrence.context
 		privateTOLDSpace = occurrence.privateCommunicationChannel
-		privateTOLDSpace.register(asEventListener)
+		privateTOLDSpace.registerStrongParticipant(asEventListener)
 	}
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	
 	on AddMission {
 
-		occurrence.communicationChannel.register(asEventListener)
+		occurrence.communicationChannel.registerStrongParticipant(asEventListener)
 		var missionSpace = occurrence.communicationChannel
-		var clientID = occurrence.source.UUID
+		var clientID = occurrence.source.ID
 		
-		info("requested to add missionID " + (missionSpace.spaceID.toString.substring(0, 5)) + " from " +
+		info("requested to add mission with ID = " + (missionSpace.spaceID.toString.substring(0, 5)) + " from " +
 			clientID.toString.substring(0, 5))
-		listeners.put(clientID, missionSpace) // @FIXME maybe there is a huge mistunderstanding of the use of Spaces, maybe we could have address which is simpler
-		
-		
-		var accepted = true // @TODO develop criteria for the acceptation of mission 
+		listeners.put(clientID, missionSpace) // @FIXME maybe there is a huge misunderstanding of the use of Spaces, maybe we could have address which is simpler
+		var accepted = true // @TODO develop criteria for the admission of the mission 
 		if (accepted) {
-			
-			missionSpace.emit(this.ID, new HyperParametersRequest)[it.UUID == clientID]
-			info("requests missionParameters to " + clientID.toString.substring(0,5))
+			missionSpace.emit(observerADN.ID, new HyperParametersRequest)[it.ID == clientID]
+			debug("requests missionParameters to " + clientID.toString.substring(0,5))
 			}
 	}
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on StopMission {
-		if (listeners.keySet.contains(occurrence.source.UUID)){
+		if (listeners.keySet.contains(occurrence.source.ID)){
 			info("I received the StopMission")
 			emit(new StopMission(occurrence.expertID))
-			emit(new LeavePlatform)[it==me]
+			emit(new LeavePlatform)[it.ID == observerADN.ID] 
 		}
 	}
 		@SuppressWarnings("potential_field_synchronization_problem")
@@ -123,13 +164,27 @@ behavior ObserverRole {
 		//info("ObserverLeaving")
 		//leave(PlatformContext.ID)
 	}
+	on ProcessingHyperParameters {		
+		sensitivity.set(occurrence.s)
+		isMaster.set(occurrence.OptimalSearchEnabled)
+		processingParameters.add(sensitivity.toString)
+		checkList.put("paramKnown",true)
+	}
+
 
 	synchronized def requestAlgorithm(algoName : String, algoTask : String) {
 		privatePlatformSpace.emit(new AddObserver(
 			new AlgorithmInfo(algoName, algoTask),
 			new AlgorithmInfo(observerADN.name, observerADN.task)
-		))[it.UUID == platformContext.ID]
+		))[it.ID == platformContext.ID]
 	}
+	
+	abstract def startProcessingRole()
+
+ 	synchronized def areAllTrue(array: boolean[]) {
+ 		for(b : array) if(!b) return false;
+    	return true;
+    }
 }
 
 

@@ -26,7 +26,7 @@ behavior EntityRole {
 	
 	uses Logging
 	/*
-	 * The entity register the initial base
+	 * The entity registerStrongParticipant the initial base
 	 * @TODO : The entity does not need to have a BaseContext ? It does not make sens it only has to know the context of current TOLD. 
 	 * The approach is therefore not scalable 
 	 */
@@ -37,10 +37,10 @@ behavior EntityRole {
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on TOLDOrganisationInfo {
-		info("met TOLD - " + occurrence.context.ID.toString.substring(0, 5))
+		debug("met TOLD - " + occurrence.context.ID.toString.substring(0, 5))
 		TOLDContext = occurrence.context
 		TOLDSpace = occurrence.privateCommunicationChannel
 		
-		//TOLDSpace.register(asEventListener)
+		//TOLDSpace.registerStrongParticipant(asEventListener)
 	}
 }

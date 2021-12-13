@@ -20,7 +20,7 @@ import be.uclouvain.aptitude.surveillance.user.User
 import be.uclouvain.aptitude.surveillance.TOLDConfig
 
 /** 
- * @TODO: The holarchy needs rethinking. 
+ *
  * 
  * @author $Author: manjahdani$
  * @version $0.0.1$
@@ -36,9 +36,9 @@ agent bootAgent extends Paraddis {
 
 	//@Parameters
 	
-	val initial_cameras = newArrayList("S02C006", "S04C035")
+	val INITIAL_CAMERAS = newArrayList("S02C006", "S04C035")
    	val INIT_TASKS= newArrayList("DETECTOR", "TRACKER", "COUNTER")
-
+	val AVAILABLE_RESSOURCES = newArrayList("1000","1001")
 
 	val client : DatagramSocket = new DatagramSocket(65000) // A client to listen requests
 	//val clientSender = new UDPSender() // homeMade client to send UDP message
@@ -59,14 +59,14 @@ agent bootAgent extends Paraddis {
 		// info("Setting the agents")
 	
 		var PlatformHolonConfig = new PlatformConfig(0,5, "LLN")
-		for (c : initial_cameras) {
+		for (c : INITIAL_CAMERAS) {
 			PlatformHolonConfig.addSubPlatform(new PlatformConfig(1,100,c))
 		}
 		
 		
 		spawn(TOLDAgent, new TOLDConfig(0,"LLN",null,INIT_TASKS))
-		spawn(PlatformAgent, PlatformHolonConfig)
-		spawn(User, new HolonicUserConfig(0, "UserAccessManager", initial_cameras))
+		spawn(PlatformAgent, PlatformHolonConfig, AVAILABLE_RESSOURCES)
+		spawn(User, new HolonicUserConfig(0, "UserAccessManager", INITIAL_CAMERAS))
 		// StartSimulation
 	}
 

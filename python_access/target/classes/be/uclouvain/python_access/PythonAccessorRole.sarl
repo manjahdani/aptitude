@@ -1,63 +1,67 @@
-/** 
- * 
- */
 package be.uclouvain.python_access
 
-import io.sarl.core.Schedules
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
 import java.io.FileReader
 import java.util.HashMap
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
-import io.sarl.core.Initialize
 
 /** 
- * @author manjah
+ * @TODO : To complete
+ * 
+ * @author  $ manjahdani$
+ * @version $0.0.1$
+ * @date $12/12/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
  * 
  */
 behavior PythonAccessorRole {
 	
-	uses Schedules, PythonTwinAccessCapacity
+	uses PythonTwinAccessCapacity, Logging
 	
 	protected var parser = new JSONParser();
 	protected var jsonConfig : JSONObject;
 	protected var partnerName : String;
 
 	on Initialize {
-		var belief = occurrence.parameters.get(0) as String
-		var platformName = occurrence.parameters.get(1) as String
-		connectToPython(belief,platformName)
-	}
-	def connectToPython(belief : String, platformName : String) {
-
-		assert belief !== null, "Belief is null";
-		assert platformName !== null, "PlatformName is null";
+		debug("PythonAccessRole started")
+		var config = occurrence.parameters.get(0).toString
+		var platformName = occurrence.parameters.get(1).toString
+		var computation_resources_location = occurrence.parameters.get(2).toString
+		connectToPython(config, platformName, computation_resources_location)
 		
-		var configPath = belief
+	}
+	def connectToPython(config : String, platformName : String, computation_resources_location : String) {
+
+		assert config !== null, "config is null";
+		assert platformName !== null, "platform is null";
+		assert computation_resources_location !== null, "computation resources location null"
+		
+		var configPath = config
 		var jsonConfigtmp = parser.parse(new FileReader(configPath)) as JSONObject;
-		var video = (new HashMap<String, String>)
-		video.put("path", "F:/data/".concat(platformName).concat("/vdo.avi"))
+		
+		// Adding the computation ressources location
+		var ressourceslocation = new HashMap<String, String>
+		ressourceslocation.put("client_id", computation_resources_location)
+		jsonConfigtmp.put("Setup", ressourceslocation)
+		
+		//Adding the video path
+		var video = new HashMap<String, String>
+		video.put("path", "./pytb-agent/videos/".concat(platformName).concat("/vdo.avi"))
+		// Adding the roi path
 		var pathRoi = new HashMap<String, String>
-		pathRoi.put("path", "F:/data/".concat(platformName).concat("/roi.jpg"))
+		pathRoi.put("path", "./pytb-agent/videos/".concat(platformName).concat("/roi.jpg"))
 		var a = jsonConfigtmp.get("Preproc") as HashMap<String, HashMap<String, String>>
 		a.put("roi", pathRoi)
+		// Final concatenation
 		jsonConfigtmp.put("Video", video)
+		
 		jsonConfig = jsonConfigtmp
+		debug("Activating access"+jsonConfig)
 		activateAccess(jsonConfig)
 	}
 
-	on PartnerTrackingFound {
-		synchronized(this)
-		this.partnerName = occurrence.partnerName
-		//info("Tracking Partner found: " + this.partnerTrackingName)
-	}
-	@SuppressWarnings("potential_field_synchronization_problem")
-	on PartnerDetectionFound {
-		this.partnerName = occurrence.partnerName
-		// info("Detection partner found: " + this.partnerDetectionName)
-		task("wait").in(2000) [
-			updateStreamAccess(1)
-			task("wait").cancel // PLAY
-			]
-	}
 
 }

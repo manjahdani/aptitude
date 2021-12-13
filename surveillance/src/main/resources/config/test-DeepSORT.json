@@ -5,10 +5,10 @@
         },
         "BBoxes2DTracker":{
             "model_type": "DeepSORT",
-            "pref_implem": "DeepSORT-LeonLok"
+            "pref_implem": "LeonLok"
         },
         "DeepSORT":{
-            "model_path": "F:/pythonToolbox/Models/cosine_metric_DETRAC.pb",
+            "model_path": "../models/cosine_metric_DETRAC.pb",
             "max_age": 30,
             "min_hits": 3,
             "iou_thresh": 0.7,
@@ -17,7 +17,6 @@
             "avg_det_conf": true,
             "avg_det_conf_thresh": 0.25,
             "most_common_class": true
-            
         }
     },
     "Preproc":{

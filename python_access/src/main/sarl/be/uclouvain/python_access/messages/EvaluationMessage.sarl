@@ -5,7 +5,7 @@ import com.hazelcast.nio.ObjectDataInput
 import java.io.IOException
 import com.hazelcast.nio.ObjectDataOutput
 import org.eclipse.xtend.lib.annotations.Accessors
-
+import java.util.UUID
 
 /** 
  * @author samelson
@@ -13,7 +13,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
  */
 class EvaluationMessage extends BaseMessage {
 
-	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var requestID : String
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var requestID : UUID
 	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var predictions : String
 	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var gts : String
 	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var maxFrame : int
@@ -101,14 +101,14 @@ class EvaluationMessage extends BaseMessage {
 		FACTORY_ID
 	}
 
-	def getId : int {
+	def getClassId : int {
 		CLASS_ID
 	}
 
 	def readData(odi : ObjectDataInput) throws IOException {
 		super.readData(odi)
 
-		this.requestID = odi.readUTF()
+		this.requestID = UUID.fromString(odi.readUTF())
 		this.predictions = odi.readUTF()
 		this.gts = odi.readUTF()
 		this.maxFrame = odi.readInt()
@@ -183,7 +183,7 @@ class EvaluationMessage extends BaseMessage {
 	def writeData(odo : ObjectDataOutput) throws IOException {
 		super.writeData(odo)
 
-		odo.writeUTF(requestID)
+		odo.writeUTF(requestID.toString)
 		odo.writeUTF(predictions)
 		odo.writeUTF(gts)
 		odo.writeInt(maxFrame)

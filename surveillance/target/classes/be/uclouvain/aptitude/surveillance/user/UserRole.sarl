@@ -80,14 +80,14 @@ behavior UserRole extends ElementRole {
 								true)
 							)
 						)
-					)[it.UUID !== this.ID ]
+					)[it.ID !== this.ID ]
 			entityList.get(entityID).screenID = msg.sceneID
 			updateBehavior(getExpertTypeList)
 			}
 			else if (msg instanceof UDP_Message_RequestWithdraw) {
 			var MissionID = UUID.fromString(msg.actorUID)
 			entityList.get(MissionID).screenID = -1
-			wake(new StopMission(MissionID))[it.UUID==MissionID]
+			wake(new StopMission(MissionID))[it.ID==MissionID]
 			updateBehavior(getExpertTypeList)
 		}
 	}
@@ -95,15 +95,15 @@ behavior UserRole extends ElementRole {
 	on HolonicParentInfo {
 		info("I met my parent")
 		parentPrivateChanel = occurrence.spaceID
-		parentPrivateChanel.register(asEventListener)
+		parentPrivateChanel.registerStrongParticipant(asEventListener)
 	}
 	
 	on AuthorizedMission {
 		
-		info("receives authorisation for mission")
+		debug("receives authorisation for mission")
 		wake(
 			new NewMission(occurrence.mission, occurrence.platformOpenChannel)) [
-			it.UUID == occurrence.mission.expertID
+			it.ID == occurrence.mission.expertID
 		]
 	}
 	def getExpertTypeList {

@@ -3,26 +3,22 @@
  */
 package be.uclouvain.aptitude.surveillance.evaluation
 
-
-
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
+import be.uclouvain.aptitude.surveillance.algorithm.counter.CounterRole
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingRequest
 import be.uclouvain.aptitude.surveillance.algorithm.util.EvaluationResults
 import be.uclouvain.aptitude.surveillance.algorithm.util.Metric
+import be.uclouvain.python_access.EvaluationResult
+import be.uclouvain.python_access.PartnerEvaluationFound
+import be.uclouvain.python_access.PythonAccessorRole
 import be.uclouvain.python_access.messages.EvaluationMessage
 import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
-import java.io.FileReader
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.UUID
-import org.json.simple.JSONObject
-import org.json.simple.parser.JSONParser
-import io.sarl.core.DefaultContextInteractions
-import be.uclouvain.aptitude.surveillance.algorithm.counter.CounterRole
-import be.uclouvain.python_access.EvaluationResult
-import be.uclouvain.python_access.PartnerEvaluationFound
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingRequest
 
 /** 
  * @TODO : To complete
@@ -34,38 +30,28 @@ import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingRequest
  * @mavenartifactid $surveillance$
  * 
  */
-behavior AlgorithmSelectorRole {
+behavior AlgorithmSelectorRole extends PythonAccessorRole {
 	
 	uses AlgorithmSelection, Behaviors, Logging, Evaluation, DefaultContextInteractions  
 	
-	var evaluationPartnerName : String;
-	
-	
-	protected var Comp_Duration : long
+	protected var compDuration : long
 	protected var numberTests = 0 
 	
 	protected var score : Metric; 
 	protected var gts : String
 	
 	on Initialize {
-		score = occurrence.parameters.get(0) as Metric
+
+		score = occurrence.parameters.get(3) as Metric
 		gts = new String(Files.readAllBytes(Paths.get(score.gtFilePatch)))
-		setSkill(new EvaluationImpl, Evaluation)		
-		setSkill(new AlgorithmSelectionSkill(score.params),AlgorithmSelection)
-		var configPath = "F:/aptitude/surveillance/src/main/resources/config/evalconfig.json"
-		var parser = new JSONParser();
-		var configPathEvaluator = configPath
-		var jsonEvaluator = parser.parse(new FileReader(configPathEvaluator)) as JSONObject;
-		info("Activating access")
-		activateAccess(jsonEvaluator)
-		info("Access activated")
+		setSkill(new AlgorithmSelectionSkill(score.params), AlgorithmSelection)
 }
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on PartnerEvaluationFound {
-		evaluationPartnerName = occurrence.partnerName
-		//info("I found my partner" + EvaluationPartnerName)
-		this.Comp_Duration = System.currentTimeMillis()
+		partnerName = occurrence.partnerName
+		info("I found my partner" + partnerName)
+		this.compDuration = System.currentTimeMillis()
 	}
 
 	on LastFrame {
@@ -74,7 +60,7 @@ behavior AlgorithmSelectorRole {
 		var predictions = new String(Files.readAllBytes(Paths.get(occurrence.pred_file_Path)));
 		var testID = UUID.randomUUID
 		addResult(testID,
-			new EvaluationResults(occurrence.source.UUID, occurrence.pred_file_Path, occurrence.total_time_detection,
+			new EvaluationResults(occurrence.source.ID, occurrence.pred_file_Path, occurrence.total_time_detection,
 				occurrence.total_time_tracking, occurrence.frameNumber))
 		sendEvaluationRequest(testID.toString, predictions, gts)
 	}
@@ -86,29 +72,27 @@ behavior AlgorithmSelectorRole {
 
 		synchronized (this) {
 			 info("Message Evaluation Received")
-			if (addResult(UUID.fromString(occurrence.result.requestID), occurrence.result)) {
+			if (addResult(occurrence.result.requestID, occurrence.result)) {
 				numberTests += 1
 				info("Recording the result of Competitor " + numberTests)
 				if (numberTests == 2) {
 					var selected = selectAlgorithm()
-					emit(new TrackingRequest(selected.belief))[it.UUID == selected.belief]
-					registerBehavior(new CounterRole(this.owner))
+					emit(new TrackingRequest(selected.belief))[it.ID == selected.belief]
+					registerBehavior(new CounterRole(owner))
 				}
 			}}
 			// print(Result) 
 	}
 	
-	@SuppressWarnings("discouraged_reference")
 	def print(result : EvaluationMessage) {
 		
-		 println("HOTA \t" + result.HOTA)
-		 println("DetA \t" + result.detA)
-		 println("AssA \t" + result.assA)
-		 println("DetRe \t" + result.detRe)
-		 println("DetPr \t" + result.detPr)
-		 println("AssRe \t" + result.assRe)
-		 println("AssPr \t" + result.assPr)
-		 println("LocA \t" + result.locA)
-		
+		 info("HOTA \t" + result.HOTA,'\n'+
+		 "DetA \t" + result.detA,'\n'+
+		 "AssA \t" + result.assA,'\n'+
+		 "DetRe \t" + result.detRe,'\n'+
+		 "DetPr \t" + result.detPr,'\n'+
+		 "AssRe \t" + result.assRe,'\n'+
+		 "AssPr \t" + result.assPr,'\n'+
+		 "LocA \t" + result.locA,'\n')
 	}
 }

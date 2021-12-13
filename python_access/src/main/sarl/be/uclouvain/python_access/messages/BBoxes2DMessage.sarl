@@ -29,7 +29,7 @@ class BBoxes2DMessage extends BaseMessage {
 		FACTORY_ID
 	}
 
-	def getId : int {
+	def getClassId : int {
 		CLASS_ID
 	}
 
