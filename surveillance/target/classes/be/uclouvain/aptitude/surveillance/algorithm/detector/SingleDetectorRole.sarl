@@ -43,8 +43,9 @@ behavior SingleDetectorRole extends PythonAccessorRole {
 	
 	on ResumeMission{
 		info("Resume Mission request")
+		//updateStreamAccess(3)
 		updateStreamAccess(5)
-		updateStreamAccess(1)
+		//updateStreamAccess(1)
 	}
 	on LeavePlatform {
 		// join(BaseContext.ID, BaseSpace.spaceID.ID)
