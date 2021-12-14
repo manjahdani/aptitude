@@ -22,13 +22,14 @@ import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
 import be.uclouvain.organisation.platform.AuthorizedMission
+import io.sarl.core.ExternalContextAccess
 
 /** 
  * @author manjah
  * 
  */
 behavior UserManagerEntity extends EntityRole {
-	uses Lifecycle, InnerContextAccess, Behaviors,Logging
+	uses Lifecycle, InnerContextAccess, Behaviors,Logging, ExternalContextAccess
 
 	protected var platformSpace : OpenEventSpace
 	protected var platformContext : AgentContext
@@ -67,8 +68,10 @@ behavior UserManagerEntity extends EntityRole {
 	
 	on NewMission {
 		debug("receives external order for a new mission in -" + occurrence.mission.location +" from" + occurrence.source.ID.toString.substring(0,5))
-		subHolons.get(occurrence.source.ID).emit(this.ID,
-			new AuthorizedMission(occurrence.mission, PlatformListenersSpaceIDs.get(occurrence.mission.location)))
+		emit(subHolons.get(occurrence.source.ID),
+			new AuthorizedMission(occurrence.mission, 
+				PlatformListenersSpaceIDs.get(occurrence.mission.location)
+			))
 	}
 	on MemberJoined {		
 		var privateChanel = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)

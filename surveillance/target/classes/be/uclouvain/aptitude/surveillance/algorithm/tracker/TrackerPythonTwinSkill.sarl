@@ -15,6 +15,7 @@ import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBOX
 import java.util.Arrays
 import io.sarl.core.Logging
+import java.util.concurrent.atomic.AtomicInteger
 
 /** 
  * @TODO: write a description
@@ -28,7 +29,7 @@ import io.sarl.core.Logging
  */
 
 
-skill TrackerPythonTwin extends ObserverPythonAccess implements TrackerPythonTwinCapacity {
+skill TrackerPythonTwinSkill extends ObserverPythonAccess implements TrackerPythonTwinCapacity {
 	
 	uses Behaviors, Schedules, Logging
 
@@ -37,6 +38,8 @@ skill TrackerPythonTwin extends ObserverPythonAccess implements TrackerPythonTwi
 
 	var totalTrackerTime : double = 0
 	var totalDetectorTime : double = 0
+	
+	var a = new AtomicInteger(0)
 	
 	def update(m : BaseMessage) {
 		if (m instanceof BBoxes2DTrackMessage) {
@@ -57,7 +60,7 @@ skill TrackerPythonTwin extends ObserverPythonAccess implements TrackerPythonTwi
 		}
 	}
 	
-	def formatConversion(track : BBoxes2DTrackMessage) : ArrayList<BBoxe2D> {
+	@Pure def formatConversion(track : BBoxes2DTrackMessage) : ArrayList<BBoxe2D> {
 
 		totalDetectorTime += track.detectionTime
 		totalTrackerTime += track.trackingTime
@@ -92,6 +95,10 @@ skill TrackerPythonTwin extends ObserverPythonAccess implements TrackerPythonTwi
 		 println("*  " + Arrays.toString(track.detConfs))
 		 println("*  " + track.lastFrame)
 		 println("***********************")
+	}
+	
+	def test {
+		info(a.incrementAndGet)
 	}
 	
 //	def getTrack(detectionMessage : BBoxes2DMessage) {

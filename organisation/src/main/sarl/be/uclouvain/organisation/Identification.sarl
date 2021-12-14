@@ -21,8 +21,9 @@ event Identification{
 event SignalID {
 
 	val signalID : UUID
-
-	new (id : UUID) {
+	val name : String
+	new (id : UUID, n:String) {
 		this.signalID = id
+		this.name = n
 	}
 }

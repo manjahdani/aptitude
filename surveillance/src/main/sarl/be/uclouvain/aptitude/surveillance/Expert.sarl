@@ -62,7 +62,7 @@ agent Expert extends Paraddis {
 		// We assume that the platformOpenChanel is created within the platform such that we could retrieve the contextID which is the platform ID.  
 		if (!isInContext(occurrence.mission.platformID)) {
 			//The agent is not in the context. The agent starts a task to join the context.
-			occurrence.platformOpenChannel.emit(new RequestToJoin(publicChannel)) [
+			emit(occurrence.platformOpenChannel,new RequestToJoin(publicChannel)) [
 				it.ID == occurrence.mission.platformID
 			] 	
 		}
@@ -73,15 +73,15 @@ agent Expert extends Paraddis {
 		encounteredPlatforms.put(occurrence.mission.location, occurrence.platformOpenChannel)
 	}
 
-	@SuppressWarnings("potential_field_synchronization_problem", "discouraged_occurrence_readonly_use")
+	//@SuppressWarnings("potential_field_synchronization_problem", "discouraged_occurrence_readonly_use")
 	
 	//@FIXME This should be in the role rather in the agent. 
-	on StopMission {
-		info("received Stop Mission")
-		var platformLocation = missionList.get(occurrence.expertID) // @TODO : The experts may be on hold at this point
-		info("received Stop mission at " + platformLocation)
-		encounteredPlatforms.get(platformLocation).emit(new StopMission(occurrence.expertID))
-	}
+	//on StopMission {
+		//info("received Stop Mission")
+		//var platformLocation = missionList.get(occurrence.expertID) // @TODO : The experts may be on hold at this point
+		//info("received Stop mission at " + platformLocation)
+		//encounteredPlatforms.get(platformLocation).emit(new StopMission(occurrence.expertID))
+	//}
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on AuthorizationToJoinContext {
 		info(

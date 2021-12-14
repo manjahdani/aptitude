@@ -126,7 +126,7 @@ class CountingLine {
 	}
 
 	def getLine {
-		return newArrayList(new Point2d(X_A, Y_A), new Point2d(X_A, Y_A))
+		return newArrayList(new Point2d(X_A, Y_A), new Point2d(X_B, Y_B))
 	}
 
 	def hasCrossed(ID : int) {

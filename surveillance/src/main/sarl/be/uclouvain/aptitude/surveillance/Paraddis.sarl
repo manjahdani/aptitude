@@ -11,6 +11,7 @@ import io.sarl.core.Logging
 import io.sarl.core.Schedules
 import io.sarl.core.MemberJoined
 import io.sarl.core.ParticipantJoined
+import io.sarl.core.Behaviors
 
 /** 
  * The agent gives global trait to agents. 
@@ -100,7 +101,7 @@ agent Paraddis {
 		
 		
 		for (h : memberAgents) {
-			innerContext.defaultSpace.emit(this.ID, new CommitSuicide)[it.ID == h]
+			wake(new CommitSuicide)[it.ID == h]
 		}
 		val waitTask = task("wait-member-killed-task")
 		waitTask.every(2000) [
@@ -126,5 +127,6 @@ agent Paraddis {
 			killMe	
 		}
 	]
-}		
+}
+uses Behaviors
 }

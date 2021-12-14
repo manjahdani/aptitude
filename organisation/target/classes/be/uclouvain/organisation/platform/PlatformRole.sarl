@@ -60,7 +60,7 @@ behavior PlatformRole {
 			info("TOLD was not encountered")
 			privateSpacesListeners.put(TOLDID, occurrence.privateCommunicationChannel)
 			occurrence.privateCommunicationChannel.registerStrongParticipant(asEventListener)
-			occurrence.privateCommunicationChannel.emit(
+			emit(occurrence.privateCommunicationChannel,
 				new PlatformOrganisationInfo(innerContext, privateSpacesListeners.get(TOLDID), location.get)) [
 				it.ID == TOLDID
 			]
@@ -78,8 +78,8 @@ behavior PlatformRole {
 		info("received request to add a mission from " + clientID.toString.substring(0,5) + " " + occurrence.missionData.location)
 		
 		missionSpace.put(occurrence.missionData.missionID, innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, occurrence.missionData.missionID))
-
-		privateSpacesListeners.get(clientID).emit(new AuthorizationToPerformMission(missionSpace.get(occurrence.missionData.missionID))
+		emit(privateSpacesListeners.get(clientID),
+			new AuthorizationToPerformMission(missionSpace.get(occurrence.missionData.missionID))
 		)[it.ID == clientID]
 	}
 	
@@ -87,7 +87,7 @@ behavior PlatformRole {
 	
 	on RequestToJoin {
 		info("receives a request to welcome a new agent")
-		occurrence.emitterSpace.emit(this.ID, 
+		emit(occurrence.emitterSpace, 
 			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID)) [
 				it.ID == occurrence.source.ID
 			]
@@ -104,8 +104,8 @@ behavior PlatformRole {
 	}
 	on StopMission {
 		// if(RuleManagement())
-		info(" I received a Stop Misson" + occurrence.expertID)
-		wake(new LeavePlatform)
+		//info(" I received a Stop Misson" + occurrence.expertID)
+		//wake(new LeavePlatform)
 	}
 	
 	def sendOrganisationinfo(memberID : UUID) {

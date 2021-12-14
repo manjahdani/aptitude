@@ -62,7 +62,6 @@ skill EvaluationImpl extends PythonTwinAccess implements Evaluation {
 		if (maxFrame != -1) {
 			evalMessage.maxFrame = maxFrame
 		}
-		info("Accesor role - sending the evalMessage - "+ evalMessage.toString)
 		CommunicationManager.instance.publishMessage(topicSignalAcquisition.toString, evalMessage)
 	}
 }

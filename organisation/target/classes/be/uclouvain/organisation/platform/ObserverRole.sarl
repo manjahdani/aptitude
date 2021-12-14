@@ -1,13 +1,11 @@
-/** 
- */
 package be.uclouvain.organisation.platform
 
 import be.uclouvain.organisation.Identification
 import be.uclouvain.organisation.PlatformOrganisationInfo
+import be.uclouvain.organisation.SignalID
 import be.uclouvain.organisation.TOLDOrganisationInfo
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
-import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Destroy
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
@@ -50,17 +48,20 @@ import java.util.concurrent.atomic.AtomicInteger
  
 abstract behavior ObserverRole {
 	
-	uses Logging, Behaviors, DefaultContextInteractions, InnerContextAccess, ExternalContextAccess, Schedules
+	uses Logging, Behaviors, InnerContextAccess, ExternalContextAccess, Schedules
 
-	protected var privateTOLDSpace : OpenEventSpace
-	protected var TOLDContext : AgentContext
-	protected var privatePlatformSpace : OpenEventSpace
-	protected var platformContext : AgentContext
+	protected var TOLDContext : AgentContext // context of the organisation TOLD
+	protected var privateTOLDSpace : OpenEventSpace // private space between the algorithm and the organisation TOLD
+	protected var platformContext : AgentContext // context of the organisation Platform
+	protected var privatePlatformSpace : OpenEventSpace // private space between the algorithm and the organisation Platform 
+	
+	
 	protected var selfSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification,
 		UUID.randomUUID)// An internal space to communicate with other roles. 
-	protected var sensitivity = new AtomicInteger()
+	protected var sensitivity = new AtomicInteger() // parameter
 	protected var observerADN : AlgorithmInfo	
 	protected var isMaster  = new AtomicBoolean(false)
+	
 	protected val listeners = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the client and the role 
 	protected val providers = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
 	protected var platformName : String
@@ -74,12 +75,11 @@ abstract behavior ObserverRole {
 	on Initialize {
 
 		observerADN = occurrence.parameters.get(0) as AlgorithmInfo
-		selfSpace.registerStrongParticipant(asEventListener) // Listen to a self-internal space
+		selfSpace.registerStrongParticipant(asEventListener) // listen to a self-internal space
 		
-		providers.put(observerADN.ID, selfSpace)
-		listeners.put(observerADN.ID, selfSpace) // // Listen to its own results To send results to itself @FIXME maybe we could just program a flag.. as it is not needed everywhere
 		checkList.put("isCompLocationKnown", false)
 		checkList.put("paramKnown", false)
+		
 		task("waiting-greenLights").every(1000)[
 			if (areAllTrue(checkList.values)) {
 				info("Start the processing role at location - "+computation_location+". Parameters are: s= "+sensitivity.get+ " isMaster=" + isMaster.get)
@@ -100,12 +100,9 @@ abstract behavior ObserverRole {
 		//receives a request from a innerAgent but did not include it in its providers.
 		
 		if(!getMemberAgents.contains(providerID)){
-		info("param requests from agentID=" + providerID.toString.substring(0, 5) +
+			debug("param requests from agentID=" + providerID.toString.substring(0, 5) +
 				" sending param:" + " s =" +sensitivity)
-		providers.get(providerID).emit(
-				observerADN.ID, 
-			new ProcessingHyperParameters(sensitivity.get, isMaster.get)
-		) [it.ID == providerID]}
+			emit(providers.get(providerID), new ProcessingHyperParameters(sensitivity.get, isMaster.get))[it.ID == providerID]}
 		
 	}
 	on Destroy {
@@ -141,21 +138,24 @@ abstract behavior ObserverRole {
 		var missionSpace = occurrence.communicationChannel
 		var clientID = occurrence.source.ID
 		
-		info("requested to add mission with ID = " + (missionSpace.spaceID.toString.substring(0, 5)) + " from " +
+		debug("requested to add mission with ID = " + (missionSpace.spaceID.toString.substring(0, 5)) + " from " +
 			clientID.toString.substring(0, 5))
 		listeners.put(clientID, missionSpace) // @FIXME maybe there is a huge misunderstanding of the use of Spaces, maybe we could have address which is simpler
 		var accepted = true // @TODO develop criteria for the admission of the mission 
 		if (accepted) {
-			missionSpace.emit(observerADN.ID, new HyperParametersRequest)[it.ID == clientID]
+			emit(missionSpace,new HyperParametersRequest)[it.ID == clientID]
 			debug("requests missionParameters to " + clientID.toString.substring(0,5))
 			}
 	}
+	/** 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on StopMission {
 		if (listeners.keySet.contains(occurrence.source.ID)){
 			info("I received the StopMission")
-			emit(new StopMission(occurrence.expertID))
-			emit(new LeavePlatform)[it.ID == observerADN.ID] 
+			listeners.remove(occurrence.source.ID)
+		}
+		else{
+			info("I do not recognize the provider" + occurrence.expertID)
 		}
 	}
 		@SuppressWarnings("potential_field_synchronization_problem")
@@ -163,7 +163,7 @@ abstract behavior ObserverRole {
 		//join(BaseContext.ID, BaseSpace.spaceID.ID)
 		//info("ObserverLeaving")
 		//leave(PlatformContext.ID)
-	}
+	}*/
 	on ProcessingHyperParameters {		
 		sensitivity.set(occurrence.s)
 		isMaster.set(occurrence.OptimalSearchEnabled)
@@ -171,9 +171,32 @@ abstract behavior ObserverRole {
 		checkList.put("paramKnown",true)
 	}
 
-
+	//@FIXME possibly a reaction of the global behavior observer. We could generalize.
+	on SignalID {
+		
+		var sid = occurrence.signalID
+		// Creation of a communication space between the data source and the role
+		// @FIXME is it allowed to use the platform Context?
+		if(!providers.containsKey(sid)){
+			//info("Unkown signal" + sid)
+			val comChannel = platformContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
+			comChannel.registerStrongParticipant(asEventListener)
+			providers.put(sid, comChannel)
+			debug("Received provider ID sending the channel " + providers.get(sid).spaceID.ID)
+			
+			emit(platformContext.defaultSpace,new AddMission(providers.get(sid))) [it.ID == sid] //@FIXME check whether the defaultSPACE is platform //@FIXME Check a simpler way to send
+		}
+		else{
+			info("Known signal = " + sid)
+			emit(providers.get(sid),new ResumeMission)[this.ID == sid]
+			info("Trying now in the default")
+			emit(platformContext.defaultSpace,new ResumeMission)[it.ID==sid]
+		}
+	}
+	
 	synchronized def requestAlgorithm(algoName : String, algoTask : String) {
-		privatePlatformSpace.emit(new AddObserver(
+		
+		emit(privatePlatformSpace, new AddObserver(
 			new AlgorithmInfo(algoName, algoTask),
 			new AlgorithmInfo(observerADN.name, observerADN.task)
 		))[it.ID == platformContext.ID]

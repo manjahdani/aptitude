@@ -1,12 +1,12 @@
 package be.uclouvain.aptitude.surveillance.algorithm.tracker
 
-
+import java.util.UUID
 
 event TrackingRequest {
 	
-	var bel : String
+	var competitorID : UUID
 
-	new (a : String) {
-		this.bel = a
+	new (id : UUID) {
+		this.competitorID = id
 	}
 }

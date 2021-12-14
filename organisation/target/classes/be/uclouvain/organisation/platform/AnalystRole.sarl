@@ -73,9 +73,7 @@ behavior AnalystRole {
 			privatePlatformSpace = occurrence.privateCommunicationChannel
 			privatePlatformSpace.registerStrongParticipant(asEventListener)
 			info("starts mission with spaceID - " + missionData.missionID)
-			privatePlatformSpace.emit(new Request2PerformMission(missionData)) [
-				it.ID == missionData.platformID
-			] // @FIXME AddMission 
+			emit(privatePlatformSpace,new Request2PerformMission(missionData))[it.ID == missionData.platformID] // @FIXME AddMission 
 			info("asks for algorithm performing vehicle counting to platform")
 		}
 	}
@@ -85,16 +83,14 @@ behavior AnalystRole {
 		missionSpace = occurrence.missionSpace;
 		missionSpace.registerStrongParticipant(asEventListener)
 		//platformSpace.emit(new LocalDatabaseRequest(defaultContext))[it.ID == platformContext.ID]
-		privatePlatformSpace.emit(
-			
-			new AddObserver(new AlgorithmInfo("APTITUDE", "COUNTER"), new AlgorithmInfo("EXPERT", "ROADANALYST")))
+		emit(privatePlatformSpace,new AddObserver(new AlgorithmInfo("APTITUDE", "COUNTER"), new AlgorithmInfo("EXPERT", "ROADANALYST")))
 	}
 
 	on SignalID {
 		
 		debug("received the provider ID \n sending the missionSpace")
 		
-		platformContext.defaultSpace.emit(this.ID, new AddMission(missionSpace)) [
+		emit(platformContext.defaultSpace, new AddMission(missionSpace)) [
 			it.ID == occurrence.signalID
 		] 
 	}
@@ -112,7 +108,7 @@ behavior AnalystRole {
 		emit(
 			platformContext.defaultSpace,
 			new ProcessingHyperParameters(
-				missionData.sensitivity,  
+				missionData.sensitivity,
 				missionData.optimalSearchEnabled))[it.ID==providerID]
 	}
 }

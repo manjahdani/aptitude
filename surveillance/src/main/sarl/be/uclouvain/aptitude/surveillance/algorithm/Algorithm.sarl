@@ -108,7 +108,7 @@ agent Algorithm extends Paraddis{
 		debug("encounters : " + occurrence.name + " agent")
 		agentPlatformSpaces.put(occurrence.name, occurrence.topic)
 		occurrence.topic.registerStrongParticipant(asEventListener)
-		occurrence.topic.emit(this.ID, new AgentAlgorithm(ADN.name, openChanel))
+		emit(occurrence.topic, new AgentAlgorithm(ADN.name, openChanel))
 		wake(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it.ID !== this.ID]
 	}
 	

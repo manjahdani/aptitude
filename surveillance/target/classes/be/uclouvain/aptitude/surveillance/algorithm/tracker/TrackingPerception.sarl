@@ -15,9 +15,11 @@ import java.util.ArrayList
  */
 event TrackingPerception{
 	
-	var perceptions : ArrayList<BBoxe2D>
-	new (p : ArrayList<BBoxe2D>)
+	val perceptions : ArrayList<BBoxe2D>
+	val frameNumber : int
+	new (p : ArrayList<BBoxe2D>, f: int)
 	{
 		this.perceptions =p
+		this.frameNumber=f
 	}
 }

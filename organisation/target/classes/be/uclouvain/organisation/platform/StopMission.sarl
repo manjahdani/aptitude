@@ -38,3 +38,14 @@ event StopMission {
 		this.expertID = id
 	}
 }
+
+event ResumeMission
+
+event RemoveMission {
+
+	val expertID : UUID
+
+	new(id : UUID) {
+		this.expertID = id
+	}
+}

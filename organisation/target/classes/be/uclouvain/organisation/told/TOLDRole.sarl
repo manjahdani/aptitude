@@ -63,13 +63,13 @@ behavior TOLDRole {
 	on AddMember{
 		debug("received add member from " + occurrence.source.ID.toString.substring(0, 5) + "to invite within my context " + occurrence.memberID)
 		
-		occurrence.communicationChannel.emit(this.ID,
+		emit(occurrence.communicationChannel,
 			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID))[it.ID==occurrence.memberID]
 	}
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on ReadEntry {
 		debug("Reading entry and sending -" + read(occurrence.key))
-		privateSpacesListeners.get(occurrence.source.ID).emit(this.ID, new QueryAnswer(read(occurrence.key)))
+		emit(privateSpacesListeners.get(occurrence.source.ID), new QueryAnswer(read(occurrence.key)))
 	}
 	on MemberJoined {
 		debug("MemberJoined - " + occurrence.agentID.toString.substring(0, 5))
@@ -98,7 +98,7 @@ behavior TOLDRole {
 				val privateChannel = occurrence.privateCommunicationChannel
 				privateSpacesListeners.put(platformID, privateChannel)
 				privateChannel.registerStrongParticipant(asEventListener)
-				privateChannel.emit(
+				emit(privateChannel,
 					new TOLDOrganisationInfo(innerContext, privateSpacesListeners.get(platformID), read(platformID))) [
 					it.ID == platformID
 				]

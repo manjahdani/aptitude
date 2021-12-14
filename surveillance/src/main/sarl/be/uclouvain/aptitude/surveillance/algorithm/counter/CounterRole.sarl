@@ -5,7 +5,6 @@ import be.uclouvain.aptitude.surveillance.algorithm.tracker.BBoxes2DTrackResultT
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingPerception
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.aptitude.surveillance.ui.DisplayCapacity
-import be.uclouvain.aptitude.surveillance.ui.DisplaySkill
 import be.uclouvain.organisation.platform.CounterObserverCapacity
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
@@ -36,12 +35,17 @@ behavior CounterRole { //extends ObserverRole { //@FIXME Should the CounterRole 
 	on Initialize {
 		info("The counting starts from now !")
 		
-		setSkill(new DisplaySkill)
 		setSkill(new CountingSkill, CounterObserverCapacity)
+		//setSkill(new DisplaySkill)
 	}
-	
+ 
 	on TrackingPerception {
-		//info("Received Tracking")
+
+		
+		if (occurrence.frameNumber % 100 == 0) {
+			info("Already processed " + occurrence.frameNumber + " frame. Current counting is")
+			DisplayPerception(1)
+		}
 		objectToBeAnalyzed.clear
 		for (p : occurrence.perceptions) {
 			if (objectPresentInframe.containsKey(p.globalID)) {
@@ -52,7 +56,10 @@ behavior CounterRole { //extends ObserverRole { //@FIXME Should the CounterRole 
 		}
 		objectToBeAnalyzed.add(objectPresentInframe.get(p.globalID))
 		}
-		Signal2Perception(new ArrayList(objectToBeAnalyzed))}
+		
+		Signal2Perception(new ArrayList(objectToBeAnalyzed))
+		}
+		
 	on LastFrame {
 		info("That was it for Couting!")
 		//val totalTime = (((System.currentTimeMillis() - this.start) / 1000))
@@ -74,48 +81,59 @@ behavior CounterRole { //extends ObserverRole { //@FIXME Should the CounterRole 
 		}
 		//info(counts)
 		
-		sendDisplayMessage(occurrence.bboxes2DTrack, this.ID.toString, "F:/data/S02C006/vdo.avi", null, lineCoords,
-			counts, occurrence.observerName, this.ID.toString, occurrence.sensitivity)
+		
+		//sendDisplayMessage(occurrence.bboxes2DTrack, this.ID.toString, "F:/data/S02C006/vdo.avi", null, lineCoords,
+			//counts, occurrence.observerName, this.ID.toString, occurrence.sensitivity)
 	}
 
-	
-	//	@SuppressWarnings("potential_field_synchronization_problem")
-//	on BBoxes2DTrackResult {
-//		
-//		var ratio_width = 1920.0 / occurrence.bboxes2DTrack.dimWidth
-//		var ratio_height = 1080.0 / occurrence.bboxes2DTrack.dimHeight
-//		var frameNumber = occurrence.bboxes2DTrack.frameNumber
-//
-//		ObjectToBeAnalyzed.clear
-//
-//		for (var i = 0; i < occurrence.bboxes2DTrack.numberObjects; i++) {
-//			var X = occurrence.bboxes2DTrack.bboxes.get(4 * i) * ratio_width
-//			var Y = occurrence.bboxes2DTrack.bboxes.get(4 * i + 1) * ratio_height
-//			var W = occurrence.bboxes2DTrack.bboxes.get(4 * i + 2) * ratio_width
-//			var H = occurrence.bboxes2DTrack.bboxes.get(4 * i + 3) * ratio_height
-//			var classID = occurrence.bboxes2DTrack.classIDs.get(i)
-//			var globalID = occurrence.bboxes2DTrack.globalIDs.get(i)
-//			var conf = occurrence.bboxes2DTrack.detConfs.get(i)
-//			if (ObjectPresentInframe.containsKey(globalID)) {
-//				ObjectPresentInframe.get(globalID).update(X, Y, W, H, classID, frameNumber, conf)
-//			} else {
-//				ObjectPresentInframe.put(globalID,
-//					new BBoxes2D(new BBOX(X, Y, W, H), conf, globalID, classID, frameNumber))
-//			}
-//
-//			ObjectToBeAnalyzed.add(ObjectPresentInframe.get(globalID))
-//		}
-//		
-//		Signal2Perception(new ArrayList(ObjectToBeAnalyzed)) // Activate its capacity to interpret a perception 
-//		
-//		if (occurrence.bboxes2DTrack.lastFrame) {
-//			info("That was it!" )
-//			val totalTime = (((System.currentTimeMillis() - this.start) / 1000))
-//			info("It took " + totalTime.toString + " seconds")
-//			info("Average FPS : " + (occurrence.bboxes2DTrack.frameNumber / totalTime).toString)
-//			info("I will transfer my perception to the Analyst")
-//			DisplayPerception
-//
+}
+
+
+/** 	
+		@SuppressWarnings("potential_field_synchronization_problem")
+	on BBoxes2DTrackResult {
+		
+		var ratio_width = 1920.0 / occurrence.bboxes2DTrack.dimWidth
+		var ratio_height = 1080.0 / occurrence.bboxes2DTrack.dimHeight
+		var frameNumber = occurrence.bboxes2DTrack.frameNumber
+		
+		if (occurrence.bboxes2DTrack.frameNumber % 100 == 0) {
+			info("Processsing frame =" + occurrence.bboxes2DTrack.frameNumber)
+		}
+			
+		
+		objectToBeAnalyzed.clear
+
+		for (var i = 0; i < occurrence.bboxes2DTrack.numberObjects; i++) {
+			var X = occurrence.bboxes2DTrack.bboxes.get(4 * i) * ratio_width
+			var Y = occurrence.bboxes2DTrack.bboxes.get(4 * i + 1) * ratio_height
+			var W = occurrence.bboxes2DTrack.bboxes.get(4 * i + 2) * ratio_width
+			var H = occurrence.bboxes2DTrack.bboxes.get(4 * i + 3) * ratio_height
+			var classID = occurrence.bboxes2DTrack.classIDs.get(i)
+			var globalID = occurrence.bboxes2DTrack.globalIDs.get(i)
+			var conf = occurrence.bboxes2DTrack.detConfs.get(i)
+			if (objectPresentInframe.containsKey(globalID)) {
+				objectPresentInframe.get(globalID).update(X, Y, W, H, classID, frameNumber, conf)
+			} else {
+				objectPresentInframe.put(globalID,
+					new BBoxe2D(new BBOX(X, Y, W, H), conf, globalID, classID, frameNumber))
+			}
+
+			objectToBeAnalyzed.add(objectPresentInframe.get(globalID))
+		}
+		
+		Signal2Perception(new ArrayList(objectToBeAnalyzed)) // Activate its capacity to interpret a perception 
+		
+		if (occurrence.bboxes2DTrack.lastFrame) {
+		info("That was it!" )
+			//val totalTime = (((System.currentTimeMillis() - this.start) / 1000))
+			//info("It took " + totalTime.toString + " seconds")
+			//info("Average FPS : " + (occurrence.bboxes2DTrack.frameNumber / totalTime).toString)
+			//info("I will transfer my perception to the Analyst")
+			DisplayPerception(1)
+			
+			}
+
 ////			var predFile = "F:/TinySort.txt"
 ////			var gtFile = "F:/gt.txt"
 ////			var predictions = new String(Files.readAllBytes(Paths.get(predFile)));
@@ -139,6 +157,6 @@ behavior CounterRole { //extends ObserverRole { //@FIXME Should the CounterRole 
 //		println("AssPr \t" + occurrence.result.assPr)
 //		println("LocA \t" + occurrence.result.locA)
 //	}
-	
+	}
 }
-
+*/

@@ -44,12 +44,12 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
 	on LocalDatabaseRequest {
 		info("received a request from " + occurrence.source.ID.toString.substring(0, 5) + " to connect with a database ")
-		privateSpacesListeners.get(TOLDID).emit(
+		emit(privateSpacesListeners.get(TOLDID),
 			new AddMember(occurrence.source.ID,privateSpacesListeners.get(occurrence.source.ID)))
 	}
 	
 	on ComputationalRessources {
-		info("Received Computational Ressources: " + occurrence.client_id + "from ")
+		//info("Received computational resources: " + occurrence.client_id + "from ")
 		allocated_ressource = occurrence.client_id
 	}
 	
@@ -72,6 +72,8 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
 	on AddObserver {
 		
+		
+		
 		var signal = occurrence.signalProvider
 		var receiver = occurrence.signalReceiver
 		debug("adding observer from " + signal.name + " to " + receiver.name)
@@ -79,15 +81,17 @@ behavior SurveillancePlatformRole extends PlatformRole {
 
 			debug("\n Partnership of " + signal.name.concat("-").concat(receiver.name) + "legal ")
 			synchronized (this) {
-				if (!participants.keySet.contains(signal)) {
+				if (!participants.containsKey(signal.name)){
+					debug("-"+signal.name+"-"+"Algorithm not available" + participants.keySet)
 					if (!request.contains(signal)) {
 						request.add(signal.name)
-						agentAlgorithm.get(occurrence.signalProvider.task).emit(
+						emit(agentAlgorithm.get(occurrence.signalProvider.task),
 							new AlgorithmJoinPlatform(innerContext, signal.name))}
 					waitfor(signal.name, occurrence.source.ID)
 				} else {
-					privateSpacesListeners.get(occurrence.source.ID).emit(
-						new SignalID(participants.get(occurrence.signalProvider.name)))
+					debug("Algorithm is already available" + signal.name)
+					emit(privateSpacesListeners.get(occurrence.source.ID),
+						new SignalID(participants.get(occurrence.signalProvider.name), occurrence.signalProvider.name))
 				}
 			}
 		}
@@ -101,10 +105,12 @@ behavior SurveillancePlatformRole extends PlatformRole {
 		
 	}
 	synchronized def waitfor(fullName : String, dest : UUID) {
-		debug("Waiting " + fullName +" as an original request from -  " + dest.toString.substring(0,5))
+		info("Waiting " + fullName +" as an original request from -  " + dest.toString.substring(0,5))
 		task("waitingfor".concat(fullName).concat(dest.toString)).every(500) [
 			if (participants.keySet.contains(fullName)) {
-				privateSpacesListeners.get(dest).emit(new SignalID(participants.get(fullName)))[it.ID == dest]
+				emit(privateSpacesListeners.get(dest),
+					new SignalID(participants.get(fullName), fullName)
+				)[it.ID == dest]
 				task("waitingfor".concat(fullName).concat(dest.toString)).cancel
 			}
 		]

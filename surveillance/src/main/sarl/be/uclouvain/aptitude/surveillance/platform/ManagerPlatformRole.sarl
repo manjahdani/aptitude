@@ -5,20 +5,19 @@ package be.uclouvain.aptitude.surveillance.platform
 
 import be.uclouvain.organisation.JoinPlatform
 import be.uclouvain.organisation.LocalDatabaseRequest
+import be.uclouvain.organisation.platform.ComputationalRessources
 import be.uclouvain.organisation.platform.PlatformRole
+import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.Schedules
+import java.util.ArrayList
 import java.util.Collections
 import java.util.HashMap
-import java.util.Set
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedQueue
-import be.uclouvain.organisation.platform.ComputationalRessources
-import java.util.ArrayList
-import io.sarl.core.Behaviors
 
 /** 
  * @TODO To complete

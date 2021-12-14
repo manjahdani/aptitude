@@ -9,6 +9,7 @@ import be.uclouvain.python_access.PythonAccessorRole
 import be.uclouvain.python_access.PythonTwinAccessCapacity
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
+import be.uclouvain.organisation.platform.ResumeMission
 
 /** 
  * @author manjah
@@ -22,15 +23,29 @@ behavior SingleDetectorRole extends PythonAccessorRole {
 	on PartnerDetectionFound {
 
 		this.partnerName = occurrence.partnerName
-		info("Detection partner found: " + this.partnerName)
+		//info("Detection partner found: " + this.partnerName)
+		
 		
 		task("wait").in(2000) [
-			info("UpdatingStreamAccess")
+			info("UpdatingStreamAccess - Action 1 Starting")
 			updateStreamAccess(1)
 			task("wait").cancel // PLAY
 		]
 	}
 
+	@SuppressWarnings("potential_field_synchronization_problem")
+	
+	
+	on PauseMission{
+		info("Pausing detector")
+		updateStreamAccess(2)
+	}
+	
+	on ResumeMission{
+		info("Resume Mission request")
+		updateStreamAccess(5)
+		updateStreamAccess(1)
+	}
 	on LeavePlatform {
 		// join(BaseContext.ID, BaseSpace.spaceID.ID)
 		// info("Detector Leaving")
@@ -38,6 +53,15 @@ behavior SingleDetectorRole extends PythonAccessorRole {
 		// leave(PlatformID)
 	}
 
+	/* 
+	 * PLAY = 1
+	 * PAUSE = 2
+	 * RESUME = 3
+	 * STOP = 4
+	 * RESTART = 5
+	 * SEEK = 6
+	 * KILL = 7
+	 */
 	on RestartDetector {
 		info("Updating Stream Access")
 		updateStreamAccess(5)

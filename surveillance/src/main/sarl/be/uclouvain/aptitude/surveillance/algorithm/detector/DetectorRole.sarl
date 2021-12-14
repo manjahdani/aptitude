@@ -8,6 +8,7 @@ import be.uclouvain.python_access.BBoxes2DResult
 import io.sarl.core.Behaviors
 import io.sarl.core.Destroy
 import io.sarl.core.Logging
+import io.sarl.core.ExternalContextAccess
 
 /** 
  * @TODO: write a description
@@ -21,15 +22,17 @@ import io.sarl.core.Logging
  */
 behavior DetectorRole extends ObserverRole {
 	
-	uses Logging, Behaviors
+	uses Logging, Behaviors, ExternalContextAccess
 	
 	on BBoxes2DResult {
 		//info("Detector - frameNumber- lastframe " + occurrence.bboxes2D.frameNumber + occurrence.bboxes2D.lastFrame)
 		for (listenersSpace : listeners.values) {
-			listenersSpace.emit(this.ID, new BBoxes2DResult(occurrence.bboxes2D, observerADN.name))[it.ID !== this.ID]
+			emit(listenersSpace, new BBoxes2DResult(occurrence.bboxes2D, observerADN.name))[it.ID !== this.ID]
 		}
 	}
-	//on RestartDetector{
+
+
+	// on RestartDetector{
 		//info("Restarting")
 		//var spaceToSend = listeners.get(listeners.get(0))
 		//listeners.clear
@@ -47,6 +50,9 @@ behavior DetectorRole extends ObserverRole {
 	}
 	
 }
+
+event PauseMission
+
 event RestartDetector{
 	var bel : String
 	new (a : String){

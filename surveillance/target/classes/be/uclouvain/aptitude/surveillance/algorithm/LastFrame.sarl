@@ -3,6 +3,8 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm
 
+import java.util.UUID
+
 /** 
  * @TODO : Descrribe
  * 
@@ -19,16 +21,20 @@ event LastFrame {
 	var pred_file_Path : String
 	var total_time_detection : double
 	var total_time_tracking : double
-	new (f : int, p : String, total_time_detection : double, total_time_tracking : double)
+	var observerID : UUID
+	new (f : int, p : String, total_time_detection : double, total_time_tracking : double, id : UUID)
 	{
 		this.frameNumber = f
 		this.pred_file_Path = p
 		this.total_time_detection = total_time_detection
 		this.total_time_tracking = total_time_tracking
+		this.observerID = id
 	}
 	
 	new (f : int)
 	{
 		this.frameNumber=f
 	}
+	
+	
 }

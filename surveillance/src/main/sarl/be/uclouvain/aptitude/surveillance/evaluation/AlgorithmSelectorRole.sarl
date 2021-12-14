@@ -60,7 +60,7 @@ behavior AlgorithmSelectorRole extends PythonAccessorRole {
 		var predictions = new String(Files.readAllBytes(Paths.get(occurrence.pred_file_Path)));
 		var testID = UUID.randomUUID
 		addResult(testID,
-			new EvaluationResults(occurrence.source.ID, occurrence.pred_file_Path, occurrence.total_time_detection,
+			new EvaluationResults(occurrence.observerID, occurrence.pred_file_Path, occurrence.total_time_detection,
 				occurrence.total_time_tracking, occurrence.frameNumber))
 		sendEvaluationRequest(testID.toString, predictions, gts)
 	}
@@ -77,10 +77,14 @@ behavior AlgorithmSelectorRole extends PythonAccessorRole {
 				info("Recording the result of Competitor " + numberTests)
 				if (numberTests == 2) {
 					var selected = selectAlgorithm()
-					emit(new TrackingRequest(selected.belief))[it.ID == selected.belief]
+					emit(new TrackingRequest(selected.competitorID))
 					registerBehavior(new CounterRole(owner))
 				}
-			}}
+			}
+			else{
+				info("Could not succed to add " +occurrence.result.uuid)
+			}
+			}
 			// print(Result) 
 	}
 	

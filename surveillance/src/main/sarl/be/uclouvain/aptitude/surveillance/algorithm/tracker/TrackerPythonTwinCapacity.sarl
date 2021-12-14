@@ -22,8 +22,9 @@ import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 
 
 capacity TrackerPythonTwinCapacity extends ObserverCapacity, PythonTwinAccessCapacity{
-
-	def formatConversion(a : BBoxes2DTrackMessage) : ArrayList<BBoxe2D>
+	
+		  def test()
+	@Pure def formatConversion(a : BBoxes2DTrackMessage) : ArrayList<BBoxe2D>
 }
 
 

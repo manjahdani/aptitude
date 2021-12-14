@@ -62,16 +62,24 @@ skill AlgorithmSelectionSkill implements AlgorithmSelection {
 	}
 
 	def addResult(testID : UUID, e : EvaluationMessage) : boolean {
-
-		if (compResults.get(testID).HOTA == 0) {
+		
+		//@FIXME low strange behavior
+		try{
+			if (compResults.get(testID).HOTA == 0) {
 			compResults.get(testID).setValues(e)
 			return true
 			// println("***********************")
 			// println("           reqID \t" + occurrence.result.requestID)
 			// CompResults.get(UUID.fromString(occurrence.result.requestID)).EvaluationPrint
+			}
+			return false
+		}
+		catch(f:NullPointerException){
+			
+			info("NullPointer" + "testID " + testID + "E=" + e)
+			
 		}
 		return false
-		
-		}
+	}
 }
 

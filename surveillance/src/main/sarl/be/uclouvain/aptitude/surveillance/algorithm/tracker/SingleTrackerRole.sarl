@@ -4,9 +4,9 @@
 package be.uclouvain.aptitude.surveillance.algorithm.tracker
 
 import be.uclouvain.python_access.BBoxes2DResult
+import be.uclouvain.python_access.PartnerTrackingFound
 import be.uclouvain.python_access.PythonAccessorRole
 import io.sarl.core.Logging
-import be.uclouvain.python_access.PartnerTrackingFound
 
 /** 
  * @author manjah
@@ -22,7 +22,7 @@ behavior SingleTrackerRole extends PythonAccessorRole {
 	on PartnerTrackingFound {
 		synchronized (this)
 			this.partnerName = occurrence.partnerName
-		info("Tracking Partner found: " + this.partnerName)
+		//info("Tracking Partner found: " + this.partnerName)
 	}
 	
 	on BBoxes2DResult {
