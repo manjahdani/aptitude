@@ -55,7 +55,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	
 	on Identification {
 		
-		info("new participant: " + occurrence.fullName )
+		debug("new participant: " + occurrence.fullName )
 		participants.put(occurrence.fullName, occurrence.source.ID)
 		wake(new ComputationalRessources(allocated_ressource))[it.ID == occurrence.source.ID]
 	}
@@ -105,7 +105,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 		
 	}
 	synchronized def waitfor(fullName : String, dest : UUID) {
-		info("Waiting " + fullName +" as an original request from -  " + dest.toString.substring(0,5))
+		debug("Waiting " + fullName +" as an original request from -  " + dest.toString.substring(0,5))
 		task("waitingfor".concat(fullName).concat(dest.toString)).every(500) [
 			if (participants.keySet.contains(fullName)) {
 				emit(privateSpacesListeners.get(dest),

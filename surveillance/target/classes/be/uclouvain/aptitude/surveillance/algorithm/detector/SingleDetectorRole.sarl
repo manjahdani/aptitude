@@ -27,7 +27,7 @@ behavior SingleDetectorRole extends PythonAccessorRole {
 		
 		
 		task("wait").in(2000) [
-			info("UpdatingStreamAccess - Action 1 Starting")
+			debug("UpdatingStreamAccess - Action 1 Starting")
 			updateStreamAccess(1)
 			task("wait").cancel // PLAY
 		]
@@ -37,7 +37,7 @@ behavior SingleDetectorRole extends PythonAccessorRole {
 	
 	
 	on PauseMission{
-		info("Pausing detector")
+		debug("Pausing detector")
 		updateStreamAccess(2)
 	}
 	

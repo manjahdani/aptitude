@@ -58,7 +58,7 @@ behavior AnalystRole {
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on Initialize {
 		missionData = occurrence.parameters.get(0) as MissionData
-		info("starts mission of vehicle counting with sensitivity:  " + availableObservers.get(missionData.sensitivity))
+		debug("starts mission of vehicle counting with sensitivity:  " + availableObservers.get(missionData.sensitivity))
 	}
 	
 	@SuppressWarnings("potential_field_synchronization_problem")
@@ -68,18 +68,18 @@ behavior AnalystRole {
 		debug("Joined platform organisation: " + occurrence.privateCommunicationChannel + " (" + occurrence.context +
 			").")
 		if (occurrence.context.ID == missionData.platformID) {
-			info("sends add mission to - " + occurrence.context.ID.toString.substring(0,5))
+			debug("sends add mission to - " + occurrence.context.ID.toString.substring(0,5))
 			platformContext = occurrence.context
 			privatePlatformSpace = occurrence.privateCommunicationChannel
 			privatePlatformSpace.registerStrongParticipant(asEventListener)
 			info("starts mission with spaceID - " + missionData.missionID)
 			emit(privatePlatformSpace,new Request2PerformMission(missionData))[it.ID == missionData.platformID] // @FIXME AddMission 
-			info("asks for algorithm performing vehicle counting to platform")
+			debug("asks for algorithm performing vehicle counting to platform")
 		}
 	}
 	@SuppressWarnings("potential_field_synchronization_problem")
 	on AuthorizationToPerformMission {
-		info("Received authorisation to perform a mission within the space : " + occurrence.missionSpace.spaceID.ID)
+		debug("Received authorisation to perform a mission within the space : " + occurrence.missionSpace.spaceID.ID)
 		missionSpace = occurrence.missionSpace;
 		missionSpace.registerStrongParticipant(asEventListener)
 		//platformSpace.emit(new LocalDatabaseRequest(defaultContext))[it.ID == platformContext.ID]

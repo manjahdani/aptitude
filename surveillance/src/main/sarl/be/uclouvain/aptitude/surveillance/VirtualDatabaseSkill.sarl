@@ -28,6 +28,11 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 		database.put(UUID.randomUUID,
 			new AlgorithmInfo("TinyYOLO", "F:/aptitude/surveillance/src/main/resources/config/test-TinyYOLO.json",
 			"DETECTOR"))
+
+		database.put(UUID.randomUUID,
+			new AlgorithmInfo("YOLO-COCO", "F:/aptitude/surveillance/src/main/resources/config/test-YOLO-COCO.json",
+			"DETECTOR"))
+			
 		database.put(UUID.randomUUID,new AlgorithmInfo("SORT", "F:/aptitude/surveillance/src/main/resources/config/test-SORT.json", "TRACKER"))
 		database.put(UUID.randomUUID,new AlgorithmInfo("DeepSORT", "F:/aptitude/surveillance/src/main/resources/config/test-DeepSORT.json","TRACKER"))
 		database.put(UUID.randomUUID,new AlgorithmInfo("APTITUDE", "NoneForTheMoment","COUNTER"))
@@ -65,12 +70,12 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 
 	override delete(key : UUID) {
 		// TODO Auto-generated code.
-		info("Deleting..." + key)
+		debug("Deleting..." + key)
 		assert database.keySet.contains(key),"Cannot remove a key not present in database"
 		
 		if (database.get(key) instanceof FileWriter) {
 			(database.get(key) as FileWriter).close
-			info("closed the file of " + key)
+			debug("closed the file of " + key)
 		} else {
 			info("Object of " + key + " not FileWriter")
 		}

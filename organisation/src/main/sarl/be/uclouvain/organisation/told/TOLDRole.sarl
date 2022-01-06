@@ -91,7 +91,7 @@ behavior TOLDRole {
 	}
 
 	on PlatformOrganisationInfo {
-		info("Platform organisation - " + occurrence.platformName + " encountered ")
+		debug("Platform organisation - " + occurrence.platformName + " encountered ")
 		platformID = occurrence.source.ID
 		if (!privateSpacesListeners.containsKey(platformID)){
 			info("Platform was not encountered")

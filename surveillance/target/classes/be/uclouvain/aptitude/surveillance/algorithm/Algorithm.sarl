@@ -84,7 +84,7 @@ agent Algorithm extends Paraddis{
 			for (e : toSpawn.keySet) {spawnInContextWithID(Algorithm, e, innerContext, toSpawn.get(e).IncrementLevelAndGet)}}
 		
 		if(ADN.level>1){
-			info("atomic agent with task: " + ADN.task + " & belief : " +
+			debug("atomic agent with task: " + ADN.task + " & belief : " +
 				ADN.belief.replace("F:/aptitude/surveillance/src/main/resources/", ""))
 			registerBehavior(new AlgorithmEntity(this))
 			switch(ADN.task){
@@ -125,12 +125,12 @@ agent Algorithm extends Paraddis{
 			spawnInContextWithID(Algorithm, cloneID, occurrence.contextID, cloneADN) //@FIXME : improper names // Maybe the clone should directly integrate the incrementandLevel
 		}}//@FIXME we could have a table of each child, so that we could direct the information to it. 
 	on AlgorithmJoinPlatform {
-		info("deploys " + ADN.task + " named " + occurrence.name + " performing for " + occurrence.source.ID.toString.substring(0, 5))
+		debug("deploys " + ADN.task + " named " + occurrence.name + " performing for " + occurrence.source.ID.toString.substring(0, 5))
 		wake(new AlgorithmNeeded(occurrence.contextID, occurrence.name, ADN.task, ADN.belief))
 	}
 
 	on AuthorizationToJoinContext {
-		info("receives authorisation to join - " + occurrence.source.ID)
+		//info("receives authorisation to join - " + occurrence.source.ID)
 		join(occurrence.contextID, occurrence.defaultSpaceID)
 	}
 }

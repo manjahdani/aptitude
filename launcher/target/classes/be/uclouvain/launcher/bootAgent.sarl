@@ -36,9 +36,9 @@ agent bootAgent extends Paraddis {
 
 	//@Parameters
 	
-	val INITIAL_CAMERAS = newArrayList("S02C006", "MOT17-04")
+	val INITIAL_CAMERAS = newArrayList("MOT17-04", "MOT17-02")
    	val INIT_TASKS= newArrayList("DETECTOR", "TRACKER", "COUNTER")
-	val AVAILABLE_RESSOURCES = newArrayList("1000","1001")
+	val AVAILABLE_RESSOURCES = newArrayList("1000","1000")
 
 	val client : DatagramSocket = new DatagramSocket(65000) // A client to listen requests
 	//val clientSender = new UDPSender() // homeMade client to send UDP message

@@ -93,7 +93,7 @@ behavior UserRole extends ElementRole {
 	}
 	
 	on HolonicParentInfo {
-		info("I met my parent")
+		debug("I met my parent")
 		parentPrivateChanel = occurrence.spaceID
 		parentPrivateChanel.registerStrongParticipant(asEventListener)
 	}

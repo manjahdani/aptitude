@@ -33,12 +33,11 @@ skill AlgorithmSelectionSkill implements AlgorithmSelection {
 		for (l : compResults.values) {
 			var sframe = (l.trackingTime + l.detectionTime) / l.frame
 			var effeciency = (0.51 - 2 * sframe) / (0.49)
-			info("HOTA :" + l.HOTA)
-			info("Effeciency :" + effeciency)
+			info("Competitor - " + l.competitorID + " - HOTA: " + l.HOTA + " - Efficiency:" + effeciency)
 			// info("Exper" + ExpertSensitivity)
-			rankedResult.put(APTITUDE(l.HOTA, effeciency, parameters.get(0).toAtomicInteger.get), l.belief)
+			rankedResult.put(metric_APTITUDE(l.HOTA, effeciency, parameters.get(0).toAtomicInteger.get), l.belief)
 		}
-		info(rankedResult + "\n Congratulations to " + rankedResult.lastEntry)
+		debug(rankedResult + "\n Congratulations to " + rankedResult.lastEntry)
 		
 		var selectedAlgorithm = compResults.values.filter[belief == rankedResult.lastEntry.value].get(0)//.competitorID
 			
@@ -53,8 +52,8 @@ skill AlgorithmSelectionSkill implements AlgorithmSelection {
 		
 	}
 	
-	def APTITUDE(hota : double, effeciency : double,  beta : int) {
-		return hota + beta*effeciency
+	def metric_APTITUDE(hota : double, effeciency : double,  beta : int) {
+		return hota //+ beta*effeciency
 	}
 
 	def addResult(testID : UUID, e : EvaluationResults) {

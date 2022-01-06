@@ -40,7 +40,7 @@ behavior TrackerRole extends ObserverRole {
 	uses Logging, TrackerPythonTwinCapacity, Behaviors, ExternalContextAccess
 
 
-	val detectors = newArrayList("TinyYOLO", "YOLO") // @FIXME should be given by the Analyst which makes it configurable ?
+	val detectors = newArrayList("YOLO", "YOLO-COCO") // @FIXME should be given by the Analyst which makes it configurable ?
 	
 	var totalTrackerTime : double = 0
 	var totalDetectorTime : double = 0
@@ -49,7 +49,7 @@ behavior TrackerRole extends ObserverRole {
 	var frameLimit : int = 500
 	
 	on LastFrame {
-		info("Transmitting to my listeners" + listeners.keySet)
+		debug("Transmitting to my listeners" + listeners.keySet)
 		for (l : listeners.keySet) {
 			emit(listeners.get(l),
 				new LastFrame(
@@ -63,7 +63,7 @@ behavior TrackerRole extends ObserverRole {
 	}
 	
 	on RemoveMission{
-		info("Received a request to remove a mission")
+		debug("Received a request to remove a mission")
 		emit(providers.get(occurrence.expertID),new PauseMission)[it.ID==occurrence.expertID]
 	}
 	
@@ -88,13 +88,13 @@ behavior TrackerRole extends ObserverRole {
 			]		
 		}
 		
-		if (occurrence.bboxes2DTrack.frameNumber % 100 ==0){
+		if (occurrence.bboxes2DTrack.frameNumber % 250 ==0){
 			info("Processed #" + occurrence.bboxes2DTrack.frameNumber +"frames")
 		}
 		if (occurrence.bboxes2DTrack.lastFrame || occurrence.bboxes2DTrack.frameNumber > frameLimit) {
 			emit(selfSpace, new TrackingTaskOver)
 			
-			info("Tracking job done... " + "sending the information to " + listeners.keySet)
+			debug("Tracking job done... " + "sending the information to " + listeners.keySet)
 			
 			for (l : listeners.keySet) {
 				emit(listeners.get(l),
@@ -141,7 +141,7 @@ behavior TrackerRole extends ObserverRole {
 			}
 			
 			registerBehavior(new CompetitiveMultiTrackerRole(owner), hyperParatermersToBeTested, this.observerADN,
-				TOLDContext, privateTOLDSpace, computation_location)
+				TOLDContext, privateTOLDSpace, computation_location, detectors)
 			
 			for (detector : detectors) {
 				
@@ -154,7 +154,7 @@ behavior TrackerRole extends ObserverRole {
 			setSkill(new TrackerPythonTwinSkill)
 			registerBehavior(new SingleTrackerRole(this.owner), observerADN.belief, observerADN.platformName,
 			computation_location)
-			//info("Come here : " + detectors.get(sensitivity.get))
+			info("Come here : " + detectors.get(sensitivity.get))
 			//requestAlgorithm(detectors.get(sensitivity.get), "DETECTOR")
 			}
 		}	

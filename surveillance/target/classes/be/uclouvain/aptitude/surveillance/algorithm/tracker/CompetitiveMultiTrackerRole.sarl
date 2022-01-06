@@ -29,6 +29,7 @@ import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
 import io.sarl.core.ExternalContextAccess
+import java.util.ArrayList
 
 /** 
  * @author manjah
@@ -38,7 +39,7 @@ import io.sarl.core.ExternalContextAccess
 behavior CompetitiveMultiTrackerRole {
 	uses Logging, Lifecycle, InnerContextAccess, Schedules , Behaviors, ExternalContextAccess
 	
-	val detectors = newArrayList("TinyYOLO","YOLO") // @FIXME its logiciel parameters or not ?
+	var detectors : ArrayList<String>  // @FIXME its logiciel parameters or not ?
 	
 	protected val sub_processes = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
 	protected val detector_innerTrackerMap = Collections.synchronizedMap(new HashMap<String, UUID>)
@@ -82,9 +83,7 @@ behavior CompetitiveMultiTrackerRole {
 		}
 		
 		computation_Location = occurrence.parameters.get(4).toString
-		
-
-		
+		detectors = occurrence.parameters.get(5) as ArrayList<String>
 		
 		for (param : hyperParametersToBeTested) {
 		var cloneID = UUID.randomUUID
@@ -122,7 +121,12 @@ behavior CompetitiveMultiTrackerRole {
 	on TrackingRequest {
 		debug("Reactivating Access - " + occurrence.competitorID + " - " + innerTracker_detectorsMap.get(occurrence.competitorID))
 		
-		
+		if (innerTracker_detectorsMap.get(occurrence.competitorID) == "YOLO-COCO"){
+			info("We are more in a horizontal view")
+		}
+		else if (innerTracker_detectorsMap.get(occurrence.competitorID) == "YOLO") {
+			info("We are in a vertical view")
+		}
 		wake(new ResumeTrackingMission(innerTracker_detectorsMap.get(occurrence.competitorID)))[it.ID==this.ID]
 		
 	}	

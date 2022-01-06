@@ -84,6 +84,7 @@ abstract behavior ObserverRole {
 			if (areAllTrue(checkList.values)) {
 				info("Start the processing role at location - "+computation_location+". Parameters are: s= "+sensitivity.get+ " isMaster=" + isMaster.get)
 				startProcessingRole
+				loggingName = this.ID + "-ALGORITHM-" + observerADN.name + "-" + observerADN.level + "-" + platformName + "-" + computation_location
 				task("waiting-greenLights").cancel
 			}
 			else{
@@ -187,9 +188,9 @@ abstract behavior ObserverRole {
 			emit(platformContext.defaultSpace,new AddMission(providers.get(sid))) [it.ID == sid] //@FIXME check whether the defaultSPACE is platform //@FIXME Check a simpler way to send
 		}
 		else{
-			info("Known signal = " + sid)
+			debug("Known signal = " + sid)
 			emit(providers.get(sid),new ResumeMission)[this.ID == sid]
-			info("Trying now in the default")
+			debug("Trying now in the default")
 			emit(platformContext.defaultSpace,new ResumeMission)[it.ID==sid]
 		}
 	}
