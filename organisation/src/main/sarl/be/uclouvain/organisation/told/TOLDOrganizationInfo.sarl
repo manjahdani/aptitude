@@ -1,0 +1,21 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.told
+
+import be.uclouvain.organisation.OrganizationInfo
+import io.sarl.core.OpenEventSpace
+import io.sarl.lang.core.AgentContext
+
+/** 
+ * @author manjah
+ * 
+ */
+event TOLDOrganizationInfo extends OrganizationInfo {
+	val storedData : Object
+
+	new (ctxt : AgentContext, sid : OpenEventSpace, data : Object) {
+		super(ctxt, sid)
+		this.storedData = data
+	}
+}

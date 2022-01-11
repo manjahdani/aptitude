@@ -63,5 +63,4 @@ behavior ManagerPlatformRole extends PlatformRole {
 					}
 			]
 		}
-		uses Logging
-		}
+}

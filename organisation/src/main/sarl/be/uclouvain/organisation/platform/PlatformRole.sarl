@@ -3,22 +3,21 @@
 package be.uclouvain.organisation.platform
 
 import be.uclouvain.organisation.AuthorizationToJoinContext
-import be.uclouvain.organisation.PlatformOrganisationInfo
+import be.uclouvain.organisation.AuthorizationToPerformMission
+import be.uclouvain.organisation.OrganizationInfo
+import be.uclouvain.organisation.OrganizationalRole
 import be.uclouvain.organisation.RequestToJoin
-import be.uclouvain.organisation.TOLDOrganisationInfo
+import be.uclouvain.organisation.told.TOLDOrganizationInfo
 import io.sarl.core.Behaviors
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Logging
-import io.sarl.core.MemberJoined
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
 import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
-import be.uclouvain.organisation.AuthorizationToPerformMission
-import io.sarl.core.DefaultContextInteractions
 
 /** 
  * The Platform manages the storage and/or computing of resources. A Platform could include sub-Platforms (holonic). 
@@ -39,12 +38,12 @@ import io.sarl.core.DefaultContextInteractions
  */
 
 
-behavior PlatformRole {
-	uses Behaviors, InnerContextAccess, ExternalContextAccess, Logging, DefaultContextInteractions
+behavior PlatformRole extends OrganizationalRole {
+	uses Behaviors, InnerContextAccess, ExternalContextAccess, Logging
 
 	protected var TOLDID : UUID
-	protected val privateSpacesListeners = new HashMap<UUID, OpenEventSpace>
-	protected val missionSpace = new HashMap<UUID, OpenEventSpace> // Used for the communications among observers.
+	
+	protected val missionSpace= new HashMap<UUID, OpenEventSpace> // Used for the communications among observers.
 	val location = new AtomicReference<String>
 	
 	@SuppressWarnings("potential_field_synchronization_problem")
@@ -53,7 +52,7 @@ behavior PlatformRole {
 	}
 
 	@SuppressWarnings("potential_field_synchronization_problem")
-	on TOLDOrganisationInfo {
+	on TOLDOrganizationInfo {
 		TOLDID = occurrence.source.ID
 		debug("met TOLD organisation - " + TOLDID.toString.substring(0, 5))
 		if (!privateSpacesListeners.containsKey(TOLDID)) { // Not Encountered
@@ -61,7 +60,7 @@ behavior PlatformRole {
 			privateSpacesListeners.put(TOLDID, occurrence.privateCommunicationChannel)
 			occurrence.privateCommunicationChannel.registerStrongParticipant(asEventListener)
 			emit(occurrence.privateCommunicationChannel,
-				new PlatformOrganisationInfo(innerContext, privateSpacesListeners.get(TOLDID), location.get)) [
+				new PlatformOrganizationInfo(innerContext, privateSpacesListeners.get(TOLDID), location.get)) [
 				it.ID == TOLDID
 			]
 		//PlatformTOLDSpace.registerStrongParticipant(asEventListener)
@@ -93,32 +92,29 @@ behavior PlatformRole {
 			]
 	}
 	
-	on MemberJoined {
-
-		val memberID = occurrence.agentID
-		privateSpacesListeners.put(memberID,
-			innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID))
-		privateSpacesListeners.get(memberID).registerStrongParticipant(asEventListener)
-		
-		sendOrganisationinfo(memberID);
-	}
 	on StopMission {
 		// if(RuleManagement())
 		//info(" I received a Stop Misson" + occurrence.expertID)
 		//wake(new LeavePlatform)
 	}
 	
-	def sendOrganisationinfo(memberID : UUID) {
+	/**
+	def sendOrganizationInfo(memberID : UUID) {
 		debug("sending organisation info - " + memberID.toString.substring(0, 5))
 		if(getMemberAgents.contains(memberID)){
-		wake(new PlatformOrganisationInfo(innerContext, privateSpacesListeners.get(memberID), location.get)) [
+		wake(new PlatformOrganizationInfo(innerContext, privateSpacesListeners.get(memberID), location.get)) [
 			it.ID == memberID
 		]}
 		else {
-			emit(new PlatformOrganisationInfo(innerContext, privateSpacesListeners.get(memberID), location.get)) [
+			emit(new PlatformOrganizationInfo(innerContext, privateSpacesListeners.get(memberID), location.get)) [
 				it.ID == memberID
 			]
 		}
+	}*/
+	
+	def getOrganizationInfo(memberID : UUID) : OrganizationInfo {
+
+		return (new PlatformOrganizationInfo(innerContext, privateSpacesListeners.get(memberID), location.get))
 	}
 }
 

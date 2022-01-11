@@ -1,34 +1,35 @@
-/** 
- * 
- */
 package be.uclouvain.aptitude.surveillance.user
 
 import be.uclouvain.aptitude.surveillance.platform.AgentPlatform
 import be.uclouvain.aptitude.surveillance.ui.AuthenticateUser
-import be.uclouvain.organisation.HolonicParentInfo
-import be.uclouvain.organisation.PlatformOrganisationInfo
+import be.uclouvain.organisation.OrganizationInfo
+import be.uclouvain.organisation.OrganizationalRole
+import be.uclouvain.organisation.interactivity.InteractivityOrganizationInfo
+import be.uclouvain.organisation.platform.AuthorizedMission
 import be.uclouvain.organisation.platform.NewMission
-import be.uclouvain.organisation.told.entity.EntityRole
+import be.uclouvain.organisation.platform.PlatformOrganizationInfo
 import io.sarl.core.Behaviors
-import io.sarl.core.Initialize
+import io.sarl.core.ExternalContextAccess
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
-import io.sarl.core.MemberJoined
 import io.sarl.core.OpenEventSpace
-import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.AgentContext
 import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
-import be.uclouvain.organisation.platform.AuthorizedMission
-import io.sarl.core.ExternalContextAccess
 
 /** 
- * @author manjah
+ * @TODO to comment
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.2$
+ * @date $11/02/2022$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
  * 
  */
-behavior UserManagerEntity extends EntityRole {
+behavior UserManagerEntity extends OrganizationalRole{
 	uses Lifecycle, InnerContextAccess, Behaviors,Logging, ExternalContextAccess
 
 	protected var platformSpace : OpenEventSpace
@@ -37,13 +38,10 @@ behavior UserManagerEntity extends EntityRole {
 	val usersList : LinkedList<UUID> = new LinkedList<UUID>
 	var PlatformListenersSpaceIDs= new HashMap<String, OpenEventSpace>
 	
-	var subHolons= new HashMap<UUID, OpenEventSpace>
+	//var subHolons= new HashMap<UUID, OpenEventSpace>
 	
-	on Initialize {
-		
-	}
 	@SuppressWarnings("potential_field_synchronization_problem")
-	on PlatformOrganisationInfo {
+	on PlatformOrganizationInfo {
 		info("User manager met platform Organisation")
 		platformContext = occurrence.context
 		platformSpace = occurrence.privateCommunicationChannel
@@ -62,25 +60,25 @@ behavior UserManagerEntity extends EntityRole {
 			User,
 			occurrence.userID,
 			innerContext,
-			new HolonicUserConfig(1, occurrence.data.playerUID,
-			accessRight(occurrence.data.playerUID))) //FIXME the user level is not automatic
+			new HolonicUserConfig(1, 
+									 	occurrence.data.playerUID,
+									 	accessRight(occurrence.data.playerUID))) //FIXME the user level is not automatic
 	}
 	
 	on NewMission {
 		debug("receives external order for a new mission in -" + occurrence.mission.location +" from" + occurrence.source.ID.toString.substring(0,5))
-		emit(subHolons.get(occurrence.source.ID),
+		emit(privateSpacesListeners.get(occurrence.source.ID),
 			new AuthorizedMission(occurrence.mission, 
 				PlatformListenersSpaceIDs.get(occurrence.mission.location)
 			))
 	}
-	on MemberJoined {		
-		var privateChanel = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
-		privateChanel.registerStrongParticipant(asEventListener)
-		subHolons.put(occurrence.agentID, privateChanel)
-		wake(new HolonicParentInfo(privateChanel))[it.ID==occurrence.agentID]
-	}
-	//@TODO To develop a user rights access ! 
+	 
 	def accessRight (s:String){
-		return PlatformListenersSpaceIDs.keySet
-	}	
+		return PlatformListenersSpaceIDs.keySet 		// @TODO Develop a user rights access !
+	}
+	
+	def getOrganizationInfo(memberID : UUID) : OrganizationInfo {
+		return new InteractivityOrganizationInfo(innerContext, privateSpacesListeners.get(memberID))
+	}
+	
 }

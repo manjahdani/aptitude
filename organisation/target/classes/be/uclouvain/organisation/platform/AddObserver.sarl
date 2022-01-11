@@ -1,0 +1,43 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+
+/** 
+ * Event triggered by Algorithms or Experts to request partnership's authorisation 
+ * with another Algorithm or Expert. 
+ * <h4>For an Agent</h4>
+ * Platform 
+ * 
+ * <h4>For a Behavior</h4>
+ * PlatformRole
+ * 
+ * <h4>For a Skill</h4>
+ * No skill receives this event.
+ * 
+ * <h4>For Agent Members</h4>
+ *  
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $10/01/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ * 
+*/
+
+
+final event AddObserver {
+
+	var signalProvider : AlgorithmInfo // @FIXME LOW not general
+	var signalReceiver : AlgorithmInfo
+	
+	new (s : AlgorithmInfo, r : AlgorithmInfo) {
+		this.signalProvider = s
+		this.signalReceiver = r 
+	}
+}
+
+

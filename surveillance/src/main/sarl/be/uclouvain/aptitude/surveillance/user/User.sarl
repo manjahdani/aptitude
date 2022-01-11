@@ -12,7 +12,7 @@ import io.sarl.core.Logging
 /** 
  * The Holon User represents an agent that want to use/used the system. 
  * A User could a be a group of user. 
- * We established that in order to interact with the system, each User owns User Interface in order to provide input to the system and receives output. 
+ * It is established to interact with the system, each User owns User Interface in order to provide input to the system and receives output. 
  * The agent User keep tracks of the records of the user(s) and is responsible, of updating the universe and manage the in/out of virtual and real users. 
  * It is also responsible of establishing the connection between the virtual/real user and the system. It endorses the roles of Element and their associated capacities. 
  * 
@@ -39,8 +39,11 @@ agent User extends Paraddis {
 				spawnInContext(UserInterface,innerContext)
 			}
 			default : {
-				setSkill(new UserSkill(userConfig.name), UserElementCapacity, ElementCapacity)
-				registerBehavior(new UserRole(this), userConfig.initialPlatforms)
+			 	setSkill(new UserSkill(userConfig.name,
+											userConfig.initialPlatforms), 
+						UserElementCapacity,
+								   ElementCapacity)
+				registerBehavior(new UserRole(this))
 			}
 		}
 		

@@ -49,6 +49,13 @@ class AlgorithmInfo implements Cloneable {
 		this.task = t
 		this.level = -1
 	}
+
+	new (n : String, b : String, t : String, l : int) {
+		this.name = n
+		this.belief = b
+		this.task = t
+		this.level = l
+	}
 	
 	new (n : String, b : String, t : String) {
 		this.name = n
@@ -75,13 +82,7 @@ class AlgorithmInfo implements Cloneable {
 	{
 		this.ID = ID
 	}
-	def cloneChild {
-		return this.clone.IncrementLevelAndGet
-	}
-	def IncrementLevelAndGet : AlgorithmInfo{
-		this.level=level+1
-		return this
-	}
+
 	
 	def getLevel{
 		return this.level
@@ -107,5 +108,23 @@ class AlgorithmInfo implements Cloneable {
 
 	def getTask {
 		return this.task;
+	}
+
+	def incrementLevel {
+		this.level = level + 1
+	}
+	
+	/** 
+	 * Cloning process 
+	 * 
+	 * */
+	def cloneChild(childID : UUID) {
+		return this.clone.newClone(childID)
+	}
+
+	def newClone(id : UUID) {
+		incrementLevel
+		setID(id)
+		return this
 	}
 }

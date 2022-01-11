@@ -1,0 +1,54 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation
+
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Logging
+import io.sarl.core.MemberJoined
+import io.sarl.core.MemberLeft
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.OpenEventSpaceSpecification
+import java.util.HashMap
+import java.util.UUID
+
+/** 
+ * Global behaviour that derived organisational roles must follow. 
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.3$
+ * @date $10/01/2022$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ */
+abstract behavior OrganizationalRole {
+	uses InnerContextAccess,Behaviors, DefaultContextInteractions, Logging
+
+	protected val privateSpacesListeners = new HashMap<UUID, OpenEventSpace>
+	
+	// Create a private channel between the recruited holon and the super-holon. 
+	on MemberJoined {
+
+		val memberID = occurrence.agentID
+		privateSpacesListeners.put(memberID,
+			innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID))
+		privateSpacesListeners.get(memberID).registerStrongParticipant(asEventListener)
+
+		debug("sending organisation info - " + memberID.toString.substring(0, 5))
+		if (occurrence.inDefaultSpace) {
+			emit(getOrganizationInfo(memberID))[it.ID == memberID]
+		}
+		else{
+			wake(getOrganizationInfo(memberID))[it.ID==memberID]}
+		
+	}
+
+	// Remove the channel. 
+	on MemberLeft {
+		privateSpacesListeners.remove(occurrence.agentID)
+	}
+	abstract def getOrganizationInfo (memberID:UUID): OrganizationInfo
+
+}

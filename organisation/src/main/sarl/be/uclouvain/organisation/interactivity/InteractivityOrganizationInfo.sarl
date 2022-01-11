@@ -1,0 +1,12 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.interactivity
+
+import be.uclouvain.organisation.OrganizationInfo
+
+/** 
+ * @author manjah
+ * 
+ */
+event InteractivityOrganizationInfo extends OrganizationInfo

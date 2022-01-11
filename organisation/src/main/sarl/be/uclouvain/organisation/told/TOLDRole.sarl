@@ -2,18 +2,12 @@ package be.uclouvain.organisation.told
 
 import be.uclouvain.organisation.AddMember
 import be.uclouvain.organisation.AuthorizationToJoinContext
-import be.uclouvain.organisation.PlatformOrganisationInfo
-import be.uclouvain.organisation.TOLDOrganisationInfo
+import be.uclouvain.organisation.OrganizationalRole
+import be.uclouvain.organisation.platform.PlatformOrganizationInfo
 import io.sarl.core.Behaviors
-import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Logging
-import io.sarl.core.MemberJoined
-import io.sarl.core.MemberLeft
-import io.sarl.core.OpenEventSpace
-import io.sarl.core.OpenEventSpaceSpecification
-import java.util.HashMap
 import java.util.UUID
 
 /** 
@@ -30,13 +24,13 @@ import java.util.UUID
  * @mavenartifactid $organisation$
  * 
  */
-behavior TOLDRole {
+behavior TOLDRole extends OrganizationalRole {
 	
-	uses Behaviors, AccessDatabaseCapacity, InnerContextAccess,Logging, ExternalContextAccess, DefaultContextInteractions
+	uses Behaviors, AccessDatabaseCapacity, InnerContextAccess,Logging, ExternalContextAccess
 	
 	
 	protected var platformID : UUID
-	protected val privateSpacesListeners = new HashMap<UUID, OpenEventSpace>
+
 	/*
 	 * The platform registerStrongParticipant the context of a platform 
 	 */
@@ -71,26 +65,9 @@ behavior TOLDRole {
 		debug("Reading entry and sending -" + read(occurrence.key))
 		emit(privateSpacesListeners.get(occurrence.source.ID), new QueryAnswer(read(occurrence.key)))
 	}
-	on MemberJoined {
-		debug("MemberJoined - " + occurrence.agentID.toString.substring(0, 5))
-		var memberID = occurrence.agentID;
-		privateSpacesListeners.put(memberID,
-			innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID))
-		
-		
-		if(occurrence.inDefaultSpace){
-			emit(new TOLDOrganisationInfo(innerContext, privateSpacesListeners.get(memberID), read(memberID))) [
-			it.ID == memberID]
-		} 
-		else {
-			wake(new TOLDOrganisationInfo(innerContext, privateSpacesListeners.get(memberID), read(memberID))) [
-				it.ID == memberID
-			]
-		}
-		privateSpacesListeners.get(memberID).registerStrongParticipant(asEventListener)
-	}
 
-	on PlatformOrganisationInfo {
+
+	on PlatformOrganizationInfo {
 		debug("Platform organisation - " + occurrence.platformName + " encountered ")
 		platformID = occurrence.source.ID
 		if (!privateSpacesListeners.containsKey(platformID)){
@@ -98,14 +75,11 @@ behavior TOLDRole {
 				val privateChannel = occurrence.privateCommunicationChannel
 				privateSpacesListeners.put(platformID, privateChannel)
 				privateChannel.registerStrongParticipant(asEventListener)
-				emit(privateChannel,
-					new TOLDOrganisationInfo(innerContext, privateSpacesListeners.get(platformID), read(platformID))) [
-					it.ID == platformID
-				]
+				emit(privateChannel, getOrganizationInfo(platformID))[it.ID == platformID]
 		}	
 	}
-	@SuppressWarnings("discouraged_occurrence_readonly_use")
-	on MemberLeft {
-		privateSpacesListeners.remove(occurrence.agentID)
+	def getOrganizationInfo(memberID : UUID) : TOLDOrganizationInfo{
+		
+		return new TOLDOrganizationInfo(innerContext, privateSpacesListeners.get(memberID), read(memberID))
 	}
 }

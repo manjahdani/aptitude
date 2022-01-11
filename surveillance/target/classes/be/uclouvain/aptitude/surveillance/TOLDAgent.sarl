@@ -55,12 +55,12 @@ agent TOLDAgent extends Paraddis {
 		config = occurrence.parameters.get(0) as TOLDConfig
 		loggingName = this.ID + "-TOLD" + "-" + config.level
 		info("ready to share my stored knowledge.")
-		var registerStrongParticipantedAlgorithms : HashMap<UUID, AlgorithmInfo> = new HashMap(S.database.filter [ p1, p2 |
+		var registeredAlgorithms : HashMap<UUID, AlgorithmInfo> = new HashMap(S.database.filter [ p1, p2 |
 			p2 instanceof AlgorithmInfo
 		])
 		for (t : config.init_tasks) {
 			spawnInContext(Algorithm, innerContext, new AlgorithmInfo(t, "none", t),
-				new HashMap(registerStrongParticipantedAlgorithms.filter[p1, p2|p2.task == t]))
+				new HashMap(registeredAlgorithms.filter[p1, p2|p2.task == t]))
 		}
 	}
 	

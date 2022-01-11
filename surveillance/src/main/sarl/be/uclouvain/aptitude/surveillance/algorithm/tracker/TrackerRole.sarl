@@ -177,7 +177,6 @@ event BBoxes2DTrackResultToCounter extends BBoxes2DTrackResult{ //@FIXME : Nonse
 		this.observerName = o
 		this.sensitivity=s
 	}
-	
 }
 
 

@@ -3,23 +3,38 @@
  */
 package be.uclouvain.organisation.interactivity.element
 
+import io.sarl.lang.core.AgentContext
+import io.sarl.core.OpenEventSpace
+import be.uclouvain.organisation.interactivity.InteractivityOrganizationInfo
+import io.sarl.core.Behaviors
+
 /** 
  * 
- * @TODO : comment  
+ * Element translates data from and to external parties 
  * 
  * @author $Author: manjahdani$
- * @version $0.0.1$
+ * @version $0.0.2$
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
  * 
  */
 behavior ElementRole {
+
+	uses Behaviors, ElementCapacity 
 	
-
-	//@SuppressWarnings("discouraged_occurrence_readonly_use")
-	//on ElementInformation {
-		//InformationAnalysis(occurrence.information)
-
-	//}
+	protected var InteractivityOrganizationContext : AgentContext
+	protected var InteractivityOrganizationPrivateSpace : OpenEventSpace
+	
+	on InteractivityOrganizationInfo {
+		synchronized(this){
+		InteractivityOrganizationContext = occurrence.context
+		InteractivityOrganizationPrivateSpace = occurrence.privateCommunicationChannel
+		InteractivityOrganizationPrivateSpace.registerStrongParticipant(asEventListener)}
+		
+	}
+	
+	on ElementInformation {
+		InformationAnalysis(occurrence.information)
+	}
 }

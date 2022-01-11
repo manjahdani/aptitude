@@ -1,9 +1,7 @@
 package be.uclouvain.organisation.platform
 
 import be.uclouvain.organisation.AuthorizationToPerformMission
-import be.uclouvain.organisation.PlatformOrganisationInfo
 import be.uclouvain.organisation.SignalID
-import be.uclouvain.organisation.TOLDOrganisationInfo
 import be.uclouvain.organisation.platform.util.MissionData
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
@@ -13,6 +11,7 @@ import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import io.sarl.lang.core.AgentContext
 import java.util.UUID
+import be.uclouvain.organisation.told.TOLDOrganizationInfo
 
 /** 
  * 
@@ -64,7 +63,7 @@ behavior AnalystRole {
 	@SuppressWarnings("potential_field_synchronization_problem")
 	
 	// @FIXME There are global behavior organisational Behavior
-	on PlatformOrganisationInfo {
+	on PlatformOrganizationInfo {
 		debug("Joined platform organisation: " + occurrence.privateCommunicationChannel + " (" + occurrence.context +
 			").")
 		if (occurrence.context.ID == missionData.platformID) {
@@ -95,7 +94,7 @@ behavior AnalystRole {
 		] 
 	}
 	@SuppressWarnings("potential_field_synchronization_problem")
-	on TOLDOrganisationInfo {
+	on TOLDOrganizationInfo {
 		//info("Joined TOLD organisation: " + occurrence.privateCommunicationChannel + " (" + occurrence.context + ").")
 		TOLDContext = occurrence.context
 		privateTOLDSpace = occurrence.privateCommunicationChannel

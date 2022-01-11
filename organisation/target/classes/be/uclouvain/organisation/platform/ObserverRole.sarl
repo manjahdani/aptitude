@@ -1,9 +1,7 @@
 package be.uclouvain.organisation.platform
 
 import be.uclouvain.organisation.Identification
-import be.uclouvain.organisation.PlatformOrganisationInfo
 import be.uclouvain.organisation.SignalID
-import be.uclouvain.organisation.TOLDOrganisationInfo
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
 import io.sarl.core.Destroy
@@ -21,6 +19,7 @@ import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
+import be.uclouvain.organisation.told.TOLDOrganizationInfo
 
 /** 
  * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 
@@ -116,7 +115,7 @@ abstract behavior ObserverRole {
 	}
 
 	@SuppressWarnings("potential_field_synchronization_problem")
-	on PlatformOrganisationInfo  { 
+	on PlatformOrganizationInfo  { 
 		platformContext = occurrence.context
 		privatePlatformSpace = occurrence.privateCommunicationChannel
 		privatePlatformSpace.registerStrongParticipant(asEventListener)
@@ -125,7 +124,7 @@ abstract behavior ObserverRole {
 		emit(platformContext.defaultSpace,new Identification(observerADN.name)) //@ FIXME not general in the sens of it should whenever it joins a context
 	}	
 	
-	on TOLDOrganisationInfo {
+	on TOLDOrganizationInfo {
 		TOLDContext = occurrence.context
 		privateTOLDSpace = occurrence.privateCommunicationChannel
 		privateTOLDSpace.registerStrongParticipant(asEventListener)

@@ -6,7 +6,6 @@ package be.uclouvain.aptitude.surveillance.algorithm.tracker
 import be.uclouvain.python_access.BBoxes2DResult
 import be.uclouvain.python_access.PartnerTrackingFound
 import be.uclouvain.python_access.PythonAccessorRole
-import io.sarl.core.Logging
 
 /** 
  * @author manjah
@@ -17,7 +16,7 @@ import io.sarl.core.Logging
 
 behavior SingleTrackerRole extends PythonAccessorRole {
 	
-	uses TrackerPythonTwinCapacity, Logging
+	uses TrackerPythonTwinCapacity
 
 	on PartnerTrackingFound {
 		synchronized (this)

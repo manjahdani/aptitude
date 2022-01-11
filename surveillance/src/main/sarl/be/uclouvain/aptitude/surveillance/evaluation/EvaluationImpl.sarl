@@ -3,17 +3,15 @@
  */
 package be.uclouvain.aptitude.surveillance.evaluation
 
-
 import be.uclouvain.python_access.CommunicationManager
+import be.uclouvain.python_access.EvaluationResult
+import be.uclouvain.python_access.PartnerEvaluationFound
+import be.uclouvain.python_access.PythonTwinAccess
 import be.uclouvain.python_access.messages.BaseMessage
 import be.uclouvain.python_access.messages.EvaluationMessage
 import be.uclouvain.python_access.messages.RequestMessage
 import io.sarl.core.Behaviors
 import io.sarl.core.Schedules
-import be.uclouvain.python_access.PythonTwinAccess
-import be.uclouvain.python_access.EvaluationResult
-import be.uclouvain.python_access.PartnerEvaluationFound
-import io.sarl.core.Logging
 import java.util.UUID
 
 /** 
@@ -28,7 +26,7 @@ import java.util.UUID
  */
 skill EvaluationImpl extends PythonTwinAccess implements Evaluation {
 
-	uses Behaviors, Schedules, Logging
+	uses Behaviors, Schedules
 
 	def update(m : BaseMessage) {
 		if (m instanceof EvaluationMessage) {

@@ -9,7 +9,6 @@ import be.uclouvain.aptitude.surveillance.algorithm.detector.DetectorRole
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerRole
 import be.uclouvain.aptitude.surveillance.platform.AgentAlgorithm
 import be.uclouvain.aptitude.surveillance.platform.AgentPlatform
-import be.uclouvain.organisation.AuthorizationToJoinContext
 import be.uclouvain.organisation.platform.AlgorithmJoinPlatform
 import be.uclouvain.organisation.told.entity.EntityRole
 import be.uclouvain.organisation.told.util.AlgorithmInfo
@@ -49,7 +48,6 @@ import java.util.UUID
  * Second thoughts on 13/04. I am not very fond of this logic as it does not respect evolutionnary vision in addition. It does not bring 
  * enough abstraction, bref while it could programming-wise convenient, it will just be a lack of effort in abstraction..)  
  * 
- * @TODO : draw the visual to show the holonic structure (it is not really holonical, actually it is)
  * 
  * 
  * 
@@ -81,7 +79,9 @@ agent Algorithm extends Paraddis{
 		
 		if (ADN.level == 0) {
 			var toSpawn = occurrence.parameters.get(1) as HashMap<UUID, AlgorithmInfo>
-			for (e : toSpawn.keySet) {spawnInContextWithID(Algorithm, e, innerContext, toSpawn.get(e).IncrementLevelAndGet)}}
+			for (e : toSpawn.keySet) {
+				spawnInContextWithID(Algorithm, e, innerContext, toSpawn.get(e))
+			}}
 		
 		if(ADN.level>1){
 			debug("atomic agent with task: " + ADN.task + " & belief : " +
@@ -120,19 +120,14 @@ agent Algorithm extends Paraddis{
 					occurrence.belief.replace("F:/aptitude/surveillance/src/main/resources/", "") + " \n to answer the request of " + occurrence.source.ID.toString.substring(0, 5))
 			val cloneID = UUID.randomUUID
 			subHolons.put(occurrence.contextID, cloneID)
-			var cloneADN = ADN.cloneChild
-			cloneADN.setID(cloneID) //@FIXME could better code it
-			spawnInContextWithID(Algorithm, cloneID, occurrence.contextID, cloneADN) //@FIXME : improper names // Maybe the clone should directly integrate the incrementandLevel
+			spawnInContextWithID(Algorithm, cloneID, occurrence.contextID, ADN.cloneChild(cloneID))
 		}}//@FIXME we could have a table of each child, so that we could direct the information to it. 
 	on AlgorithmJoinPlatform {
 		debug("deploys " + ADN.task + " named " + occurrence.name + " performing for " + occurrence.source.ID.toString.substring(0, 5))
 		wake(new AlgorithmNeeded(occurrence.contextID, occurrence.name, ADN.task, ADN.belief))
 	}
 
-	on AuthorizationToJoinContext {
-		//info("receives authorisation to join - " + occurrence.source.ID)
-		join(occurrence.contextID, occurrence.defaultSpaceID)
-	}
+
 }
 
 

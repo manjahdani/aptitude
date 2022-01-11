@@ -12,9 +12,23 @@ import UDPMessages.SpawnCharacterAuthorization
 import UDPMessages.SpawnObjectAuthorization
 import UDPMessages.UDP_Message_AckAuthenticateMobile
 import UDPMessages.UDP_Message_Base
+import UDPMessages.UDP_Message_RequestSpawn
+import UDPMessages.UDP_Message_RequestWithdraw
 import UDPMessages.UDP_Message_UpdateInventory
+import be.uclouvain.aptitude.surveillance.Expert
 import be.uclouvain.organisation.interactivity.outputDevice.OutputMsg
+import be.uclouvain.organisation.platform.NewMission
+import be.uclouvain.organisation.platform.StopMission
+import be.uclouvain.organisation.platform.util.MissionData
+import be.uclouvain.organisation.platform.util.MissionParameters
+import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
+import java.util.HashMap
+import java.util.LinkedList
+import java.util.UUID
+import java.util.concurrent.atomic.AtomicInteger
 
 /** 
  * 
@@ -32,14 +46,40 @@ import io.sarl.core.DefaultContextInteractions
  
 skill UserSkill implements UserElementCapacity {
 
-	uses DefaultContextInteractions
+	uses DefaultContextInteractions, Lifecycle,InnerContextAccess, Behaviors
 
 
 	val playerID : String
-
-	new (userID : String) {
+	val entityList : HashMap<UUID, CharacterData> = new HashMap<UUID, CharacterData>
+	val AVAILABLE_EXPERTS = new AtomicInteger(4) //@FIXME MEDIUM HARDCODED VALUE
+	val EXPERTISE_DEGREE = newArrayList(1, 2, 3, 0) //@FIXME MEDIUM HARDCODE VALUE
+	var availablePlatforms = new LinkedList<String>
+	
+	new (userID : String, avl_platforms : LinkedList<String>) {
+		
+		this.availablePlatforms.addAll(avl_platforms)
 		this.playerID = userID
 	}
+
+	def install {
+		
+		for (var i = 0; i < AVAILABLE_EXPERTS; i++) {
+			val id = UUID.randomUUID
+			entityList.put(id, new CharacterData(id.toString, EXPERTISE_DEGREE.get(i), 0, -1))
+			spawnInContextWithID(Expert, id, innerContext) 	// @FIXME LOW the Expert is an Entity that must live in the TOLD Context
+		}
+		setupPhysicalDevice(getExpertTypeList)
+	}
+
+	def InformationAnalysis(msg : UDP_Message_Base) {
+		if (msg instanceof UDP_Message_RequestSpawn) {
+			startMission(msg)
+
+		} else if (msg instanceof UDP_Message_RequestWithdraw) {
+			stopMission(msg)
+		}
+	}
+	
 	def synchronized outputSend(msgOut : UDP_Message_Base) {
 		emit(new OutputMsg(msgOut))
 	}
@@ -48,16 +88,52 @@ skill UserSkill implements UserElementCapacity {
 		outputSend(new UDP_Message_UpdateInventory(playerID, cd, getObjectList))
 	}
 
-	def getObjectList {
+	@Pure def getObjectList  {
 		var objectsList : ObjectData[] = newArrayOfSize(1);
 		objectsList.set(0, new ObjectData(this.ID.toString, 1, 0))
 		return objectsList
 	}
 	
-	def InformationAnalysis(msg : UDP_Message_Base) {
-		
+	def startMission(msg : UDP_Message_RequestSpawn) {
+		val entityID = UUID.fromString(msg.actorUID)
+
+		emitToParent(
+			new NewMission(
+				new MissionData(
+					UUID.randomUUID,
+					entityID,
+					availablePlatforms.get(msg.sceneID),
+					new MissionParameters(entityList.get(entityID).evolution, true)
+				)
+			)
+		)
+		entityList.get(entityID).screenID = msg.sceneID
+		updateBehavior(getExpertTypeList)
+	}
+	
+	def stopMission(msg : UDP_Message_RequestWithdraw) {
+
+		var MissionID = UUID.fromString(msg.actorUID)
+		entityList.get(MissionID).screenID = -1
+		wake(new StopMission(MissionID))[it.ID == MissionID]
+		updateBehavior(getExpertTypeList)
 	}
 
+	def getExpertTypeList {
+		var characterList : CharacterData[] = newArrayOfSize(20)
+		var i = 0;
+		for (id : entityList.keySet) {
+			var cD = entityList.get(id)
+			characterList.set(i, cD)
+			i++
+		}
+		return characterList
+	}
+
+	def getEntityList : HashMap<UUID, CharacterData> {
+		return this.entityList
+	}
+	
 	def setupPhysicalDevice(cd : CharacterData[]) {
 
 		var objectsAuthorizations : SpawnObjectAuthorization[] = newArrayOfSize(4)

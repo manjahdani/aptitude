@@ -10,8 +10,6 @@ import be.uclouvain.organisation.platform.ComputationalRessources
 import be.uclouvain.organisation.platform.PlatformCapacity
 import be.uclouvain.organisation.platform.PlatformRole
 import be.uclouvain.organisation.platform.util.MembershipRule
-import io.sarl.core.Behaviors
-import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Logging
@@ -21,6 +19,7 @@ import java.util.Collections
 import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
+import io.sarl.core.Behaviors
 
 /** 
  * 
@@ -33,7 +32,7 @@ import java.util.UUID
  * 
  */
 behavior SurveillancePlatformRole extends PlatformRole {
-	uses InnerContextAccess, ExternalContextAccess, Logging, PlatformCapacity, Schedules, DefaultContextInteractions, Behaviors
+	uses InnerContextAccess, ExternalContextAccess, Logging, PlatformCapacity, Schedules, Behaviors
 	
 	protected val participants = Collections.synchronizedMap(new HashMap<String, UUID>) // @FIXME clarify MAP - Lists and so on. clarify also if the variables must be concurrent or not
 	val request = Collections.synchronizedList(new LinkedList<String>)
@@ -59,15 +58,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 		participants.put(occurrence.fullName, occurrence.source.ID)
 		wake(new ComputationalRessources(allocated_ressource))[it.ID == occurrence.source.ID]
 	}
-
-//	@SuppressWarnings("potential_field_synchronization_problem")
-//	on AddAlgorithm {
-//		info("recruiting agent algorithm "+ occurrence.algorithmInfo.name + " to join our platform ")
-//		agentAlgorithm.get(occurrence.algorithmInfo.task).emit(
-//			new AlgorithmJoinPlatform(innerContext, occurrence.missionSpace, occurrence.algorithmInfo.name,
-//			occurrence.algorithmInfo.task,
-//				occurrence.source.ID))
-//	} //Revoir @FIXME Obsolete 
+ 
 	
 	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
 	on AddObserver {

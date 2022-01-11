@@ -1,14 +1,10 @@
-/** 
- * 
- */
 package be.uclouvain.organisation
 
 import io.sarl.lang.core.AgentContext
 import io.sarl.core.OpenEventSpace
 
 /** 
- * Generic event to provide  
- * The source is usually the Holon that is the organisation
+ * Generic event to provide the organisation information to a recruited holon 
  * 
  * <h4>For an Agent</h4>
  * This event by each holon that joined context
@@ -28,12 +24,11 @@ import io.sarl.core.OpenEventSpace
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
  */
+event OrganizationInfo {
 
-event OrganisationInfo {
-
-	/** 
-	 * Joined Context
-	 */
+			/** 
+		 * Joined Context
+		 */
 	val context : AgentContext
 
 	/** 
@@ -51,23 +46,3 @@ event OrganisationInfo {
 		this.privateCommunicationChannel = sid
 	}
 }
-
-final event TOLDOrganisationInfo extends OrganisationInfo {
-	
-	val storedData : Object
-	new (ctxt : AgentContext, sid : OpenEventSpace, data : Object ) {
-		super(ctxt,sid)
-		this.storedData = data
-	}
-}
-
-final event PlatformOrganisationInfo extends OrganisationInfo{
-	
-	val platformName : String
-
-	new (ctxt : AgentContext, sid : OpenEventSpace, name : String) {
-		super(ctxt,sid)
-		this.platformName = name
-	}
-}
-final event InteractivittyOrganisationInfo extends OrganisationInfo
