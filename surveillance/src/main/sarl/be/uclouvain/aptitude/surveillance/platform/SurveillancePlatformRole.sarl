@@ -1,15 +1,16 @@
 package be.uclouvain.aptitude.surveillance.platform
 
-import be.uclouvain.organisation.AddMember
-import be.uclouvain.organisation.Identification
-import be.uclouvain.organisation.LocalDatabaseRequest
-import be.uclouvain.organisation.SignalID
-import be.uclouvain.organisation.platform.AddObserver
-import be.uclouvain.organisation.platform.AlgorithmJoinPlatform
-import be.uclouvain.organisation.platform.ComputationalRessources
+import be.uclouvain.organisation.events.AddMember
+import be.uclouvain.organisation.events.Identification
+import be.uclouvain.organisation.events.SignalID
 import be.uclouvain.organisation.platform.PlatformCapacity
 import be.uclouvain.organisation.platform.PlatformRole
+import be.uclouvain.organisation.platform.events.AddObserver
+import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
+import be.uclouvain.organisation.platform.events.ComputationalRessources
+import be.uclouvain.organisation.platform.events.LocalDatabaseRequest
 import be.uclouvain.organisation.platform.util.MembershipRule
+import io.sarl.core.Behaviors
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Logging
@@ -19,7 +20,6 @@ import java.util.Collections
 import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
-import io.sarl.core.Behaviors
 
 /** 
  * 
@@ -62,9 +62,6 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	
 	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
 	on AddObserver {
-		
-		
-		
 		var signal = occurrence.signalProvider
 		var receiver = occurrence.signalReceiver
 		debug("adding observer from " + signal.name + " to " + receiver.name)

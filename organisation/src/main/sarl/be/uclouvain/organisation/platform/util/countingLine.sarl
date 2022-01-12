@@ -7,6 +7,74 @@ import org.arakhne.afc.math.geometry.d2.d.Vector2d
 import java.util.TreeMap
 
 /** 
+ * The class represents a crossable counting line.
+ * 
+ * @param : lx : X coordinate of the left point A  
+ * @param : ly : Y coordinate of the left point A
+ * @param : rX : X coordinate of the right point B
+ * @param : rY : Y coordinate of the right point B
+ * @param : numberOfClass : The number of object's classification 
+ * 
+ * @author manjahdani
+ * @version 0.0.2
+ * @date $17/06/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
+ * 
+ */
+class CountingLine {
+
+	public var X_A : int // X coordinate of the left point A
+	public var Y_A : int // Y coordinate of the left point A
+	public var X_B : int // X coordinate of the right point A
+	public var Y_B : int // Y coordinate of the right point A
+	
+	public val crossedObjects = new ArrayList<Integer>
+	public val counts = new TreeMap<Integer, AtomicInteger>
+
+	new (lX : int, lY : int, rX : int, rY : int, numberOfClass : int) {
+		this.X_A = lX
+		this.Y_A = lY
+		this.X_B = rX
+		this.Y_B = rY
+
+		/* 
+		 * Initialise the counting. 
+		 * The mapping of the class number and the its representation is specified in an external file. 
+		 * 
+		 */
+		for (var i = 0; i < numberOfClass; i++) {
+			counts.put(i, new AtomicInteger(0))
+		}
+	}
+
+	def getCounts {
+		return this.counts
+	}
+
+	def incrementCount(classID : int) {
+		this.counts.get(classID).andIncrement
+	}
+
+	def getLine {
+		return newArrayList(new Point2d(X_A, Y_A), new Point2d(X_B, Y_B))
+	}
+
+	def hasCrossed(ID : int) {
+
+		if (crossedObjects.contains(ID)) {
+			return true
+		} else {
+			crossedObjects.add(ID)
+			return false
+		}
+	}
+
+}
+
+
+
+/** 
  * The class represents a crossable counting line with a direction.
  * 
  * @param : lx : X coordinate of the left point A  
@@ -74,69 +142,6 @@ class OrientedCountingLine extends CountingLine {
 	}
 }
 
-/** 
- * The class represents a crossable counting line.
- * 
- * @param : lx : X coordinate of the left point A  
- * @param : ly : Y coordinate of the left point A
- * @param : rX : X coordinate of the right point B
- * @param : rY : Y coordinate of the right point B
- * @param : numberOfClass : The number of object's classification 
- * 
- * @author manjahdani
- * @version 0.0.2
- * @date $17/06/2021$
- * @mavengroupid $be.uclouvain.aptitude$
- * @mavenartifactid $surveillance$
- * 
- */
-
-class CountingLine {
 
 
-	public var X_A : int // X coordinate of the left point A 
-	public var Y_A : int // Y coordinate of the left point A
-	public var X_B : int // X coordinate of the right point A
-	public var Y_B : int // Y coordinate of the right point A
-	
-	public val crossedObjects = new ArrayList<Integer>
-	public val counts = new TreeMap<Integer, AtomicInteger>
-	
-	new (lX : int, lY : int, rX : int, rY : int, numberOfClass : int) {
-		this.X_A = lX
-		this.Y_A = lY
-		this.X_B = rX
-		this.Y_B = rY
-		
-		/*
-		 * Initialise the counting. 
-		 * The mapping of the class number and the its representation is specified in an external file. 
-		 *  
-		 */
-		for (var i = 0; i<numberOfClass ; i++){
-			counts.put(i, new AtomicInteger(0)) 
-		}
-	}
-	
-	def getCounts {
-		return this.counts
-	}
-	def incrementCount(classID : int) {
-		this.counts.get(classID).andIncrement
-	}
 
-	def getLine {
-		return newArrayList(new Point2d(X_A, Y_A), new Point2d(X_B, Y_B))
-	}
-
-	def hasCrossed(ID : int) {
-
-		if (crossedObjects.contains(ID)) {
-			return true
-		} else {
-			crossedObjects.add(ID)
-			return false
-		}
-	}
-
-}

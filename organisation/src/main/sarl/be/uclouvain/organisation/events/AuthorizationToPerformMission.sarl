@@ -1,0 +1,20 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.events
+
+
+import io.sarl.core.OpenEventSpace
+
+/** 
+ * @author manjah
+ * 
+ */
+event AuthorizationToPerformMission{
+	
+	var missionSpace : OpenEventSpace
+	
+	new (missionSpace : OpenEventSpace) {
+		this.missionSpace = missionSpace
+	}
+}

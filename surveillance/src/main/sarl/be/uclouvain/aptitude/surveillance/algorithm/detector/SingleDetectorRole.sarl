@@ -3,13 +3,13 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm.detector
 
-import be.uclouvain.organisation.platform.LeavePlatform
+import be.uclouvain.organisation.platform.events.LeavePlatform
+import be.uclouvain.organisation.platform.events.ResumeMission
 import be.uclouvain.python_access.PartnerDetectionFound
 import be.uclouvain.python_access.PythonAccessorRole
 import be.uclouvain.python_access.PythonTwinAccessCapacity
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
-import be.uclouvain.organisation.platform.ResumeMission
 
 /** 
  * @author manjah

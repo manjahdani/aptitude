@@ -6,8 +6,8 @@ import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import io.sarl.lang.core.AgentContext
 import be.uclouvain.organisation.told.TOLDOrganizationInfo
-import be.uclouvain.organisation.AuthorizationToJoinContext
 import io.sarl.core.ExternalContextAccess
+import be.uclouvain.organisation.events.AuthorizationToJoinContext
 
 /** 
  * The concept-generic role of Entity seeks knowledge to update : 

@@ -5,9 +5,9 @@ import be.uclouvain.aptitude.surveillance.ui.AuthenticateUser
 import be.uclouvain.organisation.OrganizationInfo
 import be.uclouvain.organisation.OrganizationalRole
 import be.uclouvain.organisation.interactivity.InteractivityOrganizationInfo
-import be.uclouvain.organisation.platform.AuthorizedMission
-import be.uclouvain.organisation.platform.NewMission
 import be.uclouvain.organisation.platform.PlatformOrganizationInfo
+import be.uclouvain.organisation.told.events.AuthorizedMission
+import be.uclouvain.organisation.told.events.NewMission
 import io.sarl.core.Behaviors
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.InnerContextAccess

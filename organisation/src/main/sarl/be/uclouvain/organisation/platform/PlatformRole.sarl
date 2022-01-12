@@ -2,11 +2,13 @@
  */
 package be.uclouvain.organisation.platform
 
-import be.uclouvain.organisation.AuthorizationToJoinContext
-import be.uclouvain.organisation.AuthorizationToPerformMission
 import be.uclouvain.organisation.OrganizationInfo
 import be.uclouvain.organisation.OrganizationalRole
-import be.uclouvain.organisation.RequestToJoin
+import be.uclouvain.organisation.events.AuthorizationToJoinContext
+import be.uclouvain.organisation.events.AuthorizationToPerformMission
+import be.uclouvain.organisation.events.RequestToJoin
+import be.uclouvain.organisation.platform.events.Request2PerformMission
+import be.uclouvain.organisation.platform.events.StopMission
 import be.uclouvain.organisation.told.TOLDOrganizationInfo
 import io.sarl.core.Behaviors
 import io.sarl.core.ExternalContextAccess

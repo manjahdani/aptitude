@@ -1,0 +1,18 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform.events
+
+import be.uclouvain.organisation.platform.util.MissionData
+
+/** 
+ * @author manjah
+ * 
+ */
+event Request2PerformMission {
+	val missionData : MissionData
+
+	new(missionData : MissionData) {
+		this.missionData = missionData
+	}
+}

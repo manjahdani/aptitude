@@ -1,7 +1,14 @@
 package be.uclouvain.organisation.platform
 
-import be.uclouvain.organisation.Identification
-import be.uclouvain.organisation.SignalID
+import be.uclouvain.organisation.events.Identification
+import be.uclouvain.organisation.events.SignalID
+import be.uclouvain.organisation.platform.events.AddMission
+import be.uclouvain.organisation.platform.events.AddObserver
+import be.uclouvain.organisation.platform.events.ComputationalRessources
+import be.uclouvain.organisation.platform.events.HyperParametersRequest
+import be.uclouvain.organisation.platform.events.ProcessingHyperParameters
+import be.uclouvain.organisation.platform.events.ResumeMission
+import be.uclouvain.organisation.told.TOLDOrganizationInfo
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
 import io.sarl.core.Destroy
@@ -19,7 +26,6 @@ import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
-import be.uclouvain.organisation.told.TOLDOrganizationInfo
 
 /** 
  * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 
@@ -176,7 +182,7 @@ abstract behavior ObserverRole {
 		
 		var sid = occurrence.signalID
 		// Creation of a communication space between the data source and the role
-		// @FIXME is it allowed to use the platform Context?
+		// @FIXME LOW is it allowed to use the platform context?
 		if(!providers.containsKey(sid)){
 			//info("Unkown signal" + sid)
 			val comChannel = platformContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)

@@ -9,7 +9,6 @@ import be.uclouvain.aptitude.surveillance.algorithm.detector.DetectorRole
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerRole
 import be.uclouvain.aptitude.surveillance.platform.AgentAlgorithm
 import be.uclouvain.aptitude.surveillance.platform.AgentPlatform
-import be.uclouvain.organisation.platform.AlgorithmJoinPlatform
 import be.uclouvain.organisation.told.entity.EntityRole
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
@@ -23,6 +22,7 @@ import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.AgentContext
 import java.util.HashMap
 import java.util.UUID
+import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
 
 /** 
  * Agent with a set of tasks (Goals) and a model (Belief). 

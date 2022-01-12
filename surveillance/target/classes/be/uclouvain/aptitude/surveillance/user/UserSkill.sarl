@@ -17,10 +17,10 @@ import UDPMessages.UDP_Message_RequestWithdraw
 import UDPMessages.UDP_Message_UpdateInventory
 import be.uclouvain.aptitude.surveillance.Expert
 import be.uclouvain.organisation.interactivity.outputDevice.OutputMsg
-import be.uclouvain.organisation.platform.NewMission
-import be.uclouvain.organisation.platform.StopMission
+import be.uclouvain.organisation.platform.events.StopMission
 import be.uclouvain.organisation.platform.util.MissionData
 import be.uclouvain.organisation.platform.util.MissionParameters
+import be.uclouvain.organisation.told.events.NewMission
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.InnerContextAccess

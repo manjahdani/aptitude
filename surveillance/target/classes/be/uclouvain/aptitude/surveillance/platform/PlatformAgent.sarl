@@ -6,6 +6,7 @@ package be.uclouvain.aptitude.surveillance.platform
 import be.uclouvain.aptitude.surveillance.Paraddis
 import be.uclouvain.organisation.platform.PlatformCapacity
 import be.uclouvain.organisation.platform.PlatformSkill
+import be.uclouvain.organisation.platform.events.LocalDatabaseRequest
 import be.uclouvain.organisation.platform.util.PlatformConfig
 import io.sarl.core.AgentSpawned
 import io.sarl.core.Behaviors
@@ -18,7 +19,6 @@ import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
 import java.util.UUID
-import be.uclouvain.organisation.LocalDatabaseRequest
 
 /**
  * 

@@ -33,7 +33,7 @@ abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	def install {
-		topicRequestSub = CommunicationManager.instance.subscribeTopic("request", this)
+		topicRequestSub = CommunicationManager.instance.subscribeTopic("request", this) //@FIXME install is 
 	}
 
 	def prepareUninstallation {
@@ -69,14 +69,7 @@ abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 		]
 	}
 
-	/* 
-	 * info("I am sending the action: " + actionID)
-	 * var actionMessage = new ActionMessage() //@TODO : Strange way of doing it
-	 * actionMessage.actionID = actionID
-	 * 
-	 * CommunicationManager.instance.publishMessage(topicSignalAcquisition, actionMessage)
-	 */
-	@SuppressWarnings("potential_field_synchronization_problem")
+	
 	def updateStreamAccess(actionID : int) {
 		debug("Updating Stream Access" + actionID)
 		updateStreamAccess(actionID, -1)

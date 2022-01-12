@@ -3,10 +3,10 @@
  */
 package be.uclouvain.aptitude.surveillance.platform
 
-import be.uclouvain.organisation.JoinPlatform
-import be.uclouvain.organisation.LocalDatabaseRequest
-import be.uclouvain.organisation.platform.ComputationalRessources
+import be.uclouvain.organisation.events.JoinPlatform
 import be.uclouvain.organisation.platform.PlatformRole
+import be.uclouvain.organisation.platform.events.ComputationalRessources
+import be.uclouvain.organisation.platform.events.LocalDatabaseRequest
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize

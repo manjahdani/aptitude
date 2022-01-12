@@ -4,19 +4,19 @@
 package be.uclouvain.aptitude.surveillance.algorithm
 
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingPerception
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingTaskOver
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
-import be.uclouvain.organisation.told.AddEntry
-import be.uclouvain.organisation.told.DataEntry
-import be.uclouvain.organisation.told.DeleteEntry
-import be.uclouvain.organisation.told.QueryAnswer
+import be.uclouvain.organisation.told.TOLDOrganizationInfo
 import be.uclouvain.organisation.told.entity.EntityRole
+import be.uclouvain.organisation.told.events.AddEntry
+import be.uclouvain.organisation.told.events.DataEntry
+import be.uclouvain.organisation.told.events.DeleteEntry
+import be.uclouvain.organisation.told.events.QueryAnswer
+import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import java.io.File
 import java.io.FileWriter
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingTaskOver
-import io.sarl.core.ExternalContextAccess
-import be.uclouvain.organisation.told.TOLDOrganizationInfo
 
 /** 
  * @author manjah
@@ -56,13 +56,3 @@ behavior AlgorithmEntity extends EntityRole {
 //		(occurrence.answerObject as FileWriter).close
 	}
 }
-
-
-
-/*
- * predfile = new File("F:\\" +"Final".concat(platformName).concat(this.ID.toString) + ".txt")
- * gt = new FileWriter(predfile)
- * 
- * predfile = new File("F:\\" + DetectorName.concat(observerADN.name).concat(platformName).concat(this.ID.toString) + ".txt")
- * gt = new FileWriter(predfile)
- */

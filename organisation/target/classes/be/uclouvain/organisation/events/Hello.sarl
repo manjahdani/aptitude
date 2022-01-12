@@ -1,0 +1,11 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.events
+
+/** 
+ * @author manjah
+ * Used for debug
+ */
+event Hello
+

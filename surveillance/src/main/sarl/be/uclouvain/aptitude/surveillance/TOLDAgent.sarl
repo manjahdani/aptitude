@@ -5,7 +5,7 @@ package be.uclouvain.aptitude.surveillance
 
 import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
 import be.uclouvain.aptitude.surveillance.platform.AgentPlatform
-import be.uclouvain.organisation.JoinPlatform
+import be.uclouvain.organisation.events.JoinPlatform
 import be.uclouvain.organisation.told.AccessDatabaseCapacity
 import be.uclouvain.organisation.told.TOLDRole
 import be.uclouvain.organisation.told.util.AlgorithmInfo

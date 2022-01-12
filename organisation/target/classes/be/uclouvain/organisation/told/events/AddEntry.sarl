@@ -1,0 +1,42 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.told.events
+
+import java.util.UUID
+
+/** 
+ * 
+ * @TODO : comment  
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
+ * 
+ */
+ 
+event Entry {
+	val key : UUID
+	new (k : UUID) {
+		this.key = k;
+	}
+}
+
+
+event DataEntry extends Entry {
+	val data : Object
+	new (k : UUID, d : Object) {
+		super(k);
+		this.data = d
+	}
+}
+
+
+event AddEntry extends DataEntry
+
+final event DeleteEntry extends Entry
+
+final event ReadEntry extends Entry
+

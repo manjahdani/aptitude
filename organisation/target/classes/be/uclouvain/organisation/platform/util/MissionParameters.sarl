@@ -4,7 +4,11 @@
 package be.uclouvain.organisation.platform.util
 
 /** 
- * @author manjah
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $organisation$
  * 
  */
 class MissionParameters {

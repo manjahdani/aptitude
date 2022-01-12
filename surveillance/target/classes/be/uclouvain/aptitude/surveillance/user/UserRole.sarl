@@ -4,8 +4,8 @@
 package be.uclouvain.aptitude.surveillance.user
 
 import be.uclouvain.organisation.interactivity.element.ElementRole
-import be.uclouvain.organisation.platform.AuthorizedMission
-import be.uclouvain.organisation.platform.NewMission
+import be.uclouvain.organisation.told.events.AuthorizedMission
+import be.uclouvain.organisation.told.events.NewMission
 import io.sarl.core.Behaviors
 import io.sarl.core.Logging
 

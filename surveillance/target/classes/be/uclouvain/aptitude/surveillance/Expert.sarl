@@ -1,11 +1,10 @@
 package be.uclouvain.aptitude.surveillance
 
-import be.uclouvain.organisation.AuthorizationToJoinContext
-import be.uclouvain.organisation.RequestToJoin
+import be.uclouvain.organisation.events.AuthorizationToJoinContext
+import be.uclouvain.organisation.events.RequestToJoin
 import be.uclouvain.organisation.platform.AnalystRole
-import be.uclouvain.organisation.platform.NewMission
-import be.uclouvain.organisation.platform.StopMission
 import be.uclouvain.organisation.told.entity.EntityRole
+import be.uclouvain.organisation.told.events.NewMission
 import io.sarl.core.Behaviors
 import io.sarl.core.ContextJoined
 import io.sarl.core.ExternalContextAccess

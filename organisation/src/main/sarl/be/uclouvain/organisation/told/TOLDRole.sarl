@@ -1,9 +1,14 @@
 package be.uclouvain.organisation.told
 
-import be.uclouvain.organisation.AddMember
-import be.uclouvain.organisation.AuthorizationToJoinContext
 import be.uclouvain.organisation.OrganizationalRole
+import be.uclouvain.organisation.events.AddMember
+import be.uclouvain.organisation.events.AuthorizationToJoinContext
 import be.uclouvain.organisation.platform.PlatformOrganizationInfo
+import be.uclouvain.organisation.told.events.AddEntry
+import be.uclouvain.organisation.told.events.DataEntry
+import be.uclouvain.organisation.told.events.DeleteEntry
+import be.uclouvain.organisation.told.events.QueryAnswer
+import be.uclouvain.organisation.told.events.ReadEntry
 import io.sarl.core.Behaviors
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.InnerContextAccess

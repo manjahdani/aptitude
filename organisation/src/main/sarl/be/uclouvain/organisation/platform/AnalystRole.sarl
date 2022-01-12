@@ -1,8 +1,13 @@
 package be.uclouvain.organisation.platform
 
-import be.uclouvain.organisation.AuthorizationToPerformMission
-import be.uclouvain.organisation.SignalID
+
+import be.uclouvain.organisation.platform.events.AddMission
+import be.uclouvain.organisation.platform.events.AddObserver
+import be.uclouvain.organisation.platform.events.HyperParametersRequest
+import be.uclouvain.organisation.platform.events.ProcessingHyperParameters
+import be.uclouvain.organisation.platform.events.Request2PerformMission
 import be.uclouvain.organisation.platform.util.MissionData
+import be.uclouvain.organisation.told.TOLDOrganizationInfo
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
 import io.sarl.core.ExternalContextAccess
@@ -11,7 +16,8 @@ import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import io.sarl.lang.core.AgentContext
 import java.util.UUID
-import be.uclouvain.organisation.told.TOLDOrganizationInfo
+import be.uclouvain.organisation.events.AuthorizationToPerformMission
+import be.uclouvain.organisation.events.SignalID
 
 /** 
  * 

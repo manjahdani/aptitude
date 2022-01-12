@@ -1,0 +1,17 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform.events
+
+/** 
+ * @author manjah
+ * 
+ */
+event ComputationalRessources{
+	
+	val client_id : String
+	
+	new (c_id : String){
+		this.client_id = c_id
+	}
+}

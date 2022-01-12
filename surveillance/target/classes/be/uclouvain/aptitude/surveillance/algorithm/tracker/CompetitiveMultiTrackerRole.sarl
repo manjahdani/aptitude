@@ -6,16 +6,17 @@ package be.uclouvain.aptitude.surveillance.algorithm.tracker
 import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
 import be.uclouvain.aptitude.surveillance.algorithm.util.HyperParameters
-import be.uclouvain.organisation.AddMember
-import be.uclouvain.organisation.SignalID
-import be.uclouvain.organisation.platform.AddMission
-import be.uclouvain.organisation.platform.ComputationalRessources
-import be.uclouvain.organisation.platform.HyperParametersRequest
-import be.uclouvain.organisation.platform.ProcessingHyperParameters
-import be.uclouvain.organisation.platform.RemoveMission
+import be.uclouvain.organisation.events.AddMember
+import be.uclouvain.organisation.events.SignalID
+import be.uclouvain.organisation.platform.events.AddMission
+import be.uclouvain.organisation.platform.events.ComputationalRessources
+import be.uclouvain.organisation.platform.events.HyperParametersRequest
+import be.uclouvain.organisation.platform.events.ProcessingHyperParameters
+import be.uclouvain.organisation.platform.events.RemoveMission
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import be.uclouvain.python_access.BBoxes2DResult
 import io.sarl.core.Behaviors
+import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
@@ -24,12 +25,11 @@ import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.core.Schedules
 import io.sarl.lang.core.AgentContext
+import java.util.ArrayList
 import java.util.Collections
 import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
-import io.sarl.core.ExternalContextAccess
-import java.util.ArrayList
 
 /** 
  * @author manjah
