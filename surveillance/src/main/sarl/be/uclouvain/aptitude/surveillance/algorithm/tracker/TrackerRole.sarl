@@ -14,6 +14,7 @@ import java.util.LinkedList
 import io.sarl.core.ExternalContextAccess
 import be.uclouvain.organisation.platform.events.RemoveMission
 import be.uclouvain.organisation.platform.events.LeavePlatform
+import java.util.UUID
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -101,7 +102,7 @@ behavior TrackerRole extends ObserverRole {
 					("F:\\Database\\".concat(this.ID.toString) + ".txt"),
 					totalDetectorTime, 
 					totalTrackerTime,
-					observerADN.ID))[it.ID == l]
+					observerADN.get.ID))[it.ID == l]
 			}
 
 		/** 
@@ -119,17 +120,16 @@ behavior TrackerRole extends ObserverRole {
 	on ResumeTrackingMission {
 		info("Resuming my mission with "+ occurrence.detector)
 		setSkill(new TrackerPythonTwinSkill)
-		registerBehavior(new SingleTrackerRole(this.owner), observerADN.belief, platformName,computation_location)
+		registerBehavior(new SingleTrackerRole(this.owner), observerADN.get.belief, MD.location,computation_location)
 		info("Come here " + occurrence.detector)
-		isMaster.set(false)
-		frameLimit = 100000
+		MD.dynamicAdaptation = false
+		
 		requestAlgorithm(occurrence.detector, "DETECTOR")
 	}
 	
-	override startProcessingRole {
-		if (isMaster.get) {
-			
-			
+	override startProcessingRole (mID : UUID) {
+		if (missionList.get(mID).isDynamicAdaptationEnabled) 
+		{
 			var hyperParatermersToBeTested = new LinkedList<HyperParameters>
 			var iter = 0 // @FIXME @FLAG : Low Quick but not robust strategy as if the order of detectors change the system could get confused.
 			
@@ -138,8 +138,7 @@ behavior TrackerRole extends ObserverRole {
 				iter += 1
 			}
 			
-			registerBehavior(new CompetitiveMultiTrackerRole(owner), hyperParatermersToBeTested, this.observerADN,
-				TOLDContext, privateTOLDSpace, computation_location, detectors)
+			registerBehavior(new CompetitiveMultiTrackerRole(owner), hyperParatermersToBeTested, this.observerADN,computation_location, detectors)
 			
 			for (detector : detectors) {
 				
@@ -150,9 +149,9 @@ behavior TrackerRole extends ObserverRole {
 		} 
 		else {
 			setSkill(new TrackerPythonTwinSkill)
-			registerBehavior(new SingleTrackerRole(this.owner), observerADN.belief, observerADN.platformName,
+			registerBehavior(new SingleTrackerRole(this.owner), observerADN.get.belief, observerADN.get.platformName,
 			computation_location)
-			info("Come here : " + detectors.get(sensitivity.get))
+			info("Come here : " + detectors.get(MD.cautionLevel))
 			//requestAlgorithm(detectors.get(sensitivity.get), "DETECTOR")
 			}
 		}	

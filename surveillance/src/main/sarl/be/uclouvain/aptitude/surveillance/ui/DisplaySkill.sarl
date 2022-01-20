@@ -23,11 +23,11 @@ skill DisplaySkill extends PythonTwinAccess implements DisplayCapacity {
 	var pendingRequestID : String
 	var requestTask : AgentTask
 
-	override def install {
+	override install {
 		topicDisplaySub = CommunicationManager.instance.subscribeTopic("display", this)
 	}
 
-	override def uninstall {
+	override uninstall {
 		if (topicDisplaySub !== null) {
 			CommunicationManager.instance.unsubscribeTopic(topicDisplaySub.toString)
 			topicDisplaySub = null

@@ -1,7 +1,7 @@
 package be.uclouvain.organisation
 
 import io.sarl.lang.core.AgentContext
-import io.sarl.core.OpenEventSpace
+import java.util.UUID
 
 /** 
  * Generic event to provide the organisation information to a recruited holon 
@@ -34,15 +34,15 @@ event OrganizationInfo {
 	/** 
 	 * A private space used for the communication
 	 */
-	val privateCommunicationChannel : OpenEventSpace 
+	val privateCommunicationChannelID : UUID 
 
 	/* 
 	 * Constructor
-	 * @param	ctxt	The context to join
-	 * @param	sid	    The space in the context to join
+	 * @param	ctxt	The joined context
+	 * @param	sid	    The ID of the space 
 	 */
-	new (ctxt : AgentContext, sid : OpenEventSpace) {
+	new (ctxt : AgentContext, sid : UUID) {
 		this.context = ctxt
-		this.privateCommunicationChannel = sid
+		this.privateCommunicationChannelID = sid
 	}
 }

@@ -1,0 +1,37 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation
+
+import io.sarl.core.OpenEventSpace
+import io.sarl.lang.core.AgentContext
+import java.util.concurrent.atomic.AtomicReference
+import java.util.UUID
+import io.sarl.core.OpenEventSpaceSpecification
+import io.sarl.core.Behaviors
+
+/** 
+ * @author manjah
+ * 
+ */
+abstract behavior Role {
+	uses Behaviors
+
+	protected val organizationContext = new AtomicReference<AgentContext> // context of the organisation Platform
+	protected var privateOrganizationSpace = new AtomicReference<OpenEventSpace> // private space between the algorithm and the organisation Platform
+	
+
+	synchronized def updateContextInfo(ctxt : AgentContext, sid : UUID) {
+
+		organizationContext.set(ctxt) // Update the organization
+		privateOrganizationSpace.set(organizationContext.get.getOrCreateSpaceWithSpec(OpenEventSpaceSpecification,sid))
+		privateOrganizationSpace.get.registerStrongParticipant(asEventListener)
+	}
+	
+	synchronized def retrieveOrCreateOpenSpaceWithID(sid:UUID) {
+		assert organizationContext.get !== null, "Organization is not known"
+		
+		return organizationContext.get.getOrCreateSpaceWithSpec(OpenEventSpaceSpecification,
+			sid)
+	}
+}

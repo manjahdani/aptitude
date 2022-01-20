@@ -32,7 +32,7 @@ behavior UserRole extends ElementRole {
 		debug("receives authorisation for mission")
 		wake(
 			new NewMission(occurrence.mission, occurrence.platformOpenChannel)) [
-			it.ID == occurrence.mission.expertID
+			it.ID == occurrence.mission.clientID
 		]
 	}
 } 

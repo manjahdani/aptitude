@@ -24,7 +24,6 @@ import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.core.Schedules
-import io.sarl.lang.core.AgentContext
 import java.util.ArrayList
 import java.util.Collections
 import java.util.HashMap
@@ -45,10 +44,7 @@ behavior CompetitiveMultiTrackerRole {
 	protected val detector_innerTrackerMap = Collections.synchronizedMap(new HashMap<String, UUID>)
 	protected val innerTracker_detectorsMap = Collections.synchronizedMap(new HashMap<UUID, String>)
 	protected val innerTracker_ParametersMap = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>)
-
 	protected var computation_Location : String
-	protected var privateTOLDSpace : OpenEventSpace
-	protected var TOLDContext : AgentContext
 
 	protected val activeProviders = Collections.synchronizedMap(new HashMap<String, UUID>) // Detector and its ID
 
@@ -67,20 +63,7 @@ behavior CompetitiveMultiTrackerRole {
 		catch (e : ClassCastException) {
 			warning("Could not cast Initialise parameters 1 to AlgorithmInfo")
 		}
-		try{
-			TOLDContext = occurrence.parameters.get(2) as AgentContext
-			assert TOLDContext !== null, "Argument of toldContext null"
-		}
-		catch (e : ClassCastException) {
-			warning("Could not cast Initialise parameters 2 to AgentContext")
-		}
 
-		try {
-			privateTOLDSpace = occurrence.parameters.get(3) as OpenEventSpace
-			assert privateTOLDSpace !== null, "Parameter of privateTOLDSpace null"
-		} catch (e : ClassCastException) {
-			warning("Could not cast Initialise parameters 3 to OpenEventSpace")
-		}
 		
 		computation_Location = occurrence.parameters.get(4).toString
 		detectors = occurrence.parameters.get(5) as ArrayList<String>

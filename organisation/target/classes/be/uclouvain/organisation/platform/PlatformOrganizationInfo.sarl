@@ -5,7 +5,7 @@ package be.uclouvain.organisation.platform
 
 import be.uclouvain.organisation.OrganizationInfo
 import io.sarl.lang.core.AgentContext
-import io.sarl.core.OpenEventSpace
+import java.util.UUID
 
 /** 
  * @author manjah
@@ -14,7 +14,7 @@ import io.sarl.core.OpenEventSpace
 final event PlatformOrganizationInfo extends OrganizationInfo {
 	val platformName : String
 
-	new (ctxt : AgentContext, sid : OpenEventSpace, name : String) {
+	new (ctxt : AgentContext, sid : UUID, name : String) {
 		super(ctxt, sid)
 		this.platformName = name
 	}

@@ -9,23 +9,23 @@ package be.uclouvain.aptitude.surveillance.algorithm.util
  */
 class HyperParameters {
 
-	var sensitivity : int
+	var cautionLevel : int
 	var optimalSearchEnabled : boolean
 
 	new (s : int, o : boolean) {
-		this.sensitivity = s
+		this.cautionLevel = s
 		this.optimalSearchEnabled = o
 	}
 
 	new (s : int) {
-		this.sensitivity = s
+		this.cautionLevel = s
 		this.optimalSearchEnabled = false
 	}
 	def isOptimalSearchEnabled : boolean {
 		return optimalSearchEnabled
 	}
 
-	def getSensitivity() {
-		return this.sensitivity
+	def getcautionLevel() {
+		return this.cautionLevel
 	}
 }

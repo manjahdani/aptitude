@@ -13,40 +13,29 @@ import java.util.UUID
  */
 class MissionData {
 	
-	var missionID : UUID
-	var expertID : UUID
-	var platformID : UUID
-	var location : String
-	var missionParam : MissionParameters
-
-	new (missionID : UUID, expertID : UUID, location : String, missionParameters : MissionParameters) {
+	protected val missionID : UUID
+	protected val clientID : UUID
+	protected val platformID : UUID	
+	
+	new (){
+		this.missionID = null
+		this.clientID = null
+		this.platformID = null
+	}
+	new (missionID : UUID, clientID : UUID, platformID : UUID) {
 		this.missionID=missionID
-		this.expertID = expertID
-		this.location = location
-		this.missionParam = missionParameters
+		this.clientID = clientID
+		this.platformID = platformID
+		
 	}
 	
 	def getPlatformID{
 		return this.platformID
 	}
-	def setPlatformID (id: UUID) {
-		this.platformID = id; 
-		return this
+	def getClientID{
+		return this.clientID
 	}
-	
 	def getMissionID{
 		return this.missionID
-	}
-	def getExpertID() {
-		return this.expertID
-	}
-	def getLocation() {
-		return this.location
-	}
-	def getSensitivity() {
-		return this.missionParam.sensitivity
-	}
-	def isOptimalSearchEnabled {
-		return this.missionParam.isOptimalSearchEnabled
 	}
 }

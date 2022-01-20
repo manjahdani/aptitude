@@ -28,12 +28,12 @@ behavior CompetitiveCounterRole extends ObserverRole {
 	
 	override startProcessingRole {
 		setSkill(new EvaluationImpl, Evaluation, PythonTwinAccessCapacity)
-		if (isMaster.get) {
+		if (MD.dynamicAdaptationEnabled) {
 			info("Let the competition start !")
 			registerBehavior(new AlgorithmSelectorRole(this.owner),
 								CONFIG_PATH, observerADN.name, 
 								computation_location,
-								new Metric("APTITUDE", "F:/pythonToolbox/pytb-agent/videos/".concat(platformName).concat("/gt/gt.txt"),
+								new Metric("APTITUDE", "F:/pythonToolbox/pytb-agent/videos/".concat(MD.location).concat("/gt/gt.txt"),
 								processingParameters))
 			for (tracker : AVAILABLE_TRACKERS) {
 				info("requests tracker: " + tracker)

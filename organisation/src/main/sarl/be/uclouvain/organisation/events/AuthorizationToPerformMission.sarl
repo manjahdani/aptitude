@@ -3,8 +3,7 @@
  */
 package be.uclouvain.organisation.events
 
-
-import io.sarl.core.OpenEventSpace
+import java.util.UUID
 
 /** 
  * @author manjah
@@ -12,9 +11,9 @@ import io.sarl.core.OpenEventSpace
  */
 event AuthorizationToPerformMission{
 	
-	var missionSpace : OpenEventSpace
+	val missionSpaceID : UUID
 	
-	new (missionSpace : OpenEventSpace) {
-		this.missionSpace = missionSpace
+	new (spaceID : UUID) {
+		this.missionSpaceID = spaceID
 	}
 }

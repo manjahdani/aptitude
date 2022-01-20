@@ -18,8 +18,7 @@ import UDPMessages.UDP_Message_UpdateInventory
 import be.uclouvain.aptitude.surveillance.Expert
 import be.uclouvain.organisation.interactivity.outputDevice.OutputMsg
 import be.uclouvain.organisation.platform.events.StopMission
-import be.uclouvain.organisation.platform.util.MissionData
-import be.uclouvain.organisation.platform.util.MissionParameters
+import be.uclouvain.organisation.platform.util.SurveillanceMissionData
 import be.uclouvain.organisation.told.events.NewMission
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
@@ -99,14 +98,12 @@ skill UserSkill implements UserElementCapacity {
 
 		emitToParent(
 			new NewMission(
-				new MissionData(
+				new SurveillanceMissionData(
 					UUID.randomUUID,
 					entityID,
 					availablePlatforms.get(msg.sceneID),
-					new MissionParameters(entityList.get(entityID).evolution, true)
+					entityList.get(entityID).evolution, true))
 				)
-			)
-		)
 		entityList.get(entityID).screenID = msg.sceneID
 		updateBehavior(getExpertTypeList)
 	}

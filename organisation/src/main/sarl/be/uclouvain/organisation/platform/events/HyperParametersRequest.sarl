@@ -3,6 +3,8 @@
  */
 package be.uclouvain.organisation.platform.events
 
+import java.util.UUID
+
 /** 
  * Request the sensitivity to accomplish the mission   
  * The source is the role 
@@ -25,4 +27,11 @@ package be.uclouvain.organisation.platform.events
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
  */
-event HyperParametersRequest
+event HyperParametersRequest{
+	
+	val missionID :UUID
+	
+	new(mID : UUID){
+		this.missionID = mID
+	}
+}

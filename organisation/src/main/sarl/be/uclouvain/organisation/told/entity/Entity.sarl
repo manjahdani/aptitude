@@ -2,12 +2,11 @@
  */
 package be.uclouvain.organisation.told.entity
 
-import io.sarl.core.Logging
-import io.sarl.core.OpenEventSpace
-import io.sarl.lang.core.AgentContext
+import be.uclouvain.organisation.Role
+import be.uclouvain.organisation.events.AuthorizationToJoinContext
 import be.uclouvain.organisation.told.TOLDOrganizationInfo
 import io.sarl.core.ExternalContextAccess
-import be.uclouvain.organisation.events.AuthorizationToJoinContext
+import io.sarl.core.Logging
 
 /** 
  * The concept-generic role of Entity seeks knowledge to update : 
@@ -24,30 +23,30 @@ import be.uclouvain.organisation.events.AuthorizationToJoinContext
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
  */
-behavior EntityRole {
+behavior EntityRole extends Role{
 	
 	uses Logging, ExternalContextAccess
 	/*
 	 * The entity registerStrongParticipant the initial base
 	 * @TODO : The entity does not need to have a BaseContext ? It does not make sens it only has to know the context of current TOLD. 
 	 * The approach is therefore not scalable 
+	 * 
+	 * protected var TOLDContext : AgentContext -> The context is TOLD ! 
+	 * protected var TOLDSpace : OpenEventSpace
 	 */
-	
-	protected var TOLDContext : AgentContext 
-	protected var TOLDSpace : OpenEventSpace
 
-
-	@SuppressWarnings("potential_field_synchronization_problem")
 	on TOLDOrganizationInfo {
 		debug("met TOLD - " + occurrence.context.ID.toString.substring(0, 5))
-		TOLDContext = occurrence.context
-		TOLDSpace = occurrence.privateCommunicationChannel
+		organizationContext.set(occurrence.context)
+		privateOrganizationSpace.set(
+		retrieveOrCreateOpenSpaceWithID(occurrence.privateCommunicationChannelID))
 		
 		//TOLDSpace.registerStrongParticipant(asEventListener)
 	}
 
 	on AuthorizationToJoinContext {
-		// info("receives authorisation to join - " + occurrence.source.ID)
+		info("receives authorisation to join the context of - " + occurrence.source.ID.toString.substring(0, 5) +
+				" and space " + occurrence.defaultSpaceID)
 		join(occurrence.contextID, occurrence.defaultSpaceID)
 	}
 }

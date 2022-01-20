@@ -31,23 +31,24 @@ behavior AlgorithmEntity extends EntityRole {
 
 	on TOLDOrganizationInfo {
 		debug("Creating new file to registerStrongParticipant prediction")
-		emit(occurrence.privateCommunicationChannel, new AddEntry(this.ID, new FileWriter(predfile)))
+		emit(retrieveOrCreateOpenSpaceWithID(occurrence.privateCommunicationChannelID),
+			new AddEntry(this.ID, new FileWriter(predfile)))
 	}
 	on TrackingPerception { //Filter the recording of the results if its not sent by the role.
 		
-		assert TOLDSpace !== null,"TOLDSpace, null"
+		assert organizationContext.get !== null,"TOLDSpace, null"
 	
 		if (occurrence.source.ID == this.ID) {
 		debug("recording tracking")
 		assert occurrence.perceptions !== null, "Perceptions are null"
 		var a = occurrence.perceptions as BBoxe2D[]
 		
-		emit(TOLDSpace, new DataEntry(this.ID,a))
+		emit(privateOrganizationSpace.get, new DataEntry(this.ID, a))
 		}
 	}
 	on TrackingTaskOver {
 		//info("Entity role asking to close the entry")
-		emit(TOLDSpace,new DeleteEntry(this.ID))
+		emit(privateOrganizationSpace.get,new DeleteEntry(this.ID))
 		killMe
 	}
 	on QueryAnswer{

@@ -48,7 +48,7 @@ import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
  * Second thoughts on 13/04. I am not very fond of this logic as it does not respect evolutionnary vision in addition. It does not bring 
  * enough abstraction, bref while it could programming-wise convenient, it will just be a lack of effort in abstraction..)  
  * 
- * 
+ * @FIXME: MEDIUM CLARIFY THAT ALGORITHM ARE IMMUTABLE, THUS THEY MUST CLONE AND THAT NEW COPY CAN CHANGE
  * 
  * 
  * @author $Author: manjahdani$

@@ -3,7 +3,7 @@
  */
 package be.uclouvain.organisation.platform.events
 
-import io.sarl.core.OpenEventSpace
+import java.util.UUID
 
 /** 
  * Request to perform a Mission on Platform 
@@ -30,9 +30,11 @@ import io.sarl.core.OpenEventSpace
  */
 event AddMission {
 	
-	val communicationChannel : OpenEventSpace
+	val missionID : UUID
+	val communicationChannelID : UUID
 
-	new(sourceEventSpace : OpenEventSpace) {
-		this.communicationChannel = sourceEventSpace
+	new(mID : UUID,  sid : UUID) {
+		missionID = mID
+		communicationChannelID = sid
 	}
 }

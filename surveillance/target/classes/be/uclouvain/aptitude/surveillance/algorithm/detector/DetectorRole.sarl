@@ -27,7 +27,7 @@ behavior DetectorRole extends ObserverRole {
 	on BBoxes2DResult {
 		//info("Detector - frameNumber- lastframe " + occurrence.bboxes2D.frameNumber + occurrence.bboxes2D.lastFrame)
 		for (listenersSpace : listeners.values) {
-			emit(listenersSpace, new BBoxes2DResult(occurrence.bboxes2D, observerADN.name))[it.ID !== this.ID]
+			emit(listenersSpace, new BBoxes2DResult(occurrence.bboxes2D, observerADN.get.name))[it.ID !== this.ID]
 		}
 	}
 
@@ -46,7 +46,7 @@ behavior DetectorRole extends ObserverRole {
 	
 	override startProcessingRole() {
 		setSkill(new DetectorPythonTwin)
-		registerBehavior(new SingleDetectorRole(this.owner), observerADN.belief, platformName, computation_location)
+		registerBehavior(new SingleDetectorRole(this.owner), observerADN.get.belief, MD.location, computation_location)
 	}
 	
 }

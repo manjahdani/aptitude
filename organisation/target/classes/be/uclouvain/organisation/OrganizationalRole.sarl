@@ -13,6 +13,7 @@ import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
 import java.util.HashMap
 import java.util.UUID
+import io.sarl.lang.core.AgentContext
 
 /** 
  * Global behaviour that derived organisational roles must follow. 
@@ -49,6 +50,9 @@ abstract behavior OrganizationalRole {
 	on MemberLeft {
 		privateSpacesListeners.remove(occurrence.agentID)
 	}
-	abstract def getOrganizationInfo (memberID:UUID): OrganizationInfo
+	abstract def getOrganizationInfo(memberID : UUID) : OrganizationInfo
 
+	@Pure synchronized def retrieveOrCreateOpenSpaceWithID(ctxt : AgentContext,sid : UUID) {
+		return ctxt.getOrCreateSpaceWithSpec(OpenEventSpaceSpecification, sid)
+	}
 }

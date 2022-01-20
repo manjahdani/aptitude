@@ -57,7 +57,7 @@ behavior TOLDRole extends OrganizationalRole {
 	/*
 	 * Send if available the stored data about it. 
 	 */
-	@SuppressWarnings("discouraged_occurrence_readonly_use")
+
 	
 	on AddMember{
 		debug("received add member from " + occurrence.source.ID.toString.substring(0, 5) + "to invite within my context " + occurrence.memberID)
@@ -65,7 +65,7 @@ behavior TOLDRole extends OrganizationalRole {
 		emit(occurrence.communicationChannel,
 			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID))[it.ID==occurrence.memberID]
 	}
-	@SuppressWarnings("discouraged_occurrence_readonly_use")
+
 	on ReadEntry {
 		debug("Reading entry and sending -" + read(occurrence.key))
 		emit(privateSpacesListeners.get(occurrence.source.ID), new QueryAnswer(read(occurrence.key)))
@@ -74,17 +74,20 @@ behavior TOLDRole extends OrganizationalRole {
 
 	on PlatformOrganizationInfo {
 		debug("Platform organisation - " + occurrence.platformName + " encountered ")
-		platformID = occurrence.source.ID
-		if (!privateSpacesListeners.containsKey(platformID)){
-			info("Platform was not encountered")
-				val privateChannel = occurrence.privateCommunicationChannel
+		synchronized(platformID){
+			platformID = occurrence.source.ID
+			if (!privateSpacesListeners.containsKey(platformID)) {
+				info("Platform was not encountered")
+				val privateChannel = retrieveOrCreateOpenSpaceWithID(occurrence.context,occurrence.privateCommunicationChannelID)
 				privateSpacesListeners.put(platformID, privateChannel)
 				privateChannel.registerStrongParticipant(asEventListener)
 				emit(privateChannel, getOrganizationInfo(platformID))[it.ID == platformID]
-		}	
+			}	
+		} 
+		
 	}
 	def getOrganizationInfo(memberID : UUID) : TOLDOrganizationInfo{
 		
-		return new TOLDOrganizationInfo(innerContext, privateSpacesListeners.get(memberID), read(memberID))
+		return new TOLDOrganizationInfo(innerContext, privateSpacesListeners.get(memberID).spaceID.ID, read(memberID))
 	}
 }

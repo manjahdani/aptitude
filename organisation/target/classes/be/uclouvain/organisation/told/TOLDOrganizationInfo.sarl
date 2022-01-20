@@ -4,8 +4,8 @@
 package be.uclouvain.organisation.told
 
 import be.uclouvain.organisation.OrganizationInfo
-import io.sarl.core.OpenEventSpace
 import io.sarl.lang.core.AgentContext
+import java.util.UUID
 
 /** 
  * @author manjah
@@ -14,7 +14,7 @@ import io.sarl.lang.core.AgentContext
 event TOLDOrganizationInfo extends OrganizationInfo {
 	val storedData : Object
 
-	new (ctxt : AgentContext, sid : OpenEventSpace, data : Object) {
+	new (ctxt : AgentContext, sid : UUID, data : Object) {
 		super(ctxt, sid)
 		this.storedData = data
 	}

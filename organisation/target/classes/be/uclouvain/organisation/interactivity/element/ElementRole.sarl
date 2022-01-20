@@ -3,10 +3,8 @@
  */
 package be.uclouvain.organisation.interactivity.element
 
-import io.sarl.lang.core.AgentContext
-import io.sarl.core.OpenEventSpace
+import be.uclouvain.organisation.Role
 import be.uclouvain.organisation.interactivity.InteractivityOrganizationInfo
-import io.sarl.core.Behaviors
 
 /** 
  * 
@@ -19,19 +17,13 @@ import io.sarl.core.Behaviors
  * @mavenartifactid $organisation$
  * 
  */
-behavior ElementRole {
+behavior ElementRole extends Role {
 
-	uses Behaviors, ElementCapacity 
-	
-	protected var InteractivityOrganizationContext : AgentContext
-	protected var InteractivityOrganizationPrivateSpace : OpenEventSpace
-	
+	uses ElementCapacity 
+
 	on InteractivityOrganizationInfo {
-		synchronized(this){
-		InteractivityOrganizationContext = occurrence.context
-		InteractivityOrganizationPrivateSpace = occurrence.privateCommunicationChannel
-		InteractivityOrganizationPrivateSpace.registerStrongParticipant(asEventListener)}
 		
+		updateContextInfo(occurrence.context, occurrence.privateCommunicationChannelID)
 	}
 	
 	on ElementInformation {
