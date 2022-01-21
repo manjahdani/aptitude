@@ -3,7 +3,6 @@
  */
 package be.uclouvain.organisation.platform.util
 
-import be.uclouvain.aptitude.surveillance.algorithm.util.HyperParameters
 import java.util.UUID
 
 /** 
@@ -52,5 +51,8 @@ class SurveillanceMissionData extends MissionData{
 		
 		setCautionLevel(md.getCautionLevel)
 		setDynamicAdaptation(md.isDynamicAdaptationEnabled)
+	}
+	def getHyperParameters(){
+		return this.hyperParameters
 	}
 }

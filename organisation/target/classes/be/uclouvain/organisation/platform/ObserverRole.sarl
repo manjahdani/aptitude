@@ -26,6 +26,7 @@ import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
+import be.uclouvain.organisation.platform.util.HyperParameters
 
 /** 
  * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 
@@ -63,7 +64,7 @@ abstract behavior ObserverRole extends Role {
 	protected val listeners = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the client and the role
 	
 	protected val providers = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
-	protected var processingParameters = Collections.synchronizedMap(new HashMap<UUID, ProcessingHyperParameters>) // One that it ordered. 
+	protected var processingParameters = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>) // One that it ordered. 
 	protected var computation_location = new AtomicReference<String>
 	val checkList = Collections.synchronizedMap(new HashMap<String, Boolean>)
 
@@ -178,25 +179,25 @@ abstract behavior ObserverRole extends Role {
 	
 	on SignalID {
 		
-		var sid = occurrence.signalID
-		// Creation of a communication space between the data source and the role
+		var signalID = occurrence.signalID
+		val missionID= occurrence.missionID
 		
-		if(!providers.containsKey(sid)){
+		if(!providers.containsKey(signalID)){
 			// info("Unkown signal" + sid)
-			// @FIXME MEDIUM we have to ask for ADD MISSION
+			// @FIXME MEDIUM we have to ask for MISSION
 			val comChannel = organizationContext.get.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
 			comChannel.registerStrongParticipant(asEventListener)
-			providers.put(sid, comChannel)
-			var hp_mission = missionList.
-			processingParameters.put(sid,)
-			debug("Received provider ID sending the channel " + providers.get(sid).spaceID.ID)
-			emit(organizationContext.get.defaultSpace,new AddMission(occurrence.missionID, providers.get(sid).spaceID.ID)) [it.ID == sid]
+			providers.put(signalID, comChannel)
+			var hp_mission = missionList.get(missionID).hyperParameters // We add the Hyperparameters that we are going to provide later to the provider
+			processingParameters.put(signalID, hp_mission)
+			debug("Received provider ID sending the channel " + providers.get(signalID).spaceID.ID)
+			emit(organizationContext.get.defaultSpace,new AddMission(occurrence.missionID, providers.get(signalID).spaceID.ID)) [it.ID == signalID]
 		}
 		else{
-			debug("Known signal = " + sid)
-			emit(providers.get(sid),new ResumeMission)[this.ID == sid]
+			debug("Known signal = " + signalID)
+			emit(providers.get(signalID),new ResumeMission)[this.ID == signalID]
 			debug("Trying now in the default")
-			emit(organizationContext.get.defaultSpace,new ResumeMission)[it.ID==sid]
+			emit(organizationContext.get.defaultSpace,new ResumeMission)[it.ID==signalID]
 		}
 	}
 	
