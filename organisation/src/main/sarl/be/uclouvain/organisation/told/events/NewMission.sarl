@@ -31,16 +31,19 @@ import io.sarl.core.OpenEventSpace
 event NewMission{
 
 	val mission : MissionData
+	val location : String
 	var platformOpenChannel : OpenEventSpace
 
-	new(data : MissionData) {
+	new(data : MissionData , l : String) {
 
 		this.mission = data
+		this.location = l
 	}
 	
-	new(data : MissionData, sid : OpenEventSpace) {
+	new(data : MissionData, sid : OpenEventSpace, l: String) {
 		
 		this.mission = data
+		this.location = l
 		this.platformOpenChannel = sid
 	}
 }

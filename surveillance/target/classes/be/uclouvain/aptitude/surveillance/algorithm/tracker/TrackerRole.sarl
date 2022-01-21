@@ -123,7 +123,7 @@ behavior TrackerRole extends ObserverRole {
 		registerBehavior(new SingleTrackerRole(this.owner), observerADN.get.belief, MD.location,computation_location)
 		info("Come here " + occurrence.detector)
 		MD.dynamicAdaptation = false
-		frameLimit = 100000
+		
 		requestAlgorithm(occurrence.detector, "DETECTOR")
 	}
 	
@@ -131,7 +131,7 @@ behavior TrackerRole extends ObserverRole {
 		if (missionList.get(mID).isDynamicAdaptationEnabled) 
 		{
 			var hyperParatermersToBeTested = new LinkedList<HyperParameters>
-			var iter = 0 // @FIXME @FLAG : Low Quick but not robust strategy as if the order of detectors change the system could get confused.
+			var iter = 0 // @FIXME LOW Quick but not robust strategy as if the order of detectors change the system could get confused.
 			
 			for (d : detectors) {
 				hyperParatermersToBeTested.add(new HyperParameters(iter))
@@ -164,7 +164,7 @@ behavior TrackerRole extends ObserverRole {
 
 
 
-event BBoxes2DTrackResultToCounter extends BBoxes2DTrackResult{ //@FIXME : Nonsens
+event BBoxes2DTrackResultToCounter extends BBoxes2DTrackResult{ //@FIXME MEDIUM Nonsens
 	
 	var observerName : String
 	var sensitivity : int

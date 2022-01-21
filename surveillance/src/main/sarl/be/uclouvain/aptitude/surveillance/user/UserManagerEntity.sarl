@@ -40,12 +40,13 @@ behavior UserManagerEntity extends OrganizationalRole{
 	
 	//var subHolons= new HashMap<UUID, OpenEventSpace>
 	
-	@SuppressWarnings("potential_field_synchronization_problem")
+
 	on PlatformOrganizationInfo {
 		info("User manager met platform Organisation")
+		synchronized(this){
 		platformContext = occurrence.context
-		platformSpace = occurrence.privateCommunicationChannel
-		platformSpace.registerStrongParticipant(asEventListener)
+		platformSpace = retrieveOrCreateOpenSpaceWithID(platformContext,occurrence.privateCommunicationChannelID)
+		platformSpace.registerStrongParticipant(asEventListener)}
 	}
 	
 	on AgentPlatform {
@@ -66,10 +67,10 @@ behavior UserManagerEntity extends OrganizationalRole{
 	}
 	
 	on NewMission {
-		debug("receives external order for a new mission in -" + occurrence.mission.location +" from" + occurrence.source.ID.toString.substring(0,5))
+		debug("receives external order for a new mission in -" + occurrence.location +" from" + occurrence.source.ID.toString.substring(0,5))
 		emit(privateSpacesListeners.get(occurrence.source.ID),
 			new AuthorizedMission(occurrence.mission, 
-				PlatformListenersSpaceIDs.get(occurrence.mission.location)
+				PlatformListenersSpaceIDs.get(occurrence.location)
 			))
 	}
 	 
@@ -78,7 +79,7 @@ behavior UserManagerEntity extends OrganizationalRole{
 	}
 	
 	def getOrganizationInfo(memberID : UUID) : OrganizationInfo {
-		return new InteractivityOrganizationInfo(innerContext, privateSpacesListeners.get(memberID))
+		return new InteractivityOrganizationInfo(innerContext, privateSpacesListeners.get(memberID).spaceID.ID)
 	}
 	
 }

@@ -34,7 +34,7 @@ skill DeviceNetworkManagerSkill extends InputSkill {
 	uses Logging, DefaultContextInteractions
 
 	var clientSender = new UDPSender()
-	val mobileAddress =new HashMap<UUID, String> //@FIXME : Hashtable is synchronization safe. Maybe one should spend the time to know whether it is necessary or not to have concurrency. 
+	val mobileAddress =new HashMap<UUID, String> //@FIXME MEDIUM Hashtable is synchronization safe. Maybe one should spend the time to know whether it is necessary or not to have concurrency. 
 	val mobileIPAddress = new HashMap<String, UUID>
 	val parentID : UUID
 	new (p : int, holonID : UUID) {

@@ -58,8 +58,7 @@ abstract behavior ObserverRole extends Role {
 	uses Logging, Behaviors, InnerContextAccess, ExternalContextAccess, Schedules
 
 	protected var observerADN = new AtomicReference<AlgorithmInfo>
-	protected val selfSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification,
-		UUID.randomUUID) // An internal space to communicate with other roles.
+	protected val selfSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID) // An internal space to communicate with other roles.
 	protected val missionList = Collections.synchronizedMap(new HashMap<UUID, SurveillanceMissionData>) // The one it has to answer to 
 	protected val listeners = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the client and the role
 	
@@ -178,7 +177,7 @@ abstract behavior ObserverRole extends Role {
 			comChannel.registerStrongParticipant(asEventListener)
 			providers.put(sid, comChannel)
 			debug("Received provider ID sending the channel " + providers.get(sid).spaceID.ID)
-			emit(organizationContext.get.defaultSpace,new AddMission(providers.get(sid).spaceID.ID)) [it.ID == sid] //@FIXME check whether the defaultSPACE is platform //@FIXME Check a simpler way to send
+			emit(organizationContext.get.defaultSpace,new AddMission(providers.get(sid).spaceID.ID)) [it.ID == sid]
 		}
 		else{
 			debug("Known signal = " + sid)

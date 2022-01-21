@@ -62,7 +62,7 @@ skill AlgorithmSelectionSkill implements AlgorithmSelection {
 
 	def addResult(testID : UUID, e : EvaluationMessage) : boolean {
 		
-		//@FIXME low strange behavior
+		//@FIXME LOW strange behavior
 		try{
 			if (compResults.get(testID).HOTA == 0) {
 			compResults.get(testID).setValues(e)

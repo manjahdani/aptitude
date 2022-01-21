@@ -23,7 +23,7 @@ behavior CompetitiveCounterRole extends ObserverRole {
 	
 	uses Logging, Behaviors
 
-	val AVAILABLE_TRACKERS = newArrayList("SORT") // "DeepSORT") // "SORT", //@FIXME its logiciel parameters or not ?
+	val AVAILABLE_TRACKERS = newArrayList("SORT") // "DeepSORT") // "SORT", //@FIXME MEDIUM Software parameters ?
 	val CONFIG_PATH = "F:/aptitude/surveillance/src/main/resources/config/evalconfig.json"
 	
 	override startProcessingRole {
