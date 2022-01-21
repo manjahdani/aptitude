@@ -3,11 +3,8 @@
  */
 package be.uclouvain.organisation.platform.util
 
-import java.util.Collections
-import java.util.HashMap
+import be.uclouvain.aptitude.surveillance.algorithm.util.HyperParameters
 import java.util.UUID
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicInteger
 
 /** 
  * @author $Author: manjahdani$
@@ -19,40 +16,32 @@ import java.util.concurrent.atomic.AtomicInteger
  */
 class SurveillanceMissionData extends MissionData{
 	
-	val cautionLevel = new AtomicInteger()
-	val dynamicAdaptationEnabled = new AtomicBoolean(false)
-	protected var checkList = Collections.synchronizedMap(new HashMap<String, Boolean>)
+	
+	val hyperParameters : HyperParameters
+
+	
 
 	new (missionID : UUID, clientID : UUID, platformID : UUID) {
 		super(missionID, clientID, platformID)
-		checkList.put("CautionLevelSetKnownAndNotNull", false)
-		checkList.put("DynamicAdaptationKnownAndNotNull", false)
+		this.hyperParameters = new HyperParameters
 	}
 	new (missionID : UUID, clientID : UUID, platformID : UUID, cl : int, o : boolean) {
-		super(missionID,clientID,platformID)
-		this.cautionLevel.set(cl)
-		this.dynamicAdaptationEnabled.set(o)
-		checkList.put("CautionLevelSetKnownAndNotNull", true)
-		checkList.put("DynamicAdaptationKnownAndNotNull", true)
+		super(missionID, clientID, platformID)
+		this.hyperParameters = new HyperParameters(cl,o)
 	}
 	def isDynamicAdaptationEnabled : boolean {
-		return dynamicAdaptationEnabled.get
+		return this.hyperParameters.dynamicAdaptationEnabled
 	}
 
 	def getCautionLevel() {
-		return this.cautionLevel.get
+		return this.hyperParameters.cautionLevel
 	}
 	def setCautionLevel(newCL : int){
-		assert newCL >= 0, "Level of caution is negative value"
-		checkList.put("CautionLevelSetKnownAndNotNull", true)
-		this.cautionLevel.set(newCL) 
+		this.hyperParameters.setCautionLevel(newCL)
 	}
-	def getCheckList(){
-		return this.checkList
-	}
+
 	def setDynamicAdaptation(b : boolean) {
-		checkList.put("DynamicAdaptationKnownAndNotNull", true)
-		this.dynamicAdaptationEnabled.set(b)
+		this.hyperParameters.setDynamicAdaptation(b)
 	}
 	def updateParameters(cl : int, isDAE : boolean ) {
 				
@@ -63,15 +52,5 @@ class SurveillanceMissionData extends MissionData{
 		
 		setCautionLevel(md.getCautionLevel)
 		setDynamicAdaptation(md.isDynamicAdaptationEnabled)
-	}
-	
-	def paramKnown() {
-		return areAllTrue(checkList.values)
-	}
-
-	def areAllTrue(array : boolean[]) {
-		for (b : array)
-			if(!b) return false;
-		return true;
 	}
 }

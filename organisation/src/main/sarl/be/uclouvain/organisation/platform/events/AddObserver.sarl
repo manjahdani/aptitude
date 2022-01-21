@@ -4,6 +4,7 @@
 package be.uclouvain.organisation.platform.events
 
 import be.uclouvain.organisation.told.util.AlgorithmInfo
+import java.util.UUID
 
 /** 
  * Event triggered by Algorithms or Experts to request partnership's authorisation 
@@ -30,11 +31,13 @@ import be.uclouvain.organisation.told.util.AlgorithmInfo
 
 
 final event AddObserver {
-
-	var signalProvider : AlgorithmInfo // @FIXME LOW not general
-	var signalReceiver : AlgorithmInfo
 	
-	new (s : AlgorithmInfo, r : AlgorithmInfo) {
+	val missionID : UUID
+	val signalProvider : AlgorithmInfo // @FIXME LOW not general
+	val signalReceiver : AlgorithmInfo
+	
+	new (mID:UUID,s : AlgorithmInfo, r : AlgorithmInfo) {
+		this.missionID = mID
 		this.signalProvider = s
 		this.signalReceiver = r 
 	}

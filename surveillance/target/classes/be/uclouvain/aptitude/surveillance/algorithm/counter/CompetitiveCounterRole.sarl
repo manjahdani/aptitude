@@ -8,6 +8,7 @@ import be.uclouvain.organisation.platform.ObserverRole
 import be.uclouvain.python_access.PythonTwinAccessCapacity
 import io.sarl.core.Behaviors
 import io.sarl.core.Logging
+import java.util.UUID
 
 /** 
  * @TODO : To complete
@@ -23,10 +24,10 @@ behavior CompetitiveCounterRole extends ObserverRole {
 	
 	uses Logging, Behaviors
 
-	val AVAILABLE_TRACKERS = newArrayList("SORT") // "DeepSORT") // "SORT", //@FIXME MEDIUM Software parameters ?
+	val AVAILABLE_TRACKERS = newArrayList("SORT") // "DeepSORT") // "SORT", //@FIXME MEDIUM SOFTWARE PARAMETERS
 	val CONFIG_PATH = "F:/aptitude/surveillance/src/main/resources/config/evalconfig.json"
 	
-	override startProcessingRole {
+	override processingMissionWithID (mID : UUID) {
 		setSkill(new EvaluationImpl, Evaluation, PythonTwinAccessCapacity)
 		if (MD.dynamicAdaptationEnabled) {
 			info("Let the competition start !")
@@ -49,5 +50,9 @@ behavior CompetitiveCounterRole extends ObserverRole {
 		}
 
 	}
-
+	
+	def startRole {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
 }

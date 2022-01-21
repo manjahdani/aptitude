@@ -12,10 +12,11 @@ import java.util.UUID
  * 
  */
 event AuthorizationToPerformMission{
-	
+	val missionID : UUID
 	val missionSpaceInPlatformID : UUID
 	
-	new (sid : UUID) {
-		this.missionSpaceInPlatformID = sid
+	new (mID : UUID, sID : UUID) {
+		this.missionID = mID
+		this.missionSpaceInPlatformID = sID
 	}
 }

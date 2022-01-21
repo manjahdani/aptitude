@@ -81,8 +81,8 @@ behavior PlatformRole extends OrganizationalRole {
 		val missionSpaceInPlatformID = UUID.randomUUID // @FIXME MEDIUM MAKE SURE THIS DOES NOT CAUSE A PROBLEM
 		missionSpace.put(occurrence.missionData.missionID,
 			innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, missionSpaceInPlatformID)) 
-		emit(privateSpacesListeners.get(observerID),
-			new AuthorizationToPerformMission(missionSpaceInPlatformID)
+		emit(privateSpacesListeners.get(observerID), 
+			new AuthorizationToPerformMission(occurrence.missionData.missionID, missionSpaceInPlatformID)
 		)[it.ID == observerID]
 	}
 

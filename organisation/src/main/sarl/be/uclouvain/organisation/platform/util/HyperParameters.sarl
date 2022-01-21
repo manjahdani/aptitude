@@ -1,0 +1,70 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform.util
+
+import java.util.Collections
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.HashMap
+
+/** 
+ * @author manjah
+ * 
+ */
+class HyperParameters {
+
+	val cautionLevel = new AtomicInteger()
+	val dynamicAdaptationEnabled = new AtomicBoolean(false)
+	protected var checkList = Collections.synchronizedMap(new HashMap<String, Boolean>)
+	new () {
+		checkList.put("CautionLevelSetKnownAndNotNull", false)
+		checkList.put("DynamicAdaptationKnownAndNotNull", false)
+	}
+	new (cl : int, o : boolean) {
+		this.cautionLevel.set(cl)
+		this.dynamicAdaptationEnabled.set(o)
+		checkList.put("CautionLevelSetKnownAndNotNull", true)
+		checkList.put("DynamicAdaptationKnownAndNotNull", true)
+	}
+
+	def isDynamicAdaptationEnabled : boolean {
+		return dynamicAdaptationEnabled.get
+	}
+
+	def getCautionLevel() {
+		return this.cautionLevel.get
+	}
+
+	def setCautionLevel(newCL : int) {
+		assert newCL >= 0, "Level of caution is negative value"
+		checkList.put("CautionLevelSetKnownAndNotNull", true)
+		this.cautionLevel.set(newCL)
+	}
+
+	def getCheckList() {
+		return this.checkList
+	}
+
+	def setDynamicAdaptation(b : boolean) {
+		checkList.put("DynamicAdaptationKnownAndNotNull", true)
+		this.dynamicAdaptationEnabled.set(b)
+	}
+
+	def updateParameters(cl : int, isDAE : boolean) {
+
+		setCautionLevel(cl)
+		setDynamicAdaptation(isDAE)
+	}
+
+	def paramKnown() {
+		return areAllTrue(checkList.values)
+	}
+
+	def areAllTrue(array : boolean[]) {
+		for (b : array)
+			if(!b) return false;
+		return true;
+	}
+
+}

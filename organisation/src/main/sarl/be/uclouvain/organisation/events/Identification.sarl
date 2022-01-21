@@ -8,6 +8,7 @@ import java.util.UUID
 /** 
  * @author manjah
  * 
+ * @TODO LOW to comment
  */
 event Identification{
 	
@@ -18,11 +19,18 @@ event Identification{
 	}
 }
 
+/** 
+ * @author manjah
+ * 
+ * @TODO LOW to comment
+ */
 event SignalID {
-
+	
+	val missionID : UUID
 	val signalID : UUID
 	val name : String
-	new (id : UUID, n:String) {
+	new (mID : UUID, id : UUID, n:String) {
+		this.missionID=mID
 		this.signalID = id
 		this.name = n
 	}

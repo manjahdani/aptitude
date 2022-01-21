@@ -62,8 +62,9 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	
 	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
 	on AddObserver {
-		var signal = occurrence.signalProvider
-		var receiver = occurrence.signalReceiver
+		
+		val signal = occurrence.signalProvider
+		val receiver = occurrence.signalReceiver
 		debug("adding observer from " + signal.name + " to " + receiver.name)
 		if (RuleManagement(new MembershipRule(occurrence.signalProvider, occurrence.signalReceiver))) {
 
@@ -75,11 +76,11 @@ behavior SurveillancePlatformRole extends PlatformRole {
 						request.add(signal.name)
 						emit(agentAlgorithm.get(occurrence.signalProvider.task),
 							new AlgorithmJoinPlatform(innerContext, signal.name))}
-					waitfor(signal.name, occurrence.source.ID)
+					waitfor(occurrence.missionID,signal.name, occurrence.source.ID)
 				} else {
 					debug("Algorithm is already available" + signal.name)
 					emit(privateSpacesListeners.get(occurrence.source.ID),
-						new SignalID(participants.get(occurrence.signalProvider.name), occurrence.signalProvider.name))
+						new SignalID(occurrence.missionID,participants.get(occurrence.signalProvider.name), occurrence.signalProvider.name))
 				}
 			}
 		}
@@ -92,12 +93,12 @@ behavior SurveillancePlatformRole extends PlatformRole {
 		agentAlgorithm.put(occurrence.name,occurrence.topic)
 		
 	}
-	synchronized def waitfor(fullName : String, dest : UUID) {
+	synchronized def waitfor(mID : UUID,fullName : String, dest : UUID) {
 		debug("Waiting " + fullName +" as an original request from -  " + dest.toString.substring(0,5))
 		task("waitingfor".concat(fullName).concat(dest.toString)).every(500) [
 			if (participants.keySet.contains(fullName)) {
 				emit(privateSpacesListeners.get(dest),
-					new SignalID(participants.get(fullName), fullName)
+					new SignalID(mID,participants.get(fullName), fullName)
 				)[it.ID == dest]
 				task("waitingfor".concat(fullName).concat(dest.toString)).cancel
 			}
