@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicReference
  * sub-Platforms; namely the level of crossroads. Likewise, the level could be divided again to reach
  * the atomic level of the hardware consisting of a camera and a processor.
  * 
- * @FIXME : Check whether it makes sens the use of OpenEvent rather than EvenSpecification. 
+ * @FIXME LOW Check whether it makes sens the use of OpenEvent rather than EvenSpecification. 
  * 
  * @author $Author: manjahdani$
  * @version $0.0.3$

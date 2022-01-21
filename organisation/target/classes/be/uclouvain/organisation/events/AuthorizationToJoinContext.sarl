@@ -27,7 +27,7 @@ event AuthorizationToJoinContext {
 	 * @param	ctxt	The context to join
 	 * @param	sid	    The space in the context to join
 	 * 
-	 * @FIXME : Develop an generic version
+	 * @FIXME LOW Develop an generic version
 	 */
 	new(ctxt : UUID, sid : UUID) {
 		this.contextID = ctxt

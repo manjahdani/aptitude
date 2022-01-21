@@ -70,7 +70,7 @@ behavior UserManagerEntity extends OrganizationalRole{
 		debug("receives external order for a new mission in -" + occurrence.location +" from" + occurrence.source.ID.toString.substring(0,5))
 		emit(privateSpacesListeners.get(occurrence.source.ID),
 			new AuthorizedMission(occurrence.mission, 
-				PlatformListenersSpaceIDs.get(occurrence.location)
+				PlatformListenersSpaceIDs.get(occurrence.location), occurrence.location
 			))
 	}
 	 

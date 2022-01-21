@@ -54,6 +54,7 @@ skill UserSkill implements UserElementCapacity {
 	val EXPERTISE_DEGREE = newArrayList(1, 2, 3, 0) //@FIXME MEDIUM HARDCODE VALUE
 	var availablePlatforms = new LinkedList<String>
 	
+	
 	new (userID : String, avl_platforms : LinkedList<String>) {
 		
 		this.availablePlatforms.addAll(avl_platforms)
@@ -101,8 +102,8 @@ skill UserSkill implements UserElementCapacity {
 				new SurveillanceMissionData(
 					UUID.randomUUID,
 					entityID,
-					availablePlatforms.get(msg.sceneID),
-					entityList.get(entityID).evolution, true))
+					null, //FIXME HIGH Should it be null ? 
+					entityList.get(entityID).evolution, true), availablePlatforms.get(msg.sceneID)) //@FIXME HIGH hardcoded true
 				)
 		entityList.get(entityID).screenID = msg.sceneID
 		updateBehavior(getExpertTypeList)

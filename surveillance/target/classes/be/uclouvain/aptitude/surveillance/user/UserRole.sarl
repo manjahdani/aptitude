@@ -8,6 +8,7 @@ import be.uclouvain.organisation.told.events.AuthorizedMission
 import be.uclouvain.organisation.told.events.NewMission
 import io.sarl.core.Behaviors
 import io.sarl.core.Logging
+import be.uclouvain.organisation.platform.util.SurveillanceMissionData
 
 /** 
  * UserRole, derived from Element, is tailored to human users communicating with the system
@@ -26,12 +27,19 @@ behavior UserRole extends ElementRole {
 
 	uses Behaviors, Logging
 	
-	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	
 	on AuthorizedMission {
 		
+		val mission = new SurveillanceMissionData(
+			occurrence.mission.missionID,
+			occurrence.mission.clientID,
+			occurrence.platformOpenChannel.spaceID.contextID,
+			occurrence.mission.cautionLevel,
+			occurrence.mission.dynamicAdaptationEnabled
+		) // @FIXME HIGH we copy because occurrence.platformOpenChannel is null and its due to another fixme in UserSkill
 		debug("receives authorisation for mission")
 		wake(
-			new NewMission(occurrence.mission, occurrence.platformOpenChannel)) [
+			new NewMission(mission, occurrence.platformOpenChannel, occurrence.location)) [
 			it.ID == occurrence.mission.clientID
 		]
 	}

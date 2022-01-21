@@ -18,5 +18,5 @@ capacity CounterObserverCapacity extends ObserverCapacity {
 		 * 
 		 * 
 		 */
-	def DisplayPerception(actionID : int) : HashMap<String, OrientedCountingLine> 		// @FIXME : It is not an ObserverCapacity
+	def DisplayPerception(actionID : int) : HashMap<String, OrientedCountingLine> 		// @FIXME MEDIUM It is not an ObserverCapacity
 }

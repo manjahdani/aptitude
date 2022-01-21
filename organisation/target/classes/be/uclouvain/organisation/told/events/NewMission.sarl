@@ -5,6 +5,7 @@ package be.uclouvain.organisation.told.events
 
 import be.uclouvain.organisation.platform.util.MissionData
 import io.sarl.core.OpenEventSpace
+import be.uclouvain.organisation.platform.util.SurveillanceMissionData
 
 /** 
  * Request to perform a New Mission 
@@ -30,17 +31,17 @@ import io.sarl.core.OpenEventSpace
  */
 event NewMission{
 
-	val mission : MissionData
+	val mission : SurveillanceMissionData
 	val location : String
 	var platformOpenChannel : OpenEventSpace
 
-	new(data : MissionData , l : String) {
+	new(data : SurveillanceMissionData , l : String) {
 
 		this.mission = data
 		this.location = l
 	}
 	
-	new(data : MissionData, sid : OpenEventSpace, l: String) {
+	new(data : SurveillanceMissionData, sid : OpenEventSpace, l: String) {
 		
 		this.mission = data
 		this.location = l
@@ -50,11 +51,13 @@ event NewMission{
 
 event AuthorizedMission {
 
-	val mission : MissionData
+	val mission : SurveillanceMissionData
 	val platformOpenChannel : OpenEventSpace
+	val location : String
 	
-	new(data : MissionData, sid : OpenEventSpace) {
+	new(data : SurveillanceMissionData, sid : OpenEventSpace, location : String) {
 		this.mission = data
 		this.platformOpenChannel = sid
+		this.location= location
 	}
 }

@@ -63,7 +63,7 @@ agent Expert extends Paraddis {
 		encounteredPlatforms.put(occurrence.mission.platformID, occurrence.platformOpenChannel)
 	}
 
-	//@SuppressWarnings("potential_field_synchronization_problem", "discouraged_occurrence_readonly_use")
+
 	
 	//@FIXME This should be in the role rather in the agent. 
 	//on StopMission {
