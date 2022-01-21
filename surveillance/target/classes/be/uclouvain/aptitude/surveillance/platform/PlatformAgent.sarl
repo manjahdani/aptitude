@@ -22,9 +22,6 @@ import java.util.UUID
 
 /**
  * 
- * @FIXME It is not clear whether for sub-platforms the agent should play the role of TOLD as well ? 
- * Or do we need, another agent ??? The way we do it, is quite unclear... Because, it reveils the 
- * 
  * 
  * @author $Author: manjahdani$
  * @version $0.0.1$

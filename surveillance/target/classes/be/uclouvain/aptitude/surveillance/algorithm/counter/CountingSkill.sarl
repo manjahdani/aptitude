@@ -46,7 +46,7 @@ skill CountingSkill implements CounterObserverCapacity {
 	
 	def install {
 		countingLines.put("A", new OrientedCountingLine(1235, 700, 309, 664, 11, 1)) // ObjectCounter
-		countingLines.put("B", new OrientedCountingLine(1477, 324, 1676, 310,11, -1)) //@FIXME : it is manual while it should communicated from the analyst. 
+		countingLines.put("B", new OrientedCountingLine(1477, 324, 1676, 310,11, -1)) //@FIXME HIGH HARDCODED VALUE 
 		// countingLines.put("B", new countingLine(1531, 392, 1775, 376, -1)) // ObjectCounter
 	}
 	

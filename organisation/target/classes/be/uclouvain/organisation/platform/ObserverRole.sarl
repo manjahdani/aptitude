@@ -65,13 +65,26 @@ abstract behavior ObserverRole extends Role {
 	protected val providers = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
 	protected var processingParameters = Collections.synchronizedMap(new HashMap<UUID, ProcessingHyperParameters>) // One that it ordered. 
 	protected var computation_location = new AtomicReference<String>
-	
+	val checkList = Collections.synchronizedMap(new HashMap<String, Boolean>)
 
 	on Initialize {
 		observerADN.set(occurrence.parameters.get(0) as AlgorithmInfo)
 		selfSpace.registerStrongParticipant(asEventListener) // listen to a self-internal space
+		checkList.put("context", false)
+		checkList.put("computation_location", false)
 	}
-
+	
+	def setup(){
+		task("init").every(1000) [
+			if(areAllTrue(checkList.values)){
+				startRole()
+				task("init").cancel
+			}
+			else{
+				debug("Waiting for orga and ressources"+checkList)
+			}
+		]
+	}
 	on HyperParametersRequest {
 		
 		var providerID = occurrence.source.ID
@@ -95,9 +108,8 @@ abstract behavior ObserverRole extends Role {
 }
 	on ComputationalRessources {
 		debug("received computation_location: " + occurrence.client_id)
-		synchronized (computation_location) {
-			computation_location.set(occurrence.client_id)
-		}
+		computation_location.set(occurrence.client_id)
+		checkList.put("computation_location",true)
 	}
 
 
@@ -106,10 +118,8 @@ abstract behavior ObserverRole extends Role {
 		updateContextInfo(occurrence.context, occurrence.privateCommunicationChannelID)
 		emit(organizationContext.get.defaultSpace, new Identification(getName()))
 		observerADN.get.platformName = occurrence.platformName
+		checkList.put("context",true)
 	}	
-	
-
-	
 	
 	on AddMission {
 
@@ -203,7 +213,8 @@ abstract behavior ObserverRole extends Role {
     	return true;
     }
 
-	abstract def startProcessingRole(mID : UUID)
+	abstract def startRole()
+	abstract def processingMissionWithID(mID : UUID)
 }
 
 

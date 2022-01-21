@@ -22,7 +22,7 @@ event RequestToJoin {
 	 * Constructor
 	 * @param	sid	    The space in the context to join
 	 * 
-	 * @FIXME : Develop an generic version
+	 * @FIXME LOW Develop an generic version
 	 */
 	new(sid : OpenEventSpace) {
 		this.emitterSpace = sid

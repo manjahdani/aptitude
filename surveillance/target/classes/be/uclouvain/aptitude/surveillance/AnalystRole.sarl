@@ -45,18 +45,21 @@ behavior AnalystRole extends ObserverRole{
 			availableObservers.get(missionList.get(this.ID).cautionLevel))
 	}
 	
-	def startProcessingRole(mID : UUID) {
-		
+	def startRole() {
+		debug("asks for algorithm performing vehicle counting to platform")
 		emit(privateOrganizationSpace.get, new Request2PerformMission(missionList.get(this.ID)))
-		debug("asks for algorithm performing vehicle counting to platform")	
 	}
 	
-	@SuppressWarnings("potential_field_synchronization_problem")
+	
 	on AuthorizationToPerformMission {
-		debug("Received authorisation to perform a mission within the space : " + occurrence.missionSpaceID)
-		providers.put(this.ID,retrieveOrCreateOpenSpaceWithID(occurrence.missionSpaceID));
-		providers.get(this.ID).registerStrongParticipant(asEventListener)
-		//platformSpace.emit(new LocalDatabaseRequest(defaultContext))[it.ID == platformContext.ID]
-		emit(privateOrganizationSpace.get,new AddObserver(new AlgorithmInfo("APTITUDE", "COUNTER"), new AlgorithmInfo("EXPERT", "ROADANALYST")))
+		debug("Received authorisation to perform a mission within the space : " + occurrence.missionSpaceInPlatformID)
+		listeners.put(this.ID,retrieveOrCreateOpenSpaceWithID(occurrence.missionSpaceInPlatformID)); 
+		listeners.get(this.ID).registerStrongParticipant(asEventListener) 
+		emit(privateOrganizationSpace.get, new AddObserver(new AlgorithmInfo("APTITUDE", "COUNTER"), new AlgorithmInfo("EXPERT", "ROADANALYST")))
 	}
+	
+	def processingMissionWithID(mID : UUID) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
 }

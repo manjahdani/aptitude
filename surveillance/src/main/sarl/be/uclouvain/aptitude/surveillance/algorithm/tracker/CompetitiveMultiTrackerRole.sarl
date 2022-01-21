@@ -38,7 +38,7 @@ import java.util.UUID
 behavior CompetitiveMultiTrackerRole {
 	uses Logging, Lifecycle, InnerContextAccess, Schedules , Behaviors, ExternalContextAccess
 	
-	var detectors : ArrayList<String>  // @FIXME its logiciel parameters or not ?
+	var detectors : ArrayList<String>  // @FIXME HIGH LOGICIEL PARAMETERS ?
 	
 	protected val sub_processes = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
 	protected val detector_innerTrackerMap = Collections.synchronizedMap(new HashMap<String, UUID>)

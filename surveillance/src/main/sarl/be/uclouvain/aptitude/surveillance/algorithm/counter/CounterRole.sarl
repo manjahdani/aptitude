@@ -23,7 +23,7 @@ import java.util.HashMap
  * 
  */
 
-behavior CounterRole { //extends ObserverRole { //@FIXME Should the CounterRole be an observer ? 
+behavior CounterRole { //extends ObserverRole { //@FIXME MEDIUM Should the CounterRole be an observer ? 
 	
 	uses Logging, CounterObserverCapacity, DisplayCapacity
 	

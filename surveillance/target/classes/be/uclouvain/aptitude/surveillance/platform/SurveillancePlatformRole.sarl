@@ -34,7 +34,7 @@ import java.util.UUID
 behavior SurveillancePlatformRole extends PlatformRole {
 	uses InnerContextAccess, ExternalContextAccess, Logging, PlatformCapacity, Schedules, Behaviors
 	
-	protected val participants = Collections.synchronizedMap(new HashMap<String, UUID>) // @FIXME clarify MAP - Lists and so on. clarify also if the variables must be concurrent or not
+	protected val participants = Collections.synchronizedMap(new HashMap<String, UUID>) // @FIXME LOW clarify MAP - Lists and so on. clarify also if the variables must be concurrent or not
 	val request = Collections.synchronizedList(new LinkedList<String>)
 	protected val agentAlgorithm = new HashMap<String, OpenEventSpace>
 	

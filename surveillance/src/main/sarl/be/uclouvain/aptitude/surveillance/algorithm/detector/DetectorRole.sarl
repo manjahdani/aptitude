@@ -9,6 +9,7 @@ import io.sarl.core.Behaviors
 import io.sarl.core.Destroy
 import io.sarl.core.Logging
 import io.sarl.core.ExternalContextAccess
+import java.util.UUID
 
 /** 
  * @TODO: write a description
@@ -38,13 +39,18 @@ behavior DetectorRole extends ObserverRole {
 		//listeners.clear
 		
 		//listeners.put(occurrence.source.ID, spaceToSend)
-	 //@FIXME not robust ! 
+	 //@FIXME HIGH not robust ! 
 	//}
 	on Destroy {
 		info("The behavior was stopped.")
 	}
+
 	
-	override startProcessingRole() {
+	def startRole {
+		
+	}
+	
+	def processingMissionWithID(mID : UUID) {
 		setSkill(new DetectorPythonTwin)
 		registerBehavior(new SingleDetectorRole(this.owner), observerADN.get.belief, MD.location, computation_location)
 	}

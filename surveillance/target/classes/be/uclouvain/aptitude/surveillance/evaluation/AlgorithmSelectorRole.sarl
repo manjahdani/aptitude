@@ -67,7 +67,7 @@ behavior AlgorithmSelectorRole extends PythonAccessorRole {
 	}
 
 	/* 
-	 * @FIXME Not general
+	 * @FIXME HIGH Not general
 	 */
 	on EvaluationResult {
 

@@ -7,13 +7,15 @@ import java.util.UUID
 
 /** 
  * @author manjah
+ *
+ * @TODO MEDIUM to comment
  * 
  */
 event AuthorizationToPerformMission{
 	
-	val missionSpaceID : UUID
+	val missionSpaceInPlatformID : UUID
 	
-	new (spaceID : UUID) {
-		this.missionSpaceID = spaceID
+	new (sid : UUID) {
+		this.missionSpaceInPlatformID = sid
 	}
 }

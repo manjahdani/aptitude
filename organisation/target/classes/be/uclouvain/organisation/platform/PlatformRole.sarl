@@ -75,13 +75,15 @@ behavior PlatformRole extends OrganizationalRole {
 		// RuleManagement(new MembershipInfoRule(occurrence.source, occurrence.SourceEventSpace, occurrence.entityData))
 		// if (true) {
 		
-		var clientID = occurrence.source.ID
-		info("received request to add a mission from " + clientID.toString.substring(0,5))
-		
-		missionSpace.put(occurrence.missionData.missionID, innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, occurrence.missionData.missionID))
-		emit(privateSpacesListeners.get(clientID),
-			new AuthorizationToPerformMission(occurrence.missionData.missionID)
-		)[it.ID == clientID]
+		val observerID = occurrence.source.ID
+		info("received request to add a mission from " + observerID.toString.substring(0, 5))
+		//@FIXME MEDIUM Implement an IF itstatement
+		val missionSpaceInPlatformID = UUID.randomUUID // @FIXME MEDIUM MAKE SURE THIS DOES NOT CAUSE A PROBLEM
+		missionSpace.put(occurrence.missionData.missionID,
+			innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, missionSpaceInPlatformID)) 
+		emit(privateSpacesListeners.get(observerID),
+			new AuthorizationToPerformMission(missionSpaceInPlatformID)
+		)[it.ID == observerID]
 	}
 
 	

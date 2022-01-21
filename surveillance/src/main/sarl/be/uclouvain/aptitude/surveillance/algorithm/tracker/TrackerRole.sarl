@@ -39,7 +39,7 @@ behavior TrackerRole extends ObserverRole {
 	uses Logging, TrackerPythonTwinCapacity, Behaviors, ExternalContextAccess
 
 
-	val detectors = newArrayList("YOLO", "YOLO-COCO") // @FIXME should be given by the Analyst which makes it configurable ?
+	val detectors = newArrayList("YOLO", "YOLO-COCO") // @FIXME HIGH should be given by the Analyst which makes it configurable ?
 	
 	var totalTrackerTime : double = 0
 	var totalDetectorTime : double = 0
@@ -127,7 +127,7 @@ behavior TrackerRole extends ObserverRole {
 		requestAlgorithm(occurrence.detector, "DETECTOR")
 	}
 	
-	override startProcessingRole (mID : UUID) {
+	override processingMissionWithID(mID : UUID) {
 		if (missionList.get(mID).isDynamicAdaptationEnabled) 
 		{
 			var hyperParatermersToBeTested = new LinkedList<HyperParameters>
@@ -154,7 +154,14 @@ behavior TrackerRole extends ObserverRole {
 			info("Come here : " + detectors.get(MD.cautionLevel))
 			//requestAlgorithm(detectors.get(sensitivity.get), "DETECTOR")
 			}
-		}	
+		}
+	
+	def startRole {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+
+	
 }
 
 

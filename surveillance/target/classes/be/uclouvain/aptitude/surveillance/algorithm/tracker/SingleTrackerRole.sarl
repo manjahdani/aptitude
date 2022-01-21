@@ -30,7 +30,7 @@ behavior SingleTrackerRole extends PythonAccessorRole {
 	/* 
 	 * if (!providers.keySet.contains(occurrence.source.ID)) {
 	 * providers.put(occurrence.source.ID, null) 	// @FIXME HIGH to correct;
-	 * } // @FIXME It is not necessary
+	 * } // @FIXME LOW It is not necessary
 	 */
 	}
 

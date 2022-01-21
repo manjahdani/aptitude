@@ -58,7 +58,7 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 		for (p:boxe2ds){
 			aux(writer,(p.frame+1).toString, p.globalID.toString, p.x.intValue.toString, p.y.intValue.toString, p.w.intValue.toString, p.h.intValue.toString)
 			
-		}// @FIXME : LOW For historical reason we did this non sens. Something wrong 
+		}// @FIXME LOW For historical reason we did this non sens. Something wrong 
 		
 	}
 	

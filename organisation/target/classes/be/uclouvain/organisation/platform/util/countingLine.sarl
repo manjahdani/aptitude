@@ -82,7 +82,7 @@ class CountingLine {
  * @param : rX : X coordinate of the right point B
  * @param : rY : Y coordinate of the right point B
  * @param : numberOfClass : The number of object's classification
- * @param : d  : direction  @FIXME not clear
+ * @param : d  : direction  @FIXME MEDIUM not clear
  * 
  * @author $manjahdani$
  * @version $0.0.1$
