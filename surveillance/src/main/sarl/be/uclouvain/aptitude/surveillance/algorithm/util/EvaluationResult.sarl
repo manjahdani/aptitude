@@ -181,7 +181,7 @@ class EvaluationResults{
 		return this.HOTA
 	}
 
-	@SuppressWarnings("discouraged_reference")
+	
 	def EvaluationPrint() : void {
 		// println(CompetitorID.toString)
 		println(CompetitorBelief)

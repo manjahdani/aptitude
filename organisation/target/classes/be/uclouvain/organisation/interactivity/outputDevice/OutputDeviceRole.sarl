@@ -16,7 +16,7 @@ package be.uclouvain.organisation.interactivity.outputDevice
 behavior OutputDeviceRole {
 	uses OutputDeviceCapacity
 
-	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	
 	on OutputMsg {
 		outputConversion(occurrence.source.ID, occurrence.Information)
 	}

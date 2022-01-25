@@ -19,7 +19,7 @@ behavior SingleDetectorRole extends PythonAccessorRole {
 	uses Logging, PythonTwinAccessCapacity, Schedules
 
 
-	@SuppressWarnings("potential_field_synchronization_problem")
+	
 	on PartnerDetectionFound {
 
 		this.partnerName = occurrence.partnerName
@@ -33,7 +33,7 @@ behavior SingleDetectorRole extends PythonAccessorRole {
 		]
 	}
 
-	@SuppressWarnings("potential_field_synchronization_problem")
+	
 	
 	
 	on PauseMission{

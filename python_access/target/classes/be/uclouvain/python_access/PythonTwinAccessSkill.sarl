@@ -31,7 +31,7 @@ abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 	protected var pendingRequestID : UUID
 	protected var requestTask : AgentTask
 
-	@SuppressWarnings("potential_field_synchronization_problem")
+	
 	def install {
 		topicRequestSub = CommunicationManager.instance.subscribeTopic("request", this) //@FIXME LOW install is 
 	}
@@ -42,7 +42,7 @@ abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 		//info("Preparing the uninstallation of the skill")
 	}
 
-	@SuppressWarnings("potential_field_synchronization_problem")
+	
 	def uninstall {
 		if (topicRequestSub !== null) {
 			CommunicationManager.instance.unsubscribeTopic(topicRequestSub.toString)
@@ -54,7 +54,7 @@ abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 		}
 	}
 
-	@SuppressWarnings("potential_field_synchronization_problem")
+	
 	def activateAccess(jsonConfig : JSONObject) {
 		this.pendingRequestID = UUID.randomUUID
 		this.requestTask = every(1000) [

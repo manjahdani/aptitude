@@ -38,7 +38,7 @@ agent PlatformAgent extends Paraddis {
 	var openChanel : OpenEventSpace
 	var platformConfig :PlatformConfig
 	
-	@SuppressWarnings("potential_field_synchronization_problem")
+	
 	on Initialize {
 
 		platformConfig = occurrence.parameters.get(0) as PlatformConfig

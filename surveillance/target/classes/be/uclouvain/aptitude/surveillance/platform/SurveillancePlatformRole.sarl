@@ -40,7 +40,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	
 	protected var allocated_ressource : String
 	
-	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
+	
 	on LocalDatabaseRequest {
 		info("received a request from " + occurrence.source.ID.toString.substring(0, 5) + " to connect with a database ")
 		emit(privateSpacesListeners.get(TOLDID),
@@ -60,7 +60,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	}
  
 	
-	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
+	
 	on AddObserver {
 		
 		val signal = occurrence.signalProvider

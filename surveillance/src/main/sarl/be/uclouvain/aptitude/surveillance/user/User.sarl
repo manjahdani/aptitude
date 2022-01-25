@@ -28,7 +28,7 @@ agent User extends Paraddis {
 	uses Logging, Behaviors, Lifecycle, InnerContextAccess
 	
 	var userConfig : HolonicUserConfig
-	@SuppressWarnings("potential_field_synchronization_problem")
+
 	on Initialize {
 		userConfig = occurrence.parameters.get(0) as HolonicUserConfig
 		

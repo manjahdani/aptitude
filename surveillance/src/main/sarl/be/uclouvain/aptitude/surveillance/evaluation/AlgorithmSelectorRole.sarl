@@ -47,7 +47,7 @@ behavior AlgorithmSelectorRole extends PythonAccessorRole {
 		setSkill(new AlgorithmSelectionSkill(score.params), AlgorithmSelection)
 }
 
-	@SuppressWarnings("potential_field_synchronization_problem")
+	
 	on PartnerEvaluationFound {
 		partnerName = occurrence.partnerName
 		//info("I found my partner" + partnerName)

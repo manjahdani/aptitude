@@ -45,7 +45,7 @@ agent TOLDAgent extends Paraddis {
 	val agentPlatformSpaces = new HashMap<String, OpenEventSpace> 
 	var S : VirtualDatabaseSkill
 	
-	@SuppressWarnings("potential_field_synchronization_problem")
+	
 	on Initialize {
 		
 		info("ready to share my stored knowledge.")
@@ -64,7 +64,7 @@ agent TOLDAgent extends Paraddis {
 		}
 	}
 	
-	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
+
 	
 	on AgentPlatform {
 		info("encounters " + occurrence.name + " agent platform")
@@ -72,7 +72,7 @@ agent TOLDAgent extends Paraddis {
 		occurrence.topic.registerStrongParticipant(asEventListener)
 		wake(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it.ID !== this.ID]
 	}
-	@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem")
+	
 	on JoinPlatform {
 		info("joins organisation - " + occurrence.contextID.ID.toString.substring(0,5))
 		val randomID = UUID.randomUUID

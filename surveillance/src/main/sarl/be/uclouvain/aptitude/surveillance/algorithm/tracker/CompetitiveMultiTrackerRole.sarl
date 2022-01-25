@@ -5,7 +5,7 @@ package be.uclouvain.aptitude.surveillance.algorithm.tracker
 
 import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
-import be.uclouvain.aptitude.surveillance.algorithm.util.HyperParameters
+
 import be.uclouvain.organisation.events.AddMember
 import be.uclouvain.organisation.events.SignalID
 import be.uclouvain.organisation.platform.events.AddMission
@@ -29,6 +29,7 @@ import java.util.Collections
 import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
+import be.uclouvain.organisation.platform.util.HyperParameters
 
 /** 
  * @author manjah
@@ -47,7 +48,7 @@ behavior CompetitiveMultiTrackerRole {
 	protected var computation_Location : String
 
 	protected val activeProviders = Collections.synchronizedMap(new HashMap<String, UUID>) // Detector and its ID
-
+/** 
 	on Initialize {
 		info("Competitive multi-tracker role started.")
 
@@ -147,13 +148,15 @@ behavior CompetitiveMultiTrackerRole {
 		// We send to the sub-process meant to analyse the data of the provider. 
 		// For example, agent 1 process the data sent from detector A. 
 		wake(new BBoxes2DResult(occurrence.bboxes2D))[it.ID == detector_innerTrackerMap.get(occurrence.providerName)] 
-	}
+	}*/
 }
 
 event ResumeTrackingMission {
+	val missionID : UUID
 	val detector : String
 
-	new(d : String) {
+	new(mID : UUID, d : String) {
+		this.missionID= mID
 		this.detector = d
 	}
 }

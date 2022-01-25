@@ -23,6 +23,7 @@ import io.sarl.lang.core.AgentContext
 import java.util.HashMap
 import java.util.UUID
 import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
+import java.util.concurrent.atomic.AtomicReference
 
 /** 
  * Agent with a set of tasks (Goals) and a model (Belief). 
@@ -59,72 +60,71 @@ import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
  * 
  */
  
-@SuppressWarnings("potential_field_synchronization_problem")
+
 agent Algorithm extends Paraddis{
 	
 	uses Behaviors,Logging, Lifecycle, InnerContextAccess, ExternalContextAccess
 	
-	var ADN : AlgorithmInfo = null;
+	val ADN  = new AtomicReference<AlgorithmInfo>
 
 	val agentPlatformSpaces = new HashMap<String, OpenEventSpace>
 	var subHolons = new HashMap<AgentContext,UUID>
-	var openChanel : OpenEventSpace
+	var openChanel = new AtomicReference<OpenEventSpace>
 	
 	on Initialize {
-		ADN = occurrence.parameters.get(0) as AlgorithmInfo 
-		loggingName = this.ID + "-ALGORITHM-" + ADN.name + "-" + ADN.level 
+		ADN.set(occurrence.parameters.get(0) as AlgorithmInfo) 
+		loggingName = this.ID + "-ALGORITHM-" + ADN.get.name + "-" + ADN.get.level 
 		registerBehavior(new EntityRole(this))
-		openChanel = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
-		openChanel.registerStrongParticipant(asEventListener)
+		openChanel.set(innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID))
+		openChanel.get.registerStrongParticipant(asEventListener)
 		
-		if (ADN.level == 0) {
+		if (ADN.get.level == 0) {
 			var toSpawn = occurrence.parameters.get(1) as HashMap<UUID, AlgorithmInfo>
 			for (e : toSpawn.keySet) {
 				spawnInContextWithID(Algorithm, e, innerContext, toSpawn.get(e))
 			}}
 		
-		if(ADN.level>1){
-			debug("atomic agent with task: " + ADN.task + " & belief : " +
-				ADN.belief.replace("F:/aptitude/surveillance/src/main/resources/", ""))
+		if(ADN.get.level>1){
+			debug("atomic agent with task: " + ADN.get.task + " & belief : " +
+				ADN.get.belief.replace("F:/aptitude/surveillance/src/main/resources/", ""))
 			registerBehavior(new AlgorithmEntity(this))
-			switch(ADN.task){
+			switch(ADN.get.task){
 				case "COUNTER": {
-					registerBehavior(new CompetitiveCounterRole(this), ADN)
+					registerBehavior(new CompetitiveCounterRole(this), ADN.get)
 				}
 				case "TRACKER": {
-					registerBehavior(new TrackerRole(this), ADN)
+					registerBehavior(new TrackerRole(this), ADN.get)
 				}
 				case "DETECTOR": {
-					registerBehavior(new DetectorRole(this), ADN)
+					registerBehavior(new DetectorRole(this), ADN.get)
 				}
 			}
 		 }
 		 else {
-			debug("I believe in : " + ADN.name)
+			debug("I believe in : " + ADN.get.name)
 		 }
 	}
-	@SuppressWarnings("discouraged_occurrence_readonly_use")
+
 	on AgentPlatform {
 		debug("encounters : " + occurrence.name + " agent")
 		agentPlatformSpaces.put(occurrence.name, occurrence.topic)
 		occurrence.topic.registerStrongParticipant(asEventListener)
-		emit(occurrence.topic, new AgentAlgorithm(ADN.name, openChanel))
+		emit(occurrence.topic, new AgentAlgorithm(ADN.get.name, openChanel.get))
 		wake(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it.ID !== this.ID]
 	}
 	
-	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on AlgorithmNeeded  { //
-			if (occurrence.name === ADN.name) {
+			if (occurrence.name === ADN.get.name) {
 			debug(
 				"clones a " + occurrence.task + " named " + occurrence.name + " and belief : " +
 					occurrence.belief.replace("F:/aptitude/surveillance/src/main/resources/", "") + " \n to answer the request of " + occurrence.source.ID.toString.substring(0, 5))
 			val cloneID = UUID.randomUUID
 			subHolons.put(occurrence.contextID, cloneID)
-			spawnInContextWithID(Algorithm, cloneID, occurrence.contextID, ADN.cloneChild(cloneID))
+			spawnInContextWithID(Algorithm, cloneID, occurrence.contextID, ADN.get.cloneChild(cloneID))
 		}}//@FIXME we could have a table of each child, so that we could direct the information to it. 
 	on AlgorithmJoinPlatform {
-		debug("deploys " + ADN.task + " named " + occurrence.name + " performing for " + occurrence.source.ID.toString.substring(0, 5))
-		wake(new AlgorithmNeeded(occurrence.contextID, occurrence.name, ADN.task, ADN.belief))
+		debug("deploys " + ADN.get.task + " named " + occurrence.name + " performing for " + occurrence.source.ID.toString.substring(0, 5))
+		wake(new AlgorithmNeeded(occurrence.contextID, occurrence.name, ADN.get.task, ADN.get.belief))
 	}
 
 

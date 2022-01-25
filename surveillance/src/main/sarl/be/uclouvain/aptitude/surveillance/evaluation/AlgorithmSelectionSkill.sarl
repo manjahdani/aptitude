@@ -8,6 +8,7 @@ import be.uclouvain.python_access.messages.EvaluationMessage
 import io.sarl.core.Logging
 import java.util.TreeMap
 import java.util.UUID
+import be.uclouvain.organisation.platform.util.HyperParameters
 
 /** 
  * @author manjah
@@ -19,11 +20,11 @@ skill AlgorithmSelectionSkill implements AlgorithmSelection {
 
 	val compResults = new TreeMap<UUID, EvaluationResults>
 	
-	var parameters : String[]
+	var param : HyperParameters
 	
-	new (p : String*)
+	new (p : HyperParameters)
 	{
-		parameters=p
+		this.param=p
 	}
 	
 	def selectAlgorithm():EvaluationResults {
@@ -35,7 +36,7 @@ skill AlgorithmSelectionSkill implements AlgorithmSelection {
 			var effeciency = (0.51 - 2 * sframe) / (0.49)
 			info("Competitor - " + l.competitorID + " - HOTA: " + l.HOTA + " - Efficiency:" + effeciency)
 			// info("Exper" + ExpertSensitivity)
-			rankedResult.put(metric_APTITUDE(l.HOTA, effeciency, parameters.get(0).toAtomicInteger.get), l.belief)
+			rankedResult.put(metric_APTITUDE(l.HOTA, effeciency, param.cautionLevel), l.belief)
 		}
 		debug(rankedResult + "\n Congratulations to " + rankedResult.lastEntry)
 		

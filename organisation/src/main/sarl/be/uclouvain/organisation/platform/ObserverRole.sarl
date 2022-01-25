@@ -98,8 +98,7 @@ abstract behavior ObserverRole extends Role {
 			debug("param requests from agentID=" + providerID.toString.substring(0, 5) +
 				" sending param:" + " s =" + MD.cautionLevel)
 				
-			emit(providers.get(providerID), 
-				processingParameters.get(occurrence.missionID)
+			emit(providers.get(providerID), new ProcessingHyperParameters(occurrence.missionID,processingParameters.get(occurrence.missionID))
 			)[it.ID == providerID]
 		}
 		
@@ -141,7 +140,7 @@ abstract behavior ObserverRole extends Role {
 	def waitMissionParam(mID : UUID) {
 
 		task("rMP".concat(mID.toString)).every(1000) [
-			if (missionList.get(mID).paramKnown) {
+			if (missionList.get(mID).hyperParameters.paramKnown) {
 				
 				var MD = missionList.get(mID)
 				info(
@@ -173,7 +172,7 @@ abstract behavior ObserverRole extends Role {
 		//leave(PlatformContext.ID)
 	}
 	on ProcessingHyperParameters {
-		missionList.get(occurrence.missionID).updateParameters(occurrence.cautionLevel, occurrence.OptimalSearchEnabled)
+		missionList.get(occurrence.missionID).update(occurrence.param)
 	}
 
 	

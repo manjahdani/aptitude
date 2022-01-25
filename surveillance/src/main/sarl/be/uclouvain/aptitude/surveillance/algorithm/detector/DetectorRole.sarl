@@ -52,7 +52,7 @@ behavior DetectorRole extends ObserverRole {
 	
 	def processingMissionWithID(mID : UUID) {
 		setSkill(new DetectorPythonTwin)
-		registerBehavior(new SingleDetectorRole(this.owner), observerADN.get.belief, MD.location, computation_location)
+		registerBehavior(new SingleDetectorRole(this.owner), observerADN.get.belief, observerADN.get.name, computation_location)
 	}
 	
 }

@@ -86,7 +86,6 @@ skill TrackerPythonTwinSkill extends ObserverPythonAccess implements TrackerPyth
 		return tmp
 	}
 	
-	@SuppressWarnings("discouraged_reference")
 	def print(track : BBoxes2DTrackMessage) {
 		
 		 println("***********************")

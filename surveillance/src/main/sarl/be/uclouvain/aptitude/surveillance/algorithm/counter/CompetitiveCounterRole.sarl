@@ -29,23 +29,25 @@ behavior CompetitiveCounterRole extends ObserverRole {
 	
 	override processingMissionWithID (mID : UUID) {
 		setSkill(new EvaluationImpl, Evaluation, PythonTwinAccessCapacity)
+		val MD = missionList.get(mID)
 		if (MD.dynamicAdaptationEnabled) {
 			info("Let the competition start !")
 			registerBehavior(new AlgorithmSelectorRole(this.owner),
-								CONFIG_PATH, observerADN.name, 
+								CONFIG_PATH, observerADN.get.name, 
 								computation_location,
-								new Metric("APTITUDE", "F:/pythonToolbox/pytb-agent/videos/".concat(MD.location).concat("/gt/gt.txt"),
-								processingParameters))
+								new Metric("APTITUDE",
+					"F:/pythonToolbox/pytb-agent/videos/".concat(observerADN.get.platformName).concat("/gt/gt.txt"),
+								MD.hyperParameters))
 			for (tracker : AVAILABLE_TRACKERS) {
 				info("requests tracker: " + tracker)
-				requestAlgorithm(tracker, "TRACKER")
+				requestAlgorithm(mID,tracker, "TRACKER")
 			}
 		}
 		else{
 			registerBehavior(new CounterRole(owner))
 			for (tracker : AVAILABLE_TRACKERS) {
 				info("requests tracker: " + tracker)
-				requestAlgorithm(tracker, "TRACKER")
+				requestAlgorithm(mID,tracker, "TRACKER")
 			}
 		}
 

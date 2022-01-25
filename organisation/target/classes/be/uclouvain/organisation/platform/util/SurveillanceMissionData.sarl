@@ -28,6 +28,7 @@ class SurveillanceMissionData extends MissionData{
 		super(missionID, clientID, platformID)
 		this.hyperParameters = new HyperParameters(cl,o)
 	}
+	
 	def isDynamicAdaptationEnabled : boolean {
 		return this.hyperParameters.dynamicAdaptationEnabled
 	}
@@ -42,15 +43,17 @@ class SurveillanceMissionData extends MissionData{
 	def setDynamicAdaptation(b : boolean) {
 		this.hyperParameters.setDynamicAdaptation(b)
 	}
+	def update(p : HyperParameters){
+		updateParameters(p.cautionLevel, p.dynamicAdaptationEnabled)
+		
+	}
 	def updateParameters(cl : int, isDAE : boolean ) {
 				
 		setCautionLevel(cl)
 		setDynamicAdaptation(isDAE)
 	}
 	def update(md : SurveillanceMissionData) {
-		
-		setCautionLevel(md.getCautionLevel)
-		setDynamicAdaptation(md.isDynamicAdaptationEnabled)
+		updateParameters(md.getCautionLevel, md.isDynamicAdaptationEnabled)
 	}
 	def getHyperParameters(){
 		return this.hyperParameters

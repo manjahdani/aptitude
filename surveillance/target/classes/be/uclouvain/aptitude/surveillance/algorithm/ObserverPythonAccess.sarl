@@ -13,7 +13,7 @@ import be.uclouvain.python_access.messages.BaseMessage
  * 
  */
 abstract skill ObserverPythonAccess extends PythonTwinAccess implements ObserverCapacity {
-	@SuppressWarnings("potential_field_synchronization_problem")
+	
 	def Signal2Perception(detectionMessage : Object) {
 		CommunicationManager.instance.publishMessage(topicSignalAcquisition.toString, detectionMessage as BaseMessage)
 	}

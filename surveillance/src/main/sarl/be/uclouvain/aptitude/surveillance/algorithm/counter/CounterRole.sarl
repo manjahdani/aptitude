@@ -90,7 +90,7 @@ behavior CounterRole { //extends ObserverRole { //@FIXME MEDIUM Should the Count
 
 
 /** 	
-		@SuppressWarnings("potential_field_synchronization_problem")
+		
 	on BBoxes2DTrackResult {
 		
 		var ratio_width = 1920.0 / occurrence.bboxes2DTrack.dimWidth

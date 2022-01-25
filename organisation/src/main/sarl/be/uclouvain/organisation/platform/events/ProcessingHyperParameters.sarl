@@ -4,6 +4,7 @@
 package be.uclouvain.organisation.platform.events
 
 import java.util.UUID
+import be.uclouvain.organisation.platform.util.HyperParameters
 
 /** 
  * Communicate the MissionSensitivity 
@@ -31,11 +32,11 @@ import java.util.UUID
 event ProcessingHyperParameters{
 	
 	val missionID : UUID
-	val cautionLevel : int
-	val OptimalSearchEnabled : boolean
-	new(mID:UUID, s : int, optimalFlag : boolean ) {
+	val param : HyperParameters
+	
+	
+	new(mID:UUID, p : HyperParameters ) {
 		this.missionID = mID
-		this.cautionLevel = s
-		this.OptimalSearchEnabled = optimalFlag
+		this.param=p
 	}
 }

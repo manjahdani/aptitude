@@ -53,7 +53,7 @@ behavior UserManagerEntity extends OrganizationalRole{
 		info(" Reception of the open-chanel of platform agent -" + occurrence.name)
 		PlatformListenersSpaceIDs.put(occurrence.name, occurrence.topic)
 	}
-	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	
 	on AuthenticateUser {
 		info("Authentification of user " + occurrence.userID)
 		usersList.add(occurrence.userID)

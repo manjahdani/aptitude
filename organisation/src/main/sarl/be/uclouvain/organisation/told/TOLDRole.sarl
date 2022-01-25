@@ -40,7 +40,7 @@ behavior TOLDRole extends OrganizationalRole {
 	 * The platform registerStrongParticipant the context of a platform 
 	 */
 
-	@SuppressWarnings("discouraged_occurrence_readonly_use")
+	
 	on AddEntry{
 		debug("creating entry for " + occurrence.key.toString.substring(0,5))
 		create(occurrence.key, occurrence.data)
@@ -48,7 +48,7 @@ behavior TOLDRole extends OrganizationalRole {
 	on DeleteEntry{
 		delete(occurrence.key)
 	}
-	@SuppressWarnings("discouraged_occurrence_readonly_use")
+
 	on DataEntry {
 		//info("Updating key : " + occurrence.key  +" - " + occurrence.class)
 		update(occurrence.key, occurrence.data)

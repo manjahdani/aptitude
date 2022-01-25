@@ -3,7 +3,6 @@ package be.uclouvain.aptitude.surveillance.algorithm.tracker
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
 import be.uclouvain.aptitude.surveillance.algorithm.detector.PauseMission
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
-import be.uclouvain.aptitude.surveillance.algorithm.util.HyperParameters
 import be.uclouvain.organisation.platform.ObserverRole
 import be.uclouvain.python_access.BBoxes2DTrackResult
 import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
@@ -15,6 +14,7 @@ import io.sarl.core.ExternalContextAccess
 import be.uclouvain.organisation.platform.events.RemoveMission
 import be.uclouvain.organisation.platform.events.LeavePlatform
 import java.util.UUID
+import be.uclouvain.organisation.platform.util.HyperParameters
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -80,7 +80,7 @@ behavior TrackerRole extends ObserverRole {
 		
 		var tmp : ArrayList<BBoxe2D> = formatConversion(occurrence.bboxes2DTrack)
 
-		wake(new TrackingPerception(tmp, occurrence.bboxes2DTrack.frameNumber))[it.ID == this.ID] // For entity
+		wake(new TrackingPerception(tmp, occurrence.bboxes2DTrack.frameNumber))[it.ID == this.ID] 
 		for (l : listeners.keySet) {
 			emit(listeners.get(l), new TrackingPerception(tmp, occurrence.bboxes2DTrack.frameNumber)) [
 				it.ID == l
@@ -120,21 +120,20 @@ behavior TrackerRole extends ObserverRole {
 	on ResumeTrackingMission {
 		info("Resuming my mission with "+ occurrence.detector)
 		setSkill(new TrackerPythonTwinSkill)
-		registerBehavior(new SingleTrackerRole(this.owner), observerADN.get.belief, MD.location,computation_location)
+		registerBehavior(new SingleTrackerRole(this.owner), observerADN.get.belief, observerADN.get.platformName,computation_location)
 		info("Come here " + occurrence.detector)
-		MD.dynamicAdaptation = false
-		
-		requestAlgorithm(occurrence.detector, "DETECTOR")
+		missionList.get(occurrence.missionID).dynamicAdaptation = false		
+		requestAlgorithm(occurrence.missionID,occurrence.detector, "DETECTOR")
 	}
 	
 	override processingMissionWithID(mID : UUID) {
 		if (missionList.get(mID).isDynamicAdaptationEnabled) 
 		{
 			var hyperParatermersToBeTested = new LinkedList<HyperParameters>
-			var iter = 0 // @FIXME LOW Quick but not robust strategy as if the order of detectors change the system could get confused.
+			var iter = 0 // @FIXME MEDIUM Quick but not robust strategy as if the order of detectors change the system could get confused.
 			
 			for (d : detectors) {
-				hyperParatermersToBeTested.add(new HyperParameters(iter))
+				hyperParatermersToBeTested.add(new HyperParameters(iter,false))
 				iter += 1
 			}
 			
@@ -143,7 +142,7 @@ behavior TrackerRole extends ObserverRole {
 			for (detector : detectors) {
 				
 				info("Come here : " + detector)
-				requestAlgorithm(detector, "DETECTOR")
+				requestAlgorithm(mID,detector, "DETECTOR")
 				}
 				
 		} 
@@ -151,7 +150,7 @@ behavior TrackerRole extends ObserverRole {
 			setSkill(new TrackerPythonTwinSkill)
 			registerBehavior(new SingleTrackerRole(this.owner), observerADN.get.belief, observerADN.get.platformName,
 			computation_location)
-			info("Come here : " + detectors.get(MD.cautionLevel))
+			info("Come here : " + detectors.get(missionList.get(mID).cautionLevel))
 			//requestAlgorithm(detectors.get(sensitivity.get), "DETECTOR")
 			}
 		}
