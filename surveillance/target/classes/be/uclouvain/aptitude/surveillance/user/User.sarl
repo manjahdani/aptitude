@@ -8,6 +8,7 @@ import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
+import java.util.concurrent.atomic.AtomicReference
 
 /** 
  * The Holon User represents an agent that want to use/used the system. 
@@ -27,20 +28,20 @@ import io.sarl.core.Logging
 agent User extends Paraddis {
 	uses Logging, Behaviors, Lifecycle, InnerContextAccess
 	
-	var userConfig : HolonicUserConfig
+	val userConfig = new AtomicReference<HolonicUserConfig>
 
 	on Initialize {
-		userConfig = occurrence.parameters.get(0) as HolonicUserConfig
+		userConfig.set(occurrence.parameters.get(0) as HolonicUserConfig)
 		
-		loggingName = this.ID + "-User-" + userConfig.level.toString 
-		switch(userConfig.level){
+		loggingName = this.ID + "-User-" + userConfig.get.level.toString 
+		switch(userConfig.get.level){
 			case 0: {
-				registerBehavior(new UserManagerEntity(this),userConfig.initialPlatforms)
+				registerBehavior(new UserManagerEntity(this),userConfig.get.initialPlatforms)
 				spawnInContext(UserInterface,innerContext)
 			}
 			default : {
-			 	setSkill(new UserSkill(userConfig.name,
-											userConfig.initialPlatforms), 
+			 	setSkill(new UserSkill(userConfig.get.name,
+											userConfig.get.initialPlatforms), 
 						UserElementCapacity,
 								   ElementCapacity)
 				registerBehavior(new UserRole(this))

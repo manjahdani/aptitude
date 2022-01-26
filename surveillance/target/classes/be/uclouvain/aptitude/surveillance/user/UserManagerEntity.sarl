@@ -67,7 +67,9 @@ behavior UserManagerEntity extends OrganizationalRole{
 	}
 	
 	on NewMission {
-		debug("receives external order for a new mission in -" + occurrence.location +" from" + occurrence.source.ID.toString.substring(0,5))
+		info("receives external order for a new mission in " + occurrence.location +" from " + occurrence.source.ID.toString.substring(0,5))
+		assert privateSpacesListeners.keySet.contains(occurrence.source.ID),"User not met"
+		info("User Known, sending the Authorization to sid " + privateSpacesListeners.get(occurrence.source.ID).spaceID.ID)
 		emit(privateSpacesListeners.get(occurrence.source.ID),
 			new AuthorizedMission(occurrence.mission, 
 				PlatformListenersSpaceIDs.get(occurrence.location), occurrence.location

@@ -37,7 +37,7 @@ abstract behavior OrganizationalRole {
 			innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID))
 		privateSpacesListeners.get(memberID).registerStrongParticipant(asEventListener)
 
-		debug("sending organisation info - " + memberID.toString.substring(0, 5))
+		info("sending organisation info to " + memberID.toString.substring(0, 5) + "with private spaceID " + privateSpacesListeners.get(memberID).spaceID.ID)
 		if (occurrence.inDefaultSpace) {
 			emit(getOrganizationInfo(memberID))[it.ID == memberID]
 		}

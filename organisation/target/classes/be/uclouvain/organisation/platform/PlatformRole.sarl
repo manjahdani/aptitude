@@ -56,16 +56,16 @@ behavior PlatformRole extends OrganizationalRole {
 
 	on TOLDOrganizationInfo {
 		TOLDID.set(occurrence.source.ID)
-		debug("met TOLD organisation - " + TOLDID.toString.substring(0, 5))
-		if (!privateSpacesListeners.containsKey(TOLDID)) { // Not Encountered
-			debug("TOLD was not encountered")
+		info("met TOLD organisation - " + TOLDID.toString.substring(0, 5))
+		if (!privateSpacesListeners.containsKey(TOLDID.get)) { // Not Encountered
+			info("TOLD was not encountered")
 			var pChannel = retrieveOrCreateOpenSpaceWithID(occurrence.context, occurrence.privateCommunicationChannelID)
 
 			privateSpacesListeners.put(TOLDID.get, pChannel)
 			pChannel.registerStrongParticipant(asEventListener)
 			emit(pChannel,
 				new PlatformOrganizationInfo(innerContext, privateSpacesListeners.get(TOLDID).spaceID.ID, location.get)) [
-				it.ID == TOLDID
+				it.ID == TOLDID.get
 			]
 		//PlatformTOLDSpace.registerStrongParticipant(asEventListener)
 		//PlatformTOLDSpace.emit(new JoinOrganisation(innerContext))

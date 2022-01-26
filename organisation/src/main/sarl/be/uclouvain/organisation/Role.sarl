@@ -9,26 +9,28 @@ import java.util.concurrent.atomic.AtomicReference
 import java.util.UUID
 import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.core.Behaviors
+import io.sarl.core.Logging
 
 /** 
  * @author manjah
  * 
  */
 abstract behavior Role {
-	uses Behaviors
+	uses Behaviors, Logging
 
 	protected val organizationContext = new AtomicReference<AgentContext> // context of the organisation Platform
 	protected var privateOrganizationSpace = new AtomicReference<OpenEventSpace> // private space between the algorithm and the organisation Platform
 	
 
-	synchronized def updateContextInfo(ctxt : AgentContext, sid : UUID) {
-
+	def updateContextInfo(ctxt : AgentContext, sid : UUID) {
+		info("joins organization : " + ctxt.ID)
 		organizationContext.set(ctxt) // Update the organization
 		privateOrganizationSpace.set(organizationContext.get.getOrCreateSpaceWithSpec(OpenEventSpaceSpecification,sid))
 		privateOrganizationSpace.get.registerStrongParticipant(asEventListener)
+		info("with a private space : " + sid)
 	}
 	
-	synchronized def retrieveOrCreateOpenSpaceWithID(sid:UUID) {
+	def retrieveOrCreateOpenSpaceWithID(sid:UUID) {
 		assert organizationContext.get !== null, "Organization is not known"
 		
 		return organizationContext.get.getOrCreateSpaceWithSpec(OpenEventSpaceSpecification,

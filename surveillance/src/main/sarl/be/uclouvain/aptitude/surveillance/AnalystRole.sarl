@@ -41,18 +41,18 @@ behavior AnalystRole extends ObserverRole{
 	
 	on Initialize {
 		missionList.put(this.ID, occurrence.parameters.get(1) as SurveillanceMissionData)
-		debug("starts mission of vehicle counting with sensitivity:  " +
+		info("starts mission of vehicle counting with sensitivity:  " +
 			availableObservers.get(missionList.get(this.ID).cautionLevel))
 	}
 	
 	def startRole() {
-		debug("asks for algorithm performing vehicle counting to platform")
+		info("asks for algorithm performing vehicle counting to platform")
 		emit(privateOrganizationSpace.get, new Request2PerformMission(missionList.get(this.ID)))
 	}
 	
 	
 	on AuthorizationToPerformMission {
-		debug("Received authorisation to perform a mission within the space : " + occurrence.missionSpaceInPlatformID)
+		info("Received authorisation to perform a mission within the space : " + occurrence.missionSpaceInPlatformID)
 		listeners.put(this.ID,retrieveOrCreateOpenSpaceWithID(occurrence.missionSpaceInPlatformID)); 
 		listeners.get(this.ID).registerStrongParticipant(asEventListener) 
 		processingMissionWithID(occurrence.missionID)

@@ -76,6 +76,7 @@ abstract behavior ObserverRole extends Role {
 	}
 	
 	def setup(){
+		info("setup of the agent")
 		task("init").every(1000) [
 			if(areAllTrue(checkList.values)){
 				startRole()
@@ -107,7 +108,7 @@ abstract behavior ObserverRole extends Role {
 		//info("The behavior was stopped.")
 }
 	on ComputationalRessources {
-		debug("received computation_location: " + occurrence.client_id)
+		info("received computation_location: " + occurrence.client_id)
 		computation_location.set(occurrence.client_id)
 		checkList.put("computation_location",true)
 	}
@@ -151,7 +152,7 @@ abstract behavior ObserverRole extends Role {
 					"-" + computation_location
 				task("waiting-greenLights").cancel
 			} else {
-				debug("Waiting for command" + mID + computation_location)
+				info("Waiting for command" + mID + computation_location)
 			}
 		]
 	}
@@ -189,13 +190,13 @@ abstract behavior ObserverRole extends Role {
 			providers.put(signalID, comChannel)
 			var hp_mission = missionList.get(missionID).hyperParameters // We add the Hyperparameters that we are going to provide later to the provider
 			processingParameters.put(signalID, hp_mission)
-			debug("Received provider ID sending the channel " + providers.get(signalID).spaceID.ID)
+			info("Received provider ID sending the channel " + providers.get(signalID).spaceID.ID)
 			emit(organizationContext.get.defaultSpace,new AddMission(occurrence.missionID, providers.get(signalID).spaceID.ID)) [it.ID == signalID]
 		}
 		else{
-			debug("Known signal = " + signalID)
+			info("Known signal = " + signalID)
 			emit(providers.get(signalID),new ResumeMission)[this.ID == signalID]
-			debug("Trying now in the default")
+			info("Trying now in the default")
 			emit(organizationContext.get.defaultSpace,new ResumeMission)[it.ID==signalID]
 		}
 	}

@@ -73,19 +73,18 @@ behavior TOLDRole extends OrganizationalRole {
 
 
 	on PlatformOrganizationInfo {
-		debug("Platform organisation - " + occurrence.platformName + " encountered ")
-		synchronized(platformID){
-			platformID = occurrence.source.ID
-			if (!privateSpacesListeners.containsKey(platformID)) {
-				info("Platform was not encountered")
-				val privateChannel = retrieveOrCreateOpenSpaceWithID(occurrence.context,occurrence.privateCommunicationChannelID)
-				privateSpacesListeners.put(platformID, privateChannel)
-				privateChannel.registerStrongParticipant(asEventListener)
-				emit(privateChannel, getOrganizationInfo(platformID))[it.ID == platformID]
-			}	
-		} 
+		info("Platform organisation - " + occurrence.platformName + " encountered ")
+		platformID = occurrence.source.ID
+		if (!privateSpacesListeners.containsKey(platformID)) {
+			info("Platform was not encountered")
+			val privateChannel = retrieveOrCreateOpenSpaceWithID(occurrence.context,occurrence.privateCommunicationChannelID)
+			privateSpacesListeners.put(platformID, privateChannel)
+			privateChannel.registerStrongParticipant(asEventListener)
+			emit(privateChannel, getOrganizationInfo(platformID))[it.ID == platformID]
+		}	
+	} 
 		
-	}
+	
 	def getOrganizationInfo(memberID : UUID) : TOLDOrganizationInfo{
 		
 		return new TOLDOrganizationInfo(innerContext, privateSpacesListeners.get(memberID).spaceID.ID, read(memberID))
