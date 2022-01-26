@@ -11,6 +11,7 @@ import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedQueue
 
 /** 
  * 
@@ -38,16 +39,17 @@ behavior AnalystRole extends ObserverRole{
 	
 	val availableObservers = newArrayList("careful", "dynamic", "dynamic ","balanced")
 	
+	val missionQueue = new ConcurrentLinkedQueue<SurveillanceMissionData>
 	
 	on Initialize {
-		missionList.put(this.ID, occurrence.parameters.get(1) as SurveillanceMissionData)
-		info("starts mission of vehicle counting with sensitivity:  " +
-			availableObservers.get(missionList.get(this.ID).cautionLevel))
+		missionQueue.add(occurrence.parameters.get(1) as SurveillanceMissionData)
 	}
 	
 	def startRole() {
 		info("asks for algorithm performing vehicle counting to platform")
-		emit(privateOrganizationSpace.get, new Request2PerformMission(missionList.get(this.ID)))
+		val mission = missionQueue.poll
+		missionList.put(mission.missionID, mission)
+		emit(privateOrganizationSpace.get, new Request2PerformMission(mission))
 	}
 	
 	
@@ -59,6 +61,10 @@ behavior AnalystRole extends ObserverRole{
 	}
 	
 	def processingMissionWithID(mID : UUID) {
+		info("starts mission of vehicle counting with sensitivity:  " +
+			availableObservers.get(missionList.get(mID).cautionLevel))
+		processingParameters.put(mID,missionList.get(mID).hyperParameters)
+		
 		emit(privateOrganizationSpace.get,
 			new AddObserver(mID,new AlgorithmInfo("APTITUDE", "COUNTER"), new AlgorithmInfo("EXPERT", "ROADANALYST")))
 	}

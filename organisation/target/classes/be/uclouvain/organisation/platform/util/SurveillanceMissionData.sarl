@@ -58,4 +58,7 @@ class SurveillanceMissionData extends MissionData{
 	def getHyperParameters(){
 		return this.hyperParameters
 	}
+	def getHyperParametersAsAString(){
+		return hyperParameters.hyperParametersAsAString
+	}
 }

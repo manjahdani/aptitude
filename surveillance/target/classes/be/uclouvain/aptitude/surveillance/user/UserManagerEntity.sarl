@@ -18,6 +18,7 @@ import io.sarl.lang.core.AgentContext
 import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
+import java.util.Collections
 
 /** 
  * @TODO to comment
@@ -36,7 +37,7 @@ behavior UserManagerEntity extends OrganizationalRole{
 	protected var platformContext : AgentContext
 	
 	val usersList : LinkedList<UUID> = new LinkedList<UUID>
-	var PlatformListenersSpaceIDs= new HashMap<String, OpenEventSpace>
+	var PlatformListenersSpaceIDs = Collections.synchronizedMap(new HashMap<String, OpenEventSpace>)
 	
 	//var subHolons= new HashMap<UUID, OpenEventSpace>
 	
@@ -69,17 +70,12 @@ behavior UserManagerEntity extends OrganizationalRole{
 	on NewMission {
 		info("receives external order for a new mission in " + occurrence.location +" from " + occurrence.source.ID.toString.substring(0,5))
 		assert privateSpacesListeners.keySet.contains(occurrence.source.ID),"User not met"
-		info("User Known, sending the Authorization to sid " + privateSpacesListeners.get(occurrence.source.ID).spaceID.ID)
-		/* 
+		info("User Known, sending the Authorization to sid " + privateSpacesListeners.get(occurrence.source.ID))
+	 
 		emit(privateSpacesListeners.get(occurrence.source.ID),
 			new AuthorizedMission(occurrence.mission, 
 				PlatformListenersSpaceIDs.get(occurrence.location), occurrence.location
-			))*/
-		wake(new AuthorizedMission(
-			occurrence.mission,
-			PlatformListenersSpaceIDs.get(occurrence.location),
-			occurrence.location
-		))
+			))
 	}
 	 
 	def accessRight (s:String){

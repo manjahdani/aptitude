@@ -1,4 +1,4 @@
-/**package be.uclouvain.launcher
+package be.uclouvain.launcher
 
 import UDPMessages.MessageDeserializer
 import UDPMessages.UDP_Message_Base
@@ -20,51 +20,48 @@ import be.uclouvain.aptitude.surveillance.user.User
 import be.uclouvain.aptitude.surveillance.TOLDConfig
 
 /** 
- *
+ * 
  * 
  * @author $Author: manjahdani$
  * @version $0.0.1$
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
+ */
+agent Boot extends Paraddis {
 
-agent bootAgent extends Paraddis {
-	
 	uses Lifecycle, Schedules, DefaultContextInteractions, Logging
 
 	// val junctionList = "MacqWoolridge"
-
-	//@Parameters
+	// @Parameters
 	
-	val INITIAL_CAMERAS = newArrayList("S02C006","S04C035")//"MOT17-04", "MOT17-02")
-   	val INIT_TASKS= newArrayList("DETECTOR", "TRACKER", "COUNTER")
-	val AVAILABLE_RESSOURCES = newArrayList("1000","1000")
+	val INITIAL_CAMERAS = newArrayList("S02C006", "S04C035") // "MOT17-04", "MOT17-02")
+	val INIT_TASKS = newArrayList("DETECTOR", "TRACKER", "COUNTER")
+	val AVAILABLE_RESSOURCES = newArrayList("1000", "1000")
 
 	val client : DatagramSocket = new DatagramSocket(65000) // A client to listen requests
-	//val clientSender = new UDPSender() // homeMade client to send UDP message
+	// val clientSender = new UDPSender() // homeMade client to send UDP message
 
-	on Initialize { 
+	on Initialize {
 		loggingName = this.ID + "-Boot"
-		//info("System started")
+		// info("System started")
 		setAgentsReady()
 		enableInputStream()
 		task("Application-Launcher").execute[Application::launch(GUI, " ")]
 	}
 	
-	//@FIXME We absolutely need to extend the Universe Concept. We need a global database.. with local d.b. Need Rethinking
+	// @FIXME We absolutely need to extend the Universe Concept. We need a global database.. with local d.b. Need Rethinking
 	def setAgentsReady {
 					// for (wc : subWorldConfig) {
 		// WorldHolon.addSubWorld(wc)
 		// }
 		// info("Setting the agents")
-	
-		var PlatformHolonConfig = new PlatformConfig(0,5, "LLN")
+		var PlatformHolonConfig = new PlatformConfig(0, 5, "LLN")
 		for (c : INITIAL_CAMERAS) {
-			PlatformHolonConfig.addSubPlatform(new PlatformConfig(1,100,c))
+			PlatformHolonConfig.addSubPlatform(new PlatformConfig(1, 100, c))
 		}
-		
-		
-		spawn(TOLDAgent, new TOLDConfig(0,"LLN",null,INIT_TASKS))
+
+		spawn(TOLDAgent, new TOLDConfig(0,"LLN", null, INIT_TASKS))
 		spawn(PlatformAgent, PlatformHolonConfig, AVAILABLE_RESSOURCES)
 		spawn(User, new HolonicUserConfig(0, "UserAccessManager", INITIAL_CAMERAS))
 		// StartSimulation
@@ -102,10 +99,10 @@ agent bootAgent extends Paraddis {
 			}
 		])
 	}
+
 	def synchronized disable() {
 		this.client.close()
 		task("Enable_Server").cancel
 		task("Application-Launcher").cancel
 	}
- * }
- */
+}

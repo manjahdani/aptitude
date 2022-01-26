@@ -1,0 +1,64 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import be.uclouvain.organisation.platform.events.AddMission
+import be.uclouvain.organisation.platform.events.HyperParametersRequest
+import be.uclouvain.organisation.platform.events.ProcessingHyperParameters
+import be.uclouvain.organisation.platform.util.SurveillanceMissionData
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Logging
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.Schedules
+import java.util.Collections
+import java.util.HashMap
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+abstract behavior SensorRole extends ScenarioRole {
+	uses Logging, Schedules, ExternalContextAccess
+
+	protected val missionList = Collections.synchronizedMap(new HashMap<UUID, SurveillanceMissionData>) // A map between mission ID that it needs to answer to and their data
+	protected val listeners = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the client and the role
+
+	on ProcessingHyperParameters {
+		info("param received " + "MID = " + occurrence.missionID + " hp " + occurrence.param.hyperParametersAsAString)
+		missionList.get(occurrence.missionID).update(occurrence.param)
+	}
+
+	on AddMission {
+
+		val missionSpace = retrieveOrCreateOpenSpaceWithID(occurrence.communicationChannelID)
+		var clientID = occurrence.source.ID
+
+		var accepted = true // @TODO LOW develop criteria for the admission of the mission
+		if (accepted) {
+			val newMission = new SurveillanceMissionData(occurrence.missionID, clientID, organizationContext.get.ID)
+			missionList.put(occurrence.missionID, newMission)
+			listeners.put(clientID, missionSpace)
+			waitMissionParam(occurrence.missionID)
+			emit(missionSpace, new HyperParametersRequest(occurrence.missionID))[it == occurrence.source]
+		}
+	}
+
+	def waitMissionParam(mID : UUID) {
+
+		task("rMP".concat(mID.toString)).every(1000) [
+			val MD = missionList.get(mID)
+			if (MD.hyperParameters.paramKnown) {
+				info("Start the processing role at location - " + ". Parameters are: s= " + MD.cautionLevel +
+						" isMaster=" + MD.isDynamicAdaptationEnabled)
+				processingMissionWithID(mID)
+				loggingName = this.ID + "-ALGORITHM-" + observerADN.get.name + "-" + observerADN.get.level + "-" +
+					observerADN.get.platformName + "-" + computation_location
+				task("waiting-greenLights").cancel
+			} else {
+				info("Waiting for command MID = " + mID + " hp " + MD.hyperParametersAsAString)
+			}
+		]
+	}
+}

@@ -1,22 +1,15 @@
 package be.uclouvain.organisation.platform
 
-import be.uclouvain.organisation.Role
-import be.uclouvain.organisation.events.Identification
 import be.uclouvain.organisation.events.SignalID
 import be.uclouvain.organisation.platform.events.AddMission
 import be.uclouvain.organisation.platform.events.AddObserver
-import be.uclouvain.organisation.platform.events.ComputationalRessources
 import be.uclouvain.organisation.platform.events.HyperParametersRequest
-import be.uclouvain.organisation.platform.events.LeavePlatform
 import be.uclouvain.organisation.platform.events.ProcessingHyperParameters
 import be.uclouvain.organisation.platform.events.ResumeMission
-import be.uclouvain.organisation.platform.events.StopMission
-import be.uclouvain.organisation.platform.util.SurveillanceMissionData
+import be.uclouvain.organisation.platform.util.HyperParameters
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
-import io.sarl.core.Destroy
 import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
@@ -25,8 +18,6 @@ import io.sarl.core.Schedules
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
-import java.util.concurrent.atomic.AtomicReference
-import be.uclouvain.organisation.platform.util.HyperParameters
 
 /** 
  * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 
@@ -54,129 +45,30 @@ import be.uclouvain.organisation.platform.util.HyperParameters
  * @mavenartifactid $organisation$
  */
  
-abstract behavior ObserverRole extends Role {
+abstract behavior ObserverRole extends ScenarioRole {
 	
-	uses Logging, Behaviors, InnerContextAccess, ExternalContextAccess, Schedules
+	uses Logging, Behaviors, InnerContextAccess, ExternalContextAccess
 
-	protected var observerADN = new AtomicReference<AlgorithmInfo>
-	protected val selfSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID) // An internal space to communicate with other roles.
-	protected val missionList = Collections.synchronizedMap(new HashMap<UUID, SurveillanceMissionData>) // The one it has to answer to 
-	protected val listeners = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the client and the role
-	
 	protected val providers = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
-	protected var processingParameters = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>) // One that it ordered. 
-	protected var computation_location = new AtomicReference<String>
-	val checkList = Collections.synchronizedMap(new HashMap<String, Boolean>)
-
-	on Initialize {
-		observerADN.set(occurrence.parameters.get(0) as AlgorithmInfo)
-		selfSpace.registerStrongParticipant(asEventListener) // listen to a self-internal space
-		checkList.put("context", false)
-		checkList.put("computation_location", false)
-	}
+	protected var processingParameters = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>) // A map between mission ID that it ordered to another observer and their data
 	
-	def setup(){
-		info("setup of the agent")
-		task("init").every(1000) [
-			if(areAllTrue(checkList.values)){
-				startRole()
-				task("init").cancel
-			}
-			else{
-				debug("Waiting for orga and ressources"+checkList)
-			}
-		]
-	}
+
 	on HyperParametersRequest {
 		
 		var providerID = occurrence.source.ID
 		// We decide that derived role handles the parameters request of inner-agents. 
 		//Removing the flag results in nullException as the role 
-		//receives a request from a innerAgent but did not include it in its providers.
-		
-		if(!getMemberAgents.contains(providerID)){
-			var MD = processingParameters.get(occurrence.missionID)
-			debug("param requests from agentID=" + providerID.toString.substring(0, 5) +
+		// receives a request from a innerAgent but did not include it in its providers.
+		var MD = processingParameters.get(occurrence.missionID)
+		info("param requests from agentID=" + providerID.toString.substring(0, 5) +
 				" sending param:" + " s =" + MD.cautionLevel)
-				
+		if(!getMemberAgents.contains(providerID)){
+			
 			emit(providers.get(providerID), new ProcessingHyperParameters(occurrence.missionID,processingParameters.get(occurrence.missionID))
 			)[it.ID == providerID]
 		}
 		
 	}
-	on Destroy {
-		//info("The behavior was stopped.")
-}
-	on ComputationalRessources {
-		info("received computation_location: " + occurrence.client_id)
-		computation_location.set(occurrence.client_id)
-		checkList.put("computation_location",true)
-	}
-
-
-	on PlatformOrganizationInfo {
-	
-		updateContextInfo(occurrence.context, occurrence.privateCommunicationChannelID)
-		emit(organizationContext.get.defaultSpace, new Identification(getName()))
-		observerADN.get.platformName = occurrence.platformName
-		checkList.put("context",true)
-	}	
-	
-	on AddMission {
-
-		val missionSpace = retrieveOrCreateOpenSpaceWithID(occurrence.communicationChannelID)
-		var clientID = occurrence.source.ID
-		
-		var accepted = true // @TODO LOW develop criteria for the admission of the mission 
-		if (accepted) {
-			val newMission = new SurveillanceMissionData(occurrence.missionID, 
-				clientID, organizationContext.get.ID)
-			missionList.put(occurrence.missionID,newMission)
-			listeners.put(clientID, missionSpace)
-			waitMissionParam(occurrence.missionID)
-			emit(missionSpace,new HyperParametersRequest(occurrence.missionID))[it == occurrence.source]
-	}}
-	
-	
-	def waitMissionParam(mID : UUID) {
-
-		task("rMP".concat(mID.toString)).every(1000) [
-			if (missionList.get(mID).hyperParameters.paramKnown) {
-				
-				var MD = missionList.get(mID)
-				info(
-					"Start the processing role at location - " + ". Parameters are: s= " +
-						MD.cautionLevel + " isMaster=" + MD.isDynamicAdaptationEnabled)
-				processingMissionWithID(mID)
-				loggingName = this.ID + "-ALGORITHM-" + observerADN.get.name + "-" + observerADN.get.level + "-" + observerADN.get.platformName +
-					"-" + computation_location
-				task("waiting-greenLights").cancel
-			} else {
-				info("Waiting for command" + mID + computation_location)
-			}
-		]
-	}
-	 
-	
-	on StopMission {
-		if (listeners.keySet.contains(occurrence.source.ID)){
-			info("I received the StopMission")
-			listeners.remove(occurrence.source.ID)
-		}
-		else{
-			info("I do not recognize the provider" + occurrence.expertID)
-		}
-	}
-	on LeavePlatform {
-		//join(BaseContext.ID, BaseSpace.spaceID.ID)
-		//info("ObserverLeaving")
-		//leave(PlatformContext.ID)
-	}
-	on ProcessingHyperParameters {
-		missionList.get(occurrence.missionID).update(occurrence.param)
-	}
-
-	
 	on SignalID {
 		
 		var signalID = occurrence.signalID
@@ -201,24 +93,19 @@ abstract behavior ObserverRole extends Role {
 		}
 	}
 	
-	def getName : String{
-		return observerADN.get.name
-	}
-	def requestAlgorithm(mID : UUID, algoName : String, algoTask : String) {
+
+	def requestSensor(mID : UUID, algoName : String, algoTask : String) {
 		
 		emit(privateOrganizationSpace.get, new AddObserver(
 			mID,
 			new AlgorithmInfo(algoName, algoTask),
-			new AlgorithmInfo(observerADN.get.name, observerADN.get.task)
+			new AlgorithmInfo(ADN.get.name, ADN.get.task)
 		))[it.ID == organizationContext.get.ID]
 	}
 	
- 	def areAllTrue(array: boolean[]) {
- 		for(b : array) if(!b) return false;
-    	return true;
-    }
 
-	abstract def startRole()
+
+	
 	abstract def processingMissionWithID(mID : UUID)
 }
 

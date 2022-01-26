@@ -1,0 +1,104 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import be.uclouvain.organisation.Role
+import io.sarl.core.Logging
+import java.util.HashMap
+import java.util.Collections
+import io.sarl.core.Schedules
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.OpenEventSpaceSpecification
+import java.util.UUID
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import java.util.concurrent.atomic.AtomicReference
+import io.sarl.core.Behaviors
+import io.sarl.core.Initialize
+import be.uclouvain.organisation.platform.events.StopMission
+import be.uclouvain.organisation.platform.events.LeavePlatform
+import io.sarl.core.Destroy
+import io.sarl.core.ExternalContextAccess
+import be.uclouvain.organisation.platform.events.ComputationalRessources
+import be.uclouvain.organisation.events.Identification
+
+/** 
+ * @author manjah
+ * 
+ */
+abstract behavior ScenarioRole extends Role {
+	uses Logging, Schedules, InnerContextAccess, Behaviors, ExternalContextAccess
+
+	protected var ADN = new AtomicReference<AlgorithmInfo>
+	protected val selfSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification,
+		UUID.randomUUID) // An internal space to communicate with other roles.
+	protected val checkList = Collections.synchronizedMap(new HashMap<String, Boolean>)
+	protected var computation_location = new AtomicReference<String>
+	
+	on Initialize {
+		checkList.put("context", false)
+		checkList.put("computation_location", false)
+		ADN.set(occurrence.parameters.get(0) as AlgorithmInfo)
+		selfSpace.registerStrongParticipant(asEventListener) // listen to a self-internal space
+		setup()
+	}
+
+	protected def setup() {
+		info("setup of the agent")
+		task("init").every(1000) [
+			if (areAllTrue(checkList.values)) {
+				startRole()
+				task("init").cancel
+			} else {
+				info("Waiting for orga and ressources" + checkList)
+			}
+		]
+	}
+
+	on Destroy {
+		// info("The behavior was stopped.")
+	}
+
+	on ComputationalRessources {
+		info("received computation_location: " + occurrence.client_id)
+		computation_location.set(occurrence.client_id)
+		checkList.replace("computation_location", true)
+	}
+	on PlatformOrganizationInfo {
+
+		updateContextInfo(occurrence.context, occurrence.privateCommunicationChannelID)
+		emit(organizationContext.get.defaultSpace, new Identification(getName()))
+		ADN.get.platformName = occurrence.platformName
+		checkList.replace("context", true)
+	}
+	
+	on StopMission { //@TODO HIGH program a behavior on stopMission
+		/** 
+		if (listeners.keySet.contains(occurrence.source.ID)) {
+			info("I received the StopMission")
+			listeners.remove(occurrence.source.ID)
+		} else {
+			info("I do not recognize the provider" + occurrence.expertID)
+		 * }
+		 */
+	}
+
+	def getName : String {
+		return ADN.get.name
+	}
+	on LeavePlatform { // @TODO HIGH program a behavior on LeavePlatform
+		// join(BaseContext.ID, BaseSpace.spaceID.ID)
+		// info("ObserverLeaving")
+		// leave(PlatformContext.ID)
+	}
+
+	def areAllTrue(array : boolean[]) {
+		for (b : array)
+			if(!b) return false;
+		return true;
+	}
+
+	abstract def startRole()
+
+}

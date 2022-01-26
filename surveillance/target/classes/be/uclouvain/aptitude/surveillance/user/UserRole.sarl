@@ -37,7 +37,6 @@ behavior UserRole extends ElementRole {
 			occurrence.mission.cautionLevel,
 			occurrence.mission.dynamicAdaptationEnabled
 		) // @FIXME HIGH we copy because occurrence.platformOpenChannel is null and its due to another fixme in UserSkill
-		info("receives authorisation for mission")
 		wake(
 			new NewMission(mission, occurrence.platformOpenChannel, occurrence.location)) [
 			it.ID == occurrence.mission.clientID

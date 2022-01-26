@@ -10,6 +10,9 @@ import java.util.UUID
 import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.core.Behaviors
 import io.sarl.core.Logging
+import java.util.Collections
+import java.util.HashMap
+import io.sarl.core.Schedules
 
 /** 
  * @author manjah
@@ -17,24 +20,25 @@ import io.sarl.core.Logging
  */
 abstract behavior Role {
 	
-	uses Behaviors, Logging
+	uses Behaviors, Logging, Schedules
 
 	protected val organizationContext = new AtomicReference<AgentContext> // context of the organisation Platform
 	protected var privateOrganizationSpace = new AtomicReference<OpenEventSpace> // private space between the algorithm and the organisation Platform
 	
 
 	def updateContextInfo(ctxt : AgentContext, sid : UUID) {
-		info("joins organization : " + ctxt.ID)
 		organizationContext.set(ctxt) // Update the organization
 		privateOrganizationSpace.set(retrieveOrCreateOpenSpaceWithID(sid))
 		privateOrganizationSpace.get.registerStrongParticipant(asEventListener)
-		info("with a private space : " + sid)
+		info("joins organization : " + ctxt.ID + 
+		" \n with private Space [ \n id = " + privateOrganizationSpace.get.spaceID.ID + "\n contextID = " +
+			privateOrganizationSpace.get.spaceID.contextID + "]\n")
 	}
 	
 	def retrieveOrCreateOpenSpaceWithID(sid:UUID) {
 		assert organizationContext.get !== null, "Organization is not known"
 		
-		return organizationContext.get.getOrCreateSpaceWithSpec(OpenEventSpaceSpecification,
+		return organizationContext.get.getOrCreateSpaceWithID(OpenEventSpaceSpecification,
 			sid)
 	}
 }

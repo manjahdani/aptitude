@@ -1,4 +1,4 @@
-package be.uclouvain.launcher
+/**package be.uclouvain.launcher
 
 import UDPMessages.MessageDeserializer
 import UDPMessages.UDP_Message_Base
@@ -27,7 +27,7 @@ import be.uclouvain.aptitude.surveillance.TOLDConfig
  * @date $31/03/2021$
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
- */
+
 agent bootAgent extends Paraddis {
 	
 	uses Lifecycle, Schedules, DefaultContextInteractions, Logging
@@ -107,4 +107,5 @@ agent bootAgent extends Paraddis {
 		task("Enable_Server").cancel
 		task("Application-Launcher").cancel
 	}
-}
+ * }
+ */
