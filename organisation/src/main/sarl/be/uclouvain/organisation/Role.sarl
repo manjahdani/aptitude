@@ -16,6 +16,7 @@ import io.sarl.core.Logging
  * 
  */
 abstract behavior Role {
+	
 	uses Behaviors, Logging
 
 	protected val organizationContext = new AtomicReference<AgentContext> // context of the organisation Platform
@@ -25,7 +26,7 @@ abstract behavior Role {
 	def updateContextInfo(ctxt : AgentContext, sid : UUID) {
 		info("joins organization : " + ctxt.ID)
 		organizationContext.set(ctxt) // Update the organization
-		privateOrganizationSpace.set(organizationContext.get.getOrCreateSpaceWithSpec(OpenEventSpaceSpecification,sid))
+		privateOrganizationSpace.set(retrieveOrCreateOpenSpaceWithID(sid))
 		privateOrganizationSpace.get.registerStrongParticipant(asEventListener)
 		info("with a private space : " + sid)
 	}
