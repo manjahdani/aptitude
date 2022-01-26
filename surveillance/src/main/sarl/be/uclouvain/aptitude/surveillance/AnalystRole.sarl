@@ -55,8 +55,8 @@ behavior AnalystRole extends ObserverRole{
 	
 	on AuthorizationToPerformMission {
 		info("Received authorisation to perform a mission within the space : " + occurrence.missionSpaceInPlatformID)
-		listeners.put(this.ID,retrieveOrCreateOpenSpaceWithID(occurrence.missionSpaceInPlatformID)); 
-		listeners.get(this.ID).registerStrongParticipant(asEventListener) 
+		providers.put(this.ID,retrieveOrCreateOpenSpaceWithID(occurrence.missionSpaceInPlatformID)); 
+		providers.get(this.ID).registerStrongParticipant(asEventListener) 
 		processingMissionWithID(occurrence.missionID)
 	}
 	
@@ -64,9 +64,7 @@ behavior AnalystRole extends ObserverRole{
 		info("starts mission of vehicle counting with sensitivity:  " +
 			availableObservers.get(missionList.get(mID).cautionLevel))
 		processingParameters.put(mID,missionList.get(mID).hyperParameters)
-		
-		emit(privateOrganizationSpace.get,
-			new AddObserver(mID,new AlgorithmInfo("APTITUDE", "COUNTER"), new AlgorithmInfo("EXPERT", "ROADANALYST")))
+		requestAlgorithm(mID, "APTITUDE", "COUNTER")
 	}
 	
 }

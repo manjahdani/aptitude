@@ -9,6 +9,7 @@ import be.uclouvain.python_access.PythonTwinAccessCapacity
 import io.sarl.core.Behaviors
 import io.sarl.core.Logging
 import java.util.UUID
+import be.uclouvain.organisation.platform.SensorRole
 
 /** 
  * @TODO : To complete
@@ -20,7 +21,7 @@ import java.util.UUID
  * @mavenartifactid $surveillance$
  * 
  */
-behavior CompetitiveCounterRole extends ObserverRole {
+behavior SignalCounterRole extends SensorRole {
 	
 	uses Logging, Behaviors
 
@@ -33,10 +34,10 @@ behavior CompetitiveCounterRole extends ObserverRole {
 		if (MD.dynamicAdaptationEnabled) {
 			info("Let the competition start !")
 			registerBehavior(new AlgorithmSelectorRole(this.owner),
-								CONFIG_PATH, observerADN.get.name, 
+								CONFIG_PATH, ADN.get.name, 
 								computation_location,
 								new Metric("APTITUDE",
-					"F:/pythonToolbox/pytb-agent/videos/".concat(observerADN.get.platformName).concat("/gt/gt.txt"),
+					"F:/pythonToolbox/pytb-agent/videos/".concat(ADN.get.platformName).concat("/gt/gt.txt"),
 								MD.hyperParameters))
 			for (tracker : AVAILABLE_TRACKERS) {
 				info("requests tracker: " + tracker)

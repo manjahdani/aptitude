@@ -22,6 +22,7 @@ import io.sarl.core.Destroy
 import io.sarl.core.ExternalContextAccess
 import be.uclouvain.organisation.platform.events.ComputationalRessources
 import be.uclouvain.organisation.events.Identification
+import be.uclouvain.organisation.platform.util.SurveillanceMissionData
 
 /** 
  * @author manjah
@@ -30,6 +31,8 @@ import be.uclouvain.organisation.events.Identification
 abstract behavior ScenarioRole extends Role {
 	uses Logging, Schedules, InnerContextAccess, Behaviors, ExternalContextAccess
 
+	protected val missionList = Collections.synchronizedMap(new HashMap<UUID, SurveillanceMissionData>) // A map between mission ID that it needs to answer to and their data
+	
 	protected var ADN = new AtomicReference<AlgorithmInfo>
 	protected val selfSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification,
 		UUID.randomUUID) // An internal space to communicate with other roles.
@@ -100,5 +103,7 @@ abstract behavior ScenarioRole extends Role {
 	}
 
 	abstract def startRole()
+
+	abstract def processingMissionWithID(mID : UUID)
 
 }

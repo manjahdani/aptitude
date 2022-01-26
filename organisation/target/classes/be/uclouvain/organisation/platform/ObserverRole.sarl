@@ -14,7 +14,6 @@ import io.sarl.core.InnerContextAccess
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
-import io.sarl.core.Schedules
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
@@ -52,7 +51,6 @@ abstract behavior ObserverRole extends ScenarioRole {
 	protected val providers = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
 	protected var processingParameters = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>) // A map between mission ID that it ordered to another observer and their data
 	
-
 	on HyperParametersRequest {
 		
 		var providerID = occurrence.source.ID
@@ -63,7 +61,6 @@ abstract behavior ObserverRole extends ScenarioRole {
 		info("param requests from agentID=" + providerID.toString.substring(0, 5) +
 				" sending param:" + " s =" + MD.cautionLevel)
 		if(!getMemberAgents.contains(providerID)){
-			
 			emit(providers.get(providerID), new ProcessingHyperParameters(occurrence.missionID,processingParameters.get(occurrence.missionID))
 			)[it.ID == providerID]
 		}
@@ -94,7 +91,7 @@ abstract behavior ObserverRole extends ScenarioRole {
 	}
 	
 
-	def requestSensor(mID : UUID, algoName : String, algoTask : String) {
+	def requestAlgorithm(mID : UUID, algoName : String, algoTask : String) {
 		
 		emit(privateOrganizationSpace.get, new AddObserver(
 			mID,
@@ -102,11 +99,6 @@ abstract behavior ObserverRole extends ScenarioRole {
 			new AlgorithmInfo(ADN.get.name, ADN.get.task)
 		))[it.ID == organizationContext.get.ID]
 	}
-	
-
-
-	
-	abstract def processingMissionWithID(mID : UUID)
 }
 
 
