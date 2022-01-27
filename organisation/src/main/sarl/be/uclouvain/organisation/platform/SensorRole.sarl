@@ -44,7 +44,20 @@ abstract behavior SensorRole extends ScenarioRole {
 			emit(missionSpace, new HyperParametersRequest(occurrence.missionID))[it == occurrence.source]
 		}
 	}
-
+	
+	//@FIXME LOW the setup is here as at a higher level, there is no possibly to have another name than observer which trigers the same 
+	// maybe it is possible to improve that 
+	def setup() {
+		info("setup of the role sensor agent")
+		task("initSen").every(1000) [
+			if (areAllTrue(checkList.values)) {
+				startRole()
+				task("initSen").cancel
+			} else {
+				info("Waiting for orga and ressources" + checkList)
+			}
+		]
+	}
 	
 	def waitMissionParam(mID : UUID) {
 

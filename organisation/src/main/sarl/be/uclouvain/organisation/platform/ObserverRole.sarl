@@ -17,6 +17,7 @@ import io.sarl.core.OpenEventSpaceSpecification
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
+import io.sarl.core.Schedules
 
 /** 
  * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 
@@ -46,7 +47,7 @@ import java.util.UUID
  
 abstract behavior ObserverRole extends ScenarioRole {
 	
-	uses Logging, Behaviors, InnerContextAccess, ExternalContextAccess
+	uses Logging, Behaviors, InnerContextAccess, ExternalContextAccess, Schedules
 
 	protected val providers = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
 	protected var processingParameters = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>) // A map between mission ID that it ordered to another observer and their data
@@ -89,6 +90,21 @@ abstract behavior ObserverRole extends ScenarioRole {
 			emit(organizationContext.get.defaultSpace,new ResumeMission)[it.ID==signalID]
 		}
 	}
+
+	// @FIXME LOW the setup is here as at a higher level, there is no possibly to have another name than observer which trigers the same
+	// maybe it is possible to improve that
+	def setup() {
+		info("setup of the role observer agent")
+		task("initObs").every(1000) [
+			if (areAllTrue(checkList.values)) {
+				startRole()
+				task("initObs").cancel
+			} else {
+				info("Waiting for orga and ressources" + checkList)
+			}
+		]
+	}
+
 	
 	on RecruitSignal {
 

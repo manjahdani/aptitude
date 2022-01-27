@@ -2,10 +2,8 @@ package be.uclouvain.aptitude.surveillance
 
 import be.uclouvain.organisation.events.AuthorizationToPerformMission
 import be.uclouvain.organisation.platform.ObserverRole
-import be.uclouvain.organisation.platform.events.AddObserver
 import be.uclouvain.organisation.platform.events.Request2PerformMission
 import be.uclouvain.organisation.platform.util.SurveillanceMissionData
-import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize

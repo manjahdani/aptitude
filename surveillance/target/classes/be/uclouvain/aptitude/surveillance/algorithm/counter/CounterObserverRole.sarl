@@ -88,7 +88,7 @@ behavior CounterObserverRole extends ObserverRole {
 	}
 	
 	def startRole {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		warning("CounterObserverRole started Nothing needs to be done")
 	}
 	
 }

@@ -36,9 +36,9 @@ abstract behavior ScenarioRole extends Role {
 	protected var ADN = new AtomicReference<AlgorithmInfo>
 	protected val selfSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification,
 		UUID.randomUUID) // An internal space to communicate with other roles.
-	protected val checkList = Collections.synchronizedMap(new HashMap<String, Boolean>)
-	protected var computation_location = new AtomicReference<String>
 	
+	protected var computation_location = new AtomicReference<String>
+	protected val checkList = Collections.synchronizedMap(new HashMap<String, Boolean>)
 	on Initialize {
 		checkList.put("context", false)
 		checkList.put("computation_location", false)
@@ -47,17 +47,7 @@ abstract behavior ScenarioRole extends Role {
 		setup()
 	}
 
-	protected def setup() {
-		info("setup of the agent")
-		task("init").every(1000) [
-			if (areAllTrue(checkList.values)) {
-				startRole()
-				task("init").cancel
-			} else {
-				info("Waiting for orga and ressources" + checkList)
-			}
-		]
-	}
+	abstract def setup()
 
 	on Destroy {
 		// info("The behavior was stopped.")
