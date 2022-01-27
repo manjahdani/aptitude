@@ -4,7 +4,6 @@
 package be.uclouvain.aptitude.surveillance.evaluation
 
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
-import be.uclouvain.aptitude.surveillance.algorithm.counter.CounterRole
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingRequest
 import be.uclouvain.aptitude.surveillance.algorithm.util.EvaluationResults
 import be.uclouvain.aptitude.surveillance.algorithm.util.Metric
@@ -78,8 +77,7 @@ behavior AlgorithmSelectorRole extends PythonAccessorRole {
 				info("Recording the result of Competitor " + numberTests)
 				if (numberTests == 2) {
 					var selected = selectAlgorithm()
-					emit(new TrackingRequest(selected.competitorID))
-					registerBehavior(new CounterRole(owner))
+					emit(new TrackingRequest(selected.competitorID)) // @FIXME MEDIUM NOT SUPPOSED TO BE HERE
 				}
 			}
 			else{

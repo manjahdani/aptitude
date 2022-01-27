@@ -10,6 +10,7 @@ import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.HashMap
+import be.uclouvain.organisation.platform.ObserverRole
 
 /** 
  * The CounterRole is a behaviour that an agent Algorithm endorses upon a mission to count vehicles
@@ -23,7 +24,7 @@ import java.util.HashMap
  * 
  */
 
-behavior CounterRole { //extends ObserverRole { //@FIXME MEDIUM Should the CounterRole be an observer ? 
+behavior CounterObserverRole extends ObserverRole { 
 	
 	uses Logging, CounterObserverCapacity, DisplayCapacity
 	
@@ -85,7 +86,11 @@ behavior CounterRole { //extends ObserverRole { //@FIXME MEDIUM Should the Count
 		//sendDisplayMessage(occurrence.bboxes2DTrack, this.ID.toString, "F:/data/S02C006/vdo.avi", null, lineCoords,
 			//counts, occurrence.observerName, this.ID.toString, occurrence.sensitivity)
 	}
-
+	
+	def startRole {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
 }
 
 

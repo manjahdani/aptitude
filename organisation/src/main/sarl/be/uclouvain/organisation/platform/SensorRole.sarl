@@ -14,6 +14,7 @@ import io.sarl.core.Schedules
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
+import java.util.ArrayList
 
 /** 
  * @author manjah
@@ -44,6 +45,7 @@ abstract behavior SensorRole extends ScenarioRole {
 		}
 	}
 
+	
 	def waitMissionParam(mID : UUID) {
 
 		task("rMP".concat(mID.toString)).every(1000) [
@@ -59,5 +61,16 @@ abstract behavior SensorRole extends ScenarioRole {
 				info("Waiting for command MID = " + mID + " hp " + MD.hyperParametersAsAString)
 			}
 		]
+	}
+
+	abstract def processingMissionWithID(mID : UUID)
+
+	def enableDataAcquisition(mID : UUID, signals : ArrayList<String>, signalType : String) {
+
+		for (s : signals) {
+
+			info("Request " + s + "as " + signalType)
+			emit(selfSpace, new RecruitSignal(missionList.get(mID), s, signalType))
+		}
 	}
 }

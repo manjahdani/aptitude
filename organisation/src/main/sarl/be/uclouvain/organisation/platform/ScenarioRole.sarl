@@ -104,6 +104,6 @@ abstract behavior ScenarioRole extends Role {
 
 	abstract def startRole()
 
-	abstract def processingMissionWithID(mID : UUID)
+	//abstract def processingMissionWithID(mID : UUID)
 
 }

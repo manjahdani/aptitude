@@ -3,18 +3,19 @@ package be.uclouvain.aptitude.surveillance.algorithm.tracker
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
 import be.uclouvain.aptitude.surveillance.algorithm.detector.PauseMission
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
-import be.uclouvain.organisation.platform.ObserverRole
+import be.uclouvain.organisation.platform.SensorRole
+import be.uclouvain.organisation.platform.events.LeavePlatform
+import be.uclouvain.organisation.platform.events.RemoveMission
+import be.uclouvain.organisation.platform.util.HyperParameters
 import be.uclouvain.python_access.BBoxes2DTrackResult
 import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
 import io.sarl.core.Behaviors
+import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.LinkedList
-import io.sarl.core.ExternalContextAccess
-import be.uclouvain.organisation.platform.events.RemoveMission
-import be.uclouvain.organisation.platform.events.LeavePlatform
 import java.util.UUID
-import be.uclouvain.organisation.platform.util.HyperParameters
+import be.uclouvain.organisation.platform.RecruitSignal
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -34,7 +35,7 @@ import be.uclouvain.organisation.platform.util.HyperParameters
  * @mavenartifactid $surveillance$
  * 
  */
-behavior TrackerRole extends ObserverRole {
+behavior TrackerSignalRole extends SensorRole {
 	
 	uses Logging, TrackerPythonTwinCapacity, Behaviors, ExternalContextAccess
 
@@ -62,8 +63,8 @@ behavior TrackerRole extends ObserverRole {
 	}
 	
 	on RemoveMission{
-		debug("Received a request to remove a mission")
-		emit(providers.get(occurrence.expertID),new PauseMission)[it.ID==occurrence.expertID]
+		info("Received a request to remove a mission COMMENTED BEHAVIOR")
+		//emit(providers.get(occurrence.expertID),new PauseMission)[it.ID==occurrence.expertID]
 	}
 	
 	on LeavePlatform {
@@ -102,7 +103,7 @@ behavior TrackerRole extends ObserverRole {
 					("F:\\Database\\".concat(this.ID.toString) + ".txt"),
 					totalDetectorTime, 
 					totalTrackerTime,
-					observerADN.get.ID))[it.ID == l]
+					ADN.get.ID))[it.ID == l]
 			}
 
 		/** 
@@ -120,15 +121,16 @@ behavior TrackerRole extends ObserverRole {
 	on ResumeTrackingMission {
 		info("Resuming my mission with "+ occurrence.detector)
 		setSkill(new TrackerPythonTwinSkill)
-		registerBehavior(new SingleTrackerRole(this.owner), observerADN.get.belief, observerADN.get.platformName,computation_location)
+		registerBehavior(new SingleTrackerRole(this.owner), ADN.get.belief, ADN.get.platformName, computation_location)
 		info("Come here " + occurrence.detector)
 		missionList.get(occurrence.missionID).dynamicAdaptation = false		
-		requestAlgorithm(occurrence.missionID,occurrence.detector, "DETECTOR")
+		emit(selfSpace, new RecruitSignal(missionList.get(occurrence.missionID),occurrence.detector, "DETECTOR"))
 	}
 	
 	override processingMissionWithID(mID : UUID) {
-		if (missionList.get(mID).isDynamicAdaptationEnabled) 
-		{
+		
+		if (missionList.get(mID).isDynamicAdaptationEnabled) {
+			
 			var hyperParatermersToBeTested = new LinkedList<HyperParameters>
 			var iter = 0 // @FIXME MEDIUM Quick but not robust strategy as if the order of detectors change the system could get confused.
 			
@@ -137,30 +139,24 @@ behavior TrackerRole extends ObserverRole {
 				iter += 1
 			}
 			
-			registerBehavior(new CompetitiveMultiTrackerRole(owner), hyperParatermersToBeTested, this.observerADN,computation_location, detectors)
-			
-			for (detector : detectors) {
-				
-				info("Come here : " + detector)
-				requestAlgorithm(mID,detector, "DETECTOR")
-				}
+			registerBehavior(new CompetitiveMultiTrackerRole(owner), hyperParatermersToBeTested, this.ADN,
+				computation_location, detectors)
+
+			enableDataAcquisition(mID, detectors, "DETECTOR")
 				
 		} 
 		else {
 			setSkill(new TrackerPythonTwinSkill)
-			registerBehavior(new SingleTrackerRole(this.owner), observerADN.get.belief, observerADN.get.platformName,
+			registerBehavior(new SingleTrackerRole(this.owner), ADN.get.belief, ADN.get.platformName,
 			computation_location)
-			info("Come here : " + detectors.get(missionList.get(mID).cautionLevel))
-			//requestAlgorithm(detectors.get(sensitivity.get), "DETECTOR")
+			
+			enableDataAcquisition(mID, newArrayList(detectors.get(missionList.get(mID).cautionLevel)), "DETECTOR")
 			}
 		}
 	
 	def startRole {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
-
-	
 }
 
 

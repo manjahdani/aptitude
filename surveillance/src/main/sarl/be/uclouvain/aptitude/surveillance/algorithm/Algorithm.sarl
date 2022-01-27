@@ -4,9 +4,7 @@
 package be.uclouvain.aptitude.surveillance.algorithm
 
 import be.uclouvain.aptitude.surveillance.Paraddis
-import be.uclouvain.aptitude.surveillance.algorithm.counter.CompetitiveCounterRole
-import be.uclouvain.aptitude.surveillance.algorithm.detector.DetectorRole
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerRole
+
 import be.uclouvain.aptitude.surveillance.platform.AgentAlgorithm
 import be.uclouvain.aptitude.surveillance.platform.AgentPlatform
 import be.uclouvain.organisation.told.entity.EntityRole
@@ -24,6 +22,10 @@ import java.util.HashMap
 import java.util.UUID
 import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
 import java.util.concurrent.atomic.AtomicReference
+import be.uclouvain.aptitude.surveillance.algorithm.counter.CounterSignalRole
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerSignalRole
+import be.uclouvain.aptitude.surveillance.algorithm.counter.CounterObserverRole
+import be.uclouvain.aptitude.surveillance.algorithm.detector.DetectorSignalRole
 
 /** 
  * Agent with a set of tasks (Goals) and a model (Belief). 
@@ -90,13 +92,14 @@ agent Algorithm extends Paraddis{
 			registerBehavior(new AlgorithmEntity(this))
 			switch(ADN.get.task){
 				case "COUNTER": {
-					registerBehavior(new CompetitiveCounterRole(this), ADN.get)
+					registerBehavior(new CounterSignalRole(this), ADN.get)
+					registerBehavior(new CounterObserverRole(this), ADN.get)
 				}
 				case "TRACKER": {
-					registerBehavior(new TrackerRole(this), ADN.get)
+					registerBehavior(new TrackerSignalRole(this), ADN.get)
 				}
 				case "DETECTOR": {
-					registerBehavior(new DetectorRole(this), ADN.get)
+					registerBehavior(new DetectorSignalRole(this), ADN.get)
 				}
 			}
 		 }

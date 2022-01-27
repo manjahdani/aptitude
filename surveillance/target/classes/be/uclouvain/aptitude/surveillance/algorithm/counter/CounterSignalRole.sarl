@@ -4,12 +4,14 @@ import be.uclouvain.aptitude.surveillance.algorithm.util.Metric
 import be.uclouvain.aptitude.surveillance.evaluation.AlgorithmSelectorRole
 import be.uclouvain.aptitude.surveillance.evaluation.Evaluation
 import be.uclouvain.aptitude.surveillance.evaluation.EvaluationImpl
-import be.uclouvain.organisation.platform.ObserverRole
+import be.uclouvain.organisation.platform.RecruitSignal
+import be.uclouvain.organisation.platform.SensorRole
 import be.uclouvain.python_access.PythonTwinAccessCapacity
 import io.sarl.core.Behaviors
+import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
+import java.util.ArrayList
 import java.util.UUID
-import be.uclouvain.organisation.platform.SensorRole
 
 /** 
  * @TODO : To complete
@@ -21,37 +23,38 @@ import be.uclouvain.organisation.platform.SensorRole
  * @mavenartifactid $surveillance$
  * 
  */
-behavior SignalCounterRole extends SensorRole {
+behavior CounterSignalRole extends SensorRole {
 	
-	uses Logging, Behaviors
+	uses Logging, Behaviors, ExternalContextAccess
 
 	val AVAILABLE_TRACKERS = newArrayList("SORT") // "DeepSORT") // "SORT", //@FIXME MEDIUM SOFTWARE PARAMETERS
 	val CONFIG_PATH = "F:/aptitude/surveillance/src/main/resources/config/evalconfig.json"
 	
 	override processingMissionWithID (mID : UUID) {
 		setSkill(new EvaluationImpl, Evaluation, PythonTwinAccessCapacity)
-		val MD = missionList.get(mID)
-		if (MD.dynamicAdaptationEnabled) {
+		if (missionList.get(mID).dynamicAdaptationEnabled) {
 			info("Let the competition start !")
 			registerBehavior(new AlgorithmSelectorRole(this.owner),
 								CONFIG_PATH, ADN.get.name, 
 								computation_location,
 								new Metric("APTITUDE",
-					"F:/pythonToolbox/pytb-agent/videos/".concat(ADN.get.platformName).concat("/gt/gt.txt"),
-								MD.hyperParameters))
-			for (tracker : AVAILABLE_TRACKERS) {
-				info("requests tracker: " + tracker)
-				requestAlgorithm(mID,tracker, "TRACKER")
-			}
-		}
+					"F:/pythonToolbox/pytb-agent/videos/".concat(ADN.get.platformName).concat("/gt/gt.txt"), //@FIXME HIGH Manual
+					missionList.get(mID).hyperParameters))
+			enableDataAcquisition(mID, AVAILABLE_TRACKERS)}
+			
 		else{
-			registerBehavior(new CounterRole(owner))
-			for (tracker : AVAILABLE_TRACKERS) {
-				info("requests tracker: " + tracker)
-				requestAlgorithm(mID,tracker, "TRACKER")
-			}
+			enableDataAcquisition(mID, newArrayList(AVAILABLE_TRACKERS.get(missionList.get(mID).cautionLevel)))
 		}
 
+	}
+	
+	def enableDataAcquisition ( mID : UUID, signals : ArrayList<String>){
+		
+		for (s : signals) {
+			
+			info("requests tracker: " + s)
+			emit(selfSpace, new RecruitSignal(missionList.get(mID), s, "TRACKER"))
+		}	
 	}
 	
 	def startRole {

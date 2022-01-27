@@ -90,6 +90,13 @@ abstract behavior ObserverRole extends ScenarioRole {
 		}
 	}
 	
+	on RecruitSignal {
+
+		info("requested a tracker: " + occurrence.name)
+		val mission = occurrence.missionData
+		processingParameters.put(mission.missionID,mission.hyperParameters)
+		requestAlgorithm(mission.missionID,occurrence.name,occurrence.task)
+	}
 
 	def requestAlgorithm(mID : UUID, algoName : String, algoTask : String) {
 		

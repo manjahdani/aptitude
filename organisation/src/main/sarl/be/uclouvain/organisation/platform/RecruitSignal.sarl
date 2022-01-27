@@ -1,0 +1,24 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform
+
+import be.uclouvain.organisation.platform.util.SurveillanceMissionData
+
+/** 
+ * @author manjah
+ * 
+ */
+final event RecruitSignal{
+
+	val missionData : SurveillanceMissionData
+	val name : String // @FIXME LOW not general
+	val task : String
+
+	new (mD : SurveillanceMissionData, algoName : String, algoTask : String) {
+		this.missionData= mD
+		this.name = algoName
+		this.task = algoTask
+	}
+}
+

@@ -10,6 +10,7 @@ import io.sarl.core.Destroy
 import io.sarl.core.Logging
 import io.sarl.core.ExternalContextAccess
 import java.util.UUID
+import be.uclouvain.organisation.platform.SensorRole
 
 /** 
  * @TODO: write a description
@@ -21,14 +22,14 @@ import java.util.UUID
  * @mavenartifactid $surveillance$
  * 
  */
-behavior DetectorRole extends ObserverRole {
+behavior DetectorSignalRole extends SensorRole {
 	
 	uses Logging, Behaviors, ExternalContextAccess
 	
 	on BBoxes2DResult {
 		//info("Detector - frameNumber- lastframe " + occurrence.bboxes2D.frameNumber + occurrence.bboxes2D.lastFrame)
 		for (listenersSpace : listeners.values) {
-			emit(listenersSpace, new BBoxes2DResult(occurrence.bboxes2D, observerADN.get.name))[it.ID !== this.ID]
+			emit(listenersSpace, new BBoxes2DResult(occurrence.bboxes2D, ADN.get.name))[it.ID !== this.ID]
 		}
 	}
 
@@ -52,7 +53,7 @@ behavior DetectorRole extends ObserverRole {
 	
 	def processingMissionWithID(mID : UUID) {
 		setSkill(new DetectorPythonTwin)
-		registerBehavior(new SingleDetectorRole(this.owner), observerADN.get.belief, observerADN.get.name, computation_location)
+		registerBehavior(new SingleDetectorRole(this.owner), ADN.get.belief, ADN.get.name, computation_location)
 	}
 	
 }
