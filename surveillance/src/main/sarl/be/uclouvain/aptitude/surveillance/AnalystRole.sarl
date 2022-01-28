@@ -59,8 +59,7 @@ behavior AnalystRole extends ObserverRole{
 	}
 	
 	def processingMissionWithID(mID : UUID) {
-		info("starts mission of vehicle counting with sensitivity:  " +
-			availableObservers.get(missionList.get(mID).cautionLevel))
+		info("starts mission of vehicle counting with hyperParameters:  " + missionList.get(mID).hyperParametersAsAString)
 		processingParameters.put(mID,missionList.get(mID).hyperParameters)
 		requestAlgorithm(mID, "APTITUDE", "COUNTER")
 	}

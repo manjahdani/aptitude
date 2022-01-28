@@ -20,6 +20,7 @@ import java.util.Collections
 import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicReference
 
 /** 
  * 
@@ -38,7 +39,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	val request = Collections.synchronizedList(new LinkedList<String>)
 	protected val agentAlgorithm = new HashMap<String, OpenEventSpace>
 	
-	protected var allocated_ressource : String
+	protected var allocated_ressource = new AtomicReference<String>
 	
 	
 	on LocalDatabaseRequest {
@@ -49,14 +50,14 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	
 	on ComputationalRessources {
 		//info("Received computational resources: " + occurrence.client_id + "from ")
-		allocated_ressource = occurrence.client_id
+		allocated_ressource.set(occurrence.client_id)
 	}
 	
 	on Identification {
 		
 		debug("new participant: " + occurrence.fullName )
 		participants.put(occurrence.fullName, occurrence.source.ID)
-		wake(new ComputationalRessources(allocated_ressource))[it.ID == occurrence.source.ID]
+		wake(new ComputationalRessources(allocated_ressource.get))[it.ID == occurrence.source.ID]
 	}
  
 	

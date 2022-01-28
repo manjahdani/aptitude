@@ -53,14 +53,15 @@ abstract behavior ObserverRole extends ScenarioRole {
 	protected var processingParameters = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>) // A map between mission ID that it ordered to another observer and their data
 	
 	on HyperParametersRequest {
-		
+
+	
 		var providerID = occurrence.source.ID
 		// We decide that derived role handles the parameters request of inner-agents. 
 		//Removing the flag results in nullException as the role 
 		// receives a request from a innerAgent but did not include it in its providers.
 		var MD = processingParameters.get(occurrence.missionID)
-		info("param requests from agentID=" + providerID.toString.substring(0, 5) +
-				" sending param:" + " s =" + MD.cautionLevel)
+		info("param requests from agentID=" + providerID.toString.substring(0, 5) + " sending param:" + " s =" +
+			MD.cautionLevel)
 		if(!getMemberAgents.contains(providerID)){
 			emit(providers.get(providerID), new ProcessingHyperParameters(occurrence.missionID,processingParameters.get(occurrence.missionID))
 			)[it.ID == providerID]
@@ -80,7 +81,7 @@ abstract behavior ObserverRole extends ScenarioRole {
 			providers.put(signalID, comChannel)
 			var hp_mission = missionList.get(missionID).hyperParameters // We add the Hyperparameters that we are going to provide later to the provider
 			processingParameters.put(signalID, hp_mission)
-			info("Received provider ID sending the channel " + providers.get(signalID).spaceID.ID)
+			info("Received provider ID sending sid " + providers.get(signalID).spaceID.ID)
 			emit(organizationContext.get.defaultSpace,new AddMission(occurrence.missionID, providers.get(signalID).spaceID.ID)) [it.ID == signalID]
 		}
 		else{
@@ -107,8 +108,6 @@ abstract behavior ObserverRole extends ScenarioRole {
 
 	
 	on RecruitSignal {
-
-		info("requested a tracker: " + occurrence.name)
 		val mission = occurrence.missionData
 		processingParameters.put(mission.missionID,mission.hyperParameters)
 		requestAlgorithm(mission.missionID,occurrence.name,occurrence.task)

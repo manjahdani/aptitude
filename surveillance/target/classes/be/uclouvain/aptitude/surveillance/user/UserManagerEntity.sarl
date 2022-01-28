@@ -64,7 +64,7 @@ behavior UserManagerEntity extends OrganizationalRole{
 			innerContext,
 			new HolonicUserConfig(1, 
 									 	occurrence.data.playerUID,
-									 	accessRight(occurrence.data.playerUID))) //FIXME the user level is not automatic
+									 	accessRight(occurrence.data.playerUID))) //FIXME LOW the user level is not automatic
 	}
 	
 	on NewMission {

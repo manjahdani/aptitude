@@ -3,16 +3,14 @@
  */
 package be.uclouvain.organisation
 
-import io.sarl.core.OpenEventSpace
-import io.sarl.lang.core.AgentContext
-import java.util.concurrent.atomic.AtomicReference
-import java.util.UUID
-import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.core.Behaviors
 import io.sarl.core.Logging
-import java.util.Collections
-import java.util.HashMap
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.core.Schedules
+import io.sarl.lang.core.AgentContext
+import java.util.UUID
+import java.util.concurrent.atomic.AtomicReference
 
 /** 
  * @author manjah
@@ -30,7 +28,7 @@ abstract behavior Role {
 		organizationContext.set(ctxt) // Update the organization
 		privateOrganizationSpace.set(retrieveOrCreateOpenSpaceWithID(sid))
 		privateOrganizationSpace.get.registerStrongParticipant(asEventListener)
-		info("joins organization : " + ctxt.ID + 
+		info("obtained organization info : " + ctxt.ID + 
 		" \n with private Space [ \n id = " + privateOrganizationSpace.get.spaceID.ID + "\n contextID = " +
 			privateOrganizationSpace.get.spaceID.contextID + "]\n")
 	}

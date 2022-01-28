@@ -124,7 +124,7 @@ agent Algorithm extends Paraddis{
 			val cloneID = UUID.randomUUID
 			subHolons.put(occurrence.contextID, cloneID)
 			spawnInContextWithID(Algorithm, cloneID, occurrence.contextID, ADN.get.cloneChild(cloneID))
-		}}//@FIXME we could have a table of each child, so that we could direct the information to it. 
+		}}//@FIXME LOW we could have a table of each child, so that we could direct the information to it. 
 	on AlgorithmJoinPlatform {
 		debug("deploys " + ADN.get.task + " named " + occurrence.name + " performing for " + occurrence.source.ID.toString.substring(0, 5))
 		wake(new AlgorithmNeeded(occurrence.contextID, occurrence.name, ADN.get.task, ADN.get.belief))

@@ -15,13 +15,14 @@ import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
 import java.util.ArrayList
+import io.sarl.core.Behaviors
 
 /** 
  * @author manjah
  * 
  */
 abstract behavior SensorRole extends ScenarioRole {
-	uses Logging, Schedules, ExternalContextAccess
+	uses Logging, Schedules, ExternalContextAccess, Behaviors
 
 	protected val listeners = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the client and the role
 
@@ -33,15 +34,17 @@ abstract behavior SensorRole extends ScenarioRole {
 	on AddMission {
 
 		val missionSpace = retrieveOrCreateOpenSpaceWithID(occurrence.communicationChannelID)
-		var clientID = occurrence.source.ID
-
+		val clientID = occurrence.source.ID
+		val missionID = occurrence.missionID
+		info("received mission request from "  + clientID + "\n sid = " + missionSpace.spaceID.ID + "\n mID = " + missionID )
 		var accepted = true // @TODO LOW develop criteria for the admission of the mission
 		if (accepted) {
-			val newMission = new SurveillanceMissionData(occurrence.missionID, clientID, organizationContext.get.ID)
+			val newMission = new SurveillanceMissionData(missionID, clientID, organizationContext.get.ID)
 			missionList.put(occurrence.missionID, newMission)
 			listeners.put(clientID, missionSpace)
+			missionSpace.registerStrongParticipant(asEventListener)
 			waitMissionParam(occurrence.missionID)
-			emit(missionSpace, new HyperParametersRequest(occurrence.missionID))[it == occurrence.source]
+			emit(missionSpace, new HyperParametersRequest(occurrence.missionID))[it.ID == clientID]
 		}
 	}
 	
@@ -64,7 +67,7 @@ abstract behavior SensorRole extends ScenarioRole {
 		task("rMP".concat(mID.toString)).every(1000) [
 			val MD = missionList.get(mID)
 			if (MD.hyperParameters.paramKnown) {
-				info("Start the processing role at location - " + ". Parameters are: s= " + MD.cautionLevel +
+				info("Start the processing role for mid = " + mID+ "\n at location - " + ". Parameters are: s= " + MD.cautionLevel +
 						" isMaster=" + MD.isDynamicAdaptationEnabled)
 				processingMissionWithID(mID)
 				loggingName = this.ID + "-ALGORITHM-" + ADN.get.name + "-" + ADN.get.level + "-" +
@@ -82,7 +85,7 @@ abstract behavior SensorRole extends ScenarioRole {
 
 		for (s : signals) {
 
-			info("Request " + s + "as " + signalType)
+			info("Request " + s + " as " + signalType)
 			emit(selfSpace, new RecruitSignal(missionList.get(mID), s, signalType))
 		}
 	}
