@@ -15,7 +15,8 @@ class MissionData {
 	
 	protected val missionID : UUID
 	protected val clientID : UUID
-	protected val platformID : UUID	
+	protected val platformID : UUID
+	protected var signalID : UUID	
 	
 	new (){
 		this.missionID = null
@@ -29,6 +30,12 @@ class MissionData {
 		
 	}
 	
+	def setSignalID(uid : UUID){
+		this.signalID=uid
+	}
+	def getSignalID{
+		return this.signalID
+	}
 	def getPlatformID{
 		return this.platformID
 	}

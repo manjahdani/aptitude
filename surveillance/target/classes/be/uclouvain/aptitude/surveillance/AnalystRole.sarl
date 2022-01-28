@@ -46,7 +46,7 @@ behavior AnalystRole extends ObserverRole{
 	def startRole() {
 		info("asks for algorithm performing vehicle counting to platform")
 		val mission = missionQueue.poll
-		missionList.put(mission.missionID, mission)
+		orderedMissionList.put(mission.missionID, mission)
 		emit(privateOrganizationSpace.get, new Request2PerformMission(mission))
 	}
 	
@@ -59,8 +59,7 @@ behavior AnalystRole extends ObserverRole{
 	}
 	
 	def processingMissionWithID(mID : UUID) {
-		info("starts mission of vehicle counting with hyperParameters:  " + missionList.get(mID).hyperParametersAsAString)
-		processingParameters.put(mID,missionList.get(mID).hyperParameters)
+		info("starts mission of vehicle counting with hyperParameters:  " + orderedMissionList.get(mID).hyperParametersAsAString)
 		requestAlgorithm(mID, "APTITUDE", "COUNTER")
 	}
 	

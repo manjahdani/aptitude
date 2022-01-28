@@ -7,10 +7,11 @@ import io.sarl.core.Behaviors
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
-import io.sarl.core.Schedules
 import io.sarl.lang.core.AgentContext
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Initialize
 
 /** 
  * @author manjah
@@ -18,12 +19,17 @@ import java.util.concurrent.atomic.AtomicReference
  */
 abstract behavior Role {
 	
-	uses Behaviors, Logging, Schedules
+	uses Behaviors, Logging, InnerContextAccess
 
 	protected val organizationContext = new AtomicReference<AgentContext> // context of the organisation Platform
 	protected var privateOrganizationSpace = new AtomicReference<OpenEventSpace> // private space between the algorithm and the organisation Platform
 	
-
+	protected val selfSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, this.ID) // An internal space to communicate with other agent roles.
+	
+	on Initialize {
+		selfSpace.registerStrongParticipant(asEventListener) 	// listen to a self-internal space
+	}
+	
 	def updateContextInfo(ctxt : AgentContext, sid : UUID) {
 		organizationContext.set(ctxt) // Update the organization
 		privateOrganizationSpace.set(retrieveOrCreateOpenSpaceWithID(sid))

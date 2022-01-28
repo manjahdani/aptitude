@@ -1,7 +1,6 @@
 package be.uclouvain.aptitude.surveillance.algorithm.tracker
 
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
-import be.uclouvain.aptitude.surveillance.algorithm.detector.PauseMission
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.organisation.platform.SensorRole
 import be.uclouvain.organisation.platform.events.LeavePlatform
@@ -15,7 +14,6 @@ import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.LinkedList
 import java.util.UUID
-import be.uclouvain.organisation.platform.RecruitSignal
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -63,7 +61,7 @@ behavior TrackerSignalRole extends SensorRole {
 	}
 	
 	on RemoveMission{
-		info("Received a request to remove a mission COMMENTED BEHAVIOR")
+		warning("Received a request to remove a mission COMMENTED BEHAVIOR")
 		//emit(providers.get(occurrence.expertID),new PauseMission)[it.ID==occurrence.expertID]
 	}
 	
@@ -124,7 +122,7 @@ behavior TrackerSignalRole extends SensorRole {
 		registerBehavior(new SingleTrackerRole(this.owner), ADN.get.belief, ADN.get.platformName, computation_location)
 		info("Come here " + occurrence.detector)
 		missionList.get(occurrence.missionID).dynamicAdaptation = false		
-		emit(selfSpace, new RecruitSignal(missionList.get(occurrence.missionID),occurrence.detector, "DETECTOR"))
+		enableDataAcquisition(occurrence.missionID,newArrayList(occurrence.detector), "DETECTOR")
 	}
 	
 	override processingMissionWithID(mID : UUID) {
@@ -139,10 +137,10 @@ behavior TrackerSignalRole extends SensorRole {
 				iter += 1
 			}
 			
-			registerBehavior(new CompetitiveMultiTrackerRole(owner), hyperParatermersToBeTested, this.ADN,
+			registerBehavior(new MultiTrackerRole(owner), hyperParatermersToBeTested, this.ADN,
 				computation_location, detectors)
 
-			enableDataAcquisition(mID, detectors, "DETECTOR")
+			
 				
 		} 
 		else {
@@ -155,7 +153,7 @@ behavior TrackerSignalRole extends SensorRole {
 		}
 	
 	def startRole {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		warning("TODO: auto-generated method stub")
 	}
 }
 

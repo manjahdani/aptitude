@@ -27,7 +27,7 @@ behavior CounterSignalRole extends SensorRole {
 	val AVAILABLE_TRACKERS = newArrayList("SORT") // "DeepSORT") // "SORT", //@FIXME MEDIUM SOFTWARE PARAMETERS
 	val CONFIG_PATH = "F:/aptitude/surveillance/src/main/resources/config/evalconfig.json"
 	
-	override processingMissionWithID (mID : UUID) {
+	def processingMissionWithID (mID : UUID) {
 		setSkill(new EvaluationImpl, Evaluation, PythonTwinAccessCapacity)
 		if (missionList.get(mID).dynamicAdaptationEnabled) {
 			info("Let the competition start !")
@@ -39,7 +39,6 @@ behavior CounterSignalRole extends SensorRole {
 					missionList.get(mID).hyperParameters))
 			enableDataAcquisition(mID, AVAILABLE_TRACKERS,"TRACKER")
 		}
-			
 		else{
 			enableDataAcquisition(mID, newArrayList(AVAILABLE_TRACKERS.get(missionList.get(mID).cautionLevel)),
 				"TRACKER")
@@ -48,7 +47,7 @@ behavior CounterSignalRole extends SensorRole {
 	}
 	
 	def startRole {
-			info("Role started with nothing to be done")
+			warning("Role started with nothing to be done")
 	}
 	
 }

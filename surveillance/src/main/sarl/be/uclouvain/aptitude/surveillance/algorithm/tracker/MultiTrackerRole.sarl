@@ -5,14 +5,15 @@ package be.uclouvain.aptitude.surveillance.algorithm.tracker
 
 import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
-
 import be.uclouvain.organisation.events.AddMember
 import be.uclouvain.organisation.events.SignalID
+import be.uclouvain.organisation.platform.ObserverRole
 import be.uclouvain.organisation.platform.events.AddMission
-import be.uclouvain.organisation.platform.events.ComputationalRessources
 import be.uclouvain.organisation.platform.events.HyperParametersRequest
 import be.uclouvain.organisation.platform.events.ProcessingHyperParameters
 import be.uclouvain.organisation.platform.events.RemoveMission
+import be.uclouvain.organisation.platform.util.HyperParameters
+import be.uclouvain.organisation.platform.util.SurveillanceMissionData
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import be.uclouvain.python_access.BBoxes2DResult
 import io.sarl.core.Behaviors
@@ -29,14 +30,13 @@ import java.util.Collections
 import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
-import be.uclouvain.organisation.platform.util.HyperParameters
 
 /** 
  * @author manjah
  * 
  */
  
-behavior CompetitiveMultiTrackerRole {
+behavior MultiTrackerRole extends ObserverRole {
 	uses Logging, Lifecycle, InnerContextAccess, Schedules , Behaviors, ExternalContextAccess
 	
 	var detectors : ArrayList<String>  // @FIXME HIGH LOGICIEL PARAMETERS ?
@@ -47,55 +47,30 @@ behavior CompetitiveMultiTrackerRole {
 	protected val innerTracker_ParametersMap = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>)
 	protected var computation_Location : String
 
+	val hyperParametersToBeTested  = Collections.synchronizedList(new LinkedList<HyperParameters>)
+	
 	protected val activeProviders = Collections.synchronizedMap(new HashMap<String, UUID>) // Detector and its ID
-/** 
+
 	on Initialize {
-		info("Competitive multi-tracker role started.")
-
-		var hyperParametersToBeTested : LinkedList<HyperParameters>
-		var observerADN : AlgorithmInfo
-		try {hyperParametersToBeTested = occurrence.parameters.get(0) as LinkedList<HyperParameters>}
-		catch (e : ClassCastException) {
-			warning("Could not cast Initialise parameters 0 to a LinkedList")
-		}
-		try {
-			observerADN = occurrence.parameters.get(1) as AlgorithmInfo
-		} 
-		catch (e : ClassCastException) {
-			warning("Could not cast Initialise parameters 1 to AlgorithmInfo")
-		}
-
-		
-		computation_Location = occurrence.parameters.get(4).toString
+		info("Multi-tracker role started.")
+		emit(selfSpace, new ScenarioInfo)
+		hyperParametersToBeTested.addAll(occurrence.parameters.get(0) as LinkedList<HyperParameters>)
+		ADN.set(occurrence.parameters.get(1) as AlgorithmInfo)
 		detectors = occurrence.parameters.get(5) as ArrayList<String>
 		
-		for (param : hyperParametersToBeTested) {
-		var cloneID = UUID.randomUUID
-		innerTracker_ParametersMap.put(cloneID, param)	
-		spawnInContextWithID(Algorithm, cloneID, innerContext, observerADN.cloneChild(cloneID)) // Spawn a sub-process specialised using the hyperParameters s
-		var comSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID) // An internal space to communicate with other roles.
-		comSpace.registerStrongParticipant(asEventListener)
-		sub_processes.put(cloneID, comSpace)
+		
+		
+		
+		
+
+		
+
+
 		detector_innerTrackerMap.put(detectors.get(param.sensitivity), cloneID)
 		innerTracker_detectorsMap.put(cloneID,detectors.get(param.sensitivity))
-		}
+		
 
-		task("a").in(400) [
-			for (cloneID : sub_processes.keySet) {
-				wake(new AddMission(sub_processes.get(cloneID)))[it.ID == cloneID]
-				wake(new ComputationalRessources(computation_Location))[it.ID == cloneID]
-			}
-			task("a").cancel
-		] //@FIXME HIGH something to do with synchronization
-		
-		
-		task("b").in(500) [
-		for (cloneID : sub_processes.keySet)
-		{
-			emit(privateTOLDSpace, new AddMember(cloneID, sub_processes.get(cloneID)))[it.ID == TOLDContext.ID]
-		}
-		task("b").cancel
-		]
+
 		
 	}
 
@@ -128,7 +103,14 @@ behavior CompetitiveMultiTrackerRole {
 	}
 	
 	on SignalID{
-		activeProviders.put(occurrence.name,occurrence.signalID)
+
+		
+		
+		
+		emit(privateTOLDSpace, new AddMember(cloneID, sub_processes.get(cloneID)))[it.ID == TOLDContext.ID]
+		wake(new AddMission(sub_processes.get(cloneID)))[it.ID == cloneID]
+		orderedMissionList.
+		
 	}
 	
 	on LastFrame {
@@ -148,7 +130,24 @@ behavior CompetitiveMultiTrackerRole {
 		// We send to the sub-process meant to analyse the data of the provider. 
 		// For example, agent 1 process the data sent from detector A. 
 		wake(new BBoxes2DResult(occurrence.bboxes2D))[it.ID == detector_innerTrackerMap.get(occurrence.providerName)] 
-	}*/
+	}
+	
+	def startRole {
+		val detectors = new HashMap<String, Integer>
+
+		val externalMissionID = occurrence.missionID... 
+		for(d:detectors.keySet){
+			val internalMissionID = UUID.randomUUID
+			val newInternalMission = new SurveillanceMissionData(internalMissionID, this.ID, organizationContext.get.ID,
+				detectors.get(d), false)
+			orderedMissionList.put(internalMissionID, newInternalMission)
+			innerTracker_ParametersMap.put(internalMissionID, new HyperParameters(detectors.get(d),false))
+			spawnInContextWithID(Algorithm, internalMissionID, innerContext, ADN.get.cloneChild(internalMissionID))
+		}
+		
+		orderedMissionList.put... 
+	}
+	
 }
 
 event ResumeTrackingMission {

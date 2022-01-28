@@ -6,7 +6,7 @@ import be.uclouvain.organisation.platform.events.AddObserver
 import be.uclouvain.organisation.platform.events.HyperParametersRequest
 import be.uclouvain.organisation.platform.events.ProcessingHyperParameters
 import be.uclouvain.organisation.platform.events.ResumeMission
-import be.uclouvain.organisation.platform.util.HyperParameters
+import be.uclouvain.organisation.platform.util.SurveillanceMissionData
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
 import io.sarl.core.ExternalContextAccess
@@ -14,10 +14,10 @@ import io.sarl.core.InnerContextAccess
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
+import io.sarl.core.Schedules
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
-import io.sarl.core.Schedules
 
 /** 
  * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 
@@ -50,7 +50,8 @@ abstract behavior ObserverRole extends ScenarioRole {
 	uses Logging, Behaviors, InnerContextAccess, ExternalContextAccess, Schedules
 
 	protected val providers = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
-	protected var processingParameters = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>) // A map between mission ID that it ordered to another observer and their data
+	//protected var processingParameters = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>) // 
+	protected val orderedMissionList = Collections.synchronizedMap(new HashMap<UUID, SurveillanceMissionData>) // A map between mission ID that it ordered to another observer and their data
 	
 	on HyperParametersRequest {
 
@@ -59,11 +60,13 @@ abstract behavior ObserverRole extends ScenarioRole {
 		// We decide that derived role handles the parameters request of inner-agents. 
 		//Removing the flag results in nullException as the role 
 		// receives a request from a innerAgent but did not include it in its providers.
-		var MD = processingParameters.get(occurrence.missionID)
+		var MD = orderedMissionList.get(occurrence.missionID)
 		info("param requests from agentID=" + providerID.toString.substring(0, 5) + " sending param:" + " s =" +
 			MD.cautionLevel)
 		if(!getMemberAgents.contains(providerID)){
-			emit(providers.get(providerID), new ProcessingHyperParameters(occurrence.missionID,processingParameters.get(occurrence.missionID))
+			emit(
+				providers.get(providerID),
+				new ProcessingHyperParameters(occurrence.missionID, orderedMissionList.get(occurrence.missionID).hyperParameters)
 			)[it.ID == providerID]
 		}
 		
@@ -74,23 +77,26 @@ abstract behavior ObserverRole extends ScenarioRole {
 		val missionID= occurrence.missionID
 		
 		if(!providers.containsKey(signalID)){
-			// info("Unkown signal" + sid)
-			// @FIXME MEDIUM we have to ask for MISSION
-			val comChannel = organizationContext.get.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
-			comChannel.registerStrongParticipant(asEventListener)
-			providers.put(signalID, comChannel)
-			var hp_mission = missionList.get(missionID).hyperParameters // We add the Hyperparameters that we are going to provide later to the provider
-			processingParameters.put(signalID, hp_mission)
-			info("Received provider ID sending sid " + providers.get(signalID).spaceID.ID)
-			emit(organizationContext.get.defaultSpace,new AddMission(occurrence.missionID, providers.get(signalID).spaceID.ID)) [it.ID == signalID]
+			orderedMissionList.get(missionID).signalID = signalID
+			// create a new private communication space between the signal and observer and listen to it
+			val comSpace = organizationContext.get.getOrCreateSpaceWithID(OpenEventSpaceSpecification,
+				UUID.randomUUID)
+			comSpace.registerStrongParticipant(asEventListener)
+			providers.put(signalID, comSpace)
+			info("Received provider ID sending sid " + comSpace.spaceID.ID)
+			emit(organizationContext.get.defaultSpace, new AddMission(occurrence.missionID, comSpace.spaceID.ID)) [
+				it.ID == signalID
+			]
 		}
 		else{
+			//@FIXME HIGH N'imp
 			info("Known signal = " + signalID)
 			emit(providers.get(signalID),new ResumeMission)[this.ID == signalID]
 			info("Trying now in the default")
 			emit(organizationContext.get.defaultSpace,new ResumeMission)[it.ID==signalID]
 		}
 	}
+
 
 	// @FIXME LOW the setup is here as at a higher level, there is no possibly to have another name than observer which trigers the same
 	// maybe it is possible to improve that
@@ -108,8 +114,9 @@ abstract behavior ObserverRole extends ScenarioRole {
 
 	
 	on RecruitSignal {
+		info("Received a recruitment request for name = " + occurrence.name + " t = " + occurrence.task)
 		val mission = occurrence.missionData
-		processingParameters.put(mission.missionID,mission.hyperParameters)
+		orderedMissionList.put(mission.missionID, mission)
 		requestAlgorithm(mission.missionID,occurrence.name,occurrence.task)
 	}
 
