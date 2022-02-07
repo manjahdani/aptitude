@@ -55,21 +55,16 @@ abstract behavior ObserverRole extends ScenarioRole {
 	
 	on HyperParametersRequest {
 
-	
-		var providerID = occurrence.source.ID
-		// We decide that derived role handles the parameters request of inner-agents. 
-		//Removing the flag results in nullException as the role 
+		// We decide that derived role handles the parameters request of inner-agents.
+		// Removing the flag results in nullException as the role
 		// receives a request from a innerAgent but did not include it in its providers.
+		var providerID = occurrence.source.ID
+		info("param requests from agentID=" + providerID.toString.substring(0, 5)) 
 		var MD = orderedMissionList.get(occurrence.missionID)
-		info("param requests from agentID=" + providerID.toString.substring(0, 5) + " sending param:" + " s =" +
-			MD.cautionLevel)
-		if(!getMemberAgents.contains(providerID)){
-			emit(
-				providers.get(providerID),
-				new ProcessingHyperParameters(occurrence.missionID, orderedMissionList.get(occurrence.missionID).hyperParameters)
-			)[it.ID == providerID]
-		}
-		
+
+		info("\n sending param:" + " s =" + MD.cautionLevel)
+		emit(providers.get(providerID), new ProcessingHyperParameters(
+			occurrence.missionID, orderedMissionList.get(occurrence.missionID).hyperParameters))[it.ID == providerID]
 	}
 	on SignalID {
 		

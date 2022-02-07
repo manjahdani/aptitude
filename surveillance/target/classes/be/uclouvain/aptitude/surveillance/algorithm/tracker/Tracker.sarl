@@ -1,0 +1,22 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.tracker
+
+import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+
+/** 
+ * @author manjah
+ * 
+ */
+agent Tracker extends Algorithm {
+	uses Logging
+
+	on Initialize {
+		// Event trigger before the agent begin to live or to be used.
+		// You should put all the initialization statements in this block of code.
+		info("The agent was started.")
+	}
+}

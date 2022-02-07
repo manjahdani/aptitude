@@ -16,6 +16,9 @@ import java.util.LinkedList
 import java.util.UUID
 import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
 import be.uclouvain.organisation.platform.events.ScenarioInfo
+import java.util.TreeMap
+import be.uclouvain.organisation.platform.util.Metadata
+import io.sarl.core.Initialize
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -40,13 +43,20 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 	uses Logging, TrackerPythonTwinCapacity, Behaviors, ExternalContextAccess
 
 
-	val detectors = newArrayList("YOLO", "YOLO-COCO") // @FIXME HIGH should be given by the Analyst which makes it configurable ?
+	val detectors = new TreeMap<String, Metadata> // @FIXME HIGH should be given by the Analyst which makes it configurable ?
+	
+	
 	
 	var totalTrackerTime : double = 0
 	var totalDetectorTime : double = 0
 
 
 	var frameLimit : int = 500
+	
+	on Initialize {
+		detectors.put("YOLO", new Metadata(1, "VEHICLE"))
+		detectors.put("YOLO-COCO",new Metadata(1,"PEOPLE"))
+	}
 	
 	on LastFrame {
 		debug("Transmitting to my listeners" + listeners.keySet)
@@ -140,13 +150,12 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 			var hyperParatermersToBeTested = new LinkedList<HyperParameters>
 			var iter = 0 // @FIXME MEDIUM Quick but not robust strategy as if the order of detectors change the system could get confused.
 			
-			for (d : detectors) {
+			for (d : detectors.keySet) {
 				hyperParatermersToBeTested.add(new HyperParameters(iter,false))
 				iter += 1
 			}
 			
-			registerBehavior(new MultiTrackerRole(owner), hyperParatermersToBeTested, this.ADN,
-				computation_location, detectors)
+			registerBehavior(new MultiTrackerRole(owner),this.ADN.get, hyperParatermersToBeTested, detectors)
 
 			
 				
@@ -156,7 +165,7 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 			registerBehavior(new SingleTrackerRole(this.owner), ADN.get.belief, ADN.get.platformName,
 			computation_location)
 			
-			enableDataAcquisition(mID, newArrayList(detectors.get(missionList.get(mID).cautionLevel)), "DETECTOR")
+			enableDataAcquisition(mID, newArrayList(detectors.keySet.get(missionList.get(mID).cautionLevel)), "DETECTOR") //@FIXME VERY VERY VERY VERY HIGH FOIREUX DE CHEZ FOIREUX
 			}
 		}
 	
