@@ -1,0 +1,21 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.tracker
+
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+event ResumeTrackingMission {
+	
+	val missionID : UUID
+	val detector : String
+
+	new(mID : UUID, d : String) {
+		this.missionID = mID
+		this.detector = d
+	}
+}

@@ -1,0 +1,25 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform.events
+
+import java.util.UUID
+import io.sarl.lang.core.AgentContext
+
+/** 
+ * @author manjah
+ * 
+ */
+event ScenarioInfo{
+	
+	val organizationContext : AgentContext
+	val privateCommunicationChannelID : UUID
+	val client_id : String
+	
+	new(ctxt : AgentContext, sid : UUID, client_id : String) {
+		this.organizationContext = ctxt
+		this.privateCommunicationChannelID = sid
+		this.client_id = client_id
+	}
+	
+}

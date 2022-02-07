@@ -4,9 +4,11 @@ import java.util.UUID
 
 event TrackingRequest {
 	
-	var competitorID : UUID
+	val missionID : UUID
+	var agentID : UUID
 
-	new (id : UUID) {
-		this.competitorID = id
+	new (mID:UUID, aID : UUID) {
+		this.missionID = mID
+		this.agentID = aID
 	}
 }

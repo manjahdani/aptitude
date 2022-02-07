@@ -12,6 +12,8 @@ import be.uclouvain.organisation.platform.events.AddMission
 import be.uclouvain.organisation.platform.events.HyperParametersRequest
 import be.uclouvain.organisation.platform.events.ProcessingHyperParameters
 import be.uclouvain.organisation.platform.events.RemoveMission
+import be.uclouvain.organisation.platform.events.ScenarioInfo
+import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
 import be.uclouvain.organisation.platform.util.HyperParameters
 import be.uclouvain.organisation.platform.util.SurveillanceMissionData
 import be.uclouvain.organisation.told.util.AlgorithmInfo
@@ -23,13 +25,12 @@ import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
-import io.sarl.core.OpenEventSpaceSpecification
-import io.sarl.core.Schedules
 import java.util.ArrayList
 import java.util.Collections
 import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
+import io.sarl.core.OpenEventSpaceSpecification
 
 /** 
  * @author manjah
@@ -37,11 +38,11 @@ import java.util.UUID
  */
  
 behavior MultiTrackerRole extends ObserverRole {
-	uses Logging, Lifecycle, InnerContextAccess, Schedules , Behaviors, ExternalContextAccess
+	uses Logging, Lifecycle, InnerContextAccess , Behaviors, ExternalContextAccess
 	
-	var detectors : ArrayList<String>  // @FIXME HIGH LOGICIEL PARAMETERS ?
+	var detectors = new HashMap<String, Integer> // @FIXME HIGH LOGICIEL PARAMETERS ?
 	
-	protected val sub_processes = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
+	protected val sub_processes_spaces = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
 	protected val detector_innerTrackerMap = Collections.synchronizedMap(new HashMap<String, UUID>)
 	protected val innerTracker_detectorsMap = Collections.synchronizedMap(new HashMap<UUID, String>)
 	protected val innerTracker_ParametersMap = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>)
@@ -53,65 +54,33 @@ behavior MultiTrackerRole extends ObserverRole {
 
 	on Initialize {
 		info("Multi-tracker role started.")
-		emit(selfSpace, new ScenarioInfo)
+		emit(selfSpace, new ScenarioInfoRequest)
 		hyperParametersToBeTested.addAll(occurrence.parameters.get(0) as LinkedList<HyperParameters>)
-		ADN.set(occurrence.parameters.get(1) as AlgorithmInfo)
-		detectors = occurrence.parameters.get(5) as ArrayList<String>
-		
-		
-		
-		
-		
-
-		
-
-
-		detector_innerTrackerMap.put(detectors.get(param.sensitivity), cloneID)
-		innerTracker_detectorsMap.put(cloneID,detectors.get(param.sensitivity))
-		
-
-
-		
+		detectors.putAll(occurrence.parameters.get(5) as HashMap<String, Integer>)
 	}
 
-	
+	on ScenarioInfo {
+		info("Received ScenarioInfo")
+		computation_location.set(occurrence.client_id)
+		updateContextInfo(occurrence.organizationContext, occurrence.privateCommunicationChannelID)
+		checkList.replace("context", true)
+		checkList.replace("computation_location", true)
+	}
 	on TrackingRequest {
-		debug("Reactivating Access - " + occurrence.competitorID + " - " + innerTracker_detectorsMap.get(occurrence.competitorID))
 		
-		if (innerTracker_detectorsMap.get(occurrence.competitorID) == "YOLO-COCO"){
+		val agentID = occurrence.agentID
+		debug("Reactivating Access - " + agentID + " - " + innerTracker_detectorsMap.get(agentID))
+		
+		
+		if (innerTracker_detectorsMap.get(agentID) == "YOLO-COCO"){
 			info("We are more in a horizontal view")
 		}
-		else if (innerTracker_detectorsMap.get(occurrence.competitorID) == "YOLO") {
+		else if (innerTracker_detectorsMap.get(agentID) == "YOLO") {
 			info("We are in a vertical view")
 		}
-		wake(new ResumeTrackingMission(innerTracker_detectorsMap.get(occurrence.competitorID)))[it.ID==this.ID]
+		wake(new ResumeTrackingMission(occurrence.missionID,innerTracker_detectorsMap.get(agentID)))[it.ID==this.ID]
 		
 	}	
-	on HyperParametersRequest {
-	
-		var providerID = occurrence.source.ID
-		// We decide that derived role handles the parameters request of inner-agents.
-		
-		if (getMemberAgents.contains(providerID)) {
-			var param = innerTracker_ParametersMap.get(providerID)
-			debug("Inner tracker request from -" + providerID.toString.substring(0, 5) + " sends  s :" + param.sensitivity)
-			
-			emit(sub_processes.get(providerID), new ProcessingHyperParameters(param.sensitivity, false)) [
-				it.ID == providerID
-			]
-		}
-	}
-	
-	on SignalID{
-
-		
-		
-		
-		emit(privateTOLDSpace, new AddMember(cloneID, sub_processes.get(cloneID)))[it.ID == TOLDContext.ID]
-		wake(new AddMission(sub_processes.get(cloneID)))[it.ID == cloneID]
-		orderedMissionList.
-		
-	}
 	
 	on LastFrame {
 		
@@ -133,29 +102,33 @@ behavior MultiTrackerRole extends ObserverRole {
 	}
 	
 	def startRole {
-		val detectors = new HashMap<String, Integer>
+		
+		
+		//val 
 
-		val externalMissionID = occurrence.missionID... 
+		//val externalMissionID = occurrence.missionID... 
 		for(d:detectors.keySet){
 			val internalMissionID = UUID.randomUUID
 			val newInternalMission = new SurveillanceMissionData(internalMissionID, this.ID, organizationContext.get.ID,
 				detectors.get(d), false)
 			orderedMissionList.put(internalMissionID, newInternalMission)
-			innerTracker_ParametersMap.put(internalMissionID, new HyperParameters(detectors.get(d),false))
-			spawnInContextWithID(Algorithm, internalMissionID, innerContext, ADN.get.cloneChild(internalMissionID))
+			innerTracker_ParametersMap.put(internalMissionID, new HyperParameters(detectors.get(d), false))
+			var comSpace : OpenEventSpace = organizationContext.get.getOrCreateSpaceWithID(OpenEventSpaceSpecification,
+				UUID.randomUUID) // An internal space to communicate with other roles.
+			comSpace.registerStrongParticipant(asEventListener)
+			sub_processes_spaces.put(internalMissionID, comSpace)
+			detector_innerTrackerMap.put(d, internalMissionID)
+			innerTracker_detectorsMap.put(internalMissionID, d)
+			spawnInContextWithID(Algorithm, internalMissionID, innerContext,
+				ADN.get.cloneChildWithID(internalMissionID))
+			emit(selfSpace, new AddMember(internalMissionID, comSpace))
+
+			wake(new AddMission(internalMissionID, comSpace.spaceID.ID)) [
+				it.ID == internalMissionID
+			]
 		}
 		
-		orderedMissionList.put... 
+		//orderedMissionList.put... 
 	}
 	
-}
-
-event ResumeTrackingMission {
-	val missionID : UUID
-	val detector : String
-
-	new(mID : UUID, d : String) {
-		this.missionID= mID
-		this.detector = d
-	}
 }

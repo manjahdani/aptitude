@@ -11,7 +11,6 @@ import be.uclouvain.python_access.EvaluationResult
 import be.uclouvain.python_access.PartnerEvaluationFound
 import be.uclouvain.python_access.PythonAccessorRole
 import be.uclouvain.python_access.messages.EvaluationMessage
-import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
@@ -77,7 +76,8 @@ behavior AlgorithmSelectorRole extends PythonAccessorRole {
 				info("Recording the result of Competitor " + numberTests)
 				if (numberTests == 2) {
 					var selected = selectAlgorithm()
-					emit(new TrackingRequest(selected.competitorID)) // @FIXME MEDIUM NOT SUPPOSED TO BE HERE
+					emit(new TrackingRequest(this.ID,selected.competitorID)) // @FIXME MEDIUM NOT SUPPOSED TO BE HERE
+					// @FIXME VERY VERY HIGH this.ID should be a missionID
 				}
 			}
 			else{

@@ -14,6 +14,8 @@ import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.LinkedList
 import java.util.UUID
+import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
+import be.uclouvain.organisation.platform.events.ScenarioInfo
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -33,7 +35,7 @@ import java.util.UUID
  * @mavenartifactid $surveillance$
  * 
  */
-behavior TrackerSignalRole extends SensorRole {
+behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH ITS ACTUALLY A SUB-AGENT TRACKER WE ARE BYPASSING THAT.... 
 	
 	uses Logging, TrackerPythonTwinCapacity, Behaviors, ExternalContextAccess
 
@@ -124,7 +126,13 @@ behavior TrackerSignalRole extends SensorRole {
 		missionList.get(occurrence.missionID).dynamicAdaptation = false		
 		enableDataAcquisition(occurrence.missionID,newArrayList(occurrence.detector), "DETECTOR")
 	}
-	
+
+	on ScenarioInfoRequest{
+		emit(selfSpace,new ScenarioInfo(organizationContext.get,
+			privateOrganizationSpace.get.spaceID.ID,
+			computation_location.get
+		))
+	}
 	override processingMissionWithID(mID : UUID) {
 		
 		if (missionList.get(mID).isDynamicAdaptationEnabled) {

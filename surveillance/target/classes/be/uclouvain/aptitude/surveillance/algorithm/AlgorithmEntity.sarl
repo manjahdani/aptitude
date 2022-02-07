@@ -17,6 +17,7 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import java.io.File
 import java.io.FileWriter
+import be.uclouvain.organisation.events.AddMember
 
 /** 
  * @author manjah
@@ -34,6 +35,13 @@ behavior AlgorithmEntity extends EntityRole {
 		emit(retrieveOrCreateOpenSpaceWithID(occurrence.privateCommunicationChannelID),
 			new AddEntry(this.ID, new FileWriter(predfile)))
 	}
+	
+	on AddMember {
+		emit(selfSpace, new AddMember(occurrence.memberID, occurrence.communicationChannel)) [
+			it.ID == organizationContext
+		]
+	}
+	
 	on TrackingPerception { //Filter the recording of the results if its not sent by the role.
 		
 		assert organizationContext.get !== null,"TOLDSpace, null"

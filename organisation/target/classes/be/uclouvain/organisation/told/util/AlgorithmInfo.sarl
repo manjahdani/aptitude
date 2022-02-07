@@ -117,8 +117,13 @@ class AlgorithmInfo implements Cloneable {
 	/** 
 	 * Cloning process 
 	 * 
-	 * */
-	def cloneChild(childID : UUID) {
+	 * 
+	 */
+	def cloneChildWithID() {
+		return this.clone
+	}
+	
+	def cloneChildWithID(childID : UUID) {
 		return this.clone.newClone(childID)
 	}
 

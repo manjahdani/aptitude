@@ -111,6 +111,7 @@ abstract behavior ObserverRole extends ScenarioRole {
 			}
 		]
 	}
+	
 
 	
 	on RecruitSignal {
