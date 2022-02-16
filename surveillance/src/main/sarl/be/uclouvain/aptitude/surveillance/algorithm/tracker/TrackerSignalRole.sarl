@@ -174,13 +174,6 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 	}
 }
 
-
-
-	
-
-
-
-
 event BBoxes2DTrackResultToCounter extends BBoxes2DTrackResult{ //@FIXME MEDIUM Nonsens
 	
 	var observerName : String
