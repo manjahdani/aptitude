@@ -116,8 +116,7 @@ behavior MultiTrackerRole extends ObserverRole {
 			sub_processes_spaces.put(internalMissionID, comSpace)
 			detector_innerTrackerMap.put(d, internalMissionID)
 			innerTracker_detectorsMap.put(internalMissionID, d)
-			spawnInContextWithID(Algorithm, internalMissionID, innerContext,
-				ADN.get.cloneChildWithID(internalMissionID))
+			spawnInContextWithID(Algorithm, internalMissionID, innerContext,ADN.get.cloneChildWithID(internalMissionID))
 			wake(
 				new PlatformOrganizationInfo(organizationContext.get, privateOrganizationSpace.get.spaceID.ID, this.ADN.get.platformName))[it.ID == internalMissionID]
 			wake(new ComputationalRessources(computation_location.get))[it.ID == internalMissionID]
