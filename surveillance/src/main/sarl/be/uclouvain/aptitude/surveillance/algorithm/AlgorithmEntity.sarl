@@ -6,7 +6,7 @@ package be.uclouvain.aptitude.surveillance.algorithm
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingPerception
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingTaskOver
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
-import be.uclouvain.organisation.told.TOLDOrganizationInfo
+import be.uclouvain.organisation.events.AddMember
 import be.uclouvain.organisation.told.entity.EntityRole
 import be.uclouvain.organisation.told.events.AddEntry
 import be.uclouvain.organisation.told.events.DataEntry
@@ -17,7 +17,6 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import java.io.File
 import java.io.FileWriter
-import be.uclouvain.organisation.events.AddMember
 
 /** 
  * @author manjah
@@ -30,15 +29,9 @@ behavior AlgorithmEntity extends EntityRole {
 
 	var predfile = new File("F:\\Database\\".concat(this.ID.toString) + ".txt")
 
-	on TOLDOrganizationInfo {
-		debug("Creating new file to registerStrongParticipant prediction")
-		emit(retrieveOrCreateOpenSpaceWithID(occurrence.privateCommunicationChannelID),
-			new AddEntry(this.ID, new FileWriter(predfile)))
-	}
-	
 	on AddMember {
-		emit(selfSpace, new AddMember(occurrence.memberID, occurrence.communicationChannel)) [
-			it.ID == organizationContext
+		emit(privateOrganizationSpace.get, new AddMember(occurrence.memberID, occurrence.communicationChannel)) [
+			it.ID == organizationContext.get.ID
 		]
 	}
 	
@@ -64,4 +57,12 @@ behavior AlgorithmEntity extends EntityRole {
 //		info("Closing the file")
 //		(occurrence.answerObject as FileWriter).close
 	}
+	
+	override startRole {
+		
+		info("Creating new file to register prediction")
+		emit(privateOrganizationSpace.get,
+			new AddEntry(this.ID, new FileWriter(predfile)))
+	}
+	
 }

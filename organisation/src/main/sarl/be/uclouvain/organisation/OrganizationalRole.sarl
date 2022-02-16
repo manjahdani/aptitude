@@ -44,10 +44,11 @@ abstract behavior OrganizationalRole {
 			privateSpacesListeners.get(memberID).spaceID.contextID + "]\n")
 		
 		if (occurrence.inDefaultSpace) {
-			emit(getOrganizationInfo(memberID))[it.ID == memberID]
+			emit(getOrganizationInfo(memberID))[it.ID == memberID]}
+		else
+		{
+			wake(getOrganizationInfo(memberID))[it.ID==memberID]
 		}
-		else{
-			wake(getOrganizationInfo(memberID))[it.ID==memberID]}
 		
 	}
 

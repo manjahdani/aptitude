@@ -20,9 +20,11 @@ import io.sarl.core.Initialize
 abstract behavior Role {
 	
 	uses Behaviors, Logging, InnerContextAccess
-
+	
+	//@FIXME HIGH the getContext(UUID) helps us retrieve the context without passing the AgentContext
 	protected val organizationContext = new AtomicReference<AgentContext> // context of the organisation Platform
 	protected var privateOrganizationSpace = new AtomicReference<OpenEventSpace> // private space between the algorithm and the organisation Platform
+	
 	
 	protected val selfSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, this.ID) // An internal space to communicate with other agent roles.
 	

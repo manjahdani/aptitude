@@ -52,13 +52,11 @@ behavior ManagerPlatformRole extends PlatformRole {
 	} // It is okay to send it to the Universe Context as it is omniscient
 
 	on LocalDatabaseRequest {
-		
 		task("wait4TOLD".concat(occurrence.source.ID.toString)).every(100) [
-				if (TOLDID !== null) {
+				if (TOLDID.get !== null) {
 					emit(
-						new JoinPlatform(occurrence.context, subPlatformsIDs.get(occurrence.source.ID))) [
-						it.ID == TOLDID
-					] // privateSpacesListeners.get(TOLDID).
+						new JoinPlatform(occurrence.context, subPlatformsIDs.get(occurrence.source.ID))) 
+						[it.ID == TOLDID.get] // privateSpacesListeners.get(TOLDID).
 					task("wait4TOLD".concat(occurrence.source.ID.toString)).cancel
 					}
 			]

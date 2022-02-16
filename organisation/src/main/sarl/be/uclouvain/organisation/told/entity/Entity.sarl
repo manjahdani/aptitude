@@ -30,20 +30,20 @@ behavior EntityRole extends Role{
 	 * The entity registerStrongParticipant the initial base
 	 * @TODO : The entity does not need to have a BaseContext ? It does not make sens it only has to know the context of current TOLD. 
 	 * The approach is therefore not scalable 
-	 * 
-	 * protected var TOLDContext : AgentContext -> The context is TOLD ! 
-	 * protected var TOLDSpace : OpenEventSpace
 	 */
 
 	on TOLDOrganizationInfo {
-		debug("met TOLD - " + occurrence.context.ID.toString.substring(0, 5))
+		info("met TOLD - " + occurrence.context.ID.toString.substring(0, 5))
 		organizationContext.set(occurrence.context)
 		privateOrganizationSpace.set(
 		retrieveOrCreateOpenSpaceWithID(occurrence.privateCommunicationChannelID))
 		
+		startRole
 		//TOLDSpace.registerStrongParticipant(asEventListener)
 	}
-
+	def startRole (){
+		//Do Nothing
+	}
 	on AuthorizationToJoinContext {
 		info("receives authorisation to join the context of - " + occurrence.source.ID.toString.substring(0, 5) +
 				" and space " + occurrence.defaultSpaceID)

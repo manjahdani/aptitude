@@ -3,14 +3,13 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm.detector
 
-import be.uclouvain.organisation.platform.ObserverRole
+import be.uclouvain.organisation.platform.SensorRole
 import be.uclouvain.python_access.BBoxes2DResult
 import io.sarl.core.Behaviors
 import io.sarl.core.Destroy
-import io.sarl.core.Logging
 import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Logging
 import java.util.UUID
-import be.uclouvain.organisation.platform.SensorRole
 
 /** 
  * @TODO: write a description
@@ -53,7 +52,7 @@ behavior DetectorSignalRole extends SensorRole {
 	
 	def processingMissionWithID(mID : UUID) {
 		setSkill(new DetectorPythonTwin)
-		registerBehavior(new SingleDetectorRole(this.owner), ADN.get.belief, ADN.get.name, computation_location)
+		registerBehavior(new SingleDetectorRole(this.owner), ADN.get.belief, ADN.get.platformName, computation_location)
 	}
 	
 }

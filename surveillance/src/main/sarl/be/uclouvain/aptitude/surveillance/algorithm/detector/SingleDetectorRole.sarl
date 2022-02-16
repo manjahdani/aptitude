@@ -18,14 +18,10 @@ import io.sarl.core.Schedules
 behavior SingleDetectorRole extends PythonAccessorRole {
 	uses Logging, PythonTwinAccessCapacity, Schedules
 
-
 	
 	on PartnerDetectionFound {
-
 		this.partnerName = occurrence.partnerName
-		//info("Detection partner found: " + this.partnerName)
-		
-		
+		info("Detection partner found: " + this.partnerName)
 		task("wait").in(2000) [
 			debug("UpdatingStreamAccess - Action 1 Starting")
 			updateStreamAccess(1)

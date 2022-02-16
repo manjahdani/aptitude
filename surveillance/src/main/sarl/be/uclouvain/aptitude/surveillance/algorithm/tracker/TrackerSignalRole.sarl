@@ -104,7 +104,7 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 		if (occurrence.bboxes2DTrack.lastFrame || occurrence.bboxes2DTrack.frameNumber > frameLimit) {
 			emit(selfSpace, new TrackingTaskOver)
 			
-			debug("Tracking job done... " + "sending the information to " + listeners.keySet)
+			info("Tracking job done... " + "sending the information to " + listeners.keySet)
 			
 			for (l : listeners.keySet) {
 				emit(listeners.get(l),

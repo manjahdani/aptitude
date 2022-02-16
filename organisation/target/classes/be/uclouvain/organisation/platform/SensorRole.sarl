@@ -85,7 +85,7 @@ abstract behavior SensorRole extends ScenarioRole {
 
 		for (s : signals) {
 
-			info("Request " + s + " as " + signalType)
+			info("Sensor request " + s + " as " + signalType)
 			emit(selfSpace, new RecruitSignal(missionList.get(mID), s, signalType))
 		}
 	}

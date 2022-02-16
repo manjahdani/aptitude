@@ -60,7 +60,7 @@ behavior TOLDRole extends OrganizationalRole {
 
 	
 	on AddMember{
-		debug("received add member from " + occurrence.source.ID.toString.substring(0, 5) + "to invite within my context " + occurrence.memberID)
+		info("received add member from " + occurrence.source.ID.toString.substring(0, 5) + "to invite within my context " + occurrence.memberID)
 		
 		emit(occurrence.communicationChannel,
 			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID))[it.ID==occurrence.memberID]

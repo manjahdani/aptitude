@@ -7,11 +7,14 @@ import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
 import be.uclouvain.organisation.events.AddMember
 import be.uclouvain.organisation.platform.ObserverRole
+import be.uclouvain.organisation.platform.PlatformOrganizationInfo
 import be.uclouvain.organisation.platform.events.AddMission
+import be.uclouvain.organisation.platform.events.ComputationalRessources
 import be.uclouvain.organisation.platform.events.RemoveMission
 import be.uclouvain.organisation.platform.events.ScenarioInfo
 import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
 import be.uclouvain.organisation.platform.util.HyperParameters
+import be.uclouvain.organisation.platform.util.Metadata
 import be.uclouvain.organisation.platform.util.SurveillanceMissionData
 import be.uclouvain.python_access.BBoxes2DResult
 import io.sarl.core.Behaviors
@@ -20,16 +23,14 @@ import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
-import io.sarl.core.OpenEventSpace
+import io.sarl.core.MemberJoined
 import io.sarl.core.OpenEventSpaceSpecification
 import java.util.Collections
 import java.util.HashMap
 import java.util.LinkedList
-import java.util.UUID
-import be.uclouvain.organisation.platform.util.Metadata
 import java.util.TreeMap
-import be.uclouvain.organisation.platform.PlatformOrganizationInfo
-import be.uclouvain.organisation.platform.events.ComputationalRessources
+import java.util.UUID
+import io.sarl.core.AgentSpawned
 
 /** 
  * @author manjah
@@ -41,7 +42,7 @@ behavior MultiTrackerRole extends ObserverRole {
 	
 	var detectors = new TreeMap<String, Metadata> // @FIXME HIGH LOGICIEL PARAMETERS ?
 	
-	protected val sub_processes_spaces = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
+	
 	protected val detector_innerTrackerMap = Collections.synchronizedMap(new HashMap<String, UUID>)
 	protected val innerTracker_detectorsMap = Collections.synchronizedMap(new HashMap<UUID, String>)
 	protected val innerTracker_ParametersMap = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>)
@@ -91,7 +92,7 @@ behavior MultiTrackerRole extends ObserverRole {
 	on BBoxes2DResult {
 		
 		if(occurrence.bboxes2D.frameNumber <5){
-		debug("Sending results of frame #" + occurrence.bboxes2D.frameNumber + 
+		info("Sending results of frame #" + occurrence.bboxes2D.frameNumber + 
 			" from " + occurrence.providerName + " to " + detector_innerTrackerMap.get(occurrence.providerName))
 		}
 		// We send to the sub-process meant to analyse the data of the provider. 
@@ -100,11 +101,6 @@ behavior MultiTrackerRole extends ObserverRole {
 	}
 	
 	def startRole {
-		
-		
-		//val 
-
-		//val externalMissionID = occurrence.missionID... 
 		for(d:detectors.keySet){
 			val internalMissionID = UUID.randomUUID
 			val newInternalMission = new SurveillanceMissionData(internalMissionID, this.ID, organizationContext.get.ID,
@@ -113,20 +109,38 @@ behavior MultiTrackerRole extends ObserverRole {
 			innerTracker_ParametersMap.put(internalMissionID, new HyperParameters(detectors.get(d).performance, false))
 			var comSpace = organizationContext.get.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID) // An internal space to communicate with other roles.
 			comSpace.registerStrongParticipant(asEventListener)
-			sub_processes_spaces.put(internalMissionID, comSpace)
+			providers.put(internalMissionID, comSpace)
 			detector_innerTrackerMap.put(d, internalMissionID)
 			innerTracker_detectorsMap.put(internalMissionID, d)
-			spawnInContextWithID(Algorithm, internalMissionID, innerContext,ADN.get.cloneChildWithID(internalMissionID))
-			wake(
-				new PlatformOrganizationInfo(organizationContext.get, privateOrganizationSpace.get.spaceID.ID, this.ADN.get.platformName))[it.ID == internalMissionID]
-			wake(new ComputationalRessources(computation_location.get))[it.ID == internalMissionID]
-			emit(selfSpace, new AddMember(internalMissionID, comSpace))
-			wake(new AddMission(internalMissionID, comSpace.spaceID.ID)) [
-				it.ID == internalMissionID
-			]
+			spawnInContextWithID(Algorithm, internalMissionID, innerContext,
+				ADN.get.cloneChildWithID(internalMissionID))
+			requestAlgorithm(internalMissionID,d,"DETECTOR")
+			
 		}
 		
 		//orderedMissionList.put... 
 	}
 	
+	on AgentSpawned {
+
+		// In this, we choose that the missionID is equivalent to the subprocess ID
+		val mbID = occurrence.agentID
+		if(memberAgents.contains(mbID)){
+		
+		info("MemberJoined" + mbID + "type" + occurrence.agentType)
+		wake(
+			new PlatformOrganizationInfo(organizationContext.get, privateOrganizationSpace.get.spaceID.ID,
+				this.ADN.get.platformName))[it.ID == mbID]
+		wake(new ComputationalRessources(computation_location.get))[it.ID == mbID]
+
+		emit(selfSpace, new AddMember(mbID, providers.get(mbID)))
+		wake(new AddMission(mbID, providers.get(mbID).spaceID.ID)) [
+			it.ID == mbID
+		]}
+	}
+	on MemberJoined {
+		
+		
+		
+	}
 }

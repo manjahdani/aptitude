@@ -47,7 +47,7 @@ import java.util.UUID
  
 abstract behavior ObserverRole extends ScenarioRole {
 	
-	uses Logging, Behaviors, InnerContextAccess, ExternalContextAccess, Schedules
+	uses Logging, Behaviors, ExternalContextAccess, Schedules
 
 	protected val providers = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
 	//protected var processingParameters = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>) // 
@@ -62,7 +62,7 @@ abstract behavior ObserverRole extends ScenarioRole {
 		info("param requests from agentID=" + providerID.toString.substring(0, 5)) 
 		var MD = orderedMissionList.get(occurrence.missionID)
 
-		info("\n sending param:" + " s =" + MD.cautionLevel)
+		info("sending param" + " s =" + MD.cautionLevel)
 		emit(providers.get(providerID), new ProcessingHyperParameters(
 			occurrence.missionID, orderedMissionList.get(occurrence.missionID).hyperParameters))[it.ID == providerID]
 	}
@@ -110,7 +110,7 @@ abstract behavior ObserverRole extends ScenarioRole {
 
 	
 	on RecruitSignal {
-		info("Received a recruitment request for name = " + occurrence.name + " t = " + occurrence.task)
+		info("Observer recruits request for name = " + occurrence.name + " t = " + occurrence.task)
 		val mission = occurrence.missionData
 		orderedMissionList.put(mission.missionID, mission)
 		requestAlgorithm(mission.missionID,occurrence.name,occurrence.task)
