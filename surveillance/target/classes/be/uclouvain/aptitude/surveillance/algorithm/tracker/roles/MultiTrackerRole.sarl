@@ -1,22 +1,25 @@
 /** 
  * 
  */
-package be.uclouvain.aptitude.surveillance.algorithm.tracker
+package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
 
 import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ResumeTrackingMission
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingRequest
 import be.uclouvain.organisation.events.AddMember
 import be.uclouvain.organisation.platform.ObserverRole
 import be.uclouvain.organisation.platform.PlatformOrganizationInfo
 import be.uclouvain.organisation.platform.events.AddMission
 import be.uclouvain.organisation.platform.events.ComputationalRessources
-import be.uclouvain.organisation.platform.events.RemoveMission
+import be.uclouvain.organisation.platform.events.PauseMission
 import be.uclouvain.organisation.platform.events.ScenarioInfo
 import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
 import be.uclouvain.organisation.platform.util.HyperParameters
 import be.uclouvain.organisation.platform.util.Metadata
 import be.uclouvain.organisation.platform.util.SurveillanceMissionData
 import be.uclouvain.python_access.BBoxes2DResult
+import io.sarl.core.AgentSpawned
 import io.sarl.core.Behaviors
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
@@ -30,7 +33,6 @@ import java.util.HashMap
 import java.util.LinkedList
 import java.util.TreeMap
 import java.util.UUID
-import io.sarl.core.AgentSpawned
 
 /** 
  * @author manjah
@@ -68,7 +70,7 @@ behavior MultiTrackerRole extends ObserverRole {
 	on TrackingRequest {
 		
 		val agentID = occurrence.agentID
-		debug("Reactivating Access - " + agentID + " - " + innerTracker_detectorsMap.get(agentID))
+		info("Reactivating Access - " + agentID + " - " + innerTracker_detectorsMap.get(agentID) + "for mID" + occurrence.missionID)
 		
 		
 		if (innerTracker_detectorsMap.get(agentID) == "YOLO-COCO"){
@@ -83,10 +85,13 @@ behavior MultiTrackerRole extends ObserverRole {
 	
 	on LastFrame {
 		
-		debug("detectorToRemove = " + innerTracker_detectorsMap.get(occurrence.source.ID))
-		var detectorToRemove = innerTracker_detectorsMap.get(occurrence.source.ID)
-		var id = activeProviders.get(detectorToRemove)
-		wake(new RemoveMission(id))[it.ID==this.ID]
+		var detectorToPause = innerTracker_detectorsMap.get(occurrence.source.ID)
+		info("Pausing my provider = " + detectorToPause)
+		var detectorID = activeProviders.get(detectorToPause)
+		
+		val mData = orderedMissionList.values.findFirst[signalID==detectorID]
+		info("Pausing mission" + mData.missionID + detectorID)
+		emit(providers.get(detectorID), new PauseMission(mData.missionID))[it.ID == detectorID]
 	}
 
 	on BBoxes2DResult {

@@ -23,9 +23,9 @@ import java.util.UUID
 import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
 import java.util.concurrent.atomic.AtomicReference
 import be.uclouvain.aptitude.surveillance.algorithm.counter.CounterSignalRole
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerSignalRole
 import be.uclouvain.aptitude.surveillance.algorithm.counter.CounterObserverRole
 import be.uclouvain.aptitude.surveillance.algorithm.detector.DetectorSignalRole
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.roles.TrackerSignalRole
 
 /** 
  * Agent with a set of tasks (Goals) and a model (Belief). 

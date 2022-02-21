@@ -18,11 +18,12 @@ import be.uclouvain.python_access.messages.EvaluationMessage
  */
 class EvaluationResults{
 
-	var CompetitorID : UUID
-	var CompetitorBelief : String
-	var Frame : int
-	var DetectionTime : double
-	var TrackingTime : double
+	val providerID : UUID 
+	val competitorID : UUID
+	val competitorBelief : String
+	var frame : int
+	var detectionTime : double
+	var trackingTime : double
 	var HOTA : double
 	var DetA : double
 	var AssA : double
@@ -35,19 +36,21 @@ class EvaluationResults{
 	var MOTA : double
 	var MOTP : double
 
-	new (id : UUID, s : String, ts : double, tt : double, f : int) {
-		this.CompetitorID = id
-		this.CompetitorBelief = s
-		this.DetectionTime = ts
-		this.TrackingTime = tt
-		this.Frame = f
+	new (pid:UUID,id : UUID, s : String, ts : double, tt : double, f : int) {
+		this.providerID = pid
+		this.competitorID = id
+		this.competitorBelief = s
+		this.detectionTime = ts
+		this.trackingTime = tt
+		this.frame = f
 	}
 	
-	new (id : UUID, s : String, ts : double, tt : double) {
-		this.CompetitorID = id
-		this.CompetitorBelief = s
-		this.DetectionTime = ts
-		this.TrackingTime = tt
+	new (pid:UUID,id : UUID, s : String, ts : double, tt : double) {
+		this.providerID=pid
+		this.competitorID = id
+		this.competitorBelief = s
+		this.detectionTime = ts
+		this.trackingTime = tt
 	}
 
 	def setValues(e : EvaluationMessage) {
@@ -64,17 +67,20 @@ class EvaluationResults{
 		this.MOTP = e.getMOTP
 
 	}
+	def getProviderID {
+		return this.providerID
+	}
 
 	def getCompetitorID {
-		return this.CompetitorID
+		return this.competitorID
 	}
 
 	def getBelief {
-		return this.CompetitorBelief
+		return this.competitorBelief
 	}
 
 	def getFrame {
-		return this.Frame
+		return this.frame
 	}
 
 	def getHOTA_Array(l : double[]) {
@@ -158,11 +164,11 @@ class EvaluationResults{
 	}
 
 	def setDetectionTime(l : double) {
-		this.DetectionTime = l
+		this.detectionTime = l
 	}
 
 	def setTrackingTime(l : double) {
-		this.TrackingTime = l
+		this.trackingTime = l
 	}
 
 	def setHOTA(h : double) {
@@ -170,11 +176,11 @@ class EvaluationResults{
 	}
 
 	def getDetectionTime : double {
-		return this.DetectionTime
+		return this.detectionTime
 	}
 
 	def getTrackingTime : double {
-		return this.TrackingTime
+		return this.trackingTime
 	}
 
 	def getHOTA : double {
@@ -182,12 +188,13 @@ class EvaluationResults{
 	}
 
 	
+	@SuppressWarnings("discouraged_reference")
 	def EvaluationPrint() : void {
 		// println(CompetitorID.toString)
-		println(CompetitorBelief)
+		println(competitorBelief)
 		System.out.printf(Locale.FRANCE, "%-10.4f%n", HOTA)
-		System.out.printf(Locale.FRANCE, "%-10.4f%n", DetectionTime)
-		System.out.printf(Locale.FRANCE, "%-10.4f%n", TrackingTime)
+		System.out.printf(Locale.FRANCE, "%-10.4f%n", detectionTime)
+		System.out.printf(Locale.FRANCE, "%-10.4f%n", trackingTime)
 		// println("HOTA_ARRAY" + HOTA_Array.toString)
 		System.out.format("***********************")
 	}

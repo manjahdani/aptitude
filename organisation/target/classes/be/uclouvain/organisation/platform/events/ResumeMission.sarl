@@ -1,0 +1,24 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform.events
+
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+event ResumeMission {
+	
+	val reInitialization : boolean
+	
+	val missionID : UUID
+
+
+	new(mID : UUID, reInit:boolean) {
+		this.missionID = mID
+		this.reInitialization = reInit
+	
+	}
+}

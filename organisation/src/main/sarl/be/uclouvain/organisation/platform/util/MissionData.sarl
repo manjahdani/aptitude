@@ -13,6 +13,7 @@ import java.util.UUID
  */
 class MissionData {
 	
+	protected var isActive = true
 	protected val missionID : UUID
 	protected val clientID : UUID
 	protected val platformID : UUID
@@ -29,7 +30,15 @@ class MissionData {
 		this.platformID = platformID
 		
 	}
-	
+	def isMissionActive {
+		return this.isActive
+	}
+	def setMissionActive {
+		this.isActive = true
+	}
+	def setMissionInative {
+		this.isActive = false
+	}
 	def setSignalID(uid : UUID){
 		this.signalID=uid
 	}

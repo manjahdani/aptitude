@@ -154,6 +154,7 @@ skill UserSkill implements UserElementCapacity {
 		screens.set(1, screen2)
 
 		var allStats : ActorStats[] = newArrayOfSize(1)
+		
 		allStats.set(0, new ActorStats(this.ID.toString, "20"))
 
 		outputSend(new UDP_Message_AckAuthenticateMobile(playerID, cd, getObjectList, allStats, screens))

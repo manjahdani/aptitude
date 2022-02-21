@@ -39,9 +39,9 @@ abstract behavior OrganizationalRole {
 			innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, sid ))
 		privateSpacesListeners.get(memberID).registerStrongParticipant(asEventListener)
 
-		info("sending organisation info to " + memberID.toString.substring(0, 5) + 
-		" with private Space [\n id = " + privateSpacesListeners.get(memberID).spaceID.ID + "\n contextID = " +
-			privateSpacesListeners.get(memberID).spaceID.contextID + "]\n")
+		//info("sending organisation info to " + memberID.toString.substring(0, 5) + 
+		//" with private Space [\n id = " + privateSpacesListeners.get(memberID).spaceID.ID + "\n contextID = " +
+		//	privateSpacesListeners.get(memberID).spaceID.contextID + "]\n")
 		
 		if (occurrence.inDefaultSpace) {
 			emit(getOrganizationInfo(memberID))[it.ID == memberID]}

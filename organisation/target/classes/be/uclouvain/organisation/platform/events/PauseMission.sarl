@@ -1,0 +1,21 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform.events
+
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+final event PauseMission {
+
+	val missionID : UUID
+
+
+	new(mID : UUID) {
+		missionID = mID
+	
+	}
+}

@@ -30,6 +30,8 @@ skill DetectorPythonTwin extends ObserverPythonAccess{
 	
 	uses Behaviors, Schedules, Logging
 
+
+	
 	def update(m : BaseMessage) {
 		if (m instanceof BBoxes2DMessage) {
 			wake(new BBoxes2DResult(m))

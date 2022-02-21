@@ -38,19 +38,11 @@ skill AlgorithmSelectionSkill implements AlgorithmSelection {
 			// info("Exper" + ExpertSensitivity)
 			rankedResult.put(metric_APTITUDE(l.HOTA, effeciency, param.cautionLevel), l.belief)
 		}
-		debug(rankedResult + "\n Congratulations to " + rankedResult.lastEntry)
+		info(rankedResult + "\n Congratulations to " + rankedResult.lastEntry)
 		
-		var selectedAlgorithm = compResults.values.filter[belief == rankedResult.lastEntry.value].get(0)//.competitorID
+		var selectedAlgorithm = compResults.values.filter[belief == rankedResult.lastEntry.value].get(0)
 			
 		return selectedAlgorithm
-		
-		
-		
-		
-//		var trackingGuy = compResults.filter[p1, p2|p2.belief == rankedResult.lastEntry.value]get(maxValue)
-//		].values.get(0).
-//			getCompetitorID
-		
 	}
 	
 	def metric_APTITUDE(hota : double, effeciency : double,  beta : int) {

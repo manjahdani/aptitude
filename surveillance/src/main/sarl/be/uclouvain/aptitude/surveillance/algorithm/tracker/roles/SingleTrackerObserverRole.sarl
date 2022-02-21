@@ -1,0 +1,33 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
+
+import be.uclouvain.aptitude.surveillance.algorithm.PythonTwinObserverRole
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinCapacity
+import be.uclouvain.python_access.BBoxes2DResult
+import be.uclouvain.python_access.PartnerTrackingFound
+
+/** 
+ * @author manjah
+ * 
+ */
+//val dynamicTrackingMemory = Collections.synchronizedList(new LinkedList<ArrayList<BBoxes2D>>)
+
+
+behavior SingleTrackerObserverRole extends PythonTwinObserverRole {
+	
+	uses TrackerPythonTwinCapacity
+
+	on PartnerTrackingFound {
+		//info("Tracking Partner found: " +  occurrence.partnerName)
+	}
+	on BBoxes2DResult {
+		Signal2Perception(occurrence.bboxes2D)
+	}
+	
+	def startRole {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+}

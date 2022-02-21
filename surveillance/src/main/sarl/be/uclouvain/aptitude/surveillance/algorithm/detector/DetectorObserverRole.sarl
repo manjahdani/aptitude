@@ -1,0 +1,43 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.detector
+
+import be.uclouvain.aptitude.surveillance.algorithm.PythonTwinObserverRole
+import be.uclouvain.python_access.PartnerDetectionFound
+import be.uclouvain.python_access.PythonTwinAccessCapacity
+import io.sarl.core.Logging
+import io.sarl.core.Schedules
+
+/** 
+ * @author manjah
+ * 
+ * /* 
+ * PLAY = 1
+ * PAUSE = 2
+ * RESUME = 3
+ * STOP = 4
+ * RESTART = 5
+ * SEEK = 6
+ * KILL = 7
+ * 
+ * 
+ * 
+ */
+behavior DetectorObserverRole extends PythonTwinObserverRole {
+	uses Logging, PythonTwinAccessCapacity, Schedules
+
+	on PartnerDetectionFound {
+		info("Detection partner found: " + occurrence.partnerName)
+		task("wait").in(2000) [
+			debug("UpdatingStreamAccess - Action 1 Starting")
+			updateStreamAccess(1)
+			task("wait").cancel // PLAY
+		]
+	}
+	
+	def startRole {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+}

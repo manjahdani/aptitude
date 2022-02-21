@@ -1,0 +1,20 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.evaluation
+
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+event CompetitionOver {
+	
+	val providerID : UUID
+	val selectedAlgorithmID : UUID
+	new (pID:UUID, saID : UUID){
+		this.providerID = pID
+		this.selectedAlgorithmID = saID
+	}
+}

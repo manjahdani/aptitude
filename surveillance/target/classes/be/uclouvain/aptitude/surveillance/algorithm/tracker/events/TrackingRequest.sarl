@@ -1,4 +1,4 @@
-package be.uclouvain.aptitude.surveillance.algorithm.tracker
+package be.uclouvain.aptitude.surveillance.algorithm.tracker.events
 
 import java.util.UUID
 

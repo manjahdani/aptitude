@@ -1,0 +1,62 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm
+
+import be.uclouvain.organisation.platform.ObserverRole
+import be.uclouvain.python_access.PythonTwinAccessCapacity
+import io.sarl.core.Logging
+import be.uclouvain.organisation.platform.events.PauseMission
+import be.uclouvain.organisation.platform.events.ResumeMission
+
+/** 
+ * @author manjah
+ * 
+ * PLAY = 1
+ * PAUSE = 2
+ * RESUME = 3
+ * STOP = 4
+ * RESTART = 5
+ * SEEK = 6
+ * KILL = 7
+ * 
+ */
+abstract behavior PythonTwinObserverRole extends ObserverRole {
+	uses Logging, PythonTwinAccessCapacity
+
+	on PauseMission {
+		orderedMissionList.get(occurrence.missionID).setMissionInative
+		pauseMission
+	}
+
+	on ResumeMission {
+		orderedMissionList.get(occurrence.missionID).setMissionActive
+		resumeMission(occurrence.reInitialization)
+	}
+	
+	def pauseMission {
+		for (o : orderedMissionList.values) {
+			if (!o.isMissionActive) {
+				isRoleActive.set(false)
+				updateStreamAccess(2)
+			}
+		
+	}}
+	
+	def resumeMission(reInit : boolean) {
+		if (reInit) {
+			info("Resume Mission request")
+			updateStreamAccess(5)
+		}
+		if (!isRoleActive.get) {
+			info("ReStartingStream")
+			updateStreamAccess(3)
+		}
+	}
+	
+	def stopMission() {
+		updateStreamAccess(4)
+	}
+
+
+}

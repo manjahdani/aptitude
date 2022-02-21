@@ -5,25 +5,15 @@ package be.uclouvain.aptitude.surveillance.algorithm.detector
 
 import be.uclouvain.organisation.platform.SensorRole
 import be.uclouvain.python_access.BBoxes2DResult
-import io.sarl.core.Behaviors
 import io.sarl.core.Destroy
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
 import java.util.UUID
+import io.sarl.core.Behaviors
 
-/** 
- * @TODO: write a description
- * 
- * @author $Author: manjahdani$
- * @version $0.0.1$
- * @date $31/03/2021$
- * @mavengroupid $be.uclouvain.aptitude$
- * @mavenartifactid $surveillance$
- * 
- */
 behavior DetectorSignalRole extends SensorRole {
 	
-	uses Logging, Behaviors, ExternalContextAccess
+	uses Logging, ExternalContextAccess, Behaviors
 	
 	on BBoxes2DResult {
 		//info("Detector - frameNumber- lastframe " + occurrence.bboxes2D.frameNumber + occurrence.bboxes2D.lastFrame)
@@ -31,36 +21,18 @@ behavior DetectorSignalRole extends SensorRole {
 			emit(listenersSpace, new BBoxes2DResult(occurrence.bboxes2D, ADN.get.name))[it.ID !== this.ID]
 		}
 	}
-
-
-	// on RestartDetector{
-		//info("Restarting")
-		//var spaceToSend = listeners.get(listeners.get(0))
-		//listeners.clear
-		
-		//listeners.put(occurrence.source.ID, spaceToSend)
-	 //@FIXME HIGH not robust ! 
-	//}
 	on Destroy {
 		info("The behavior was stopped.")
 	}
 
 	
 	def startRole {
-		
+		warning("Nothing Defined")
 	}
-	
+
 	def processingMissionWithID(mID : UUID) {
-		setSkill(new DetectorPythonTwin)
-		registerBehavior(new SingleDetectorRole(this.owner), ADN.get.belief, ADN.get.platformName, computation_location)
+		setSkill(new DetectorPythonTwin(ADN.get.belief, ADN.get.platformName, computation_location.get))
+		registerBehavior(DetectorObserverRole, ADN.get)
 	}
 	
 }
-
-event PauseMission
-
-event RestartDetector{
-	var bel : String
-	new (a : String){
-		this.bel = a}
-} 

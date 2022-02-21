@@ -101,20 +101,6 @@ behavior PlatformRole extends OrganizationalRole {
 		//wake(new LeavePlatform)
 	}
 	
-	/**
-	def sendOrganizationInfo(memberID : UUID) {
-		debug("sending organisation info - " + memberID.toString.substring(0, 5))
-		if(getMemberAgents.contains(memberID)){
-		wake(new PlatformOrganizationInfo(innerContext, privateSpacesListeners.get(memberID), location.get)) [
-			it.ID == memberID
-		]}
-		else {
-			emit(new PlatformOrganizationInfo(innerContext, privateSpacesListeners.get(memberID), location.get)) [
-				it.ID == memberID
-			]
-		}
-	}*/
-	
 	def getOrganizationInfo(memberID : UUID) : OrganizationInfo {
 
 		return (new PlatformOrganizationInfo(innerContext, privateSpacesListeners.get(memberID).spaceID.ID, location.get))

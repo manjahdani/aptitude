@@ -3,7 +3,7 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm
 
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingPerception
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingPerception
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingTaskOver
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.organisation.events.AddMember

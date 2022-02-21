@@ -1,0 +1,23 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.tracker.events
+
+import be.uclouvain.python_access.BBoxes2DTrackResult
+import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
+
+/** 
+ * @author manjah
+ * 
+ */
+event BBoxes2DTrackResultToCounter extends BBoxes2DTrackResult {
+
+	var observerName : String
+	var sensitivity : int
+
+	new (t : BBoxes2DTrackMessage, o : String, s : int) {
+		super(t)
+		this.observerName = o
+		this.sensitivity = s
+	}
+}

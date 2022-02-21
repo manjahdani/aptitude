@@ -1,24 +1,27 @@
-package be.uclouvain.aptitude.surveillance.algorithm.tracker
+package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
 
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinCapacity
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinSkill
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingTaskOver
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ResumeTrackingMission
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingPerception
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.organisation.platform.SensorRole
 import be.uclouvain.organisation.platform.events.LeavePlatform
-import be.uclouvain.organisation.platform.events.RemoveMission
+import be.uclouvain.organisation.platform.events.ScenarioInfo
+import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
 import be.uclouvain.organisation.platform.util.HyperParameters
+import be.uclouvain.organisation.platform.util.Metadata
 import be.uclouvain.python_access.BBoxes2DTrackResult
-import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
 import io.sarl.core.Behaviors
 import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.LinkedList
-import java.util.UUID
-import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
-import be.uclouvain.organisation.platform.events.ScenarioInfo
 import java.util.TreeMap
-import be.uclouvain.organisation.platform.util.Metadata
-import io.sarl.core.Initialize
+import java.util.UUID
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -41,25 +44,19 @@ import io.sarl.core.Initialize
 behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH ITS ACTUALLY A SUB-AGENT TRACKER WE ARE BYPASSING THAT.... 
 	
 	uses Logging, TrackerPythonTwinCapacity, Behaviors, ExternalContextAccess
-
-
+	
 	val detectors = new TreeMap<String, Metadata> // @FIXME HIGH should be given by the Analyst which makes it configurable ?
-	
-	
-	
+
 	var totalTrackerTime : double = 0
 	var totalDetectorTime : double = 0
 
-
-	var frameLimit : int = 500
-	
+	var frameLimit : int = 100
 	on Initialize {
-		detectors.put("YOLO", new Metadata(1, "VEHICLE"))
+		detectors.put("YOLO", new Metadata(0, "VEHICLE"))
 		detectors.put("YOLO-COCO",new Metadata(1,"PEOPLE"))
 	}
-	
 	on LastFrame {
-		debug("Transmitting to my listeners" + listeners.keySet)
+		info("Transmitting to my listeners" + listeners.keySet)
 		for (l : listeners.keySet) {
 			emit(listeners.get(l),
 				new LastFrame(
@@ -71,12 +68,6 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 			//listeners.get(l).emit(this.ID,)[it.ID == l]}
 		}
 	}
-	
-	on RemoveMission{
-		warning("Received a request to remove a mission COMMENTED BEHAVIOR")
-		//emit(providers.get(occurrence.expertID),new PauseMission)[it.ID==occurrence.expertID]
-	}
-	
 	on LeavePlatform {
 		// join(BaseContext.ID, BaseSpace.spaceID.ID)
 		info("ObserverTrackerLeaving")
@@ -98,13 +89,14 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 			]		
 		}
 		
-		if (occurrence.bboxes2DTrack.frameNumber % 250 ==0){
+		if (occurrence.bboxes2DTrack.frameNumber % 100 ==0){
 			info("Processed #" + occurrence.bboxes2DTrack.frameNumber +"frames")
 		}
 		if (occurrence.bboxes2DTrack.lastFrame || occurrence.bboxes2DTrack.frameNumber > frameLimit) {
 			emit(selfSpace, new TrackingTaskOver)
 			
 			info("Tracking job done... " + "sending the information to " + listeners.keySet)
+			
 			
 			for (l : listeners.keySet) {
 				emit(listeners.get(l),
@@ -129,9 +121,9 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 	}
 	
 	on ResumeTrackingMission {
-		info("Resuming my mission with "+ occurrence.detector)
-		setSkill(new TrackerPythonTwinSkill)
-		registerBehavior(new SingleTrackerRole(this.owner), ADN.get.belief, ADN.get.platformName, computation_location)
+		info("Resuming mission" + occurrence.missionID +" with "+ occurrence.detector)
+		setSkill(new TrackerPythonTwinSkill(ADN.get.belief, ADN.get.platformName, computation_location.get))
+		registerBehavior(new SingleTrackerObserverRole(this.owner))
 		info("Come here " + occurrence.detector)
 		missionList.get(occurrence.missionID).dynamicAdaptation = false		
 		enableDataAcquisition(occurrence.missionID,newArrayList(occurrence.detector), "DETECTOR")
@@ -161,10 +153,8 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 				
 		} 
 		else {
-			setSkill(new TrackerPythonTwinSkill)
-			registerBehavior(new SingleTrackerRole(this.owner), ADN.get.belief, ADN.get.platformName,
-			computation_location)
-			
+			setSkill(new TrackerPythonTwinSkill(ADN.get.belief, ADN.get.platformName, computation_location.get))
+			registerBehavior(new SingleTrackerObserverRole(this.owner), ADN.get)
 			enableDataAcquisition(mID, newArrayList(detectors.keySet.get(missionList.get(mID).cautionLevel)), "DETECTOR") //@FIXME VERY VERY VERY VERY HIGH FOIREUX DE CHEZ FOIREUX
 			}
 		}
@@ -174,16 +164,5 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 	}
 }
 
-event BBoxes2DTrackResultToCounter extends BBoxes2DTrackResult{ //@FIXME MEDIUM Nonsens
-	
-	var observerName : String
-	var sensitivity : int
-	
-	new (t : BBoxes2DTrackMessage, o : String, s: int){
-		super(t)
-		this.observerName = o
-		this.sensitivity=s
-	}
-}
 
 

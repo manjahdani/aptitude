@@ -32,20 +32,10 @@ import java.util.UUID
 
 event StopMission {
 
-	val expertID : UUID
-	
-	new(id : UUID) {
-		this.expertID = id
-	}
-}
+	val missionID : UUID
 
-event ResumeMission
+	new(mID : UUID) {
+		missionID = mID
 
-event RemoveMission {
-
-	val expertID : UUID
-
-	new(id : UUID) {
-		this.expertID = id
 	}
 }

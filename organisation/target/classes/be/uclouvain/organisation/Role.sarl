@@ -26,6 +26,8 @@ abstract behavior Role {
 	protected var privateOrganizationSpace = new AtomicReference<OpenEventSpace> // private space between the algorithm and the organisation Platform
 	
 	
+	
+	
 	protected val selfSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, this.ID) // An internal space to communicate with other agent roles.
 	
 	on Initialize {
