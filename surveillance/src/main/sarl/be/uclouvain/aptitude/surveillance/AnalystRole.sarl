@@ -35,7 +35,7 @@ behavior AnalystRole extends ObserverRole{
 	
 	uses Logging, Behaviors, ExternalContextAccess
 	
-	val availableObservers = newArrayList("careful", "dynamic", "dynamic ","balanced")
+	//val availableObservers = newArrayList("careful", "dynamic", "dynamic ","balanced")
 	
 	val missionQueue = new ConcurrentLinkedQueue<SurveillanceMissionData>
 	

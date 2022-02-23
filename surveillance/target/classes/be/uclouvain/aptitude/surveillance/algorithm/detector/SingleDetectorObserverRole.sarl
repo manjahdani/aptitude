@@ -24,7 +24,7 @@ import io.sarl.core.Schedules
  * 
  * 
  */
-behavior DetectorObserverRole extends PythonTwinObserverRole {
+behavior SingleDetectorObserverRole extends PythonTwinObserverRole {
 	uses Logging, PythonTwinAccessCapacity, Schedules
 
 	on PartnerDetectionFound {

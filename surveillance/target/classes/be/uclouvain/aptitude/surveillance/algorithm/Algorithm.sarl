@@ -4,9 +4,13 @@
 package be.uclouvain.aptitude.surveillance.algorithm
 
 import be.uclouvain.aptitude.surveillance.Paraddis
-
+import be.uclouvain.aptitude.surveillance.algorithm.counter.CounterObserverRole
+import be.uclouvain.aptitude.surveillance.algorithm.counter.CounterSignalRole
+import be.uclouvain.aptitude.surveillance.algorithm.detector.DetectorSignalRole
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.roles.TrackerSignalRole
 import be.uclouvain.aptitude.surveillance.platform.AgentAlgorithm
 import be.uclouvain.aptitude.surveillance.platform.AgentPlatform
+import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
 import be.uclouvain.organisation.told.entity.EntityRole
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
@@ -17,15 +21,11 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
-import io.sarl.lang.core.AgentContext
 import java.util.HashMap
 import java.util.UUID
-import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
 import java.util.concurrent.atomic.AtomicReference
-import be.uclouvain.aptitude.surveillance.algorithm.counter.CounterSignalRole
-import be.uclouvain.aptitude.surveillance.algorithm.counter.CounterObserverRole
-import be.uclouvain.aptitude.surveillance.algorithm.detector.DetectorSignalRole
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.roles.TrackerSignalRole
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.roles.SingleTrackerObserverRole
+import be.uclouvain.aptitude.surveillance.algorithm.detector.SingleDetectorObserverRole
 
 /** 
  * Agent with a set of tasks (Goals) and a model (Belief). 
@@ -70,7 +70,7 @@ agent Algorithm extends Paraddis{
 	val ADN  = new AtomicReference<AlgorithmInfo>
 
 	val agentPlatformSpaces = new HashMap<String, OpenEventSpace>
-	var subHolons = new HashMap<AgentContext,UUID>
+	var subHolons = new HashMap<UUID,UUID>
 	var openChanel = new AtomicReference<OpenEventSpace>
 	
 	on Initialize {
@@ -97,9 +97,11 @@ agent Algorithm extends Paraddis{
 				}
 				case "TRACKER": {
 					registerBehavior(new TrackerSignalRole(this), ADN.get)
+					registerBehavior(new SingleTrackerObserverRole(this), ADN.get)
 				}
 				case "DETECTOR": {
 					registerBehavior(new DetectorSignalRole(this), ADN.get)
+					registerBehavior(new SingleDetectorObserverRole(this), ADN.get)
 				}
 			}
 		 }
@@ -123,7 +125,10 @@ agent Algorithm extends Paraddis{
 					occurrence.belief.replace("F:/aptitude/surveillance/src/main/resources/", "") + " \n to answer the request of " + occurrence.source.ID.toString.substring(0, 5))
 			val cloneID = UUID.randomUUID
 			subHolons.put(occurrence.contextID, cloneID)
-			spawnInContextWithID(Algorithm, cloneID, occurrence.contextID, ADN.get.cloneChildWithID(cloneID))
+			
+			
+			spawnInContextWithID(Algorithm, cloneID, getContext(occurrence.contextID),
+				ADN.get.cloneChildWithID(cloneID))
 		}}//@FIXME LOW we could have a table of each child, so that we could direct the information to it. 
 	on AlgorithmJoinPlatform {
 		debug("deploys " + ADN.get.task + " named " + occurrence.name + " performing for " + occurrence.source.ID.toString.substring(0, 5))

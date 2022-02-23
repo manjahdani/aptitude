@@ -41,9 +41,9 @@ skill EvaluationImpl extends PythonTwinAccess implements Evaluation {
 		if (message.ack && message.requestID == this.pendingRequestID) {
 			requestTask.cancel
 			CommunicationManager.instance.unsubscribeTopic(topicRequestSub.toString)
-			topicRequestSub = null
+			topicRequestSub.set(null)
 			val topicName = "evaluation_" + owner.ID.toString + "_" + message.clientName
-			topicSignalAcquisition = CommunicationManager.instance.subscribeTopic(topicName, this)
+			topicSignalAcquisition.set(CommunicationManager.instance.subscribeTopic(topicName, this))
 			wake(new PartnerEvaluationFound(message.clientName))
 		}
 	}

@@ -3,7 +3,7 @@
 package be.uclouvain.organisation.platform.events
 
 import be.uclouvain.organisation.events.JoinOrganisation
-import io.sarl.lang.core.AgentContext
+import java.util.UUID
 
 /** 
  * The event (Algorithm)JoinPlatform invites the receiver (an Algorithm) to join a Context
@@ -24,13 +24,13 @@ event AlgorithmJoinPlatform extends JoinOrganisation {
 	var task : String // Which task will be done
 
 
-	new (context : AgentContext, n : String, t : String) {
+	new (context : UUID, n : String, t : String) {
 		super(context)
 		this.name = n
 		this.task = t
 	}
 
-	new (context : AgentContext, n : String) {
+	new (context : UUID, n : String) {
 		super(context)
 		this.name = n
 	}

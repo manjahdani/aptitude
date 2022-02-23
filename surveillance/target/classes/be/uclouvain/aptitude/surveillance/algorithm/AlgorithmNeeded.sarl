@@ -5,6 +5,7 @@ package be.uclouvain.aptitude.surveillance.algorithm
 
 
 import io.sarl.lang.core.AgentContext
+import java.util.UUID
 
 /** 
  * @TODO : Comment
@@ -19,13 +20,13 @@ import io.sarl.lang.core.AgentContext
  * 
  */
 
-event AlgorithmNeeded {
+final event AlgorithmNeeded {
 	
-	var contextID : AgentContext
+	var contextID : UUID
 	var name : String
 	var task : String
 	var belief : String
-	new (ctxt : AgentContext, n : String, t : String, bel : String) {
+	new (ctxt : UUID, n : String, t : String, bel : String) {
 		this.contextID = ctxt
 		this.task = t;
 		this.belief = bel;

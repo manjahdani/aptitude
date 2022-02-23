@@ -7,6 +7,10 @@ import be.uclouvain.aptitude.surveillance.algorithm.PythonTwinObserverRole
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinCapacity
 import be.uclouvain.python_access.BBoxes2DResult
 import be.uclouvain.python_access.PartnerTrackingFound
+import io.sarl.core.Initialize
+import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
+import io.sarl.core.ExternalContextAccess
+import be.uclouvain.organisation.platform.events.ScenarioInfo
 
 /** 
  * @author manjah
@@ -17,12 +21,24 @@ import be.uclouvain.python_access.PartnerTrackingFound
 
 behavior SingleTrackerObserverRole extends PythonTwinObserverRole {
 	
-	uses TrackerPythonTwinCapacity
+	uses TrackerPythonTwinCapacity, ExternalContextAccess
+	
+	on Initialize {
+		emit(selfSpace, new ScenarioInfoRequest)
+	}
 
+	on ScenarioInfo {
+		assert occurrence.client_id !== null, "Received computatation_location null"
+		computation_location.set(occurrence.client_id)
+		updateContextInfo(occurrence.organizationContext, occurrence.privateCommunicationChannelID)
+		checkList.replace("context", true)
+		checkList.replace("computation_location", true)
+	}
 	on PartnerTrackingFound {
 		//info("Tracking Partner found: " +  occurrence.partnerName)
 	}
 	on BBoxes2DResult {
+		
 		Signal2Perception(occurrence.bboxes2D)
 	}
 	

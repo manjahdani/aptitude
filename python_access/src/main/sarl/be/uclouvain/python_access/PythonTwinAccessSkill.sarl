@@ -10,6 +10,7 @@ import io.sarl.core.Schedules
 import java.util.UUID
 import org.json.simple.JSONObject
 import io.sarl.core.Logging
+import java.util.concurrent.atomic.AtomicReference
 
 /** 
  * @TODO: write a description
@@ -25,15 +26,16 @@ import io.sarl.core.Logging
 abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 	uses Schedules, Logging
 	
-	protected var topicRequestSub : UUID
-	protected var topicSignalAcquisition : UUID
+	protected val topicRequestSub = new AtomicReference<UUID>
+	protected val topicSignalAcquisition = new AtomicReference<UUID>
 
-	protected var pendingRequestID : UUID
+	protected var pendingRequestID = new AtomicReference<UUID>
 	protected var requestTask : AgentTask
 
 	
 	def install {
-		topicRequestSub = CommunicationManager.instance.subscribeTopic("request", this) //@FIXME LOW install is 
+		
+		topicRequestSub.set(CommunicationManager.instance.subscribeTopic("request", this)) 
 	}
 
 	def prepareUninstallation {
@@ -44,25 +46,26 @@ abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 
 	
 	def uninstall {
-		if (topicRequestSub !== null) {
+		
+		
+		
+		if (topicRequestSub.get !== null) {
 			CommunicationManager.instance.unsubscribeTopic(topicRequestSub.toString)
-			topicRequestSub = null
+			topicRequestSub.set(null)
 		}
-		if (topicSignalAcquisition !== null) {
+		if (topicSignalAcquisition.get !== null) {
 			CommunicationManager.instance.unsubscribeTopic(topicSignalAcquisition.toString)
-			topicSignalAcquisition = null
+			topicSignalAcquisition.set(null)
 		}
 	}
 
 	
 	def activateAccess(jsonConfig : JSONObject) {
-		this.pendingRequestID = UUID.randomUUID
+		this.pendingRequestID.set(UUID.randomUUID)
 		this.requestTask = every(1000) [
 			debug("Python partner not found, send discovery message")
 			var requestMessage = new RequestMessage()
-			requestMessage.requestID = this.pendingRequestID
-			//var a = owner.ID.toString.getBytes()
-			//var b : String = a.toString // @TODO: The hack is to avoid an error cannot convert from String to String. 
+			requestMessage.requestID = this.pendingRequestID.get
 			
 			requestMessage.agentID = owner.ID.toString
 			requestMessage.jsonConfig = jsonConfig.toString

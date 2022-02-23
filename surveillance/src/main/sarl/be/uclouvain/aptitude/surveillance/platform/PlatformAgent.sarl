@@ -8,9 +8,7 @@ import be.uclouvain.organisation.platform.PlatformCapacity
 import be.uclouvain.organisation.platform.PlatformSkill
 import be.uclouvain.organisation.platform.events.LocalDatabaseRequest
 import be.uclouvain.organisation.platform.util.PlatformConfig
-import io.sarl.core.AgentSpawned
 import io.sarl.core.Behaviors
-import io.sarl.core.ContextJoined
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
@@ -19,6 +17,7 @@ import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicReference
 
 /**
  * 
@@ -35,36 +34,27 @@ agent PlatformAgent extends Paraddis {
 	uses Logging, Behaviors, InnerContextAccess, Lifecycle, DefaultContextInteractions
 
 	 
-	var openChanel : OpenEventSpace
-	var platformConfig :PlatformConfig
+	val openChanel : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
+	val platformConfig : AtomicReference<PlatformConfig> = new AtomicReference<PlatformConfig>
 	
-	
+
 	on Initialize {
 
-		platformConfig = occurrence.parameters.get(0) as PlatformConfig
-		loggingName = this.ID + "-Platform-" + platformConfig.location + "-" + platformConfig.getLevel()
+		platformConfig.set(occurrence.parameters.get(0) as PlatformConfig)
+		loggingName = this.ID + "-Platform-" + platformConfig.get.location + "-" + platformConfig.get.getLevel()
 		
-		for (swc : platformConfig.subPlatformConfig) {
+		for (swc : platformConfig.get.subPlatformConfig) {
 			val randomID = UUID.randomUUID
 			spawnInContextWithID(PlatformAgent, randomID, innerContext, swc)}
-		if (platformConfig.getLevel > 0) {
+		if (platformConfig.get.getLevel > 0) {
 			info("Ready to receive operating mission")
-			openChanel = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
 			openChanel.registerStrongParticipant(asEventListener)
-			emitToParent(new AgentPlatform(platformConfig.location, this.ID, openChanel))
-			setSkill(new PlatformSkill(platformConfig), PlatformCapacity)
-			registerBehavior(new SurveillancePlatformRole(this), platformConfig.getLocation)
-			emitToParent(new LocalDatabaseRequest(innerContext)) 
+			emitToParent(new AgentPlatform(platformConfig.get.location, this.ID, openChanel))
+			setSkill(new PlatformSkill(platformConfig.get), PlatformCapacity)
+			registerBehavior(new SurveillancePlatformRole(this), platformConfig.get.getLocation)
+			emitToParent(new LocalDatabaseRequest(innerContext.ID)) 
 		} else {
-			registerBehavior(new ManagerPlatformRole(this), platformConfig.getLocation, occurrence.parameters.get(1))
+			registerBehavior(new ManagerPlatformRole(this), platformConfig.get.getLocation, occurrence.parameters.get(1))
 		}
-	}
-	
-	on AgentSpawned {
-		//info("AgentSpawned : " + occurrence.agentID + occurrence.agentType)
-	}
-
-	on ContextJoined {
-		//info("ContextJoined : " + occurrence.holonContextID)
 	}
 }

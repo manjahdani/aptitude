@@ -39,7 +39,7 @@ import java.util.UUID
  * 
  */
  
-behavior MultiTrackerRole extends ObserverRole {
+behavior MultiTrackerObserverRole extends ObserverRole {
 	uses Logging, Lifecycle, InnerContextAccess , Behaviors, ExternalContextAccess
 	
 	var detectors = new TreeMap<String, Metadata> // @FIXME HIGH LOGICIEL PARAMETERS ?
@@ -97,12 +97,12 @@ behavior MultiTrackerRole extends ObserverRole {
 	on BBoxes2DResult {
 		
 		if(occurrence.bboxes2D.frameNumber <5){
-		info("Sending results of frame #" + occurrence.bboxes2D.frameNumber + 
+		warning("Sending results of frame #" + occurrence.bboxes2D.frameNumber + 
 			" from " + occurrence.providerName + " to " + detector_innerTrackerMap.get(occurrence.providerName))
 		}
 		// We send to the sub-process meant to analyse the data of the provider. 
 		// For example, agent 1 process the data sent from detector A. 
-		wake(new BBoxes2DResult(occurrence.bboxes2D))[it.ID == detector_innerTrackerMap.get(occurrence.providerName)] 
+		//wake(new BBoxes2DResult(occurrence.bboxes2D))[it.ID == detector_innerTrackerMap.get(occurrence.providerName)] 
 	}
 	
 	def startRole {

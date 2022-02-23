@@ -27,7 +27,7 @@ import java.util.UUID
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
  * that contains the information requested upon approved request from another. 
  * 
- * @FIXME MEDIUM
+ * @TODO MEDIUM
  * It does make sens to have a certain window of information in memory and the 
  * other one stored in a database. Therefore, the database with a certain window in situ and otherwise stored in TOLD
  * We need to find a way such that the information is synchronized before potential fusion 
@@ -141,20 +141,15 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 			
 			var hyperParatermersToBeTested = new LinkedList<HyperParameters>
 			var iter = 0 // @FIXME MEDIUM Quick but not robust strategy as if the order of detectors change the system could get confused.
-			
 			for (d : detectors.keySet) {
 				hyperParatermersToBeTested.add(new HyperParameters(iter,false))
 				iter += 1
 			}
-			
-			registerBehavior(new MultiTrackerRole(owner),this.ADN.get, hyperParatermersToBeTested, detectors)
-
-			
-				
+			registerBehavior(new MultiTrackerObserverRole(owner),this.ADN.get, hyperParatermersToBeTested, detectors)
 		} 
 		else {
 			setSkill(new TrackerPythonTwinSkill(ADN.get.belief, ADN.get.platformName, computation_location.get))
-			registerBehavior(new SingleTrackerObserverRole(this.owner), ADN.get)
+			
 			enableDataAcquisition(mID, newArrayList(detectors.keySet.get(missionList.get(mID).cautionLevel)), "DETECTOR") //@FIXME VERY VERY VERY VERY HIGH FOIREUX DE CHEZ FOIREUX
 			}
 		}

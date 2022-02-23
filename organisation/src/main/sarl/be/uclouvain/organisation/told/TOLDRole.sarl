@@ -14,6 +14,7 @@ import io.sarl.core.ExternalContextAccess
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Logging
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicReference
 
 /** 
  * Trusted Observations and Learning Database is a database aiming to achieve two goals. 
@@ -34,7 +35,7 @@ behavior TOLDRole extends OrganizationalRole {
 	uses Behaviors, AccessDatabaseCapacity, InnerContextAccess,Logging, ExternalContextAccess
 	
 	
-	protected var platformID : UUID
+	protected val platformID = new AtomicReference<UUID>
 
 	/*
 	 * The platform registerStrongParticipant the context of a platform 
@@ -74,13 +75,13 @@ behavior TOLDRole extends OrganizationalRole {
 
 	on PlatformOrganizationInfo {
 		info("Platform organisation - " + occurrence.platformName + " encountered ")
-		platformID = occurrence.source.ID
+		platformID.set(occurrence.source.ID)
 		if (!privateSpacesListeners.containsKey(platformID)) {
 			info("Platform was not encountered")
 			val privateChannel = retrieveOrCreateOpenSpaceWithID(occurrence.context,occurrence.privateCommunicationChannelID)
-			privateSpacesListeners.put(platformID, privateChannel)
+			privateSpacesListeners.put(platformID.get, privateChannel)
 			privateChannel.registerStrongParticipant(asEventListener)
-			emit(privateChannel, getOrganizationInfo(platformID))[it.ID == platformID]
+			emit(privateChannel, getOrganizationInfo(platformID.get))[it.ID == platformID]
 		}	
 	} 
 		

@@ -1,21 +1,18 @@
 package be.uclouvain.aptitude.surveillance.algorithm.tracker
 
-
+import be.uclouvain.aptitude.surveillance.algorithm.ObserverPythonAccess
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBOX
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
+import be.uclouvain.python_access.BBoxes2DTrackResult
+import be.uclouvain.python_access.CommunicationManager
+import be.uclouvain.python_access.PartnerTrackingFound
+import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
+import be.uclouvain.python_access.messages.BaseMessage
+import be.uclouvain.python_access.messages.RequestMessage
 import io.sarl.core.Behaviors
 import io.sarl.core.Schedules
-import be.uclouvain.aptitude.surveillance.algorithm.ObserverPythonAccess
-import be.uclouvain.python_access.messages.BaseMessage
-import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
-import be.uclouvain.python_access.messages.RequestMessage
-import be.uclouvain.python_access.CommunicationManager
-import be.uclouvain.python_access.BBoxes2DTrackResult
-import be.uclouvain.python_access.PartnerTrackingFound
 import java.util.ArrayList
-import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
-import be.uclouvain.aptitude.surveillance.algorithm.util.BBOX
 import java.util.Arrays
-import io.sarl.core.Logging
-import java.util.concurrent.atomic.AtomicInteger
 
 /** 
  * @TODO: write a description
@@ -31,7 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 skill TrackerPythonTwinSkill extends ObserverPythonAccess implements TrackerPythonTwinCapacity {
 	
-	uses Behaviors, Schedules, Logging
+	uses Behaviors, Schedules
 
 	val FRAME_WIDTH = 1920.0 // @FIXME MEDIUM hardcoded value
 	var FRAME_HEIGHT = 1080.0 // @FIXME MEDIUM hardcoded value
@@ -42,7 +39,7 @@ skill TrackerPythonTwinSkill extends ObserverPythonAccess implements TrackerPyth
 	var totalTrackerTime : double = 0
 	var totalDetectorTime : double = 0
 	
-	var a = new AtomicInteger(0)
+	
 	
 	def update(m : BaseMessage) {
 		if (m instanceof BBoxes2DTrackMessage) {
@@ -56,9 +53,9 @@ skill TrackerPythonTwinSkill extends ObserverPythonAccess implements TrackerPyth
 		if (message.ack && message.requestID == this.pendingRequestID) {
 			requestTask.cancel
 			CommunicationManager.instance.unsubscribeTopic(topicRequestSub.toString)
-			topicRequestSub = null
+			topicRequestSub.set(null)
 			val topicName = "tracking_" + owner.ID.toString + "_" + message.clientName
-			topicSignalAcquisition = CommunicationManager.instance.subscribeTopic(topicName, this)
+			topicSignalAcquisition.set(CommunicationManager.instance.subscribeTopic(topicName, this))
 			wake(new PartnerTrackingFound(message.clientName))
 		}
 	}
@@ -86,6 +83,7 @@ skill TrackerPythonTwinSkill extends ObserverPythonAccess implements TrackerPyth
 		return tmp
 	}
 	
+	@SuppressWarnings("discouraged_reference")
 	def print(track : BBoxes2DTrackMessage) {
 		
 		 println("***********************")
@@ -98,11 +96,6 @@ skill TrackerPythonTwinSkill extends ObserverPythonAccess implements TrackerPyth
 		 println("*  " + track.lastFrame)
 		 println("***********************")
 	}
-	
-	def test {
-		info(a.incrementAndGet)
-	}
-	
 //	def getTrack(detectionMessage : BBoxes2DMessage) {
 //		CommunicationManager.instance.publishMessage(topicSignalAcquisition, detectionMessage)
 //	}	

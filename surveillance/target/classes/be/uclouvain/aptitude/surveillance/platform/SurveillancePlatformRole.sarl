@@ -76,7 +76,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 					if (!request.contains(signal)) {
 						request.add(signal.name)
 						emit(agentAlgorithm.get(occurrence.signalProvider.task),
-							new AlgorithmJoinPlatform(innerContext, signal.name))}
+							new AlgorithmJoinPlatform(this.ID, signal.name))}
 					waitfor(occurrence.missionID,signal.name, occurrence.source.ID)
 				} else {
 					debug("Algorithm is already available" + signal.name)

@@ -13,7 +13,7 @@ import io.sarl.core.Behaviors
 
 behavior DetectorSignalRole extends SensorRole {
 	
-	uses Logging, ExternalContextAccess, Behaviors
+	uses Logging, ExternalContextAccess
 	
 	on BBoxes2DResult {
 		//info("Detector - frameNumber- lastframe " + occurrence.bboxes2D.frameNumber + occurrence.bboxes2D.lastFrame)
@@ -32,7 +32,6 @@ behavior DetectorSignalRole extends SensorRole {
 
 	def processingMissionWithID(mID : UUID) {
 		setSkill(new DetectorPythonTwin(ADN.get.belief, ADN.get.platformName, computation_location.get))
-		registerBehavior(DetectorObserverRole, ADN.get)
 	}
 	
 }

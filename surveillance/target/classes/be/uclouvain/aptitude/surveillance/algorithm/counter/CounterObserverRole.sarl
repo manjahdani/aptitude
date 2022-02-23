@@ -1,20 +1,19 @@
 package be.uclouvain.aptitude.surveillance.algorithm.counter
 
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.BBoxes2DTrackResultToCounter
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingPerception
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingRequest
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
+import be.uclouvain.aptitude.surveillance.evaluation.CompetitionOver
 import be.uclouvain.aptitude.surveillance.ui.DisplayCapacity
 import be.uclouvain.organisation.platform.CounterObserverCapacity
+import be.uclouvain.organisation.platform.ObserverRole
+import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.HashMap
-import be.uclouvain.organisation.platform.ObserverRole
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.BBoxes2DTrackResultToCounter
-import be.uclouvain.aptitude.surveillance.evaluation.CompetitionOver
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingRequest
-import io.sarl.core.ExternalContextAccess
-import be.uclouvain.organisation.platform.util.SurveillanceMissionData
 
 /** 
  * The CounterRole is a behaviour that an agent Algorithm endorses upon a mission to count vehicles
