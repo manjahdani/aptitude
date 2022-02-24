@@ -35,9 +35,17 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 							   "DETECTOR",
 							   1))
 			
-		database.put(UUID.randomUUID,new AlgorithmInfo("SORT", "F:/aptitude/surveillance/src/main/resources/config/test-SORT.json", "TRACKER",1))
+		database.put(UUID.randomUUID,
+			new AlgorithmInfo("SORT", "F:/aptitude/surveillance/src/main/resources/config/test-SORT.json", "TRACKER",
+			1))
+
 		database.put(UUID.randomUUID,new AlgorithmInfo("DeepSORT", "F:/aptitude/surveillance/src/main/resources/config/test-DeepSORT.json","TRACKER",1))
-		database.put(UUID.randomUUID,new AlgorithmInfo("APTITUDE", "NoneForTheMoment","COUNTER",1))
+		database.put(UUID.randomUUID, new AlgorithmInfo("APTITUDE", "NoneForTheMoment", "COUNTER", 1))
+		
+		database.put(UUID.randomUUID,
+			new AlgorithmInfo("BACKGROUND", "F:/aptitude/surveillance/src/main/resources/config/BACKGROUND.json", "DETECTOR",
+			1))
+		
 		database.put(UUID.randomUUID,"a")
 	}
 	override update(key : UUID, data : Object) {

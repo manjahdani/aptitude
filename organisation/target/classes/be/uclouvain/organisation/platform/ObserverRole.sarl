@@ -62,8 +62,7 @@ abstract behavior ObserverRole extends ScenarioRole {
 		var providerID = occurrence.source.ID
 		info("param requests from agentID=" + providerID.toString.substring(0, 5)) 
 		var MD = orderedMissionList.get(occurrence.missionID)
-
-		info("sending param" + " s =" + MD.cautionLevel)
+		info("sending param" + " s =" + MD.cautionLevel + "to " + providerID.toString.substring(0, 5))
 		emit(providers.get(providerID), new ProcessingHyperParameters(
 			occurrence.missionID, orderedMissionList.get(occurrence.missionID).hyperParameters))[it.ID == providerID]
 	}
@@ -121,13 +120,27 @@ abstract behavior ObserverRole extends ScenarioRole {
 
 	
 	on RecruitSignal {
-		info("Observer recruits request for name = " + occurrence.name + " t = " + occurrence.task)
-		val mission = occurrence.missionData
-		orderedMissionList.put(mission.missionID, mission)
-		requestAlgorithm(mission.missionID,occurrence.name,occurrence.task)
+		
+		orderedMissionList.put(occurrence.missionData.missionID, occurrence.missionData)
+		if (privateOrganizationSpace.get !== null) {
+			requestAlgorithm(occurrence.missionData.missionID, occurrence.name, occurrence.task)
+		}
+		else{
+			task("recuitSignal".concat(occurrence.missionData.missionID.toString)).every(100) [
+				if (privateOrganizationSpace.get !== null) {
+					requestAlgorithm(occurrence.missionData.missionID, occurrence.name, occurrence.task)
+					task("recuitSignal".concat(occurrence.missionData.missionID.toString)).cancel
+				}
+				else{
+					info("trying to recruit but no platform")
+				}
+			]
+		}
 	}
 
 	def requestAlgorithm(mID : UUID, algoName : String, algoTask : String) {
+		
+		info("Observer recruits request for name = " + algoName + " t = " +algoTask)
 		
 		emit(privateOrganizationSpace.get, new AddObserver(
 			mID,

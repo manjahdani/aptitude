@@ -10,7 +10,9 @@ import io.sarl.core.Schedules
 import java.util.UUID
 import org.json.simple.JSONObject
 import io.sarl.core.Logging
-import java.util.concurrent.atomic.AtomicReference
+import org.json.simple.parser.JSONParser
+import java.io.FileReader
+import java.util.HashMap
 
 /** 
  * @TODO: write a description
@@ -22,50 +24,91 @@ import java.util.concurrent.atomic.AtomicReference
  * @mavenartifactid $surveillance$
  * 
  */
-
 abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 	uses Schedules, Logging
-	
-	protected val topicRequestSub = new AtomicReference<UUID>
-	protected val topicSignalAcquisition = new AtomicReference<UUID>
 
-	protected var pendingRequestID = new AtomicReference<UUID>
+	protected var topicRequestSub : UUID
+	protected var topicSignalAcquisition : UUID
+
+	protected var pendingRequestID : UUID
 	protected var requestTask : AgentTask
 
-	
-	def install {
-		
-		topicRequestSub.set(CommunicationManager.instance.subscribeTopic("request", this)) 
+	protected var parser = new JSONParser();
+	protected var jsonConfig : JSONObject;
+	protected var partnerName : String;
+	val config : String
+	val platformName : String
+	val computation_resources_location : String
+
+	new (config : String, platformName : String, computation_resources_location : String) {
+		assert config !== null, "config is null";
+		assert platformName !== null, "platform is null";
+		assert computation_resources_location !== null, "computation resources location null"
+		this.config = config
+		this.platformName = platformName
+		this.computation_resources_location = computation_resources_location
+
 	}
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	def install {
+		topicRequestSub = CommunicationManager.instance.subscribeTopic("request", this)
+		connectToPython(config, platformName, computation_resources_location)
+	}
+
+	def connectToPython(config : String, platformName : String, computation_resources_location : String) {
+
+		var configPath = config
+		var jsonConfigtmp = parser.parse(new FileReader(configPath)) as JSONObject;
+
+		// Adding the computation ressources location
+		var ressourceslocation = new HashMap<String, String>
+		ressourceslocation.put("client_id", computation_resources_location)
+		jsonConfigtmp.put("Setup", ressourceslocation)
+
+		// Adding the video path
+		var video = new HashMap<String, String>
+		video.put("path", "./pytb-agent/videos/".concat(platformName).concat("/vdo.avi"))
+		// Adding the roi path
+		var pathRoi = new HashMap<String, String>
+		pathRoi.put("path", "./pytb-agent/videos/".concat(platformName).concat("/roi.jpg"))
+		var a = jsonConfigtmp.get("Preproc") as HashMap<String, HashMap<String, String>>
+		a.put("roi", pathRoi)
+		// Final concatenation
+		jsonConfigtmp.put("Video", video)
+		jsonConfig = jsonConfigtmp
+		info("Activating access" + jsonConfig)
+		activateAccess(jsonConfig)
+	}
+
 
 	def prepareUninstallation {
 		// Function invoked when the skill is preparing to be uninstalled from the owner, but before the owner is destroyed.
 		// You should put all the resource release statements that should be executed before the owner is destroyed.
-		//info("Preparing the uninstallation of the skill")
+		// info("Preparing the uninstallation of the skill")
 	}
 
-	
+	@SuppressWarnings("potential_field_synchronization_problem")
 	def uninstall {
-		
-		
-		
-		if (topicRequestSub.get !== null) {
+		if (topicRequestSub !== null) {
 			CommunicationManager.instance.unsubscribeTopic(topicRequestSub.toString)
-			topicRequestSub.set(null)
+			topicRequestSub = null
 		}
-		if (topicSignalAcquisition.get !== null) {
+		if (topicSignalAcquisition !== null) {
 			CommunicationManager.instance.unsubscribeTopic(topicSignalAcquisition.toString)
-			topicSignalAcquisition.set(null)
+			topicSignalAcquisition = null
 		}
 	}
 
-	
+	@SuppressWarnings("potential_field_synchronization_problem")
 	def activateAccess(jsonConfig : JSONObject) {
-		this.pendingRequestID.set(UUID.randomUUID)
+		this.pendingRequestID = UUID.randomUUID
 		this.requestTask = every(1000) [
-			debug("Python partner not found, send discovery message")
+			//info("Python partner not found, send discovery message")
 			var requestMessage = new RequestMessage()
-			requestMessage.requestID = this.pendingRequestID.get
+			requestMessage.requestID = this.pendingRequestID
+			// var a = owner.ID.toString.getBytes()
+			// var b : String = a.toString // @TODO: The hack is to avoid an error cannot convert from String to String.
 			
 			requestMessage.agentID = owner.ID.toString
 			requestMessage.jsonConfig = jsonConfig.toString
@@ -73,14 +116,21 @@ abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 		]
 	}
 
-	
+	/* 
+	 * info("I am sending the action: " + actionID)
+	 * var actionMessage = new ActionMessage() //@TODO : Strange way of doing it
+	 * actionMessage.actionID = actionID
+	 * 
+	 * CommunicationManager.instance.publishMessage(topicSignalAcquisition, actionMessage)
+	 */
+	@SuppressWarnings("potential_field_synchronization_problem")
 	def updateStreamAccess(actionID : int) {
 		debug("Updating Stream Access" + actionID)
 		updateStreamAccess(actionID, -1)
 	}
 
 	def updateStreamAccess(actionID : int, newFrameNumber : int) {
-		//info("I am sending the action: " + actionID)
+		// info("I am sending the action: " + actionID)
 		var actionMessage = new ActionMessage() // @TODO : Strange way of doing it
 		actionMessage.actionID = actionID
 		if (newFrameNumber != -1) {
@@ -88,7 +138,8 @@ abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 		}
 		CommunicationManager.instance.publishMessage(topicSignalAcquisition.toString, actionMessage)
 	}
-} 
+}
+ 
  
  
 

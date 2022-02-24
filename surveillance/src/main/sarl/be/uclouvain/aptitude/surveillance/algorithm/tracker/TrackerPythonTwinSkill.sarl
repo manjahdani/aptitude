@@ -53,9 +53,9 @@ skill TrackerPythonTwinSkill extends ObserverPythonAccess implements TrackerPyth
 		if (message.ack && message.requestID == this.pendingRequestID) {
 			requestTask.cancel
 			CommunicationManager.instance.unsubscribeTopic(topicRequestSub.toString)
-			topicRequestSub.set(null)
+			topicRequestSub=null
 			val topicName = "tracking_" + owner.ID.toString + "_" + message.clientName
-			topicSignalAcquisition.set(CommunicationManager.instance.subscribeTopic(topicName, this))
+			topicSignalAcquisition=CommunicationManager.instance.subscribeTopic(topicName, this)
 			wake(new PartnerTrackingFound(message.clientName))
 		}
 	}

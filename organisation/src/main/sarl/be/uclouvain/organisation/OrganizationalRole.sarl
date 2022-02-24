@@ -26,7 +26,7 @@ import java.util.Collections
  * @mavenartifactid $organisation$
  */
 abstract behavior OrganizationalRole {
-	uses InnerContextAccess,Behaviors, DefaultContextInteractions, Logging
+	uses InnerContextAccess,Behaviors, DefaultContextInteractions
 
 	protected val privateSpacesListeners = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>)
 	

@@ -37,7 +37,7 @@ behavior SingleDetectorObserverRole extends PythonTwinObserverRole {
 	}
 	
 	def startRole {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		warning("TODO: auto-generated method stub")
 	}
 	
 }

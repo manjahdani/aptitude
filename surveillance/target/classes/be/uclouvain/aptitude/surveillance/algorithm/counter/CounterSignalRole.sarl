@@ -28,7 +28,8 @@ behavior CounterSignalRole extends SensorRole {
 	val CONFIG_PATH = "F:/aptitude/surveillance/src/main/resources/config/evalconfig.json"
 	
 	def processingMissionWithID (mID : UUID) {
-		setSkill(new EvaluationImpl, Evaluation, PythonTwinAccessCapacity)
+		setSkill(new EvaluationImpl(CONFIG_PATH, ADN.get.name, computation_location.get), Evaluation,
+			PythonTwinAccessCapacity)
 		if (missionList.get(mID).dynamicAdaptationEnabled) {
 			info("Let the competition start !")
 			registerBehavior(new AlgorithmSelectorRole(this.owner),

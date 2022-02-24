@@ -1,0 +1,69 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.detector
+
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import be.uclouvain.organisation.platform.util.Metadata
+import java.util.TreeMap
+import be.uclouvain.organisation.platform.util.SurveillanceMissionData
+import be.uclouvain.organisation.platform.ObserverRole
+import java.util.Collections
+import java.util.HashMap
+import be.uclouvain.organisation.platform.util.HyperParameters
+import java.util.UUID
+import java.util.LinkedList
+import io.sarl.core.Lifecycle
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Behaviors
+import io.sarl.core.ExternalContextAccess
+import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
+import io.sarl.core.OpenEventSpaceSpecification
+import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior CooperativeMasterStudentDetectorsRole extends ObserverRole {
+	uses Logging, Lifecycle, InnerContextAccess, Behaviors, ExternalContextAccess
+	
+	val detectors = new TreeMap<String, Metadata> // @FIXME HIGH should be given by the Analyst which makes it configurable ?
+	protected val detector_innerTrackerMap = Collections.synchronizedMap(new HashMap<String, UUID>)
+	protected val innerTracker_detectorsMap = Collections.synchronizedMap(new HashMap<UUID, String>)
+	protected val innerTracker_ParametersMap = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>)
+
+	val hyperParametersToBeTested = Collections.synchronizedList(new LinkedList<HyperParameters>)
+	
+	
+	on Initialize {
+		detectors.put("BACKGROUND", new Metadata(0, "VEHICLE"))
+		detectors.put("YOLO", new Metadata(1, "VEHICLE"))
+
+		info("Multi-tracker role started.")
+		emit(selfSpace, new ScenarioInfoRequest)
+		hyperParametersToBeTested.addAll(occurrence.parameters.get(1) as LinkedList<HyperParameters>)
+		detectors.putAll(occurrence.parameters.get(2) as TreeMap<String, Metadata>)
+	}
+
+	def startRole {
+		for (d : detectors.keySet) {
+			val internalMissionID = UUID.randomUUID
+			val newInternalMission = new SurveillanceMissionData(internalMissionID, this.ID, organizationContext.get.ID,
+				detectors.get(d).performance, false)
+			orderedMissionList.put(internalMissionID, newInternalMission)
+			innerTracker_ParametersMap.put(internalMissionID, new HyperParameters(detectors.get(d).performance, false))
+			var comSpace = organizationContext.get.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID) // An internal space to communicate with other roles.
+			comSpace.registerStrongParticipant(asEventListener)
+			providers.put(internalMissionID, comSpace)
+			detector_innerTrackerMap.put(d, internalMissionID)
+			innerTracker_detectorsMap.put(internalMissionID, d)
+			spawnInContextWithID(Algorithm, internalMissionID, innerContext,
+				ADN.get.cloneChildWithID(internalMissionID))
+				// requestAlgorithm(internalMissionID,d,"DETECTOR")
+		}
+		
+			// orderedMissionList.put...
+	}
+}

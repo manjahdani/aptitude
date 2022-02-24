@@ -33,11 +33,10 @@ behavior EntityRole extends Role{
 	 */
 
 	on TOLDOrganizationInfo {
-		info("met TOLD - " + occurrence.context.ID.toString.substring(0, 5))
+		//info("met TOLD - " + occurrence.context.ID.toString.substring(0, 5))
 		organizationContext.set(occurrence.context)
 		privateOrganizationSpace.set(
 		retrieveOrCreateOpenSpaceWithID(occurrence.privateCommunicationChannelID))
-		
 		startRole
 		//TOLDSpace.registerStrongParticipant(asEventListener)
 	}

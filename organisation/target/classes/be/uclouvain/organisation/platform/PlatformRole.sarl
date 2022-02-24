@@ -56,7 +56,7 @@ behavior PlatformRole extends OrganizationalRole {
 
 	on TOLDOrganizationInfo {
 		TOLDID.set(occurrence.source.ID)
-		info("met TOLD organisation - " + TOLDID.toString.substring(0, 5))
+		//info("met TOLD organisation - " + TOLDID.toString.substring(0, 5))
 		if (!privateSpacesListeners.containsKey(TOLDID.get)) { // Not Encountered
 			info("TOLD was not encountered")
 			var pChannel = retrieveOrCreateOpenSpaceWithID(occurrence.context, occurrence.privateCommunicationChannelID)

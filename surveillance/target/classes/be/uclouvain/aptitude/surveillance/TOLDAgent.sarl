@@ -78,7 +78,7 @@ agent TOLDAgent extends Paraddis {
 		info("joins organisation - " + occurrence.contextID.toString.substring(0,5))
 		val randomID = UUID.randomUUID
 		var holonConfig = config.addSubTOLD(new TOLDConfig(config.level + 1, occurrence.location, innerContext, new ArrayList<String>), randomID)
-		spawnInContextWithID(TOLDAgent, randomID, getContext(occurrence.contextID), holonConfig)
+		spawnInContextWithID(TOLDAgent, randomID, occurrence.contextID, holonConfig)
 	}
 	
 }

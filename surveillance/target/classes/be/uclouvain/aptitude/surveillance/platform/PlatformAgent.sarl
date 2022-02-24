@@ -34,7 +34,7 @@ agent PlatformAgent extends Paraddis {
 	uses Logging, Behaviors, InnerContextAccess, Lifecycle, DefaultContextInteractions
 
 	 
-	val openChanel : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
+	var openChanel : OpenEventSpace 
 	val platformConfig : AtomicReference<PlatformConfig> = new AtomicReference<PlatformConfig>
 	
 
@@ -48,11 +48,12 @@ agent PlatformAgent extends Paraddis {
 			spawnInContextWithID(PlatformAgent, randomID, innerContext, swc)}
 		if (platformConfig.get.getLevel > 0) {
 			info("Ready to receive operating mission")
+			openChanel = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification,UUID.randomUUID)
 			openChanel.registerStrongParticipant(asEventListener)
 			emitToParent(new AgentPlatform(platformConfig.get.location, this.ID, openChanel))
 			setSkill(new PlatformSkill(platformConfig.get), PlatformCapacity)
 			registerBehavior(new SurveillancePlatformRole(this), platformConfig.get.getLocation)
-			emitToParent(new LocalDatabaseRequest(innerContext.ID)) 
+			emitToParent(new LocalDatabaseRequest(innerContext)) 
 		} else {
 			registerBehavior(new ManagerPlatformRole(this), platformConfig.get.getLocation, occurrence.parameters.get(1))
 		}

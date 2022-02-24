@@ -4,7 +4,8 @@
 package be.uclouvain.organisation.platform.events
 
 
-import java.util.UUID
+
+import io.sarl.lang.core.AgentContext
 
 /** 
  * 
@@ -19,9 +20,9 @@ import java.util.UUID
  */
 event LocalDatabaseRequest {
 	
-	val contextID : UUID
+	val contextID : AgentContext
 	
-	new(ctxt : UUID){
+	new(ctxt : AgentContext) {
 		this.contextID= ctxt
 	}
 }

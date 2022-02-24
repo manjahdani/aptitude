@@ -11,6 +11,7 @@ import io.sarl.core.Initialize
 import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
 import io.sarl.core.ExternalContextAccess
 import be.uclouvain.organisation.platform.events.ScenarioInfo
+import io.sarl.core.Logging
 
 /** 
  * @author manjah
@@ -21,10 +22,16 @@ import be.uclouvain.organisation.platform.events.ScenarioInfo
 
 behavior SingleTrackerObserverRole extends PythonTwinObserverRole {
 	
-	uses TrackerPythonTwinCapacity, ExternalContextAccess
-	
+	uses TrackerPythonTwinCapacity,Logging, ExternalContextAccess
+
+	on PartnerTrackingFound {
+		//info("Tracking Partner found: " +  occurrence.partnerName)
+	}
+
 	on Initialize {
+		info("Multi-tracker role started.")
 		emit(selfSpace, new ScenarioInfoRequest)
+
 	}
 
 	on ScenarioInfo {
@@ -34,16 +41,21 @@ behavior SingleTrackerObserverRole extends PythonTwinObserverRole {
 		checkList.replace("context", true)
 		checkList.replace("computation_location", true)
 	}
-	on PartnerTrackingFound {
-		//info("Tracking Partner found: " +  occurrence.partnerName)
-	}
+
 	on BBoxes2DResult {
 		
+		/**
+		if (occurrence.providerName =="BACKGROUND") {
+			warning(
+				"Received results of frame #" + occurrence.bboxes2D.frameNumber + "\n x=" + occurrence.bboxes2D.bboxes.toString
+			)
+
+		}*/
 		Signal2Perception(occurrence.bboxes2D)
 	}
 	
 	def startRole {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		warning("TODO: auto-generated method stub")
 	}
 	
 }

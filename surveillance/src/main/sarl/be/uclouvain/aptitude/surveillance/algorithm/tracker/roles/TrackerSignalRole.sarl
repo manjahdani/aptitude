@@ -22,6 +22,8 @@ import java.util.ArrayList
 import java.util.LinkedList
 import java.util.TreeMap
 import java.util.UUID
+import io.sarl.core.DefaultContextInteractions
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ReadyToTrack
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -43,17 +45,18 @@ import java.util.UUID
  */
 behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH ITS ACTUALLY A SUB-AGENT TRACKER WE ARE BYPASSING THAT.... 
 	
-	uses Logging, TrackerPythonTwinCapacity, Behaviors, ExternalContextAccess
+	uses Logging, TrackerPythonTwinCapacity, Behaviors, ExternalContextAccess, DefaultContextInteractions
 	
 	val detectors = new TreeMap<String, Metadata> // @FIXME HIGH should be given by the Analyst which makes it configurable ?
 
 	var totalTrackerTime : double = 0
 	var totalDetectorTime : double = 0
 
-	var frameLimit : int = 100
+	var frameLimit : int = 2370
 	on Initialize {
-		detectors.put("YOLO", new Metadata(0, "VEHICLE"))
-		detectors.put("YOLO-COCO",new Metadata(1,"PEOPLE"))
+		detectors.put("BACKGROUND", new Metadata(0, "VEHICLE"))
+		detectors.put("YOLO", new Metadata(1, "VEHICLE"))
+		//detectors.put("YOLO-COCO",new Metadata(1,"PEOPLE"))
 	}
 	on LastFrame {
 		info("Transmitting to my listeners" + listeners.keySet)
@@ -122,7 +125,7 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 	
 	on ResumeTrackingMission {
 		info("Resuming mission" + occurrence.missionID +" with "+ occurrence.detector)
-		setSkill(new TrackerPythonTwinSkill(ADN.get.belief, ADN.get.platformName, computation_location.get))
+		setSkill(new TrackerPythonTwinSkill(ADN.get.belief, ADN.get.platformName,computation_location.get))
 		registerBehavior(new SingleTrackerObserverRole(this.owner))
 		info("Come here " + occurrence.detector)
 		missionList.get(occurrence.missionID).dynamicAdaptation = false		
@@ -149,15 +152,22 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 		} 
 		else {
 			setSkill(new TrackerPythonTwinSkill(ADN.get.belief, ADN.get.platformName, computation_location.get))
+			registerBehavior(new SingleTrackerObserverRole(this.owner), ADN.get)
+//			enableDataAcquisition(mID, newArrayList(detectors.keySet.get(0)),
+//				"DETECTOR") 		// @FIXME VERY VERY VERY VERY HIGH FOIREUX DE CHEZ FOIREUX
+//			//}
+			enableDataAcquisition(mID, newArrayList(detectors.keySet.get(missionList.get(mID).cautionLevel)),
+				"DETECTOR") // @FIXME VERY VERY VERY VERY HIGH FOIREUX DE CHEZ FOIREUX
 			
-			enableDataAcquisition(mID, newArrayList(detectors.keySet.get(missionList.get(mID).cautionLevel)), "DETECTOR") //@FIXME VERY VERY VERY VERY HIGH FOIREUX DE CHEZ FOIREUX
 			}
 		}
 	
 	def startRole {
-		warning("TODO: auto-generated method stub")
+		info("ReadyToTrack")
+		emitToParent(new ReadyToTrack)
 	}
-}
+	
+	}
 
 
 

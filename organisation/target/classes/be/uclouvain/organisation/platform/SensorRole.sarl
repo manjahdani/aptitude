@@ -84,7 +84,6 @@ abstract behavior SensorRole extends ScenarioRole {
 	def enableDataAcquisition(mID : UUID, signals : ArrayList<String>, signalType : String) {
 
 		for (s : signals) {
-
 			info("Sensor request " + s + " as " + signalType)
 			emit(selfSpace, new RecruitSignal(missionList.get(mID), s, signalType))
 		}

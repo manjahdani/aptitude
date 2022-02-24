@@ -9,7 +9,6 @@ import io.sarl.core.Destroy
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
 import java.util.UUID
-import io.sarl.core.Behaviors
 
 behavior DetectorSignalRole extends SensorRole {
 	

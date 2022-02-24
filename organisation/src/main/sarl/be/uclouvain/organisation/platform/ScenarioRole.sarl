@@ -27,10 +27,9 @@ abstract behavior ScenarioRole extends Role {
 	
 	
 	protected var ADN = new AtomicReference<AlgorithmInfo>
-	
-	
 	protected var computation_location = new AtomicReference<String>
 	protected val checkList = Collections.synchronizedMap(new HashMap<String, Boolean>)
+	
 	on Initialize {
 		checkList.put("context", false)
 		checkList.put("computation_location", false)
@@ -45,14 +44,13 @@ abstract behavior ScenarioRole extends Role {
 	}
 
 	on ComputationalRessources {
-		info("received computation_location: " + occurrence.client_id)
+		//info("received computation_location: " + occurrence.client_id)
 		computation_location.set(occurrence.client_id)
 		checkList.replace("computation_location", true)
 	}
 	on PlatformOrganizationInfo {
 
 		updateContextInfo(occurrence.context, occurrence.privateCommunicationChannelID)
-		emit(organizationContext.get.defaultSpace, new Identification(getName()))
 		ADN.get.platformName = occurrence.platformName
 		checkList.replace("context", true)
 	}
@@ -66,10 +64,6 @@ abstract behavior ScenarioRole extends Role {
 			info("I do not recognize the provider" + occurrence.expertID)
 		 * }
 		 */
-	}
-
-	def getName : String {
-		return ADN.get.name
 	}
 	on LeavePlatform { // @TODO HIGH program a behavior on LeavePlatform
 		// join(BaseContext.ID, BaseSpace.spaceID.ID)

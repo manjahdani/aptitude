@@ -7,11 +7,9 @@ import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ResumeTrackingMission
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingRequest
-import be.uclouvain.organisation.events.AddMember
+import be.uclouvain.organisation.events.JoinPlatform
 import be.uclouvain.organisation.platform.ObserverRole
-import be.uclouvain.organisation.platform.PlatformOrganizationInfo
 import be.uclouvain.organisation.platform.events.AddMission
-import be.uclouvain.organisation.platform.events.ComputationalRessources
 import be.uclouvain.organisation.platform.events.PauseMission
 import be.uclouvain.organisation.platform.events.ScenarioInfo
 import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
@@ -26,13 +24,13 @@ import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
-import io.sarl.core.MemberJoined
 import io.sarl.core.OpenEventSpaceSpecification
 import java.util.Collections
 import java.util.HashMap
 import java.util.LinkedList
 import java.util.TreeMap
 import java.util.UUID
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ReadyToTrack
 
 /** 
  * @author manjah
@@ -91,7 +89,8 @@ behavior MultiTrackerObserverRole extends ObserverRole {
 		
 		val mData = orderedMissionList.values.findFirst[signalID==detectorID]
 		info("Pausing mission" + mData.missionID + detectorID)
-		emit(providers.get(detectorID), new PauseMission(mData.missionID))[it.ID == detectorID]
+		//wake
+		//emit(providers.get(detectorID), new PauseMission(mData.missionID))[it.ID == detectorID]
 	}
 
 	on BBoxes2DResult {
@@ -99,6 +98,7 @@ behavior MultiTrackerObserverRole extends ObserverRole {
 		if(occurrence.bboxes2D.frameNumber <5){
 		warning("Sending results of frame #" + occurrence.bboxes2D.frameNumber + 
 			" from " + occurrence.providerName + " to " + detector_innerTrackerMap.get(occurrence.providerName))
+		
 		}
 		// We send to the sub-process meant to analyse the data of the provider. 
 		// For example, agent 1 process the data sent from detector A. 
@@ -119,33 +119,25 @@ behavior MultiTrackerObserverRole extends ObserverRole {
 			innerTracker_detectorsMap.put(internalMissionID, d)
 			spawnInContextWithID(Algorithm, internalMissionID, innerContext,
 				ADN.get.cloneChildWithID(internalMissionID))
-			requestAlgorithm(internalMissionID,d,"DETECTOR")
+			//requestAlgorithm(internalMissionID,d,"DETECTOR")
 			
 		}
 		
 		//orderedMissionList.put... 
 	}
 	
+	on ReadyToTrack {
+		val mbID = occurrence.source.ID
+		wake(new AddMission(mbID, providers.get(mbID).spaceID.ID)) [
+			it.ID == mbID
+		]
+	}
+	
 	on AgentSpawned {
-
 		// In this, we choose that the missionID is equivalent to the subprocess ID
 		val mbID = occurrence.agentID
 		if(memberAgents.contains(mbID)){
-		
-		info("MemberJoined" + mbID + "type" + occurrence.agentType)
-		wake(
-			new PlatformOrganizationInfo(organizationContext.get, privateOrganizationSpace.get.spaceID.ID,
-				this.ADN.get.platformName))[it.ID == mbID]
-		wake(new ComputationalRessources(computation_location.get))[it.ID == mbID]
-
-		emit(selfSpace, new AddMember(mbID, providers.get(mbID)))
-		wake(new AddMission(mbID, providers.get(mbID).spaceID.ID)) [
-			it.ID == mbID
-		]}
-	}
-	on MemberJoined {
-		
-		
-		
-	}
+		wake(new JoinPlatform(organizationContext.get, ADN.get.platformName))[it.ID ==mbID]
+		}
+	}	
 }

@@ -4,14 +4,15 @@
 package be.uclouvain.aptitude.surveillance.evaluation
 
 import be.uclouvain.python_access.CommunicationManager
-import be.uclouvain.python_access.EvaluationResult
-import be.uclouvain.python_access.PartnerEvaluationFound
-import be.uclouvain.python_access.PythonTwinAccess
 import be.uclouvain.python_access.messages.BaseMessage
 import be.uclouvain.python_access.messages.EvaluationMessage
 import be.uclouvain.python_access.messages.RequestMessage
 import io.sarl.core.Behaviors
 import io.sarl.core.Schedules
+import be.uclouvain.python_access.PythonTwinAccess
+import be.uclouvain.python_access.EvaluationResult
+import be.uclouvain.python_access.PartnerEvaluationFound
+import io.sarl.core.Logging
 import java.util.UUID
 
 /** 
@@ -26,7 +27,7 @@ import java.util.UUID
  */
 skill EvaluationImpl extends PythonTwinAccess implements Evaluation {
 
-	uses Behaviors, Schedules
+	uses Behaviors, Schedules, Logging
 
 	def update(m : BaseMessage) {
 		if (m instanceof EvaluationMessage) {
@@ -37,21 +38,25 @@ skill EvaluationImpl extends PythonTwinAccess implements Evaluation {
 			onRequestMessage(m)
 		}
 	}
+
 	private def onRequestMessage(message : RequestMessage) {
 		if (message.ack && message.requestID == this.pendingRequestID) {
 			requestTask.cancel
 			CommunicationManager.instance.unsubscribeTopic(topicRequestSub.toString)
-			topicRequestSub.set(null)
+			topicRequestSub = null
 			val topicName = "evaluation_" + owner.ID.toString + "_" + message.clientName
-			topicSignalAcquisition.set(CommunicationManager.instance.subscribeTopic(topicName, this))
+			topicSignalAcquisition = CommunicationManager.instance.subscribeTopic(topicName, this)
+			info("EvalPartnerFound")
 			wake(new PartnerEvaluationFound(message.clientName))
 		}
 	}
+
 	def sendEvaluationRequest(requestID : String, predictions : String, gts : String) {
 
 		sendEvaluationRequest(requestID, predictions, gts, -1)
 
 	}
+
 	def sendEvaluationRequest(requestID : String, predictions : String, gts : String, maxFrame : int) {
 		var evalMessage = new EvaluationMessage()
 		evalMessage.requestID = UUID.fromString(requestID)
@@ -62,4 +67,9 @@ skill EvaluationImpl extends PythonTwinAccess implements Evaluation {
 		}
 		CommunicationManager.instance.publishMessage(topicSignalAcquisition.toString, evalMessage)
 	}
+	
+	def start {
+		
+	}
+	
 }

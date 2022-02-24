@@ -26,6 +26,10 @@ import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.roles.SingleTrackerObserverRole
 import be.uclouvain.aptitude.surveillance.algorithm.detector.SingleDetectorObserverRole
+import be.uclouvain.organisation.events.JoinPlatform
+import io.sarl.lang.core.AgentContext
+import be.uclouvain.organisation.platform.PlatformOrganizationInfo
+import be.uclouvain.organisation.events.Identification
 
 /** 
  * Agent with a set of tasks (Goals) and a model (Belief). 
@@ -70,7 +74,7 @@ agent Algorithm extends Paraddis{
 	val ADN  = new AtomicReference<AlgorithmInfo>
 
 	val agentPlatformSpaces = new HashMap<String, OpenEventSpace>
-	var subHolons = new HashMap<UUID,UUID>
+	var subHolons = new HashMap<AgentContext, UUID>
 	var openChanel = new AtomicReference<OpenEventSpace>
 	
 	on Initialize {
@@ -97,7 +101,6 @@ agent Algorithm extends Paraddis{
 				}
 				case "TRACKER": {
 					registerBehavior(new TrackerSignalRole(this), ADN.get)
-					registerBehavior(new SingleTrackerObserverRole(this), ADN.get)
 				}
 				case "DETECTOR": {
 					registerBehavior(new DetectorSignalRole(this), ADN.get)
@@ -111,11 +114,15 @@ agent Algorithm extends Paraddis{
 	}
 
 	on AgentPlatform {
-		debug("encounters : " + occurrence.name + " agent")
+		info("encounters : " + occurrence.name + " agent")
 		agentPlatformSpaces.put(occurrence.name, occurrence.topic)
 		occurrence.topic.registerStrongParticipant(asEventListener)
 		emit(occurrence.topic, new AgentAlgorithm(ADN.get.name, openChanel.get))
 		wake(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it.ID !== this.ID]
+	}
+	
+	on JoinPlatform {
+		join(occurrence.contextID.ID,occurrence.contextID.defaultSpace.spaceID.ID)
 	}
 	
 	on AlgorithmNeeded  { //
@@ -127,14 +134,16 @@ agent Algorithm extends Paraddis{
 			subHolons.put(occurrence.contextID, cloneID)
 			
 			
-			spawnInContextWithID(Algorithm, cloneID, getContext(occurrence.contextID),
+			spawnInContextWithID(Algorithm, cloneID, occurrence.contextID,
 				ADN.get.cloneChildWithID(cloneID))
 		}}//@FIXME LOW we could have a table of each child, so that we could direct the information to it. 
 	on AlgorithmJoinPlatform {
 		debug("deploys " + ADN.get.task + " named " + occurrence.name + " performing for " + occurrence.source.ID.toString.substring(0, 5))
 		wake(new AlgorithmNeeded(occurrence.contextID, occurrence.name, ADN.get.task, ADN.get.belief))
 	}
-
+	on PlatformOrganizationInfo {
+		emit( occurrence.context.defaultSpace,new Identification(ADN.get.name))
+	}
 
 }
 

@@ -64,14 +64,14 @@ behavior CounterObserverRole extends ObserverRole {
 		Signal2Perception(new ArrayList(objectToBeAnalyzed))
 		}
 		
-	on LastFrame {
+	/**on LastFrame {
 		info("That was it for Couting!")
 		//val totalTime = (((System.currentTimeMillis() - this.start) / 1000))
 		//info("It took " + totalTime.toString + " seconds")
 		//info("Average FPS : " + (occurrence.frameNumber / totalTime).toString)
 		info("I will transfer my perception to the Analyst")
 		DisplayPerception(1)
-	}
+	}*/
 	
 	on BBoxes2DTrackResultToCounter {
 		//info("I received BBOX2TrackResults")

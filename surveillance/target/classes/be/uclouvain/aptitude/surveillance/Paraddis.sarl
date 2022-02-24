@@ -27,7 +27,7 @@ import io.sarl.core.Behaviors
 
 
 agent Paraddis {
-	uses Lifecycle, Logging, InnerContextAccess, Schedules
+	uses Lifecycle, Logging, InnerContextAccess, Schedules, Behaviors
 
 	protected var AgentType : String = 'Unknown'
 	
@@ -128,5 +128,5 @@ agent Paraddis {
 		}
 	]
 }
-uses Behaviors
+
 }

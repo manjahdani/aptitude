@@ -48,17 +48,22 @@ behavior AlgorithmSelectorRole extends Role {
 	
 	on PartnerEvaluationFound {
 		//partnerName = occurrence.partnerName
-		//info("I found my partner" + partnerName)
+		
+		info("Eval found partner" + occurrence.partnerName)
 		this.compDuration = System.currentTimeMillis()
 	}
 
 	
 	on LastFrame {
-		debug("Obtained the path to observations " + occurrence.pred_file_Path + " that stopped at frame " + occurrence.frameNumber)
-		info("Sending to evaluation")
+		info("Obtained the path to observations " + occurrence.pred_file_Path +"\n"
+			+ " that stopped at frame " 
+			+ occurrence.frameNumber
+		)
+		
 		var predictions = new String(Files.readAllBytes(Paths.get(occurrence.pred_file_Path)));
 		var testID = UUID.randomUUID
-		addResult(testID,
+		info("Sending to evaluation" + testID)
+		addEvalutionResults(testID,
 			new EvaluationResults(
 				occurrence.source.ID, 
 				occurrence.observerID, 
@@ -76,9 +81,10 @@ behavior AlgorithmSelectorRole extends Role {
 
 		synchronized (this) {
 			 info("Message Evaluation Received")
-			if (addResult(occurrence.result.requestID, occurrence.result)) {
+			if (processEvaluationMessage(occurrence.result.requestID, occurrence.result)) {
 				numberTests += 1
-				info("Recording the result of Competitor " + numberTests)
+				info("Recording the result" +"numberTests of Competitor " + occurrence.result.requestID)
+				info("HOTA" + occurrence.result.HOTA)
 				if (numberTests == 2) {
 					var selected = selectAlgorithm()
 					

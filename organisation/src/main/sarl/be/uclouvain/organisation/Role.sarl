@@ -38,9 +38,9 @@ abstract behavior Role {
 		organizationContext.set(ctxt) // Update the organization
 		privateOrganizationSpace.set(retrieveOrCreateOpenSpaceWithID(sid))
 		privateOrganizationSpace.get.registerStrongParticipant(asEventListener)
-		info("obtained organization info : " + ctxt.ID + 
-		" \n with private Space [ \n id = " + privateOrganizationSpace.get.spaceID.ID + "\n contextID = " +
-			privateOrganizationSpace.get.spaceID.contextID + "]\n")
+		//info("obtained organization info : " + ctxt.ID + 
+		//" \n with private Space [ \n id = " + privateOrganizationSpace.get.spaceID.ID + "\n contextID = " +
+			//privateOrganizationSpace.get.spaceID.contextID + "]\n")
 	}
 	
 	def retrieveOrCreateOpenSpaceWithID(sid:UUID) {

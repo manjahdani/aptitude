@@ -55,7 +55,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	
 	on Identification {
 		
-		debug("new participant: " + occurrence.fullName )
+		info("new participant: " + occurrence.fullName )
 		participants.put(occurrence.fullName, occurrence.source.ID)
 		wake(new ComputationalRessources(allocated_ressource.get))[it.ID == occurrence.source.ID]
 	}
@@ -76,7 +76,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 					if (!request.contains(signal)) {
 						request.add(signal.name)
 						emit(agentAlgorithm.get(occurrence.signalProvider.task),
-							new AlgorithmJoinPlatform(this.ID, signal.name))}
+							new AlgorithmJoinPlatform(innerContext, signal.name))}
 					waitfor(occurrence.missionID,signal.name, occurrence.source.ID)
 				} else {
 					debug("Algorithm is already available" + signal.name)

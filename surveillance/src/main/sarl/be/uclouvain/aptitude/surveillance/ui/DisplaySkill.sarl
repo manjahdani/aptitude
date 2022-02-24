@@ -53,4 +53,9 @@ skill DisplaySkill extends PythonTwinAccess implements DisplayCapacity {
 	def update(m : BaseMessage) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
+	
+	def start {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
 }
