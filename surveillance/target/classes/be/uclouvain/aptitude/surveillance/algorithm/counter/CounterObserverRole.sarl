@@ -14,6 +14,7 @@ import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.HashMap
+import java.util.UUID
 
 /** 
  * The CounterRole is a behaviour that an agent Algorithm endorses upon a mission to count vehicles
@@ -99,7 +100,11 @@ behavior CounterObserverRole extends ObserverRole {
 	}
 	
 	def startRole {
-		warning("CounterObserverRole started Nothing needs to be done")
+		warning("Counter observer role started -  Nothing needs to be done")
+	}
+	
+	def processingMissionWithID(mID : UUID) {
+		warning("SingleCounter Started: auto-generated method stub")
 	}
 	
 }

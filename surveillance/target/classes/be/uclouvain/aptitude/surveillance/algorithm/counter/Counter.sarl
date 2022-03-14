@@ -1,0 +1,34 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.counter
+
+import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
+import be.uclouvain.aptitude.surveillance.algorithm.RegisterUnitaryRole
+import io.sarl.core.Behaviors
+import be.uclouvain.aptitude.surveillance.algorithm.BecomeManager
+import io.sarl.core.DefaultContextInteractions
+import be.uclouvain.aptitude.surveillance.algorithm.RoleRegistered
+import io.sarl.core.Logging
+
+/** 
+ * @author manjah
+ * 
+ */
+agent Counter extends Algorithm {
+	uses Behaviors, DefaultContextInteractions, Logging
+	
+	on RegisterUnitaryRole {
+		info("Registering behaviours as atomic Counter")
+		registerBehavior(new CounterSignalRole(this), ADN.get)
+		registerBehavior(new CounterObserverRole(this), ADN.get)
+		emitToParent(new RoleRegistered)
+	}
+
+	on BecomeManager {
+		info("Registering behaviours as manager Counter")
+		registerBehavior(new CounterManagerObserverRole(this), ADN.get)
+		registerBehavior(new CounterManagerSensorRole(this), ADN.get)
+		emitToParent(new RoleRegistered)
+	}
+}

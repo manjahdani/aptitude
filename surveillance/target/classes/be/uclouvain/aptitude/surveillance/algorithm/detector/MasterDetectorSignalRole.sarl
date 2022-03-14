@@ -1,0 +1,44 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.detector
+
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import be.uclouvain.python_access.BBoxes2DResult
+import io.sarl.core.DefaultContextInteractions
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.NoActivity
+import be.uclouvain.organisation.platform.events.PauseMission
+import io.sarl.core.ExternalContextAccess
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior MasterDetectorSignalRole extends DetectorSignalRole {
+	uses Logging, DefaultContextInteractions, ExternalContextAccess
+
+	on Initialize {
+		info("Master started")
+	}
+
+	on BBoxes2DResult {
+		for (listenersSpace : listeners.values) {
+			emit(listenersSpace, new BBoxes2DResult(occurrence.bboxes2D, ADN.get.name))[it.ID !== this.ID]
+	}
+	
+	
+	}
+
+	/** 
+	
+	on BBoxes2DResult {
+		// info("Detector - frameNumber- lastframe " + occurrence.bboxes2D.frameNumber + occurrence.bboxes2D.lastFrame)
+		if (occurrence.bboxes2D.bboxes.isEmpty) {
+			warning("NoActivity")
+			emitToParent(new NoActivity(occurrence.bboxes2D.frameNumber))
+			emit(selfSpace,new PauseMission(this.ID))
+		}
+	}*/
+
+}

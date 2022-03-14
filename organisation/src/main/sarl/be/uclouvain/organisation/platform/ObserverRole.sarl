@@ -1,14 +1,13 @@
 package be.uclouvain.organisation.platform
 
 import be.uclouvain.organisation.events.SignalID
+import be.uclouvain.organisation.platform.events.AddAlgorithm
 import be.uclouvain.organisation.platform.events.AddMission
-import be.uclouvain.organisation.platform.events.AddObserver
 import be.uclouvain.organisation.platform.events.HyperParametersRequest
 import be.uclouvain.organisation.platform.events.LeavePlatform
 import be.uclouvain.organisation.platform.events.ProcessingHyperParameters
 import be.uclouvain.organisation.platform.events.ResumeMission
 import be.uclouvain.organisation.platform.util.SurveillanceMissionData
-import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
@@ -19,6 +18,8 @@ import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import be.uclouvain.organisation.platform.events.AddObserver
 
 /** 
  * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 
@@ -53,7 +54,8 @@ abstract behavior ObserverRole extends ScenarioRole {
 	protected val providers = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
 	//protected var processingParameters = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>) // 
 	protected val orderedMissionList = Collections.synchronizedMap(new HashMap<UUID, SurveillanceMissionData>) // A map between mission ID that it ordered to another observer and their data
-	protected val isRoleActive = new AtomicBoolean(true)
+	
+	
 	on HyperParametersRequest {
 
 		// We decide that derived role handles the parameters request of inner-agents.
@@ -62,7 +64,7 @@ abstract behavior ObserverRole extends ScenarioRole {
 		var providerID = occurrence.source.ID
 		info("param requests from agentID=" + providerID.toString.substring(0, 5)) 
 		var MD = orderedMissionList.get(occurrence.missionID)
-		info("sending param" + " s =" + MD.cautionLevel + "to " + providerID.toString.substring(0, 5))
+		info("sending param" + " s = " + MD.cautionLevel + " to " + providerID.toString.substring(0, 5))
 		emit(providers.get(providerID), new ProcessingHyperParameters(
 			occurrence.missionID, orderedMissionList.get(occurrence.missionID).hyperParameters))[it.ID == providerID]
 	}
@@ -86,7 +88,7 @@ abstract behavior ObserverRole extends ScenarioRole {
 		else{
 			//@FIXME HIGH N'imp
 			info("Known signal = " + signalID)
-			emit(providers.get(signalID),new ResumeMission(missionID, true))[this.ID == signalID]
+			emit(providers.get(signalID),new ResumeMission(missionID, true))[it.ID == signalID]
 			info("Trying now in the default")
 			emit(organizationContext.get.defaultSpace, new ResumeMission(missionID, true))[it.ID == signalID]
 		}
@@ -106,7 +108,7 @@ abstract behavior ObserverRole extends ScenarioRole {
 	// @FIXME LOW the setup is here as at a higher level, there is no possibly to have another name than observer which trigers the same
 	// maybe it is possible to improve that
 	def setup() {
-		info("setup of the role observer agent")
+		debug("setup of the role observer agent")
 		task("initObs").every(1000) [
 			if (areAllTrue(checkList.values)) {
 				startRole()
@@ -123,12 +125,12 @@ abstract behavior ObserverRole extends ScenarioRole {
 		
 		orderedMissionList.put(occurrence.missionData.missionID, occurrence.missionData)
 		if (privateOrganizationSpace.get !== null) {
-			requestAlgorithm(occurrence.missionData.missionID, occurrence.name, occurrence.task)
+			requestAlgorithm(occurrence.missionData.missionID, occurrence.task)
 		}
 		else{
 			task("recuitSignal".concat(occurrence.missionData.missionID.toString)).every(100) [
 				if (privateOrganizationSpace.get !== null) {
-					requestAlgorithm(occurrence.missionData.missionID, occurrence.name, occurrence.task)
+					requestAlgorithm(occurrence.missionData.missionID, occurrence.task)
 					task("recuitSignal".concat(occurrence.missionData.missionID.toString)).cancel
 				}
 				else{
@@ -136,17 +138,33 @@ abstract behavior ObserverRole extends ScenarioRole {
 				}
 			]
 		}
+		processingMissionWithID(occurrence.missionData.missionID)
 	}
 
-	def requestAlgorithm(mID : UUID, algoName : String, algoTask : String) {
-		
-		info("Observer recruits request for name = " + algoName + " t = " +algoTask)
-		
-		emit(privateOrganizationSpace.get, new AddObserver(
-			mID,
-			new AlgorithmInfo(algoName, algoTask),
-			new AlgorithmInfo(ADN.get.name, ADN.get.task)
-		))[it.ID == organizationContext.get.ID]
+	on ProcessMission{
+
+		orderedMissionList.put(occurrence.missionData.missionID, occurrence.missionData)
+		processingMissionWithID(occurrence.missionData.missionID)
+	}
+
+	//	def requestAlgorithm(mID : UUID, algoName : String, algoTask : String) {
+//		
+//		info("Observer recruits request for name = " + algoName + " t = " +algoTask)
+//		
+//		//emit(privateOrganizationSpace.get, new AddAlgorithm(mID, algoTask))
+//		
+//		emit(privateOrganizationSpace.get, new AddObserver(
+//			mID,
+//			new AlgorithmInfo(algoName, algoTask),
+//			new AlgorithmInfo(ADN.get.name, ADN.get.task)
+//		))[it.ID == organizationContext.get.ID]
+//	}
+
+	def requestAlgorithm(mID : UUID, algoTask : String) {
+
+		info("Observer recruits request t = " + algoTask)
+
+		emit(privateOrganizationSpace.get, new AddAlgorithm(mID, algoTask))
 	}
 }
 

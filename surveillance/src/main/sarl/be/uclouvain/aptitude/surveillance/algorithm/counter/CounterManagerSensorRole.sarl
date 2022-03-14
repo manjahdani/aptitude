@@ -1,0 +1,45 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.counter
+
+import be.uclouvain.organisation.platform.SensorRole
+import io.sarl.core.AgentKilled
+import io.sarl.core.AgentSpawned
+import io.sarl.core.ContextJoined
+import io.sarl.core.ContextLeft
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.core.MemberJoined
+import io.sarl.core.MemberLeft
+import io.sarl.core.ParticipantJoined
+import io.sarl.core.ParticipantLeft
+import io.sarl.core.SpaceCreated
+import io.sarl.core.SpaceDestroyed
+import java.util.UUID
+import be.uclouvain.organisation.platform.RecruitSignal
+import be.uclouvain.organisation.platform.ProcessMission
+import io.sarl.core.ExternalContextAccess
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior CounterManagerSensorRole extends SensorRole {
+	uses Logging, ExternalContextAccess
+
+	on Initialize {
+		// Event trigger before the behavior begin to live or to be used.
+		// You should put all the initialization statements in this block of code.
+		info("The behavior was started.")
+	}
+
+	override processingMissionWithID(mID : UUID) {
+		emit(selfSpace, new ProcessMission(missionList.get(mID)))
+	}
+
+	override startRole {
+		warning("nothingToBeDone")
+	}
+}

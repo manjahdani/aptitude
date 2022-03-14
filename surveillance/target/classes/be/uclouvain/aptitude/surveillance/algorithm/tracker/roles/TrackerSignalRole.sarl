@@ -4,6 +4,7 @@ import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinCapacity
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinSkill
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingTaskOver
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ReadyToTrack
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ResumeTrackingMission
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingPerception
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
@@ -11,19 +12,13 @@ import be.uclouvain.organisation.platform.SensorRole
 import be.uclouvain.organisation.platform.events.LeavePlatform
 import be.uclouvain.organisation.platform.events.ScenarioInfo
 import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
-import be.uclouvain.organisation.platform.util.HyperParameters
-import be.uclouvain.organisation.platform.util.Metadata
 import be.uclouvain.python_access.BBoxes2DTrackResult
 import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import java.util.ArrayList
-import java.util.LinkedList
-import java.util.TreeMap
 import java.util.UUID
-import io.sarl.core.DefaultContextInteractions
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ReadyToTrack
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -46,18 +41,12 @@ import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ReadyToTrack
 behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH ITS ACTUALLY A SUB-AGENT TRACKER WE ARE BYPASSING THAT.... 
 	
 	uses Logging, TrackerPythonTwinCapacity, Behaviors, ExternalContextAccess, DefaultContextInteractions
-	
-	val detectors = new TreeMap<String, Metadata> // @FIXME HIGH should be given by the Analyst which makes it configurable ?
 
 	var totalTrackerTime : double = 0
 	var totalDetectorTime : double = 0
 
-	var frameLimit : int = 2370
-	on Initialize {
-		detectors.put("BACKGROUND", new Metadata(0, "VEHICLE"))
-		detectors.put("YOLO", new Metadata(1, "VEHICLE"))
-		//detectors.put("YOLO-COCO",new Metadata(1,"PEOPLE"))
-	}
+	var frameLimit : int = 1000
+	
 	on LastFrame {
 		info("Transmitting to my listeners" + listeners.keySet)
 		for (l : listeners.keySet) {
@@ -92,10 +81,9 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 			]		
 		}
 		
-		if (occurrence.bboxes2DTrack.frameNumber % 100 ==0){
-			info("Processed #" + occurrence.bboxes2DTrack.frameNumber +"frames")
-		}
-		if (occurrence.bboxes2DTrack.lastFrame || occurrence.bboxes2DTrack.frameNumber > frameLimit) {
+		info("Processed frame #" + occurrence.bboxes2DTrack.frameNumber)
+		
+		if (occurrence.bboxes2DTrack.lastFrame || occurrence.bboxes2DTrack.frameNumber >= frameLimit) {
 			emit(selfSpace, new TrackingTaskOver)
 			
 			info("Tracking job done... " + "sending the information to " + listeners.keySet)
@@ -126,7 +114,7 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 	on ResumeTrackingMission {
 		info("Resuming mission" + occurrence.missionID +" with "+ occurrence.detector)
 		setSkill(new TrackerPythonTwinSkill(ADN.get.belief, ADN.get.platformName,computation_location.get))
-		registerBehavior(new SingleTrackerObserverRole(this.owner))
+		registerBehavior(new SingleTrackerSingleDetectorObserverRole(this.owner))
 		info("Come here " + occurrence.detector)
 		missionList.get(occurrence.missionID).dynamicAdaptation = false		
 		enableDataAcquisition(occurrence.missionID,newArrayList(occurrence.detector), "DETECTOR")
@@ -141,33 +129,47 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 	override processingMissionWithID(mID : UUID) {
 		
 		if (missionList.get(mID).isDynamicAdaptationEnabled) {
-			
-			var hyperParatermersToBeTested = new LinkedList<HyperParameters>
-			var iter = 0 // @FIXME MEDIUM Quick but not robust strategy as if the order of detectors change the system could get confused.
-			for (d : detectors.keySet) {
-				hyperParatermersToBeTested.add(new HyperParameters(iter,false))
-				iter += 1
-			}
-			registerBehavior(new MultiTrackerObserverRole(owner),this.ADN.get, hyperParatermersToBeTested, detectors)
+			registerBehavior(new SingleTrackerMultiDetectorObserverRole(owner),this.ADN.get)
 		} 
 		else {
+			warning("Single Tracker processing mID - " + mID)
 			setSkill(new TrackerPythonTwinSkill(ADN.get.belief, ADN.get.platformName, computation_location.get))
-			registerBehavior(new SingleTrackerObserverRole(this.owner), ADN.get)
-//			enableDataAcquisition(mID, newArrayList(detectors.keySet.get(0)),
-//				"DETECTOR") 		// @FIXME VERY VERY VERY VERY HIGH FOIREUX DE CHEZ FOIREUX
-//			//}
-			enableDataAcquisition(mID, newArrayList(detectors.keySet.get(missionList.get(mID).cautionLevel)),
-				"DETECTOR") // @FIXME VERY VERY VERY VERY HIGH FOIREUX DE CHEZ FOIREUX
-			
+			registerBehavior(new SingleTrackerSingleDetectorObserverRole(this.owner), ADN.get)
+			enableDataAcquisition(mID,"DETECTOR") 
 			}
 		}
 	
 	def startRole {
-		info("ReadyToTrack")
+		warning("ReadyToTrack")
 		emitToParent(new ReadyToTrack)
 	}
 	
 	}
 
-
+/**
+ * 
+ * override processingMissionWithID(mID : UUID) {
+ * 
+ * if (missionList.get(mID).isDynamicAdaptationEnabled) {
+ * 
+ * var hyperParatermersToBeTested = new LinkedList<HyperParameters>
+ * var iter = 0 // @FIXME MEDIUM Quick but not robust strategy as if the order of detectors change the system could get confused.
+ * for (d : detectors.keySet) {
+ * hyperParatermersToBeTested.add(new HyperParameters(iter,false))
+ * iter += 1
+ * }
+ * registerBehavior(new MultiTrackerObserverRole(owner),this.ADN.get, hyperParatermersToBeTested, detectors)
+ * } 
+ * else {
+ * setSkill(new TrackerPythonTwinSkill(ADN.get.belief, ADN.get.platformName, computation_location.get))
+ * registerBehavior(new SingleTrackerObserverRole(this.owner), ADN.get)
+ * //			enableDataAcquisition(mID, newArrayList(detectors.keySet.get(0)),
+ * //				"DETECTOR") 		// @FIXME VERY VERY VERY VERY HIGH FOIREUX DE CHEZ FOIREUX
+ * //			//}
+ * enableDataAcquisition(mID, newArrayList(detectors.keySet.get(missionList.get(mID).cautionLevel)),
+ * "DETECTOR") // @FIXME VERY VERY VERY VERY HIGH FOIREUX DE CHEZ FOIREUX
+ * 
+ * }
+ * }
+ */
 

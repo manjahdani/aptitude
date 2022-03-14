@@ -4,16 +4,32 @@
 package be.uclouvain.aptitude.surveillance.algorithm.tracker
 
 import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
-import io.sarl.core.Initialize
+import be.uclouvain.aptitude.surveillance.algorithm.BecomeManager
+import be.uclouvain.aptitude.surveillance.algorithm.RegisterUnitaryRole
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.roles.MultiTrackerManagerObserverRole
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.roles.MultiTrackerManagerSensorRole
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.roles.TrackerSignalRole
+import io.sarl.core.Behaviors
 import io.sarl.core.Logging
+import be.uclouvain.aptitude.surveillance.algorithm.RoleRegistered
+import io.sarl.core.DefaultContextInteractions
 
 /** 
  * @author manjah
  * 
  */
 agent Tracker extends Algorithm {
-	uses Logging
+	uses Behaviors, Logging, DefaultContextInteractions
 
-	on Initialize {
+	on RegisterUnitaryRole {
+		warning("Becoming atomic tracker")
+		registerBehavior(new TrackerSignalRole(this), ADN.get)
+		emitToParent(new RoleRegistered)
+	}
+	on BecomeManager {
+		info("Becoming a tracker manager")
+		registerBehavior(new MultiTrackerManagerObserverRole(this), ADN.get)
+		registerBehavior(new MultiTrackerManagerSensorRole(this), ADN.get)
+		emitToParent(new RoleRegistered)
 	}
 }

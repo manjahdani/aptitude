@@ -5,16 +5,15 @@ package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
 
 import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ReadyToTrack
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ResumeTrackingMission
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingRequest
 import be.uclouvain.organisation.events.JoinPlatform
 import be.uclouvain.organisation.platform.ObserverRole
 import be.uclouvain.organisation.platform.events.AddMission
-import be.uclouvain.organisation.platform.events.PauseMission
 import be.uclouvain.organisation.platform.events.ScenarioInfo
 import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
 import be.uclouvain.organisation.platform.util.HyperParameters
-import be.uclouvain.organisation.platform.util.Metadata
 import be.uclouvain.organisation.platform.util.SurveillanceMissionData
 import be.uclouvain.python_access.BBoxes2DResult
 import io.sarl.core.AgentSpawned
@@ -28,20 +27,15 @@ import io.sarl.core.OpenEventSpaceSpecification
 import java.util.Collections
 import java.util.HashMap
 import java.util.LinkedList
-import java.util.TreeMap
 import java.util.UUID
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ReadyToTrack
 
 /** 
  * @author manjah
  * 
  */
  
-behavior MultiTrackerObserverRole extends ObserverRole {
+behavior SingleTrackerMultiDetectorObserverRole extends ObserverRole {
 	uses Logging, Lifecycle, InnerContextAccess , Behaviors, ExternalContextAccess
-	
-	var detectors = new TreeMap<String, Metadata> // @FIXME HIGH LOGICIEL PARAMETERS ?
-	
 	
 	protected val detector_innerTrackerMap = Collections.synchronizedMap(new HashMap<String, UUID>)
 	protected val innerTracker_detectorsMap = Collections.synchronizedMap(new HashMap<UUID, String>)
@@ -55,7 +49,6 @@ behavior MultiTrackerObserverRole extends ObserverRole {
 		info("Multi-tracker role started.")
 		emit(selfSpace, new ScenarioInfoRequest)
 		hyperParametersToBeTested.addAll(occurrence.parameters.get(1) as LinkedList<HyperParameters>)
-		detectors.putAll(occurrence.parameters.get(2) as TreeMap<String, Metadata>)
 	}
 
 	on ScenarioInfo {
@@ -69,8 +62,6 @@ behavior MultiTrackerObserverRole extends ObserverRole {
 		
 		val agentID = occurrence.agentID
 		info("Reactivating Access - " + agentID + " - " + innerTracker_detectorsMap.get(agentID) + "for mID" + occurrence.missionID)
-		
-		
 		if (innerTracker_detectorsMap.get(agentID) == "YOLO-COCO"){
 			info("We are more in a horizontal view")
 		}
@@ -78,7 +69,6 @@ behavior MultiTrackerObserverRole extends ObserverRole {
 			info("We are in a vertical view")
 		}
 		wake(new ResumeTrackingMission(occurrence.missionID,innerTracker_detectorsMap.get(agentID)))[it.ID==this.ID]
-		
 	}	
 	
 	on LastFrame {
@@ -105,6 +95,7 @@ behavior MultiTrackerObserverRole extends ObserverRole {
 		//wake(new BBoxes2DResult(occurrence.bboxes2D))[it.ID == detector_innerTrackerMap.get(occurrence.providerName)] 
 	}
 	
+	/** 	
 	def startRole {
 		for(d:detectors.keySet){
 			val internalMissionID = UUID.randomUUID
@@ -125,7 +116,7 @@ behavior MultiTrackerObserverRole extends ObserverRole {
 		
 		//orderedMissionList.put... 
 	}
-	
+	*/
 	on ReadyToTrack {
 		val mbID = occurrence.source.ID
 		wake(new AddMission(mbID, providers.get(mbID).spaceID.ID)) [
@@ -139,5 +130,14 @@ behavior MultiTrackerObserverRole extends ObserverRole {
 		if(memberAgents.contains(mbID)){
 		wake(new JoinPlatform(organizationContext.get, ADN.get.platformName))[it.ID ==mbID]
 		}
-	}	
+	}
+	
+	def processingMissionWithID(mID : UUID) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	def startRole {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
 }

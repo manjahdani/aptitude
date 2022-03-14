@@ -1,0 +1,10 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.detector.events
+
+/** 
+ * @author manjah
+ * 
+ */
+event ReadyToDetect

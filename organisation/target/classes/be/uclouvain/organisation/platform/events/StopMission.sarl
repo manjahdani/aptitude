@@ -30,7 +30,7 @@ import java.util.UUID
  * @mavenartifactid $organisation$
  */
 
-event StopMission {
+final event StopMission {
 
 	val missionID : UUID
 

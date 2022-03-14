@@ -1,0 +1,20 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform.events
+
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+final event StartMission {
+	
+	val missionID : UUID
+	val frameNumber : int
+	new (mID: UUID, f:int){
+		this.missionID = mID
+		this.frameNumber = f
+	}
+}

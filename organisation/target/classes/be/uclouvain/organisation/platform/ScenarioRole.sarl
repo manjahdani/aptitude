@@ -4,7 +4,6 @@
 package be.uclouvain.organisation.platform
 
 import be.uclouvain.organisation.Role
-import be.uclouvain.organisation.events.Identification
 import be.uclouvain.organisation.platform.events.ComputationalRessources
 import be.uclouvain.organisation.platform.events.LeavePlatform
 import be.uclouvain.organisation.platform.events.StopMission
@@ -15,7 +14,9 @@ import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import java.util.Collections
 import java.util.HashMap
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
+import java.util.UUID
 
 /** 
  * @author manjah
@@ -29,6 +30,7 @@ abstract behavior ScenarioRole extends Role {
 	protected var ADN = new AtomicReference<AlgorithmInfo>
 	protected var computation_location = new AtomicReference<String>
 	protected val checkList = Collections.synchronizedMap(new HashMap<String, Boolean>)
+	protected val isRoleActive = new AtomicBoolean(true)
 	
 	on Initialize {
 		checkList.put("context", false)
@@ -71,6 +73,8 @@ abstract behavior ScenarioRole extends Role {
 		// leave(PlatformContext.ID)
 	}
 
+	abstract def processingMissionWithID(mID : UUID)
+	
 	def areAllTrue(array : boolean[]) {
 		for (b : array)
 			if(!b) return false;

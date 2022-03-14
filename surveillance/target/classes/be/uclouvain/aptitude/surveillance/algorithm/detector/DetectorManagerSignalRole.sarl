@@ -1,0 +1,39 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.detector
+
+import be.uclouvain.organisation.platform.ProcessMission
+import be.uclouvain.organisation.platform.SensorRole
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Logging
+import java.util.UUID
+import be.uclouvain.python_access.BBoxes2DResult
+import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior DetectorManagerSignalRole extends SensorRole {
+	uses Logging, ExternalContextAccess
+
+	override processingMissionWithID(mID : UUID) {
+		emit(selfSpace, new ProcessMission(missionList.get(mID)))
+	}
+	
+	on LastFrame {
+		for (listenersSpace : listeners.values) {
+			info("LastFrame")
+			emit(listenersSpace, new LastFrame(occurrence.frameNumber))[it.ID !== this.ID]
+		}
+	}
+	on BBoxes2DResult {
+	
+	for (listenersSpace : listeners.values) {
+		emit(listenersSpace, new BBoxes2DResult(occurrence.bboxes2D, ADN.get.name))[it.ID !== this.ID]
+	}}
+	override startRole {
+		
+	}
+}

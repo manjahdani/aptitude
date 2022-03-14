@@ -8,6 +8,8 @@ import be.uclouvain.python_access.PartnerDetectionFound
 import be.uclouvain.python_access.PythonTwinAccessCapacity
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
+import java.util.UUID
+import io.sarl.core.DefaultContextInteractions
 
 /** 
  * @author manjah
@@ -25,18 +27,21 @@ import io.sarl.core.Schedules
  * 
  */
 behavior SingleDetectorObserverRole extends PythonTwinObserverRole {
-	uses Logging, PythonTwinAccessCapacity, Schedules
+	uses Logging, Schedules, DefaultContextInteractions
 
 	on PartnerDetectionFound {
 		info("Detection partner found: " + occurrence.partnerName)
 		task("wait").in(2000) [
-			debug("UpdatingStreamAccess - Action 1 Starting")
-			updateStreamAccess(1)
+			emitToParent(new PartnerDetectionFound(occurrence.partnerName))
 			task("wait").cancel // PLAY
 		]
 	}
 	
 	def startRole {
+		warning("TODO: auto-generated method stub")
+	}
+	
+	def processingMissionWithID(mID : UUID) {
 		warning("TODO: auto-generated method stub")
 	}
 	

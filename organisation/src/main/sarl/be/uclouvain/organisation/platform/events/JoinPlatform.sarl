@@ -32,6 +32,6 @@ event AlgorithmJoinPlatform extends JoinOrganisation {
 
 	new (context : AgentContext, n : String) {
 		super(context)
-		this.name = n
+		this.name = n //@FIXME Revisit as the problem is that we change the paradigm, we know request only that only a task join.
 	}
 }

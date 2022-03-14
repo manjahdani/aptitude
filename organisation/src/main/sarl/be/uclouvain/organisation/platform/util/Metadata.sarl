@@ -11,12 +11,16 @@ class Metadata {
 	
 	val performance : int
 	val fit_for : String
-	
-	new(p:int, t:String){
+	val cost : int
+	new(p:int, t:String, c : int){
 		this.performance =p
 		this.fit_for = t
+		this.cost = c
 	}
 	
+	def getCost {
+		return this.cost
+	}
 	def getPerformance{
 		return this.performance
 	}

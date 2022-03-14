@@ -1,0 +1,24 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.detector.events
+
+/** 
+ * @author manjah
+ * 
+ */
+event Activity{
+	val frameNumber : int
+	
+	new(f : int){
+		this.frameNumber=f
+	}
+}
+
+event NoActivity {
+	val frameNumber : int
+
+	new(f : int) {
+		this.frameNumber = f
+	}
+}

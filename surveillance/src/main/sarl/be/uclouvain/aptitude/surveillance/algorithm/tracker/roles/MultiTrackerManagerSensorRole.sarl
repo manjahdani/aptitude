@@ -1,0 +1,60 @@
+package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
+
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ReadyToTrack
+import be.uclouvain.organisation.platform.SensorRole
+import be.uclouvain.organisation.platform.events.AddMission
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Logging
+import java.util.UUID
+import java.util.concurrent.atomic.AtomicInteger
+import io.sarl.core.Initialize
+import be.uclouvain.organisation.platform.ProcessMission
+import io.sarl.core.ExternalContextAccess
+import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
+
+/** 
+ * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
+ * that contains the information requested upon approved request from another. 
+ * 
+ * @TODO MEDIUM
+ * It does make sens to have a certain window of information in memory and the 
+ * other one stored in a database. Therefore, the database with a certain window in situ and otherwise stored in TOLD
+ * We need to find a way such that the information is synchronized before potential fusion 
+ *
+ * 
+ * 
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.2$
+ * @date $16/04/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
+ * 
+ */
+behavior MultiTrackerManagerSensorRole extends SensorRole { 
+	
+	uses Logging, Behaviors,ExternalContextAccess
+
+	override processingMissionWithID(mID : UUID) {
+		emit(selfSpace, new ProcessMission(missionList.get(mID)))
+	}
+
+	
+	on LastFrame {
+		info("Transmitting to my listeners" + listeners.keySet)
+		for (l : listeners.keySet) {
+			emit(listeners.get(l),
+				new LastFrame(occurrence.frameNumber, occurrence.pred_file_Path, occurrence.total_time_detection,
+					occurrence.total_time_tracking, occurrence.observerID))[it.ID == l]
+			// listeners.get(l).emit(this.ID,)[it.ID == l]}
+		}
+	}
+
+	def startRole {
+		warning("MultiTrackerManagerSensorRol, Role not ready")
+	}
+	
+}
+

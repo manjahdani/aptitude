@@ -1,0 +1,54 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.detector
+
+import be.uclouvain.organisation.platform.events.PauseMission
+import be.uclouvain.python_access.BBoxes2DResult
+import io.sarl.core.DefaultContextInteractions
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.Activity
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.NoActivity
+import java.util.concurrent.atomic.AtomicInteger
+import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
+import com.google.common.util.concurrent.AtomicDouble
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior StudentDetectorSignalRole extends DetectorSignalRole {
+	uses Logging, DefaultContextInteractions, ExternalContextAccess
+
+	val noActivityFrames = new AtomicInteger(0)
+	val total_detectionTime = new AtomicDouble(0)
+	
+	 on BBoxes2DResult {
+		// info("Detector - frameNumber- lastframe " + occurrence.bboxes2D.frameNumber + occurrence.bboxes2D.lastFrame)
+		// Compute the detection time
+		total_detectionTime.addAndGet(occurrence.bboxes2D.detectionTime)
+		if(!occurrence.bboxes2D.bboxes.isEmpty){
+			
+		
+			emitToParent(new Activity(occurrence.bboxes2D.frameNumber))
+			// emit(selfSpace,new PauseMission(this.ID))
+			noActivityFrames.set(0)
+		}
+		else {
+			if(noActivityFrames.incrementAndGet>5){
+			emitToParent(new NoActivity(occurrence.bboxes2D.frameNumber))}
+		}
+		if(occurrence.bboxes2D.lastFrame){
+			warning("Background Reached LastFrame" + total_detectionTime)
+			emit(selfSpace,new PauseMission(this.ID))
+			//emitToParent(new LastFrame(occurrence.bboxes2D.frameNumber))
+		}
+		if (occurrence.bboxes2D.frameNumber == 1000) {
+			warning("Background Reached LastFrame" + total_detectionTime)
+		}
+		
+	}
+	
+}

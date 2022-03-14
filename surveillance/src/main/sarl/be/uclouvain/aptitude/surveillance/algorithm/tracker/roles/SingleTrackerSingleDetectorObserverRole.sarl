@@ -12,6 +12,8 @@ import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
 import io.sarl.core.ExternalContextAccess
 import be.uclouvain.organisation.platform.events.ScenarioInfo
 import io.sarl.core.Logging
+import java.util.UUID
+import java.util.ArrayList
 
 /** 
  * @author manjah
@@ -20,19 +22,22 @@ import io.sarl.core.Logging
 //val dynamicTrackingMemory = Collections.synchronizedList(new LinkedList<ArrayList<BBoxes2D>>)
 
 
-behavior SingleTrackerObserverRole extends PythonTwinObserverRole {
+behavior SingleTrackerSingleDetectorObserverRole extends PythonTwinObserverRole {
 	
 	uses TrackerPythonTwinCapacity,Logging, ExternalContextAccess
 
+	val processedImages = new ArrayList<Integer>
 	on PartnerTrackingFound {
 		//info("Tracking Partner found: " +  occurrence.partnerName)
 	}
-
+	
+	
 	on Initialize {
-		info("Multi-tracker role started.")
+		info("Single Tracker Single Detector role started.")
 		emit(selfSpace, new ScenarioInfoRequest)
 
 	}
+
 
 	on ScenarioInfo {
 		assert occurrence.client_id !== null, "Received computatation_location null"
@@ -43,19 +48,18 @@ behavior SingleTrackerObserverRole extends PythonTwinObserverRole {
 	}
 
 	on BBoxes2DResult {
-		
-		/**
-		if (occurrence.providerName =="BACKGROUND") {
-			warning(
-				"Received results of frame #" + occurrence.bboxes2D.frameNumber + "\n x=" + occurrence.bboxes2D.bboxes.toString
-			)
-
-		}*/
+		if(!processedImages.contains(occurrence.bboxes2D.frameNumber)){
 		Signal2Perception(occurrence.bboxes2D)
+			processedImages.add(occurrence.bboxes2D.frameNumber)
+		}
 	}
 	
 	def startRole {
-		warning("TODO: auto-generated method stub")
+		warning("Single Tracker Observer Role started in organization TODO: auto-generated method stub")
+	}
+	
+	def processingMissionWithID(mID : UUID) {
+		warning("Single Tracker Observer Role started in organization TODO: auto-generated method stub")
 	}
 	
 }

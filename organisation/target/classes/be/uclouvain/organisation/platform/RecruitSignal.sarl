@@ -20,5 +20,20 @@ final event RecruitSignal{
 		this.name = algoName
 		this.task = algoTask
 	}
+
+	new (mD : SurveillanceMissionData, algoTask : String) {
+		this.missionData = mD
+		this.name = null
+		this.task = algoTask
+	}
 }
 
+final event ProcessMission {
+
+	val missionData : SurveillanceMissionData
+
+	new (mD : SurveillanceMissionData) {
+		this.missionData = mD
+	}
+
+}

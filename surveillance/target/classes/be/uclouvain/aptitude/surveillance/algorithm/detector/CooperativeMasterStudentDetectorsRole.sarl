@@ -1,0 +1,172 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.detector
+
+import be.uclouvain.aptitude.surveillance.algorithm.AlgorithmNeeded
+import be.uclouvain.aptitude.surveillance.algorithm.RoleRegistered
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.Activity
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsMaster
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsStudent
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.NoActivity
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.ReadyToDetect
+import be.uclouvain.organisation.events.JoinPlatform
+import be.uclouvain.organisation.platform.ObserverRole
+import be.uclouvain.organisation.platform.events.AddMission
+import be.uclouvain.organisation.platform.events.StartMission
+import be.uclouvain.organisation.platform.util.HyperParameters
+import be.uclouvain.organisation.platform.util.Metadata
+import be.uclouvain.organisation.platform.util.SurveillanceMissionData
+import be.uclouvain.python_access.BBoxes2DResult
+import be.uclouvain.python_access.PartnerDetectionFound
+import io.sarl.core.AgentSpawned
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.core.OpenEventSpaceSpecification
+import java.util.Collections
+import java.util.HashMap
+import java.util.LinkedList
+import java.util.TreeMap
+import java.util.UUID
+import java.util.concurrent.atomic.AtomicBoolean
+import be.uclouvain.organisation.platform.events.PauseMission
+import java.util.concurrent.atomic.AtomicInteger
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior CooperativeMasterStudentDetectorsRole extends ObserverRole {
+	uses Logging, InnerContextAccess, Behaviors, DefaultContextInteractions
+
+	on Activity {
+		if (!listeningTOTeacher.get) {
+			warning("starting master")
+		wake(new StartMission(occurrence.source.ID, occurrence.frameNumber))[it.ID == masterID]
+			listeningTOTeacher.set(true)
+		}
+	}
+
+	on NoActivity {
+		if (listeningTOTeacher.get) {
+			warning("pausing master")
+			wake(new PauseMission(masterID))[it.ID == masterID]
+			listeningTOTeacher.set(false)
+		}
+	}
+
+	val detectors = new TreeMap<String, Metadata> // @FIXME HIGH should be given by the Analyst which makes it configurable ?
+	protected val detector_innerTrackerMap = Collections.synchronizedMap(new HashMap<String, UUID>)
+	protected val innerTracker_detectorsMap = Collections.synchronizedMap(new HashMap<UUID, String>)
+	protected val innerTracker_ParametersMap = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>)
+	var studentID : UUID
+	var masterID : UUID
+	val hyperParametersToBeTested = Collections.synchronizedList(new LinkedList<HyperParameters>)
+	protected val internal_externalMap = Collections.synchronizedMap(new HashMap<UUID, UUID>) // First is internal and then external
+	val listeningTOTeacher = new AtomicBoolean(false)
+
+	
+
+
+	on Initialize {
+		info("Multi-Detecter role started.")
+		detectors.put("BACKGROUND", new Metadata(0, "VEHICLE",200))
+		detectors.put("YOLO", new Metadata(1, "VEHICLE",500))
+		emitToParent(new ReadyToDetect)
+	}
+
+	def startRole {
+
+		warning("Cooperative detector started TODO: auto-generated method stub")
+	}
+
+	on PartnerDetectionFound {
+
+		if (occurrence.source.ID .compareTo(studentID) == 0) {
+			warning("EnableStreamAccess at frame " + 0)
+			wake(new StartMission(occurrence.source.ID,0))[it.ID == occurrence.source.ID]
+		} 
+
+	}
+	on Activity {
+		if (!listeningTOTeacher.get) {
+			warning("starting master")
+		wake(new StartMission(occurrence.source.ID, occurrence.frameNumber))[it.ID == masterID]
+		listeningTOTeacher.set(true)
+		}
+	}
+	on NoActivity {
+		if(listeningTOTeacher.get){
+			warning("pausing master")
+		wake(new PauseMission(masterID))[it.ID == masterID]
+		listeningTOTeacher.set(false)
+		}
+	}
+
+	@SuppressWarnings("potential_field_synchronization_problem")
+	on AgentSpawned {
+		// In this, we choose that the missionID is equivalent to the subprocess ID
+		
+		
+		val mbID = occurrence.agentID
+		if (memberAgents.contains(mbID)) {
+			info("member Joined " + mbID)
+			if (mbID.compareTo(studentID)==0) {
+				warning("Starting Student Role of " + studentID)
+				wake(new AddMissionAsStudent)[it.ID == mbID]
+			} 
+			else if (mbID.compareTo(masterID)==0) {
+				warning("Starting Master Role of " +masterID)
+				wake(new AddMissionAsMaster)[it.ID == mbID]
+			}
+			else{
+				info("No role known" + mbID)
+			}
+		}
+	}
+
+	on RoleRegistered {
+		wake(new JoinPlatform(organizationContext.get, ADN.get.platformName))[it.ID == occurrence.source.ID]
+	}
+	on ReadyToDetect {
+		val mbID = occurrence.source.ID
+		wake(new AddMission(mbID, providers.get(mbID).spaceID.ID)) [
+			it.ID == mbID
+		]
+	}
+	
+	def processingMissionWithID(mID : UUID) {
+		
+		
+
+		for (d : detectors.keySet) {
+			val internalMissionID = UUID.randomUUID
+			val newInternalMission = new SurveillanceMissionData(internalMissionID, this.ID, organizationContext.get.ID,
+				detectors.get(d).performance, false)
+			internal_externalMap.put(internalMissionID, mID)
+			orderedMissionList.put(internalMissionID, newInternalMission)
+			innerTracker_ParametersMap.put(internalMissionID, new HyperParameters(detectors.get(d).performance, false))
+			var comSpace = organizationContext.get.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID) // An internal space to communicate with other roles.
+			comSpace.registerStrongParticipant(asEventListener)
+			providers.put(internalMissionID, comSpace)
+			detector_innerTrackerMap.put(d, internalMissionID)
+			innerTracker_detectorsMap.put(internalMissionID, d)
+			emitToParent(new AlgorithmNeeded(innerContext, d, internalMissionID))
+
+			if (detectors.get(d).performance == 0) {
+				info("Starting Student " + internalMissionID)
+				studentID = internalMissionID
+			} else {
+				info("Starting Master " + internalMissionID)
+				masterID = internalMissionID
+			}
+		}
+
+	}
+	
+}

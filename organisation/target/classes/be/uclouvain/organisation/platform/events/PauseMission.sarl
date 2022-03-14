@@ -12,8 +12,6 @@ import java.util.UUID
 final event PauseMission {
 
 	val missionID : UUID
-
-
 	new(mID : UUID) {
 		missionID = mID
 	

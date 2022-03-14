@@ -1,0 +1,53 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.detector
+
+import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
+import io.sarl.core.Behaviors
+import io.sarl.core.Logging
+import io.sarl.core.Initialize
+import java.util.TreeMap
+import be.uclouvain.organisation.platform.util.Metadata
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsStudent
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsMaster
+import be.uclouvain.aptitude.surveillance.algorithm.BecomeManager
+import io.sarl.core.DefaultContextInteractions
+import be.uclouvain.aptitude.surveillance.algorithm.RoleRegistered
+
+/** 
+ * @author manjah
+ * 
+ */
+agent Detector extends Algorithm {
+	uses Behaviors, DefaultContextInteractions,Logging
+
+	val detectors = new TreeMap<String, Metadata> // @FIXME HIGH should be given by the Analyst which makes it configurable ?
+
+	on Initialize {
+		detectors.put("BACKGROUND", new Metadata(0, "VEHICLE",500))
+		detectors.put("YOLO", new Metadata(1, "VEHICLE",500))
+		// detectors.put("YOLO-COCO",new Metadata(1,"PEOPLE"))
+	}
+	
+	on BecomeManager {
+		info("Becoming Manager")
+		registerBehavior(new CooperativeMasterStudentDetectorsRole(this), ADN.get)
+		registerBehavior(new DetectorManagerSignalRole(this), ADN.get)
+		emitToParent(new RoleRegistered)
+	}
+	on AddMissionAsStudent {
+		info("Becoming Student Atomic")
+		registerBehavior(new StudentDetectorSignalRole(this), ADN.get)
+		registerBehavior(new SingleDetectorObserverRole(this), ADN.get)
+		emitToParent(new RoleRegistered)
+	}
+
+	on AddMissionAsMaster {
+		info("Becoming Master Atomic")
+		registerBehavior(new MasterDetectorSignalRole(this), ADN.get)
+		registerBehavior(new SingleDetectorObserverRole(this), ADN.get)
+		emitToParent(new RoleRegistered)
+	}
+	
+}

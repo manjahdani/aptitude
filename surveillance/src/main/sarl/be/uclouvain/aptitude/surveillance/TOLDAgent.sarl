@@ -3,10 +3,8 @@
  */
 package be.uclouvain.aptitude.surveillance
 
-import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
 import be.uclouvain.aptitude.surveillance.platform.AgentPlatform
 import be.uclouvain.organisation.events.JoinPlatform
-import be.uclouvain.organisation.told.AccessDatabaseCapacity
 import be.uclouvain.organisation.told.TOLDRole
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
@@ -15,10 +13,12 @@ import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
-import java.util.ArrayList
+import io.sarl.lang.core.Agent
 import java.util.HashMap
 import java.util.UUID
-import io.sarl.core.ExternalContextAccess
+import be.uclouvain.organisation.told.AccessDatabaseCapacity
+import java.util.concurrent.atomic.AtomicReference
+import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
 
 /** 
  * 
@@ -38,30 +38,26 @@ import io.sarl.core.ExternalContextAccess
   
 agent TOLDAgent extends Paraddis {
 	
-	uses Logging, Lifecycle, InnerContextAccess, Behaviors, ExternalContextAccess
-
- 	//val INIT_TASKS : ArrayList<String> = newArrayList() // @parameters
+	uses Logging, Lifecycle, InnerContextAccess, Behaviors
 	
-	var config : TOLDConfig
+	val config = new AtomicReference<TOLDConfig>
 	val agentPlatformSpaces = new HashMap<String, OpenEventSpace> 
-	var S : VirtualDatabaseSkill
-	
-	
 	on Initialize {
 		
 		info("ready to share my stored knowledge.")
-		
-		S = setSkill(new VirtualDatabaseSkill, AccessDatabaseCapacity)
+		var S  = setSkill(new VirtualDatabaseSkill, AccessDatabaseCapacity)
 		registerBehavior(new TOLDRole(this))
-		config = occurrence.parameters.get(0) as TOLDConfig
-		loggingName = this.ID + "-TOLD" + "-" + config.level
+		
+		config.set(occurrence.parameters.get(0) as TOLDConfig)
+		loggingName = this.ID + "-TOLD" + "-" + config.get.level
 		info("ready to share my stored knowledge.")
 		var registeredAlgorithms : HashMap<UUID, AlgorithmInfo> = new HashMap(S.database.filter [ p1, p2 |
 			p2 instanceof AlgorithmInfo
 		])
-		for (t : config.init_tasks) {
-			spawnInContext(Algorithm, innerContext, new AlgorithmInfo(t, "none", t),
-				new HashMap(registeredAlgorithms.filter[p1, p2|p2.task == t]))
+		for (t : config.get.init_tasks.keySet) {
+			
+			spawnInContext(Algorithm, innerContext, config.get.init_tasks, new AlgorithmInfo(t, "none", t),
+				new HashMap(registeredAlgorithms.filter[p1, p2|p2.task == t])) 
 		}
 	}
 	
@@ -77,7 +73,7 @@ agent TOLDAgent extends Paraddis {
 	on JoinPlatform {
 		info("joins organisation - " + occurrence.contextID.toString.substring(0,5))
 		val randomID = UUID.randomUUID
-		var holonConfig = config.addSubTOLD(new TOLDConfig(config.level + 1, occurrence.location, innerContext, new ArrayList<String>), randomID)
+		var holonConfig = config.get.addSubTOLD(new TOLDConfig(config.get.level + 1, occurrence.location, innerContext, new HashMap<String, Class<? extends Agent>>), randomID)
 		spawnInContextWithID(TOLDAgent, randomID, occurrence.contextID, holonConfig)
 	}
 	

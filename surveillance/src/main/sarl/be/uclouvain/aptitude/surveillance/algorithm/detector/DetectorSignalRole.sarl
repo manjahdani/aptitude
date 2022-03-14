@@ -9,28 +9,27 @@ import io.sarl.core.Destroy
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
 import java.util.UUID
+import io.sarl.core.DefaultContextInteractions
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.ReadyToDetect
+import be.uclouvain.organisation.platform.ProcessMission
 
 behavior DetectorSignalRole extends SensorRole {
 	
-	uses Logging, ExternalContextAccess
+	uses Logging, ExternalContextAccess,DefaultContextInteractions
 	
-	on BBoxes2DResult {
-		//info("Detector - frameNumber- lastframe " + occurrence.bboxes2D.frameNumber + occurrence.bboxes2D.lastFrame)
-		for (listenersSpace : listeners.values) {
-			emit(listenersSpace, new BBoxes2DResult(occurrence.bboxes2D, ADN.get.name))[it.ID !== this.ID]
-		}
-	}
+	
 	on Destroy {
 		info("The behavior was stopped.")
 	}
 
 	
 	def startRole {
-		warning("Nothing Defined")
+		emitToParent(new ReadyToDetect)
 	}
 
 	def processingMissionWithID(mID : UUID) {
 		setSkill(new DetectorPythonTwin(ADN.get.belief, ADN.get.platformName, computation_location.get))
+		emit(selfSpace, new ProcessMission(missionList.get(mID)))
 	}
 	
 }

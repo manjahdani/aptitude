@@ -65,7 +65,7 @@ behavior AnalystRole extends ObserverRole{
 	
 	def processingMissionWithID(mID : UUID) {
 		info("starts mission of vehicle counting with hyperParameters:  " + orderedMissionList.get(mID).hyperParametersAsAString)
-		requestAlgorithm(mID, "APTITUDE", "COUNTER")
+		requestAlgorithm(mID,"COUNTER")
 	}
 	
 }

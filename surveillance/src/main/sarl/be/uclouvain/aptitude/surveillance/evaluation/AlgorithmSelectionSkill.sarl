@@ -37,7 +37,7 @@ skill AlgorithmSelectionSkill implements AlgorithmSelection {
 			info("Competitor - " + l.competitorID + " - \n HOTA: " + l.HOTA + 
 				" \n +" + "-trackingTime" + l.trackingTime +
 				" \n +" + "-detectionTime" + l.detectionTime +
-			 	"-\n Efficiency:" + effeciency)
+			 	"-\n Efficiency:" + effeciency +"\n l.frame" + l.frame)
 			rankedResult.put(metric_APTITUDE(l.HOTA, effeciency, param.cautionLevel), l.belief)
 		}
 		info(rankedResult + "\n Congratulations to " + rankedResult.lastEntry)

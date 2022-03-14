@@ -67,7 +67,7 @@ abstract behavior SensorRole extends ScenarioRole {
 		task("rMP".concat(mID.toString)).every(1000) [
 			val MD = missionList.get(mID)
 			if (MD.hyperParameters.paramKnown) {
-				info("Start the processing role for mid = " + mID+ "\n at location - " + ". Parameters are: s= " + MD.cautionLevel +
+				info("Sensor - start the processing role for mid = " + mID+ "\n at location - " + ". Parameters are: s= " + MD.cautionLevel +
 						" isMaster=" + MD.isDynamicAdaptationEnabled)
 				processingMissionWithID(mID)
 				loggingName = this.ID + "-ALGORITHM-" + ADN.get.name + "-" + ADN.get.level + "-" +
@@ -79,7 +79,7 @@ abstract behavior SensorRole extends ScenarioRole {
 		]
 	}
 
-	abstract def processingMissionWithID(mID : UUID)
+	
 
 	def enableDataAcquisition(mID : UUID, signals : ArrayList<String>, signalType : String) {
 
@@ -88,4 +88,10 @@ abstract behavior SensorRole extends ScenarioRole {
 			emit(selfSpace, new RecruitSignal(missionList.get(mID), s, signalType))
 		}
 	}
+
+	def enableDataAcquisition(mID : UUID, signalType : String) {
+			emit(selfSpace, new RecruitSignal(missionList.get(mID), signalType))
+	}
+	
+	
 }

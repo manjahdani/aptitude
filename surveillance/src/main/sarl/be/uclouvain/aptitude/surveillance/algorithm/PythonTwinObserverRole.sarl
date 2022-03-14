@@ -8,25 +8,57 @@ import be.uclouvain.python_access.PythonTwinAccessCapacity
 import io.sarl.core.Logging
 import be.uclouvain.organisation.platform.events.PauseMission
 import be.uclouvain.organisation.platform.events.ResumeMission
+import be.uclouvain.organisation.platform.events.StartMission
 
 /** 
  * @author manjah
+ * 	598 Frames 
+ * Le problème est le processeur  
+ *  	23 FPS  - 1 agent (26 sec ) 
+ *      14 FPS  - 2 agent (42 sec)
+ *       7 FPS  - 5 agent (105 sec)
+ *   Après il échoue. 
+ * On apprend pas à prédire les performances à partir d'une large scalabilité. 
  * 
- * PLAY = 1
- * PAUSE = 2
- * RESUME = 3
- * STOP = 4
- * RESTART = 5
- * SEEK = 6
- * KILL = 7
+ * A haute échelle, il devient de plus en plus difficile d'observer les scalabilités 
+ * 
+ * 
+ *      
+ * PLAY = 1 // No frame 
+ * PAUSE = 2 // No frame pause le thread
+ * RESUME = 3 // No frame
+ * STOP = 4  // Le sort de sa boucle pour qu'il puisse accueillir d'autres requêtes  
+ * RESTART = 5 // Seek avec la frame 0
+ * SEEK = 6   //  
+ * KILL = 7 // Kill the agent ?
  * 
  */
 abstract behavior PythonTwinObserverRole extends ObserverRole {
 	uses Logging, PythonTwinAccessCapacity
-
+	
+	var counter =0
 	on PauseMission {
+		warning("Pause Mission from " + occurrence.source.ID)
 		orderedMissionList.get(occurrence.missionID).setMissionInative
 		pauseMission
+	}
+	
+	on StartMission {
+		if (occurrence.frameNumber > 0) {
+			warning("UpdatingStreamAccess - Seeking frame " + occurrence.frameNumber)
+			updateStreamAccess(6, occurrence.frameNumber)
+			}
+		
+		if (counter > 0) {
+			warning("UpdatingStreamAccess - Action 3 Starting at frame " + occurrence.frameNumber)
+			updateStreamAccess(3)
+		}
+		else {
+			warning("UpdatingStreamAccess - Action 1 Starting at frame " + occurrence.frameNumber)
+			counter=1
+			updateStreamAccess(1)
+		}
+		
 	}
 
 	on ResumeMission {
@@ -40,7 +72,6 @@ abstract behavior PythonTwinObserverRole extends ObserverRole {
 				isRoleActive.set(false)
 				updateStreamAccess(2)
 			}
-		
 	}}
 	
 	def resumeMission(reInit : boolean) {

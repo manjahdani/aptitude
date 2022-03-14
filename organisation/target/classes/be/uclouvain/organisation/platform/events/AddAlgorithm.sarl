@@ -1,0 +1,21 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform.events
+
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+final event AddAlgorithm {
+
+	val missionID : UUID
+	val algorithmTask : String
+
+	new (mID : UUID, t : String){
+		this.missionID = mID
+		this.algorithmTask = t
+	}
+}
