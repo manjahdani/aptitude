@@ -1,6 +1,5 @@
 package be.uclouvain.aptitude.surveillance.algorithm.counter
 
-import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.BBoxes2DTrackResultToCounter
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingPerception
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingRequest

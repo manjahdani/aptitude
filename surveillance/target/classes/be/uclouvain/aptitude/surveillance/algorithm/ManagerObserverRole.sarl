@@ -1,0 +1,56 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm
+
+import be.uclouvain.organisation.events.JoinPlatform
+import be.uclouvain.organisation.platform.ObserverRole
+import be.uclouvain.organisation.platform.util.Metadata
+import io.sarl.core.AgentKilled
+import io.sarl.core.AgentSpawned
+import io.sarl.core.Behaviors
+import io.sarl.core.ContextJoined
+import io.sarl.core.ContextLeft
+import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Logging
+import io.sarl.core.MemberJoined
+import io.sarl.core.MemberLeft
+import io.sarl.core.ParticipantJoined
+import io.sarl.core.ParticipantLeft
+import io.sarl.core.SpaceCreated
+import io.sarl.core.SpaceDestroyed
+import java.util.Collections
+import java.util.TreeMap
+import java.util.UUID
+import java.util.HashMap
+import be.uclouvain.organisation.platform.util.HyperParameters
+
+/** 
+ * @author manjah
+ * 
+ */
+abstract behavior ManagerObserverRole extends ObserverRole {
+	uses Logging, Behaviors,InnerContextAccess
+
+	protected val AVAILABLE_INPUT = Collections.synchronizedMap(new TreeMap<String, Metadata>) // @FIXME HIGH should be given by the Analyst which makes it configurable ?
+	protected val detector_innerTrackerMap = Collections.synchronizedMap(new HashMap<String, UUID>)
+	protected val innerTracker_detectorsMap = Collections.synchronizedMap(new HashMap<UUID, String>)
+	protected val innerTracker_ParametersMap = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>)
+	protected val internal_externalMap = Collections.synchronizedMap(new HashMap<UUID, UUID>) // First is internal and then external
+	
+	
+	on RoleRegistered {
+		info("Received role Registered from " + occurrence.source.ID)
+		wake(new JoinPlatform(organizationContext.get, ADN.get.platformName))[it.ID == occurrence.source.ID]
+	}
+
+	on AgentSpawned {		
+		val mbID = occurrence.agentID
+		if (memberAgents.contains(mbID)) {
+			info("inner agent - " + mbID)
+			wake(new RegisterUnitaryRole)[it.ID == mbID]
+		}
+	}
+
+}

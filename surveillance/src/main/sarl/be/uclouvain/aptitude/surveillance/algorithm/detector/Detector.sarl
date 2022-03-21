@@ -21,18 +21,10 @@ import be.uclouvain.aptitude.surveillance.algorithm.RoleRegistered
  */
 agent Detector extends Algorithm {
 	uses Behaviors, DefaultContextInteractions,Logging
-
-	val detectors = new TreeMap<String, Metadata> // @FIXME HIGH should be given by the Analyst which makes it configurable ?
-
-	on Initialize {
-		detectors.put("BACKGROUND", new Metadata(0, "VEHICLE",500))
-		detectors.put("YOLO", new Metadata(1, "VEHICLE",500))
-		// detectors.put("YOLO-COCO",new Metadata(1,"PEOPLE"))
-	}
 	
 	on BecomeManager {
 		info("Becoming Manager")
-		registerBehavior(new CooperativeMasterStudentDetectorsRole(this), ADN.get)
+		registerBehavior(new CooperativeMasterStudentDetectorsObserverRole(this), ADN.get)
 		registerBehavior(new DetectorManagerSignalRole(this), ADN.get)
 		emitToParent(new RoleRegistered)
 	}

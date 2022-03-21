@@ -23,21 +23,21 @@ import be.uclouvain.organisation.events.JoinPlatform
 import be.uclouvain.organisation.platform.events.AddMission
 import be.uclouvain.aptitude.surveillance.algorithm.RegisterUnitaryRole
 import be.uclouvain.aptitude.surveillance.algorithm.RoleRegistered
+import be.uclouvain.aptitude.surveillance.algorithm.ManagerObserverRole
 
 /** 
  * @author manjah
  * 
  */
-behavior CounterManagerObserverRole extends ObserverRole {
+behavior CounterManagerObserverRole extends ManagerObserverRole {
 	uses Logging,Behaviors, DefaultContextInteractions,InnerContextAccess
 
 	protected val innerTracker_ParametersMap = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>)
-	val AVAILABLE_INPUT = new TreeMap<String, Metadata> // @FIXME HIGH should be given by the Analyst which makes it configurable ?
+	
 	protected val internal_externalMap = Collections.synchronizedMap(new HashMap<UUID, UUID>) // First is internal and then external
 
 	on Initialize {
 		AVAILABLE_INPUT.put("APTITUDE", new Metadata(0, "VEHICLE", 50))
-		// AVAILABLE_INPUT.put("DeepSORT", new Metadata(1, "VEHICLE",200)) //@TODO Set realistic budget
 		info("Multi Counter Manager Observer Role started")
 	}
 	
@@ -57,19 +57,6 @@ behavior CounterManagerObserverRole extends ObserverRole {
 		emitToParent(new AlgorithmNeeded(innerContext, "APTITUDE", internalMissionID))
 	}
 
-	on AgentSpawned {
-		val mbID = occurrence.agentID
-		if (memberAgents.contains(mbID)) {
-			info("I noticed a new inner agent ")
-			wake(new RegisterUnitaryRole)[it.ID == mbID]
-			
-		}
-	}
-	on RoleRegistered {
-		info("Received role Registered from " + occurrence.source.ID)
-		wake(new JoinPlatform(organizationContext.get, ADN.get.platformName))[it.ID == occurrence.source.ID]
-	}
-
 	on ReadyToCount {
 		
 		val mbID = occurrence.source.ID
@@ -80,7 +67,7 @@ behavior CounterManagerObserverRole extends ObserverRole {
 	
 	
 	def startRole {
-		warning("Counter Manager Role Started in organization TODO: auto-generated method stub")
+		warning("Counter Manager Role Started in organisation")
 	}
 	
 }

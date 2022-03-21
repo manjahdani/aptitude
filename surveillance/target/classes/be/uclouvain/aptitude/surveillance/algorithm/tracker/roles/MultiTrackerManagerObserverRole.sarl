@@ -3,38 +3,28 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
 
-import be.uclouvain.organisation.events.JoinPlatform
-import io.sarl.core.AgentSpawned
-import io.sarl.core.Logging
-import io.sarl.core.InnerContextAccess
-import be.uclouvain.organisation.platform.ObserverRole
-import io.sarl.core.Behaviors
-import io.sarl.core.Initialize
-import java.util.TreeMap
-import be.uclouvain.organisation.platform.util.Metadata
-import be.uclouvain.organisation.platform.util.SurveillanceMissionData
-import java.util.UUID
-import java.util.Collections
-import java.util.HashMap
-import be.uclouvain.organisation.platform.util.HyperParameters
-import io.sarl.core.OpenEventSpaceSpecification
-import io.sarl.core.DefaultContextInteractions
 import be.uclouvain.aptitude.surveillance.algorithm.AlgorithmNeeded
-import be.uclouvain.aptitude.surveillance.algorithm.RegisterUnitaryRole
-import be.uclouvain.aptitude.surveillance.algorithm.RoleRegistered
+import be.uclouvain.aptitude.surveillance.algorithm.ManagerObserverRole
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ReadyToTrack
 import be.uclouvain.organisation.platform.events.AddMission
+import be.uclouvain.organisation.platform.util.HyperParameters
+import be.uclouvain.organisation.platform.util.Metadata
+import be.uclouvain.organisation.platform.util.SurveillanceMissionData
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Logging
+import io.sarl.core.OpenEventSpaceSpecification
+import java.util.UUID
 
 /** 
  * @author manjah
  * 
  */
-behavior MultiTrackerManagerObserverRole extends ObserverRole {
-	uses Logging,InnerContextAccess, Behaviors, InnerContextAccess, DefaultContextInteractions
+behavior MultiTrackerManagerObserverRole extends ManagerObserverRole {
+	uses Logging,InnerContextAccess, Behaviors, DefaultContextInteractions
 
-	protected val innerTracker_ParametersMap = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>)
-	val AVAILABLE_INPUT = new TreeMap<String, Metadata> // @FIXME HIGH should be given by the Analyst which makes it configurable ?
-	protected val internal_externalMap = Collections.synchronizedMap(new HashMap<UUID, UUID>)// First is internal and then external
 	on Initialize {
 		AVAILABLE_INPUT.put("SORT", new Metadata(0, "VEHICLE", 50))
 		//AVAILABLE_INPUT.put("DeepSORT", new Metadata(1, "VEHICLE",200)) //@TODO Set realistic budget
@@ -43,7 +33,6 @@ behavior MultiTrackerManagerObserverRole extends ObserverRole {
 
 	
 	def startRole { 
-
 		warning("Nothing to be done")
 	}
 
@@ -61,20 +50,6 @@ behavior MultiTrackerManagerObserverRole extends ObserverRole {
 		comSpace.registerStrongParticipant(asEventListener)
 		providers.put(internalMissionID, comSpace)
 		emitToParent(new AlgorithmNeeded(innerContext, "SORT", internalMissionID))
-	}
-
-	
-	on AgentSpawned {
-		val mbID = occurrence.agentID
-		if (memberAgents.contains(mbID)) {
-			info("inner tracker - " + mbID)
-			wake(new RegisterUnitaryRole)[it.ID == mbID]
-
-		}
-	}
-
-	on RoleRegistered {
-		wake(new JoinPlatform(organizationContext.get, ADN.get.platformName))[it.ID == occurrence.source.ID]
 	}
 
 	on ReadyToTrack {
