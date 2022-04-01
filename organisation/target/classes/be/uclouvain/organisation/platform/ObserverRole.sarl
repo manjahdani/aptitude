@@ -17,9 +17,6 @@ import io.sarl.core.Schedules
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
-import java.util.concurrent.atomic.AtomicBoolean
-import be.uclouvain.organisation.told.util.AlgorithmInfo
-import be.uclouvain.organisation.platform.events.AddObserver
 
 /** 
  * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 
@@ -62,9 +59,9 @@ abstract behavior ObserverRole extends ScenarioRole {
 		// Removing the flag results in nullException as the role
 		// receives a request from a innerAgent but did not include it in its providers.
 		var providerID = occurrence.source.ID
-		info("param requests from agentID=" + providerID.toString.substring(0, 5)) 
+		info("Param requests from agentID :=" + providerID.toString.substring(0, 5)) 
 		var MD = orderedMissionList.get(occurrence.missionID)
-		info("sending param" + " s = " + MD.cautionLevel + " to " + providerID.toString.substring(0, 5))
+		info("Sending parameters \n" + " s = " + MD.cautionLevel + " to " + providerID.toString.substring(0, 5))
 		emit(providers.get(providerID), new ProcessingHyperParameters(
 			occurrence.missionID, orderedMissionList.get(occurrence.missionID).hyperParameters))[it.ID == providerID]
 	}
@@ -99,24 +96,6 @@ abstract behavior ObserverRole extends ScenarioRole {
 		// info("Detector Leaving")
 		
 		// leave(PlatformID)
-	}
-	
-
-	
-
-	
-	// @FIXME LOW the setup is here as at a higher level, there is no possibly to have another name than observer which trigers the same
-	// maybe it is possible to improve that
-	def setup() {
-		debug("setup of the role observer agent")
-		task("initObs").every(1000) [
-			if (areAllTrue(checkList.values)) {
-				startRole()
-				task("initObs").cancel
-			} else {
-				info("Waiting for orga and ressources" + checkList)
-			}
-		]
 	}
 	
 

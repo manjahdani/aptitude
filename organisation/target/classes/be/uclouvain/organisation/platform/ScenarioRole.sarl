@@ -9,38 +9,52 @@ import be.uclouvain.organisation.platform.events.LeavePlatform
 import be.uclouvain.organisation.platform.events.StopMission
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Destroy
-import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
+import io.sarl.core.Schedules
 import java.util.Collections
 import java.util.HashMap
+import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
-import java.util.UUID
 
 /** 
  * @author manjah
  * 
  */
 abstract behavior ScenarioRole extends Role {
-	uses Logging, ExternalContextAccess
+	uses Logging, Schedules
 
-	
-	
 	protected var ADN = new AtomicReference<AlgorithmInfo>
 	protected var computation_location = new AtomicReference<String>
 	protected val checkList = Collections.synchronizedMap(new HashMap<String, Boolean>)
 	protected val isRoleActive = new AtomicBoolean(true)
 	
 	on Initialize {
+
 		checkList.put("context", false)
 		checkList.put("computation_location", false)
 		ADN.set(occurrence.parameters.get(0) as AlgorithmInfo)
 		setup()
 	}
+	
+	def setup() {
+		
+		debug("Setup of the role "+ this.class.toString)
+		task(this.class.toString).every(1000) [
+				if (areAllTrue(checkList.values)) {
+					Ready2Process
+				task(this.class.toString).cancel
+				} else {
+				info("Waiting for orga and ressources" + checkList)
+				}
+		]
+	}
 
-	abstract def setup()
-
+	def Ready2Process{
+		//Do nothing
+	}
+	
 	on Destroy {
 		// info("The behavior was stopped.")
 	}
@@ -80,9 +94,4 @@ abstract behavior ScenarioRole extends Role {
 			if(!b) return false;
 		return true;
 	}
-
-	abstract def startRole()
-
-	//abstract def processingMissionWithID(mID : UUID)
-
 }

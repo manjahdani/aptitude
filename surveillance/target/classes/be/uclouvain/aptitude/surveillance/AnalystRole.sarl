@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 import be.uclouvain.organisation.platform.PlatformOrganizationInfo
 import be.uclouvain.organisation.events.Identification
 
+
 /** 
  * 
  * The Analyst gathers information about a mission and collects Events of Interest or more generally
@@ -45,13 +46,13 @@ behavior AnalystRole extends ObserverRole{
 		missionQueue.add(occurrence.parameters.get(1) as SurveillanceMissionData)
 	}
 	
-	def startRole() {
+	override Ready2Process(){
 		info("asks for algorithm performing vehicle counting to platform")
 		val mission = missionQueue.poll
 		orderedMissionList.put(mission.missionID, mission)
 		emit(privateOrganizationSpace.get, new Request2PerformMission(mission))
 	}
-
+	
 	on PlatformOrganizationInfo {
 		emit(occurrence.context.defaultSpace, new Identification(ADN.get.name))
 	}
@@ -63,7 +64,7 @@ behavior AnalystRole extends ObserverRole{
 		processingMissionWithID(occurrence.missionID)
 	}
 	
-	def processingMissionWithID(mID : UUID) {
+	override processingMissionWithID(mID : UUID) {
 		info("starts mission of vehicle counting with hyperParameters:  " + orderedMissionList.get(mID).hyperParametersAsAString)
 		requestAlgorithm(mID,"COUNTER")
 	}

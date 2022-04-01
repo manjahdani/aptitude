@@ -10,7 +10,7 @@ import be.uclouvain.python_access.messages.BaseMessage
 
 /** 
  * @author manjah
- * 
+ * @TODO: comment 
  */
 abstract skill ObserverPythonAccess extends PythonTwinAccess implements ObserverCapacity {
 	

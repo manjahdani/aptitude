@@ -3,31 +3,12 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm.counter
 
-import be.uclouvain.organisation.platform.ProcessMission
 import be.uclouvain.organisation.platform.SensorRole
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Initialize
-import io.sarl.core.Logging
-import java.util.UUID
 
 /** 
  * @author manjah
  * 
  */
 behavior CounterManagerSensorRole extends SensorRole {
-	uses Logging, ExternalContextAccess
 
-	on Initialize {
-		// Event trigger before the behavior begin to live or to be used.
-		// You should put all the initialization statements in this block of code.
-		info("The behavior was started.")
-	}
-
-	override processingMissionWithID(mID : UUID) {
-		emit(selfSpace, new ProcessMission(missionList.get(mID)))
-	}
-
-	override startRole {
-		warning("nothingToBeDone")
-	}
 }

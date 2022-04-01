@@ -5,31 +5,23 @@ package be.uclouvain.aptitude.surveillance.algorithm.detector
 
 import be.uclouvain.organisation.platform.SensorRole
 import be.uclouvain.python_access.BBoxes2DResult
-import io.sarl.core.Destroy
+import be.uclouvain.python_access.BBoxes2DSignal
+import be.uclouvain.python_access.messages.BBoxes2DMessage
 import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Logging
-import java.util.UUID
-import io.sarl.core.DefaultContextInteractions
-import be.uclouvain.aptitude.surveillance.algorithm.detector.events.ReadyToDetect
-import be.uclouvain.organisation.platform.ProcessMission
 
 behavior DetectorSignalRole extends SensorRole {
 	
-	uses Logging, ExternalContextAccess,DefaultContextInteractions
-	
-	
-	on Destroy {
-		info("The behavior was stopped.")
+	uses ExternalContextAccess
+
+	on BBoxes2DResult {
+		val signal = Signal2Transmit(occurrence.bboxes2D)
+		for (listenersSpace : listeners.values) {
+			emit(listenersSpace, signal)[it.ID !== this.ID]
+		}
 	}
 
-	
-	def startRole {
-		emitToParent(new ReadyToDetect)
-	}
-
-	def processingMissionWithID(mID : UUID) {
-		setSkill(new DetectorPythonTwin(ADN.get.belief, ADN.get.platformName, computation_location.get))
-		emit(selfSpace, new ProcessMission(missionList.get(mID)))
+	def Signal2Transmit(signal : BBoxes2DMessage) {
+		return new BBoxes2DSignal(signal, ADN.get.name)
 	}
 	
 }

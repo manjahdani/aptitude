@@ -3,8 +3,6 @@ package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinCapacity
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinSkill
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackingTaskOver
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ReadyToTrack
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ResumeTrackingMission
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingPerception
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
@@ -14,11 +12,11 @@ import be.uclouvain.organisation.platform.events.ScenarioInfo
 import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
 import be.uclouvain.python_access.BBoxes2DTrackResult
 import io.sarl.core.Behaviors
-import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.UUID
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingTaskOver
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -40,7 +38,7 @@ import java.util.UUID
  */
 behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH ITS ACTUALLY A SUB-AGENT TRACKER WE ARE BYPASSING THAT.... 
 	
-	uses Logging, TrackerPythonTwinCapacity, Behaviors, ExternalContextAccess, DefaultContextInteractions
+	uses Logging, TrackerPythonTwinCapacity, Behaviors, ExternalContextAccess
 
 	var totalTrackerTime : double = 0
 	var totalDetectorTime : double = 0
@@ -138,38 +136,6 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 			enableDataAcquisition(mID,"DETECTOR") 
 			}
 		}
-	
-	def startRole {
-		warning("ReadyToTrack")
-		emitToParent(new ReadyToTrack)
-	}
-	
-	}
 
-/**
- * 
- * override processingMissionWithID(mID : UUID) {
- * 
- * if (missionList.get(mID).isDynamicAdaptationEnabled) {
- * 
- * var hyperParatermersToBeTested = new LinkedList<HyperParameters>
- * var iter = 0 // @FIXME MEDIUM Quick but not robust strategy as if the order of detectors change the system could get confused.
- * for (d : detectors.keySet) {
- * hyperParatermersToBeTested.add(new HyperParameters(iter,false))
- * iter += 1
- * }
- * registerBehavior(new MultiTrackerObserverRole(owner),this.ADN.get, hyperParatermersToBeTested, detectors)
- * } 
- * else {
- * setSkill(new TrackerPythonTwinSkill(ADN.get.belief, ADN.get.platformName, computation_location.get))
- * registerBehavior(new SingleTrackerObserverRole(this.owner), ADN.get)
- * //			enableDataAcquisition(mID, newArrayList(detectors.keySet.get(0)),
- * //				"DETECTOR") 		// @FIXME VERY VERY VERY VERY HIGH FOIREUX DE CHEZ FOIREUX
- * //			//}
- * enableDataAcquisition(mID, newArrayList(detectors.keySet.get(missionList.get(mID).cautionLevel)),
- * "DETECTOR") // @FIXME VERY VERY VERY VERY HIGH FOIREUX DE CHEZ FOIREUX
- * 
- * }
- * }
- */
+}
 

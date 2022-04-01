@@ -27,8 +27,6 @@ behavior ManagerPlatformRole extends PlatformRole {
 	
 	uses DefaultContextInteractions, Schedules, Logging, Behaviors
 
-
-	
 	val subPlatformsOpenSpaces = new HashMap<String, OpenEventSpace> // TreeMap of the sub-worlds composing the world. It is used to be able to communicate with other worlds
 	val subPlatformsIDs = new HashMap<UUID,String>
 	

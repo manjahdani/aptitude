@@ -1,6 +1,5 @@
 package be.uclouvain.aptitude.surveillance.algorithm.counter
 
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.BBoxes2DTrackResultToCounter
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingPerception
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingRequest
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
@@ -33,7 +32,7 @@ behavior CounterObserverRole extends ObserverRole {
 	
 	val objectPresentInframe = new HashMap<Integer, BBoxe2D>
 	val objectToBeAnalyzed = new ArrayList<BBoxe2D>;
-	var lineCoords = #[1235, 700, 309, 664, 1477, 324, 1676, 310]
+	var lineCoords = #[1235, 700, 309, 664, 1477, 324, 1676, 310] //@FIXME MEDIUM MANUAL
 	// end
 	
 	on Initialize {
@@ -73,37 +72,33 @@ behavior CounterObserverRole extends ObserverRole {
 		DisplayPerception(1)
 	}*/
 	
-	on BBoxes2DTrackResultToCounter {
-		//info("I received BBOX2TrackResults")
-		var a = DisplayPerception(0)
-		
-		var counts = new ArrayList<Integer>
-		for (l : a.keySet){
-			for (id : a.get(l).counts.keySet){
-				counts.add(a.get(l).counts.get(id).get)
-			}
-		}
-		//info(counts)
-		
-		
-		//sendDisplayMessage(occurrence.bboxes2DTrack, this.ID.toString, "F:/data/S02C006/vdo.avi", null, lineCoords,
-			//counts, occurrence.observerName, this.ID.toString, occurrence.sensitivity)
-	}
+//	on BBoxes2DTrackResultToCounter {
+//		//info("I received BBOX2TrackResults")
+//		var a = DisplayPerception(0)
+//		
+//		var counts = new ArrayList<Integer>
+//		for (l : a.keySet){
+//			for (id : a.get(l).counts.keySet){
+//				counts.add(a.get(l).counts.get(id).get)
+//			}
+//		}
+//		//info(counts)
+//		
+//		
+//		//sendDisplayMessage(occurrence.bboxes2DTrack, this.ID.toString, "F:/data/S02C006/vdo.avi", null, lineCoords,
+//			//counts, occurrence.observerName, this.ID.toString, occurrence.sensitivity)
+//	}
 	
 	on CompetitionOver {
 		
 		val sID = occurrence.providerID
 		var mData = orderedMissionList.values.findFirst[signalID == sID]
-		info("Bouip"+ mData.cautionLevel+ mData.signalID)
+		info("Competition over"+ mData.cautionLevel+ mData.signalID)
 		providers.get(sID).emit(new TrackingRequest(mData.missionID,occurrence.selectedAlgorithmID))
 	}
 	
-	def startRole {
-		warning("Counter observer role started -  Nothing needs to be done")
-	}
-	
 	def processingMissionWithID(mID : UUID) {
-		warning("SingleCounter Started: auto-generated method stub")
+		warning("TODO: auto-generated method stub")
 	}
 	
 }

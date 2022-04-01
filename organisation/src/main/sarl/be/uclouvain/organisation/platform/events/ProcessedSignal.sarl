@@ -1,0 +1,12 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform.events
+
+/** 
+ * @author manjah
+ * 
+ */
+abstract event ProcessedSignal{
+	
+}

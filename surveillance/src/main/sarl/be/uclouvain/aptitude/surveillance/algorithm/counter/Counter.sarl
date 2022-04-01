@@ -20,7 +20,7 @@ agent Counter extends Algorithm {
 	
 	on RegisterUnitaryRole {
 		info("Registering behaviours as atomic Counter")
-		registerBehavior(new CounterSignalRole(this), ADN.get)
+		registerBehavior(new CounterSensorRole(this), ADN.get)
 		registerBehavior(new CounterObserverRole(this), ADN.get)
 		emitToParent(new RoleRegistered)
 	}

@@ -5,11 +5,10 @@ package be.uclouvain.aptitude.surveillance.algorithm.detector
 
 import be.uclouvain.aptitude.surveillance.algorithm.PythonTwinObserverRole
 import be.uclouvain.python_access.PartnerDetectionFound
-import be.uclouvain.python_access.PythonTwinAccessCapacity
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
 import java.util.UUID
-import io.sarl.core.DefaultContextInteractions
 
 /** 
  * @author manjah
@@ -37,12 +36,8 @@ behavior SingleDetectorObserverRole extends PythonTwinObserverRole {
 		]
 	}
 	
-	def startRole {
-		warning("TODO: auto-generated method stub")
-	}
-	
-	def processingMissionWithID(mID : UUID) {
-		warning("TODO: auto-generated method stub")
+	override processingMissionWithID(mID : UUID) {
+		setSkill(new DetectorPythonTwin(ADN.get.belief, ADN.get.platformName, computation_location.get))
 	}
 	
 }

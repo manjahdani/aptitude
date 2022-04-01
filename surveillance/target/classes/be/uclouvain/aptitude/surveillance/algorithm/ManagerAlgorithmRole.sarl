@@ -43,12 +43,11 @@ behavior ManagerAlgorithmRole {
 	}
 	on AgentSpawned{
 		if(managersID.keySet.contains(occurrence.agentID)){
-			info("Invitation to become manager to" + occurrence.agentID)
+			info("Invitation to become manager to - " + occurrence.agentID)
 			wake(new BecomeManager)[it.ID==occurrence.agentID]
 		}	
 	}
 	on RoleRegistered{
-		info("Received Role Registed")
 		wake(new JoinPlatform(managersID.get(occurrence.source.ID), "none"))[it.ID == occurrence.source.ID]
 	}
 

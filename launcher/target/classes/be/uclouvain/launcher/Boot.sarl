@@ -5,24 +5,24 @@ import UDPMessages.UDP_Message_Base
 import be.uclouvain.aptitude.surveillance.CommitSuicide
 import be.uclouvain.aptitude.surveillance.Paraddis
 import be.uclouvain.aptitude.surveillance.TOLDAgent
+import be.uclouvain.aptitude.surveillance.TOLDConfig
+import be.uclouvain.aptitude.surveillance.algorithm.counter.Counter
+import be.uclouvain.aptitude.surveillance.algorithm.detector.Detector
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.Tracker
 import be.uclouvain.aptitude.surveillance.platform.PlatformAgent
+import be.uclouvain.aptitude.surveillance.user.HolonicUserConfig
+import be.uclouvain.aptitude.surveillance.user.User
 import be.uclouvain.organisation.platform.util.PlatformConfig
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
+import io.sarl.lang.core.Agent
 import java.net.DatagramPacket
 import java.net.DatagramSocket
-import javafx.application.Application
-import be.uclouvain.aptitude.surveillance.user.HolonicUserConfig
-import be.uclouvain.aptitude.surveillance.user.User
-import be.uclouvain.aptitude.surveillance.TOLDConfig
 import java.util.HashMap
-import io.sarl.lang.core.Agent
-import be.uclouvain.aptitude.surveillance.algorithm.detector.Detector
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.Tracker
-import be.uclouvain.aptitude.surveillance.algorithm.counter.Counter
+import javafx.application.Application
 
 /** 
  * 
@@ -40,13 +40,14 @@ agent Boot extends Paraddis {
 	// val junctionList = "MacqWoolridge"
 	// @Parameters
 	
-	val INITIAL_CAMERAS = newArrayList("S03C012")//, "S04C035") // "MOT17-04", "MOT17-02")
-	//val INIT_TASKS = newArrayList("DETECTOR", "TRACKER", "COUNTER")
+	val INITIAL_CAMERAS = newArrayList("S04C035")//, "S04C035") // "MOT17-04", "MOT17-02")
 	val AVAILABLE_RESSOURCES = newArrayList("1000")//, "1000")
 
 	val client : DatagramSocket = new DatagramSocket(65000) // A client to listen requests
 	// val clientSender = new UDPSender() // homeMade client to send UDP message
 	val INIT_TASKS = new HashMap<String, Class<? extends Agent>>
+	
+
 	
 	on Initialize {
 		loggingName = this.ID + "-Boot"
@@ -55,13 +56,12 @@ agent Boot extends Paraddis {
 		INIT_TASKS.put("DETECTOR", Detector)
 		INIT_TASKS.put("TRACKER", Tracker)
 		INIT_TASKS.put("COUNTER", Counter)
-		
 		setAgentsReady()
 		enableInputStream()
 		task("Application-Launcher").execute[Application::launch(GUI, " ")]
 	}
 	
-	// @FIXME We absolutely need to extend the Universe Concept. We need a global database.. with local d.b. Need Rethinking
+
 	def setAgentsReady {
 					// for (wc : subWorldConfig) {
 		// WorldHolon.addSubWorld(wc)

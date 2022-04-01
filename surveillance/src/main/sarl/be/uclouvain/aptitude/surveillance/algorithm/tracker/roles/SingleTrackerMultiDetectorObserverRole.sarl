@@ -3,31 +3,25 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
 
-import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ReadyToTrack
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ResumeTrackingMission
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingRequest
 import be.uclouvain.organisation.events.JoinPlatform
 import be.uclouvain.organisation.platform.ObserverRole
-import be.uclouvain.organisation.platform.events.AddMission
 import be.uclouvain.organisation.platform.events.ScenarioInfo
 import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
 import be.uclouvain.organisation.platform.util.HyperParameters
-import be.uclouvain.organisation.platform.util.SurveillanceMissionData
-import be.uclouvain.python_access.BBoxes2DResult
 import io.sarl.core.AgentSpawned
 import io.sarl.core.Behaviors
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
-import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
-import io.sarl.core.OpenEventSpaceSpecification
 import java.util.Collections
 import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
+import be.uclouvain.python_access.BBoxes2DSignal
 
 /** 
  * @author manjah
@@ -35,7 +29,7 @@ import java.util.UUID
  */
  
 behavior SingleTrackerMultiDetectorObserverRole extends ObserverRole {
-	uses Logging, Lifecycle, InnerContextAccess , Behaviors, ExternalContextAccess
+	uses Logging, InnerContextAccess , Behaviors, ExternalContextAccess
 	
 	protected val detector_innerTrackerMap = Collections.synchronizedMap(new HashMap<String, UUID>)
 	protected val innerTracker_detectorsMap = Collections.synchronizedMap(new HashMap<UUID, String>)
@@ -83,7 +77,7 @@ behavior SingleTrackerMultiDetectorObserverRole extends ObserverRole {
 		//emit(providers.get(detectorID), new PauseMission(mData.missionID))[it.ID == detectorID]
 	}
 
-	on BBoxes2DResult {
+	on BBoxes2DSignal {
 		
 		if(occurrence.bboxes2D.frameNumber <5){
 		warning("Sending results of frame #" + occurrence.bboxes2D.frameNumber + 
@@ -95,35 +89,6 @@ behavior SingleTrackerMultiDetectorObserverRole extends ObserverRole {
 		//wake(new BBoxes2DResult(occurrence.bboxes2D))[it.ID == detector_innerTrackerMap.get(occurrence.providerName)] 
 	}
 	
-	/** 	
-	def startRole {
-		for(d:detectors.keySet){
-			val internalMissionID = UUID.randomUUID
-			val newInternalMission = new SurveillanceMissionData(internalMissionID, this.ID, organizationContext.get.ID,
-				detectors.get(d).performance, false)
-			orderedMissionList.put(internalMissionID, newInternalMission)
-			innerTracker_ParametersMap.put(internalMissionID, new HyperParameters(detectors.get(d).performance, false))
-			var comSpace = organizationContext.get.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID) // An internal space to communicate with other roles.
-			comSpace.registerStrongParticipant(asEventListener)
-			providers.put(internalMissionID, comSpace)
-			detector_innerTrackerMap.put(d, internalMissionID)
-			innerTracker_detectorsMap.put(internalMissionID, d)
-			spawnInContextWithID(Algorithm, internalMissionID, innerContext,
-				ADN.get.cloneChildWithID(internalMissionID))
-			//requestAlgorithm(internalMissionID,d,"DETECTOR")
-			
-		}
-		
-		//orderedMissionList.put... 
-	}
-	*/
-	on ReadyToTrack {
-		val mbID = occurrence.source.ID
-		wake(new AddMission(mbID, providers.get(mbID).spaceID.ID)) [
-			it.ID == mbID
-		]
-	}
-	
 	on AgentSpawned {
 		// In this, we choose that the missionID is equivalent to the subprocess ID
 		val mbID = occurrence.agentID
@@ -132,12 +97,9 @@ behavior SingleTrackerMultiDetectorObserverRole extends ObserverRole {
 		}
 	}
 	
-	def processingMissionWithID(mID : UUID) {
+	override processingMissionWithID(mID : UUID) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	def startRole {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
 	
 }

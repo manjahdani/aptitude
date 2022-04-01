@@ -5,15 +5,15 @@ package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
 
 import be.uclouvain.aptitude.surveillance.algorithm.PythonTwinObserverRole
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinCapacity
-import be.uclouvain.python_access.BBoxes2DResult
-import be.uclouvain.python_access.PartnerTrackingFound
-import io.sarl.core.Initialize
-import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
-import io.sarl.core.ExternalContextAccess
 import be.uclouvain.organisation.platform.events.ScenarioInfo
+import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
+import be.uclouvain.python_access.BBoxes2DSignal
+import be.uclouvain.python_access.PartnerTrackingFound
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Initialize
 import io.sarl.core.Logging
-import java.util.UUID
 import java.util.ArrayList
+import java.util.UUID
 
 /** 
  * @author manjah
@@ -33,9 +33,7 @@ behavior SingleTrackerSingleDetectorObserverRole extends PythonTwinObserverRole 
 	
 	
 	on Initialize {
-		info("Single Tracker Single Detector role started.")
 		emit(selfSpace, new ScenarioInfoRequest)
-
 	}
 
 
@@ -47,18 +45,14 @@ behavior SingleTrackerSingleDetectorObserverRole extends PythonTwinObserverRole 
 		checkList.replace("computation_location", true)
 	}
 
-	on BBoxes2DResult {
+	on BBoxes2DSignal {
 		if(!processedImages.contains(occurrence.bboxes2D.frameNumber)){
 		Signal2Perception(occurrence.bboxes2D)
 			processedImages.add(occurrence.bboxes2D.frameNumber)
 		}
 	}
 	
-	def startRole {
-		warning("Single Tracker Observer Role started in organization TODO: auto-generated method stub")
-	}
-	
-	def processingMissionWithID(mID : UUID) {
+	override processingMissionWithID(mID : UUID) {
 		warning("Single Tracker Observer Role started in organization TODO: auto-generated method stub")
 	}
 	

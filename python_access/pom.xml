@@ -29,6 +29,11 @@
 		    <artifactId>hazelcast</artifactId>
 		    <version>4.0.3</version>
 		</dependency>
+				<dependency>
+			<groupId>be.uclouvain.aptitude</groupId>
+			<artifactId>organisation</artifactId>
+			<version>0.0.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>

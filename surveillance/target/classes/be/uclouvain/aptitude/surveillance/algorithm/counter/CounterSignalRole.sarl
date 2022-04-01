@@ -9,8 +9,6 @@ import be.uclouvain.python_access.PythonTwinAccessCapacity
 import io.sarl.core.Behaviors
 import io.sarl.core.Logging
 import java.util.UUID
-import io.sarl.core.DefaultContextInteractions
-import be.uclouvain.aptitude.surveillance.algorithm.RoleRegistered
 
 /** 
  * @TODO : To complete
@@ -22,14 +20,14 @@ import be.uclouvain.aptitude.surveillance.algorithm.RoleRegistered
  * @mavenartifactid $surveillance$
  * 
  */
-behavior CounterSignalRole extends SensorRole {
+behavior CounterSensorRole extends SensorRole {
 	
-	uses Logging, Behaviors, DefaultContextInteractions
+	uses Logging, Behaviors
 
 	
 	val CONFIG_PATH = "F:/aptitude/surveillance/src/main/resources/config/evalconfig.json" // @FIXME HIGH Manual
 	
-	def processingMissionWithID (mID : UUID) {
+	override processingMissionWithID (mID : UUID) {
 
 		if (missionList.get(mID).dynamicAdaptationEnabled) {
 			warning("Let the competition start !")
@@ -49,10 +47,4 @@ behavior CounterSignalRole extends SensorRole {
 		}
 		enableDataAcquisition(mID,"TRACKER")
 	}
-	
-	def startRole {
-			warning("Atomic counter signal started")
-			emitToParent(new ReadyToCount)
-	}
-	
 }

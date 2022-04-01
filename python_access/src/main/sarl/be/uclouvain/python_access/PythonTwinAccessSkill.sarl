@@ -77,7 +77,7 @@ abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 		// Final concatenation
 		jsonConfigtmp.put("Video", video)
 		jsonConfig = jsonConfigtmp
-		info("Activating access" + jsonConfig)
+		//info("Activating access" + jsonConfig)
 		activateAccess(jsonConfig)
 	}
 

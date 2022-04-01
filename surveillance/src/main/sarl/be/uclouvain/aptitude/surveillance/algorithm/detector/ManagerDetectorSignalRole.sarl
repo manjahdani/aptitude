@@ -1,0 +1,23 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.detector
+
+import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Logging
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior ManagerDetectorSignalRole extends DetectorSignalRole {
+	uses Logging, ExternalContextAccess
+
+	on LastFrame {
+		for (listenersSpace : listeners.values) {
+			info("LastFrame")
+			emit(listenersSpace, new LastFrame(occurrence.frameNumber))[it.ID !== this.ID]
+		}
+	}
+}

@@ -8,11 +8,12 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.HashMap
 
+
 /** 
  * @author manjah
  * 
  */
-class HyperParameters {
+class HyperParameters implements Comparable<HyperParameters> {
 
 	val cautionLevel= new AtomicInteger(-1)
 	val dynamicAdaptationEnabled = new AtomicBoolean(false)
@@ -70,5 +71,10 @@ class HyperParameters {
 	def getHyperParametersAsAString() {
 		return 'cl = '.concat(getCautionLevel.toString).concat("   b = ").concat(isDynamicAdaptationEnabled.toString)
 	}
-
+	
+	// @FIXME HIGH develop a proper comparison !!!
+	def compareTo(o : HyperParameters) : int {
+		return (cautionLevel.get - o.cautionLevel.get)
+	}
+	
 }

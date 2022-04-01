@@ -1,18 +1,11 @@
 package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
 
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ReadyToTrack
+import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
+import be.uclouvain.organisation.platform.ProcessMission
 import be.uclouvain.organisation.platform.SensorRole
-import be.uclouvain.organisation.platform.events.AddMission
-import io.sarl.core.Behaviors
-import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.InnerContextAccess
+import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
 import java.util.UUID
-import java.util.concurrent.atomic.AtomicInteger
-import io.sarl.core.Initialize
-import be.uclouvain.organisation.platform.ProcessMission
-import io.sarl.core.ExternalContextAccess
-import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -35,14 +28,9 @@ import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
  */
 behavior MultiTrackerManagerSensorRole extends SensorRole { 
 	
-	uses Logging, Behaviors,ExternalContextAccess
+	uses Logging,ExternalContextAccess
 
-	override processingMissionWithID(mID : UUID) {
-		emit(selfSpace, new ProcessMission(missionList.get(mID)))
-	}
-
-	
-	on LastFrame {
+  	on LastFrame {
 		info("Transmitting to my listeners" + listeners.keySet)
 		for (l : listeners.keySet) {
 			emit(listeners.get(l),
@@ -52,9 +40,7 @@ behavior MultiTrackerManagerSensorRole extends SensorRole {
 		}
 	}
 
-	def startRole {
-		warning("MultiTrackerManagerSensorRol, Role not ready")
-	}
+
 	
 }
 

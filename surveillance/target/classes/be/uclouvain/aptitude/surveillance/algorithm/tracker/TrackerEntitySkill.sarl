@@ -11,12 +11,7 @@ import be.uclouvain.organisation.told.InternalUpdate
  */
 skill TrackerEntitySkill implements InternalUpdate {
 	
-
-	
-	
 	def internalUpdate(info : Object) {
 		
 	}
-	
-
 }

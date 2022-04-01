@@ -6,23 +6,25 @@ package be.uclouvain.organisation.platform
 import be.uclouvain.organisation.platform.events.AddMission
 import be.uclouvain.organisation.platform.events.HyperParametersRequest
 import be.uclouvain.organisation.platform.events.ProcessingHyperParameters
+import be.uclouvain.organisation.platform.events.Ready2Process
 import be.uclouvain.organisation.platform.util.SurveillanceMissionData
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.Schedules
+import java.util.ArrayList
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
-import java.util.ArrayList
-import io.sarl.core.Behaviors
 
 /** 
  * @author manjah
  * 
  */
 abstract behavior SensorRole extends ScenarioRole {
-	uses Logging, Schedules, ExternalContextAccess, Behaviors
+	uses Logging, Schedules, ExternalContextAccess, Behaviors, DefaultContextInteractions
 
 	protected val listeners = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the client and the role
 	protected val missionList = Collections.synchronizedMap(new HashMap<UUID, SurveillanceMissionData>) // A map between mission ID that it needs to answer to and their data
@@ -47,20 +49,14 @@ abstract behavior SensorRole extends ScenarioRole {
 			emit(missionSpace, new HyperParametersRequest(occurrence.missionID))[it.ID == clientID]
 		}
 	}
+
+
 	
-	//@FIXME LOW the setup is here as at a higher level, there is no possibly to have another name than observer which trigers the same 
-	// maybe it is possible to improve that 
-	def setup() {
-		info("setup of the role sensor agent")
-		task("initSen").every(1000) [
-			if (areAllTrue(checkList.values)) {
-				startRole()
-				task("initSen").cancel
-			} else {
-				info("Waiting for orga and ressources" + checkList)
-			}
-		]
+	override Ready2Process {
+		emitToParent( new Ready2Process)
 	}
+	
+
 	
 	def waitMissionParam(mID : UUID) {
 
@@ -79,6 +75,9 @@ abstract behavior SensorRole extends ScenarioRole {
 		]
 	}
 
+	def processingMissionWithID(mID : UUID) {
+		emit(selfSpace, new ProcessMission(missionList.get(mID)))
+	}
 	
 
 	def enableDataAcquisition(mID : UUID, signals : ArrayList<String>, signalType : String) {

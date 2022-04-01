@@ -4,16 +4,13 @@
 package be.uclouvain.aptitude.surveillance.algorithm.detector
 
 import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
-import io.sarl.core.Behaviors
-import io.sarl.core.Logging
-import io.sarl.core.Initialize
-import java.util.TreeMap
-import be.uclouvain.organisation.platform.util.Metadata
-import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsStudent
-import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsMaster
 import be.uclouvain.aptitude.surveillance.algorithm.BecomeManager
-import io.sarl.core.DefaultContextInteractions
 import be.uclouvain.aptitude.surveillance.algorithm.RoleRegistered
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsMaster
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsStudent
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Logging
 
 /** 
  * @author manjah
@@ -25,19 +22,19 @@ agent Detector extends Algorithm {
 	on BecomeManager {
 		info("Becoming Manager")
 		registerBehavior(new CooperativeMasterStudentDetectorsObserverRole(this), ADN.get)
-		registerBehavior(new DetectorManagerSignalRole(this), ADN.get)
+		registerBehavior(new ManagerDetectorSignalRole(this), ADN.get)
 		emitToParent(new RoleRegistered)
 	}
 	on AddMissionAsStudent {
 		info("Becoming Student Atomic")
-		registerBehavior(new StudentDetectorSignalRole(this), ADN.get)
+		registerBehavior(new ActivityDetectorSignalRole(this), ADN.get)
 		registerBehavior(new SingleDetectorObserverRole(this), ADN.get)
 		emitToParent(new RoleRegistered)
 	}
 
 	on AddMissionAsMaster {
 		info("Becoming Master Atomic")
-		registerBehavior(new MasterDetectorSignalRole(this), ADN.get)
+		registerBehavior(new DetectorSignalRole(this), ADN.get)
 		registerBehavior(new SingleDetectorObserverRole(this), ADN.get)
 		emitToParent(new RoleRegistered)
 	}

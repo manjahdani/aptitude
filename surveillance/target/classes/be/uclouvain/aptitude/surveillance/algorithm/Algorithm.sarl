@@ -13,7 +13,6 @@ import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
 import be.uclouvain.organisation.told.entity.EntityRole
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
-import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
@@ -65,7 +64,7 @@ import java.util.concurrent.atomic.AtomicReference
 
 agent Algorithm extends Paraddis{
 	
-	uses Behaviors,Logging, Lifecycle, InnerContextAccess, ExternalContextAccess,DefaultContextInteractions
+	uses Behaviors,Logging, Lifecycle, InnerContextAccess, ExternalContextAccess
 	
 	protected val ADN  = new AtomicReference<AlgorithmInfo>
 
@@ -112,7 +111,7 @@ agent Algorithm extends Paraddis{
 	}
 	
 	on JoinPlatform {
-		info("received join platfom " + occurrence.contextID.ID)
+		//info("Received join platfom " + occurrence.contextID.ID)
 		join(occurrence.contextID.ID,occurrence.contextID.defaultSpace.spaceID.ID)
 	}
 	

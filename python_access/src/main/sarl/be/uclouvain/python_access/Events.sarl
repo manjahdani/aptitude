@@ -1,10 +1,11 @@
 package be.uclouvain.python_access
 
+import be.uclouvain.organisation.platform.events.Signal
 import be.uclouvain.python_access.messages.BBoxes2DMessage
 import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
 import be.uclouvain.python_access.messages.EvaluationMessage
 
-event BBoxes2DResult {
+final event BBoxes2DResult{
 
 	val bboxes2D : BBoxes2DMessage
 	val providerName : String
@@ -20,7 +21,34 @@ event BBoxes2DResult {
 	}
 }
 
-event BBoxes2DTrackResult {
+final event BBoxes2DTrackResult{
+
+	var bboxes2DTrack : BBoxes2DTrackMessage
+
+	// TODO Create a BBoxes2D Object
+	new(message : BBoxes2DTrackMessage) {
+		this.bboxes2DTrack = message
+	}
+}
+
+final event BBoxes2DSignal extends Signal {
+
+	val bboxes2D : BBoxes2DMessage
+	val providerName : String
+
+	// TODO Create a BBoxes2D Object
+	new(message : BBoxes2DMessage) {
+		this.bboxes2D = message
+		this.providerName = null
+	}
+
+	new(message : BBoxes2DMessage, algoName : String) {
+		this.bboxes2D = message
+		this.providerName = algoName
+	}
+}
+
+final event BBoxes2DTrackSignal extends Signal {
 
 	var bboxes2DTrack : BBoxes2DTrackMessage
 

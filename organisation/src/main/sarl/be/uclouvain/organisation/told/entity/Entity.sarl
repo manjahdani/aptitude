@@ -37,11 +37,12 @@ behavior EntityRole extends Role{
 		organizationContext.set(occurrence.context)
 		privateOrganizationSpace.set(
 		retrieveOrCreateOpenSpaceWithID(occurrence.privateCommunicationChannelID))
-		startRole
+		Ready2Work
 		//TOLDSpace.registerStrongParticipant(asEventListener)
+		
 	}
-	def startRole (){
-		//Do Nothing
+	def Ready2Work{
+		//Do nothing
 	}
 	on AuthorizationToJoinContext {
 		info("receives authorisation to join the context of - " + occurrence.source.ID.toString.substring(0, 5) +

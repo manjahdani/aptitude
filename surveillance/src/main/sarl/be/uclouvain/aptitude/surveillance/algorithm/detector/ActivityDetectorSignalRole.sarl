@@ -3,23 +3,21 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm.detector
 
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.Activity
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.NoActivity
 import be.uclouvain.organisation.platform.events.PauseMission
 import be.uclouvain.python_access.BBoxes2DResult
-import io.sarl.core.DefaultContextInteractions
-import be.uclouvain.aptitude.surveillance.algorithm.detector.events.Activity
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Initialize
-import io.sarl.core.Logging
-import be.uclouvain.aptitude.surveillance.algorithm.detector.events.NoActivity
-import java.util.concurrent.atomic.AtomicInteger
-import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
 import com.google.common.util.concurrent.AtomicDouble
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Logging
+import java.util.concurrent.atomic.AtomicInteger
 
 /** 
  * @author manjah
  * 
  */
-behavior StudentDetectorSignalRole extends DetectorSignalRole {
+behavior ActivityDetectorSignalRole extends DetectorSignalRole {
 	uses Logging, DefaultContextInteractions, ExternalContextAccess
 
 	val noActivityFrames = new AtomicInteger(0)

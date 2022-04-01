@@ -63,16 +63,6 @@ agent Expert extends Paraddis {
 		encounteredPlatforms.put(occurrence.mission.platformID, occurrence.platformOpenChannel)
 	}
 
-
-	
-	//@FIXME This should be in the role rather in the agent. 
-	//on StopMission {
-		//info("received Stop Mission")
-		//var platformLocation = missionList.get(occurrence.expertID) // @TODO : The experts may be on hold at this point
-		//info("received Stop mission at " + platformLocation)
-		//encounteredPlatforms.get(platformLocation).emit(new StopMission(occurrence.expertID))
-	//}
-
 	on ContextJoined {
 		//info("all experts context -- " + allContexts)
 		//info("defaultSpaceJoined -- " + occurrence.defaultSpaceID)
