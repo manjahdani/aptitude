@@ -26,26 +26,18 @@ import io.sarl.core.Logging
 behavior EntityRole extends Role{
 	
 	uses Logging, ExternalContextAccess
-	/*
-	 * The entity registerStrongParticipant the initial base
-	 * @TODO : The entity does not need to have a BaseContext ? It does not make sens it only has to know the context of current TOLD. 
-	 * The approach is therefore not scalable 
-	 */
-
+	
 	on TOLDOrganizationInfo {
-		//info("met TOLD - " + occurrence.context.ID.toString.substring(0, 5))
-		organizationContext.set(occurrence.context)
-		privateOrganizationSpace.set(
-		retrieveOrCreateOpenSpaceWithID(occurrence.privateCommunicationChannelID))
+		// info("met TOLD - " + occurrence.context.ID.toString.substring(0, 5))
+		updateContextInfo(occurrence.context.ID, occurrence.privateCommunicationChannelID)
 		Ready2Work
-		//TOLDSpace.registerStrongParticipant(asEventListener)
-		
 	}
 	def Ready2Work{
 		//Do nothing
 	}
 	on AuthorizationToJoinContext {
-		info("receives authorisation to join the context of - " + occurrence.source.ID.toString.substring(0, 5) +
+		val mbID=  occurrence.source.ID
+		info("receives authorisation to join the context of - " + mbID.toString.substring(0, 5) +
 				" and space " + occurrence.defaultSpaceID)
 		join(occurrence.contextID, occurrence.defaultSpaceID)
 	}

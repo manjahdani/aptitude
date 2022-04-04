@@ -11,6 +11,7 @@ import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.AgentContext
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
+import io.sarl.core.ExternalContextAccess
 
 /** 
  * @author manjah
@@ -18,9 +19,8 @@ import java.util.concurrent.atomic.AtomicReference
  */
 abstract behavior Role {
 	
-	uses Behaviors, InnerContextAccess
+	uses Behaviors, InnerContextAccess, ExternalContextAccess
 	
-	//@FIXME HIGH the getContext(UUID) helps us retrieve the context without passing the AgentContext
 	protected val organizationContext = new AtomicReference<AgentContext> // context of the organisation Platform
 	protected var privateOrganizationSpace = new AtomicReference<OpenEventSpace> // private space between the algorithm and the organisation Platform
 	
@@ -32,8 +32,8 @@ abstract behavior Role {
 		selfSpace.registerStrongParticipant(asEventListener) 	// listen to a self-internal space
 	}
 	
-	def updateContextInfo(ctxt : AgentContext, sid : UUID) {
-		organizationContext.set(ctxt) // Update the organization
+	def updateContextInfo(ctxt : UUID, sid : UUID) {
+		organizationContext.set(getContext(ctxt)) // Update the organization
 		privateOrganizationSpace.set(retrieveOrCreateOpenSpaceWithID(sid))
 		privateOrganizationSpace.get.registerStrongParticipant(asEventListener)
 		//info("obtained organization info : " + ctxt.ID + 

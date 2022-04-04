@@ -11,7 +11,7 @@ import io.sarl.core.Initialize
  * @author manjah
  * @TODO to comment
  */
-behavior MultiTrackerManagerObserverRole extends ManagerObserverRole {
+behavior ManagerTrackerObserverRole extends ManagerObserverRole {
 
 	on Initialize {
 		SENSORS.put("SORT", new Metadata(0, "VEHICLE", 50))

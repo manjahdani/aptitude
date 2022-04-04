@@ -52,11 +52,6 @@ behavior AnalystRole extends ObserverRole{
 		orderedMissionList.put(mission.missionID, mission)
 		emit(privateOrganizationSpace.get, new Request2PerformMission(mission))
 	}
-	
-	on PlatformOrganizationInfo {
-		emit(occurrence.context.defaultSpace, new Identification(ADN.get.name))
-	}
-
 	on AuthorizationToPerformMission {
 		info("Received authorisation to perform a mission within the space : " + occurrence.missionSpaceInPlatformID)
 		providers.put(this.ID,retrieveOrCreateOpenSpaceWithID(occurrence.missionSpaceInPlatformID)); 

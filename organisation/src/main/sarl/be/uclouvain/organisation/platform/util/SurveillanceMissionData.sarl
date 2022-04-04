@@ -15,10 +15,7 @@ import java.util.UUID
  */
 class SurveillanceMissionData extends MissionData{
 	
-	
 	val hyperParameters : HyperParameters
-
-	
 
 	new (missionID : UUID, clientID : UUID, platformID : UUID) {
 		super(missionID, clientID, platformID)
@@ -43,6 +40,7 @@ class SurveillanceMissionData extends MissionData{
 	def setDynamicAdaptation(b : boolean) {
 		this.hyperParameters.setDynamicAdaptation(b)
 	}
+	
 	def update(p : HyperParameters){
 		updateParameters(p.cautionLevel, p.dynamicAdaptationEnabled)
 		

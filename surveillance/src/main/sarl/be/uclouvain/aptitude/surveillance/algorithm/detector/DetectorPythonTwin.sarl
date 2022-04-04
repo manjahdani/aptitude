@@ -3,9 +3,9 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm.detector
 
-import be.uclouvain.aptitude.surveillance.algorithm.ObserverPythonAccess
 import be.uclouvain.python_access.BBoxes2DResult
 import be.uclouvain.python_access.CommunicationManager
+import be.uclouvain.python_access.ObserverPythonAccess
 import be.uclouvain.python_access.PartnerDetectionFound
 import be.uclouvain.python_access.messages.ActionMessage
 import be.uclouvain.python_access.messages.BBoxes2DMessage
@@ -13,8 +13,8 @@ import be.uclouvain.python_access.messages.BaseMessage
 import be.uclouvain.python_access.messages.RequestMessage
 import io.sarl.core.Behaviors
 import io.sarl.core.Logging
-import io.sarl.core.Schedules
 import java.util.Arrays
+import io.sarl.core.Schedules
 
 /** 
  * @TODO: write a description
@@ -28,7 +28,7 @@ import java.util.Arrays
  */
 skill DetectorPythonTwin extends ObserverPythonAccess{
 	
-	uses Behaviors, Schedules, Logging
+	uses Behaviors, Logging, Schedules
 
 	def update(m : BaseMessage) {
 		if (m instanceof BBoxes2DMessage) {

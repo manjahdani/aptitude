@@ -8,11 +8,11 @@ import be.uclouvain.aptitude.surveillance.platform.AgentAlgorithm
 import be.uclouvain.aptitude.surveillance.platform.AgentPlatform
 import be.uclouvain.organisation.events.Identification
 import be.uclouvain.organisation.events.JoinPlatform
-import be.uclouvain.organisation.platform.PlatformOrganizationInfo
 import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
 import be.uclouvain.organisation.told.entity.EntityRole
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
+import io.sarl.core.ContextJoined
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
@@ -88,8 +88,6 @@ agent Algorithm extends Paraddis{
 				spawnInContextWithID(Algorithm, e, innerContext, INIT_TASKS,toSpawn.get(e))
 			}
 		}
-		
-		
 		if(ADN.get.level>1){
 			
 			registerBehavior(new AlgorithmEntity(this))
@@ -137,17 +135,11 @@ agent Algorithm extends Paraddis{
 			}
 	}
 
-	
-	on PlatformOrganizationInfo {
-		
-		info("Algorithm joined - " + occurrence.context.ID)
-		emit(
-			occurrence.context.getOrCreateSpaceWithID(
-				OpenEventSpaceSpecification,occurrence.privateCommunicationChannelID),
+	on ContextJoined {
+		emit(getContext(occurrence.holonContextID).defaultSpace,
 			new Identification(ADN.get.name)
 		)
 	}
-
 }
 
 

@@ -25,8 +25,8 @@ import java.util.concurrent.atomic.AtomicReference
 abstract behavior ScenarioRole extends Role {
 	uses Logging, Schedules
 
-	protected var ADN = new AtomicReference<AlgorithmInfo>
-	protected var computation_location = new AtomicReference<String>
+	protected val ADN = new AtomicReference<AlgorithmInfo>
+	protected val computation_location = new AtomicReference<String>
 	protected val checkList = Collections.synchronizedMap(new HashMap<String, Boolean>)
 	protected val isRoleActive = new AtomicBoolean(true)
 	
@@ -66,7 +66,7 @@ abstract behavior ScenarioRole extends Role {
 	}
 	on PlatformOrganizationInfo {
 
-		updateContextInfo(occurrence.context, occurrence.privateCommunicationChannelID)
+		updateContextInfo(occurrence.context.ID, occurrence.privateCommunicationChannelID)
 		ADN.get.platformName = occurrence.platformName
 		checkList.replace("context", true)
 	}

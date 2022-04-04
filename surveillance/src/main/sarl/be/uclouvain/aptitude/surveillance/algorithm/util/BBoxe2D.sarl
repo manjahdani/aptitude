@@ -19,7 +19,7 @@ import org.arakhne.afc.math.geometry.d2.d.Vector2d
  * @mavenartifactid $surveillance$
  * 
  */
-class BBoxe2D extends BBOX {
+class BBoxe2D extends BBox{
 	
 	var conf : double 
 	var frame : int
@@ -29,7 +29,7 @@ class BBoxe2D extends BBOX {
 	val curPos = new Point2d(0,0)
 	val direction = new Vector2d(0,0)
 	
-	new (bb:BBOX, conf:double, globalID:int, classeID:int, frame:int)
+	new (bb:BBox, conf:double, globalID:int, classeID:int, frame:int)
 	{
 		super(bb.x,bb.y, bb.w,bb.h)
 		this.conf=conf;
@@ -94,7 +94,7 @@ class BBoxe2D extends BBOX {
 	
 
 }
-class BBOX {
+class BBox {
 	
 	var x : double
 	var y : double
@@ -125,7 +125,7 @@ class BBOX {
 		return this.h
 	}
 	
-	def getBBOX {
+	def getBBox {
 		return this
 	}
 	

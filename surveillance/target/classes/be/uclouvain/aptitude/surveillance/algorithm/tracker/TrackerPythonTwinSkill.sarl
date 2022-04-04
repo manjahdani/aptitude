@@ -1,7 +1,6 @@
 package be.uclouvain.aptitude.surveillance.algorithm.tracker
 
-import be.uclouvain.aptitude.surveillance.algorithm.ObserverPythonAccess
-import be.uclouvain.aptitude.surveillance.algorithm.util.BBOX
+
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.python_access.BBoxes2DTrackResult
 import be.uclouvain.python_access.CommunicationManager
@@ -10,9 +9,11 @@ import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
 import be.uclouvain.python_access.messages.BaseMessage
 import be.uclouvain.python_access.messages.RequestMessage
 import io.sarl.core.Behaviors
-import io.sarl.core.Schedules
 import java.util.ArrayList
 import java.util.Arrays
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBox
+import be.uclouvain.python_access.ObserverPythonAccess
+import io.sarl.core.Schedules
 
 /** 
  * @TODO: write a description
@@ -78,7 +79,7 @@ skill TrackerPythonTwinSkill extends ObserverPythonAccess implements TrackerPyth
 			var classID = track.classIDs.get(i)
 			var globalID = track.globalIDs.get(i)
 			var conf = track.detConfs.get(i)
-			tmp.add(new BBoxe2D(new BBOX(X, Y, W, H), conf, globalID, classID, track.frameNumber))
+			tmp.add(new BBoxe2D(new BBox(X, Y, W, H), conf, globalID, classID, track.frameNumber))
 		}
 		return tmp
 	}

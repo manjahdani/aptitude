@@ -15,6 +15,7 @@ import io.sarl.core.OpenEventSpaceSpecification
 import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
+import be.uclouvain.organisation.events.Identification
 
 /** 
  * The expert receives the requirements of the client and translates them into a mission.
@@ -35,11 +36,12 @@ agent Expert extends Paraddis {
 	var missionList = new HashMap<UUID, UUID> // The different Mission its responsible the first entry is the mission list and the second the ContextID
 	var encounteredPlatforms = new HashMap<UUID, OpenEventSpace>
 	var publicChannel = new AtomicReference<OpenEventSpace>
-	
+	protected val ADN = new AtomicReference<AlgorithmInfo>
 
 	on Initialize {
 		loggingName = this.ID + "-Expert"   
 		registerBehavior(new EntityRole(this))
+		ADN.set(new AlgorithmInfo("HUMAN", "ANALYST"))
 		publicChannel.set(innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID))
 		publicChannel.get.registerStrongParticipant(asEventListener) 	// public channel
 		
@@ -47,7 +49,7 @@ agent Expert extends Paraddis {
 	
 	on NewMission {
 
-		registerBehavior(new AnalystRole(this), new AlgorithmInfo("HUMAN", "ANALYST"),occurrence.mission)
+		registerBehavior(new AnalystRole(this), ADN.get ,occurrence.mission)
 		// Check whether the agent already lives in the context of the platform where it has to pursue the mission
 		// We assume that the platformOpenChanel is created within the platform such that we could retrieve the contextID which is the platform ID.  
 		if (!isInContext(occurrence.mission.platformID)) {
@@ -62,10 +64,10 @@ agent Expert extends Paraddis {
 		missionList.put(occurrence.mission.missionID, occurrence.mission.platformID)
 		encounteredPlatforms.put(occurrence.mission.platformID, occurrence.platformOpenChannel)
 	}
-
+	
+	
 	on ContextJoined {
-		//info("all experts context -- " + allContexts)
-		//info("defaultSpaceJoined -- " + occurrence.defaultSpaceID)
+		emit(getContext(occurrence.defaultSpaceID).defaultSpace, new Identification(ADN.get.name))
 	}
 
 	def isInContext(contextID : UUID) {

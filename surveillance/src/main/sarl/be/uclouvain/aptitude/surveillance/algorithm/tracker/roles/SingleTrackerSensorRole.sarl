@@ -5,9 +5,9 @@ import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinCap
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinSkill
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ResumeTrackingMission
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingPerception
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingTaskOver
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.organisation.platform.SensorRole
-import be.uclouvain.organisation.platform.events.LeavePlatform
 import be.uclouvain.organisation.platform.events.ScenarioInfo
 import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
 import be.uclouvain.python_access.BBoxes2DTrackResult
@@ -16,7 +16,6 @@ import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.UUID
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingTaskOver
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -36,7 +35,7 @@ import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingTaskO
  * @mavenartifactid $surveillance$
  * 
  */
-behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH ITS ACTUALLY A SUB-AGENT TRACKER WE ARE BYPASSING THAT.... 
+behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY HIGH ITS ACTUALLY A SUB-AGENT TRACKER WE ARE BYPASSING THAT.... 
 	
 	uses Logging, TrackerPythonTwinCapacity, Behaviors, ExternalContextAccess
 
@@ -44,26 +43,6 @@ behavior TrackerSignalRole extends SensorRole { // @FIXME VERY VERY VERY HIGH IT
 	var totalDetectorTime : double = 0
 
 	var frameLimit : int = 1000
-	
-	on LastFrame {
-		info("Transmitting to my listeners" + listeners.keySet)
-		for (l : listeners.keySet) {
-			emit(listeners.get(l),
-				new LastFrame(
-					occurrence.frameNumber, 
-					occurrence.pred_file_Path, 
-					occurrence.total_time_detection,
-					occurrence.total_time_tracking, 
-					occurrence.observerID))[it.ID==l]
-			//listeners.get(l).emit(this.ID,)[it.ID == l]}
-		}
-	}
-	on LeavePlatform {
-		// join(BaseContext.ID, BaseSpace.spaceID.ID)
-		info("ObserverTrackerLeaving")
-		updateStreamAccess(4)
-		// leave(PlatformID)
-	}
 
 	on BBoxes2DTrackResult {
 

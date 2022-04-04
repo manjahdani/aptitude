@@ -28,8 +28,6 @@ behavior ActivityDetectorSignalRole extends DetectorSignalRole {
 		// Compute the detection time
 		total_detectionTime.addAndGet(occurrence.bboxes2D.detectionTime)
 		if(!occurrence.bboxes2D.bboxes.isEmpty){
-			
-		
 			emitToParent(new Activity(occurrence.bboxes2D.frameNumber))
 			// emit(selfSpace,new PauseMission(this.ID))
 			noActivityFrames.set(0)

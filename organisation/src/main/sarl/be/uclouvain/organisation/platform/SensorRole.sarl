@@ -28,6 +28,7 @@ abstract behavior SensorRole extends ScenarioRole {
 
 	protected val listeners = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the client and the role
 	protected val missionList = Collections.synchronizedMap(new HashMap<UUID, SurveillanceMissionData>) // A map between mission ID that it needs to answer to and their data
+	
 	on ProcessingHyperParameters {
 		info("param received " + "MID = " + occurrence.missionID + " hp " + occurrence.param.hyperParametersAsAString)
 		missionList.get(occurrence.missionID).update(occurrence.param)

@@ -1,11 +1,12 @@
+/** 
+ * 
+ */
 package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
 
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
-import be.uclouvain.organisation.platform.ProcessMission
 import be.uclouvain.organisation.platform.SensorRole
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
-import java.util.UUID
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -15,7 +16,6 @@ import java.util.UUID
  * It does make sens to have a certain window of information in memory and the 
  * other one stored in a database. Therefore, the database with a certain window in situ and otherwise stored in TOLD
  * We need to find a way such that the information is synchronized before potential fusion 
- *
  * 
  * 
  * 
@@ -26,21 +26,20 @@ import java.util.UUID
  * @mavenartifactid $surveillance$
  * 
  */
-behavior MultiTrackerManagerSensorRole extends SensorRole { 
-	
-	uses Logging,ExternalContextAccess
 
-  	on LastFrame {
+behavior TrackerSensorRole extends SensorRole {
+	uses Logging, ExternalContextAccess
+
+	on LastFrame {
 		info("Transmitting to my listeners" + listeners.keySet)
 		for (l : listeners.keySet) {
 			emit(listeners.get(l),
-				new LastFrame(occurrence.frameNumber, occurrence.pred_file_Path, occurrence.total_time_detection,
-					occurrence.total_time_tracking, occurrence.observerID))[it.ID == l]
+				new LastFrame(occurrence.frameNumber, 
+					occurrence.pred_file_Path, 
+					occurrence.total_time_detection,
+					occurrence.total_time_tracking, 
+					occurrence.observerID))[it.ID == l]
 			// listeners.get(l).emit(this.ID,)[it.ID == l]}
 		}
 	}
-
-
-	
 }
-

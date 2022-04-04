@@ -27,6 +27,7 @@ behavior SingleTrackerSingleDetectorObserverRole extends PythonTwinObserverRole 
 	uses TrackerPythonTwinCapacity,Logging, ExternalContextAccess
 
 	val processedImages = new ArrayList<Integer>
+	
 	on PartnerTrackingFound {
 		//info("Tracking Partner found: " +  occurrence.partnerName)
 	}
@@ -40,14 +41,14 @@ behavior SingleTrackerSingleDetectorObserverRole extends PythonTwinObserverRole 
 	on ScenarioInfo {
 		assert occurrence.client_id !== null, "Received computatation_location null"
 		computation_location.set(occurrence.client_id)
-		updateContextInfo(occurrence.organizationContext, occurrence.privateCommunicationChannelID)
+		updateContextInfo(occurrence.organizationContext.ID, occurrence.privateCommunicationChannelID)
 		checkList.replace("context", true)
 		checkList.replace("computation_location", true)
 	}
 
 	on BBoxes2DSignal {
 		if(!processedImages.contains(occurrence.bboxes2D.frameNumber)){
-		Signal2Perception(occurrence.bboxes2D)
+			Signal2Perception(occurrence.bboxes2D)
 			processedImages.add(occurrence.bboxes2D.frameNumber)
 		}
 	}

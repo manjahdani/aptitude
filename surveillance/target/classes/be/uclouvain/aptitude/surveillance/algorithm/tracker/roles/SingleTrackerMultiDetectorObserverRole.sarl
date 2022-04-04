@@ -48,7 +48,7 @@ behavior SingleTrackerMultiDetectorObserverRole extends ObserverRole {
 	on ScenarioInfo {
 		assert occurrence.client_id !== null, "Received computatation_location null"
 		computation_location.set(occurrence.client_id)
-		updateContextInfo(occurrence.organizationContext, occurrence.privateCommunicationChannelID)
+		updateContextInfo(occurrence.organizationContext.ID, occurrence.privateCommunicationChannelID)
 		checkList.replace("context", true)
 		checkList.replace("computation_location", true)
 	}

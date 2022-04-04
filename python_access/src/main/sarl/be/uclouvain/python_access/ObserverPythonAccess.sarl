@@ -1,7 +1,7 @@
 /** 
  * 
  */
-package be.uclouvain.aptitude.surveillance.algorithm
+package be.uclouvain.python_access
 
 import be.uclouvain.organisation.platform.ObserverCapacity
 import be.uclouvain.python_access.CommunicationManager

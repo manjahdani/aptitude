@@ -20,6 +20,7 @@ import io.sarl.lang.core.Event
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 import be.uclouvain.organisation.platform.events.Ready2Process
+import java.util.concurrent.atomic.AtomicReference
 
 /** 
  * @author manjah
@@ -28,8 +29,8 @@ import be.uclouvain.organisation.platform.events.Ready2Process
 behavior CooperativeMasterStudentDetectorsObserverRole extends ManagerObserverRole {
 	uses Logging, Behaviors, DefaultContextInteractions
 	
-	var studentID : UUID
-	var masterID : UUID
+	val studentID = new AtomicReference<UUID>
+	val masterID = new AtomicReference<UUID>
 	val listeningTOTeacher = new AtomicBoolean(false)
 
 	
@@ -41,7 +42,7 @@ behavior CooperativeMasterStudentDetectorsObserverRole extends ManagerObserverRo
 	}
 	on PartnerDetectionFound { //@FIXME HIGH not robust
 		
-		if (occurrence.source.ID.equals(studentID)) {
+		if (occurrence.source.ID.equals(studentID.get)) {
 			warning("EnableStreamAccess at frame " + 0)
 			wake(new StartMission(occurrence.source.ID,0))[it.ID == occurrence.source.ID]
 		} 
@@ -50,14 +51,14 @@ behavior CooperativeMasterStudentDetectorsObserverRole extends ManagerObserverRo
 	on Activity {
 		if (!listeningTOTeacher.get) {
 			warning("starting master")
-		wake(new StartMission(occurrence.source.ID, occurrence.frameNumber))[it.ID == masterID]
+		wake(new StartMission(occurrence.source.ID, occurrence.frameNumber))[it.ID == masterID.get]
 		listeningTOTeacher.set(true)
 		}
 	}
 	on NoActivity {
 		if(listeningTOTeacher.get){
 			warning("pausing master")
-		wake(new PauseMission(masterID))[it.ID == masterID]
+		wake(new PauseMission(masterID.get))[it.ID == masterID]
 		listeningTOTeacher.set(false)
 		}
 	}
@@ -67,11 +68,11 @@ behavior CooperativeMasterStudentDetectorsObserverRole extends ManagerObserverRo
 		
 			if (position == 0) {
 			warning("Starting Student Role of " + mbID)
-			studentID = mbID
+			studentID.set(mbID)
 			return new AddMissionAsStudent
 		} else {
 			warning("Starting Master Role of " + mbID)
-				masterID = mbID
+				masterID.set(mbID)
 			return new AddMissionAsMaster
 		}
 	}

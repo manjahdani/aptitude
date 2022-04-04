@@ -3,7 +3,7 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm.counter
 
-import be.uclouvain.aptitude.surveillance.algorithm.util.BBOX
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBox
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.organisation.platform.CounterObserverCapacity
 import be.uclouvain.organisation.platform.util.OrientedCountingLine
@@ -56,7 +56,7 @@ skill CountingSkill implements CounterObserverCapacity {
 		
 		for (bb : boundingBoxes) {
 			for (counting_line : countingLines.keySet) {
-				if (has_crossed_counting_line(bb.getBBOX, countingLines.get(counting_line))){
+				if (has_crossed_counting_line(bb.BBox, countingLines.get(counting_line))){
 					if(!countingLines.get(counting_line).hasCrossed(bb.globalID)) {
 						val orientation = countingLines.get(counting_line).Orientation(bb.getDirection)
 						//var bbDir = bb.getDirection
@@ -79,7 +79,7 @@ skill CountingSkill implements CounterObserverCapacity {
 		}
 	}
 
-	@Pure def has_crossed_counting_line(b : BBOX, cl : OrientedCountingLine) {
+	@Pure def has_crossed_counting_line(b : BBox, cl : OrientedCountingLine) {
 		
 		val bbox_line1 = newArrayList(new Point2d(b.x, b.y), new Point2d(b.x + b.w, b.y)) // (x, y), (x + w, y)
 		val bbox_line2 = newArrayList(new Point2d(b.x + b.w, b.y),
