@@ -66,7 +66,7 @@ abstract behavior ScenarioRole extends Role {
 	}
 	on PlatformOrganizationInfo {
 
-		updateContextInfo(occurrence.context.ID, occurrence.privateCommunicationChannelID)
+		updateContextInfo(occurrence.contextID, occurrence.privateCommunicationChannelID)
 		ADN.get.platformName = occurrence.platformName
 		checkList.replace("context", true)
 	}

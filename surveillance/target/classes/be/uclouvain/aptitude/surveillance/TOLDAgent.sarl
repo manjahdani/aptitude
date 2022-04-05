@@ -3,22 +3,23 @@
  */
 package be.uclouvain.aptitude.surveillance
 
-import be.uclouvain.aptitude.surveillance.platform.AgentPlatform
-import be.uclouvain.organisation.events.JoinPlatform
+import be.uclouvain.organisation.events.JoinOrganisation
+import be.uclouvain.organisation.platform.events.LocalDatabaseRequest
+import be.uclouvain.organisation.platform.events.Ready
+import be.uclouvain.organisation.told.AccessDatabaseCapacity
 import be.uclouvain.organisation.told.TOLDRole
-import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
-import io.sarl.core.OpenEventSpace
-import io.sarl.lang.core.Agent
+import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
-import be.uclouvain.organisation.told.AccessDatabaseCapacity
 import java.util.concurrent.atomic.AtomicReference
-import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
+import be.uclouvain.organisation.util.OrganisationID
 
 /** 
  * 
@@ -38,46 +39,38 @@ import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
   
 agent TOLDAgent extends Paraddis {
 	
-	uses Logging, Lifecycle, InnerContextAccess, Behaviors
+	uses Logging, Lifecycle, InnerContextAccess, Behaviors,ExternalContextAccess, DefaultContextInteractions
 	
 	val config = new AtomicReference<TOLDConfig>
-	val agentPlatformSpaces = new HashMap<String, OpenEventSpace> 
+	val distributionMap = Collections.synchronizedMap(new HashMap<UUID, OrganisationID>) 
+	  
 	on Initialize {
-		
-		info("ready to share my stored knowledge.")
-		var S  = setSkill(new VirtualDatabaseSkill, AccessDatabaseCapacity)
+		info("TOLD Initialising")
+		setSkill(new VirtualDatabaseSkill, AccessDatabaseCapacity)
 		registerBehavior(new TOLDRole(this))
-		
 		config.set(occurrence.parameters.get(0) as TOLDConfig)
 		loggingName = this.ID + "-TOLD" + "-" + config.get.level
 		info("ready to share my stored knowledge.")
-		var registeredAlgorithms : HashMap<UUID, AlgorithmInfo> = new HashMap(S.database.filter [ p1, p2 |
-			p2 instanceof AlgorithmInfo
-		])
-		for (t : config.get.init_tasks.keySet) {
-			
-			spawnInContext(Algorithm, innerContext, config.get.init_tasks, new AlgorithmInfo(t, "none", t),
-				new HashMap(registeredAlgorithms.filter[p1, p2|p2.task == t])) 
-		}
+		emitToParent(new Ready)
 	}
-	
-
-	
-	on AgentPlatform {
-		info("encounters " + occurrence.name + " agent platform")
-		agentPlatformSpaces.put(occurrence.name, occurrence.topic)
-		occurrence.topic.registerStrongParticipant(asEventListener)
-		wake(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it.ID !== this.ID]
-	}
-	
-	on JoinPlatform {
-		info("joins organisation - " + occurrence.contextID.toString.substring(0,5))
+	on LocalDatabaseRequest {
+		info("LocalDBRequest from - " + occurrence.contextID)
 		val randomID = UUID.randomUUID
-		var holonConfig = config.get.addSubTOLD(new TOLDConfig(config.get.level + 1, occurrence.location, innerContext, new HashMap<String, Class<? extends Agent>>), randomID)
-		spawnInContextWithID(TOLDAgent, randomID, occurrence.contextID, holonConfig)
+		var holonConfig = config.get.addSubTOLD(new TOLDConfig(config.get.level + 1),randomID)
+		spawnInContextWithID(TOLDAgent, randomID, innerContext, holonConfig)
+		distributionMap.put(randomID, new OrganisationID(occurrence.contextID, occurrence.defaultSpaceID))
 	}
-	
+	on Ready {
+		val contextID = distributionMap.get(occurrence.source.ID).contextID
+		val defSid = distributionMap.get(occurrence.source.ID).defaultSpaceID
+		wake(new JoinOrganisation(contextID, defSid))[it.ID == occurrence.source.ID]
+	}
+	on JoinOrganisation{
+		info("Joining organisation " + occurrence.contextID)
+		join(occurrence.contextID, occurrence.defaultSpaceID)
+	}
 }
+
 
 
 

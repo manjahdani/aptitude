@@ -1,0 +1,16 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.told.events
+
+/** 
+ * @author manjah
+ * 
+ */
+event Query {
+	val message:String 
+	
+	new (msg:String){
+		this.message=msg
+	}
+}

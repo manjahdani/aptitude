@@ -28,17 +28,17 @@ behavior EntityRole extends Role{
 	uses Logging, ExternalContextAccess
 	
 	on TOLDOrganizationInfo {
-		// info("met TOLD - " + occurrence.context.ID.toString.substring(0, 5))
-		updateContextInfo(occurrence.context.ID, occurrence.privateCommunicationChannelID)
+		info("met TOLD - " + occurrence.contextID)
+		updateContextInfo(occurrence.contextID, occurrence.privateCommunicationChannelID)
 		Ready2Work
 	}
 	def Ready2Work{
 		//Do nothing
 	}
 	on AuthorizationToJoinContext {
-		val mbID=  occurrence.source.ID
-		info("receives authorisation to join the context of - " + mbID.toString.substring(0, 5) +
-				" and space " + occurrence.defaultSpaceID)
+		val mbID = occurrence.source.ID
+		info("receives authorisation to join the context of - " + mbID + " and space " +
+			occurrence.defaultSpaceID)
 		join(occurrence.contextID, occurrence.defaultSpaceID)
 	}
 }

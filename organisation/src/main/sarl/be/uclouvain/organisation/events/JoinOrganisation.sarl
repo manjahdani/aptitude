@@ -2,7 +2,7 @@
  */
 package be.uclouvain.organisation.events
 
-import io.sarl.lang.core.AgentContext
+import java.util.UUID
 
 /** 
  * Generic event to invites the receiver to join an organisation context 
@@ -28,20 +28,13 @@ import io.sarl.lang.core.AgentContext
  */
 event JoinOrganisation {
 	
-	val contextID : AgentContext 
+	val contextID : UUID
+	val defaultSpaceID : UUID 
 	
-	new (ctxt : AgentContext) {
+	new (ctxt : UUID, sid:UUID) {
 		this.contextID = ctxt
-	}
-}
-
-
-event JoinPlatform extends JoinOrganisation {
-
-	val location : String
-	new (ctxt : AgentContext, platformName : String) {
-		super(ctxt)
-		this.location=platformName
+		this.defaultSpaceID = sid
+		
 	}
 }
 

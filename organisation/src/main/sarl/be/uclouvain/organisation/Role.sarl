@@ -33,6 +33,7 @@ abstract behavior Role {
 	}
 	
 	def updateContextInfo(ctxt : UUID, sid : UUID) {
+	
 		organizationContext.set(getContext(ctxt)) // Update the organization
 		privateOrganizationSpace.set(retrieveOrCreateOpenSpaceWithID(sid))
 		privateOrganizationSpace.get.registerStrongParticipant(asEventListener)

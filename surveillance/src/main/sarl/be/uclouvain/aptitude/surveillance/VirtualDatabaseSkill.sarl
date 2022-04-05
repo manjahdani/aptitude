@@ -92,7 +92,7 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 		database.remove(key)
 	}
 
-	def getdatabase {
+	def getDatabase : HashMap<UUID, Object> {
 		return this.database
 	}
 

@@ -1,24 +1,21 @@
 package be.uclouvain.aptitude.surveillance.user
 
-import be.uclouvain.aptitude.surveillance.platform.AgentPlatform
+import be.uclouvain.aptitude.surveillance.platform.events.AgentPlatform
 import be.uclouvain.aptitude.surveillance.ui.AuthenticateUser
 import be.uclouvain.organisation.OrganizationInfo
 import be.uclouvain.organisation.OrganizationalRole
 import be.uclouvain.organisation.interactivity.InteractivityOrganizationInfo
-import be.uclouvain.organisation.platform.PlatformOrganizationInfo
 import be.uclouvain.organisation.told.events.AuthorizedMission
 import be.uclouvain.organisation.told.events.NewMission
-import io.sarl.core.Behaviors
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
-import io.sarl.lang.core.AgentContext
+import java.util.Collections
 import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
-import java.util.Collections
 
 /** 
  * @TODO to comment
@@ -31,24 +28,13 @@ import java.util.Collections
  * 
  */
 behavior UserManagerEntity extends OrganizationalRole{
-	uses Lifecycle, InnerContextAccess, Behaviors,Logging, ExternalContextAccess
+	uses Lifecycle, InnerContextAccess,Logging, ExternalContextAccess
 
-	protected var platformSpace : OpenEventSpace
-	protected var platformContext : AgentContext
-	
+
 	val usersList : LinkedList<UUID> = new LinkedList<UUID>
 	var PlatformListenersSpaceIDs = Collections.synchronizedMap(new HashMap<String, OpenEventSpace>)
 	
 	//var subHolons= new HashMap<UUID, OpenEventSpace>
-	
-
-	on PlatformOrganizationInfo {
-		info("User manager met platform Organisation")
-		synchronized(this){
-		platformContext = occurrence.context
-		platformSpace = retrieveOrCreateOpenSpaceWithID(platformContext,occurrence.privateCommunicationChannelID)
-		platformSpace.registerStrongParticipant(asEventListener)}
-	}
 	
 	on AgentPlatform {
 		info(" Reception of the open-chanel of platform agent -" + occurrence.name)
@@ -83,7 +69,7 @@ behavior UserManagerEntity extends OrganizationalRole{
 	}
 	
 	def getOrganizationInfo(memberID : UUID) : OrganizationInfo {
-		return new InteractivityOrganizationInfo(innerContext, privateSpacesListeners.get(memberID).spaceID.ID)
+		return new InteractivityOrganizationInfo(this.ID, privateSpacesListeners.get(memberID).spaceID.ID)
 	}
 	
 }

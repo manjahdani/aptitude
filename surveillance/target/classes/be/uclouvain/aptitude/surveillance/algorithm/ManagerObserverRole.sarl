@@ -3,7 +3,6 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm
 
-import be.uclouvain.organisation.events.JoinPlatform
 import be.uclouvain.organisation.platform.ObserverRole
 import be.uclouvain.organisation.platform.util.HyperParameters
 import be.uclouvain.organisation.platform.util.Metadata
@@ -22,6 +21,7 @@ import io.sarl.core.DefaultContextInteractions
 import be.uclouvain.organisation.platform.events.AddMission
 import io.sarl.lang.core.Event
 import be.uclouvain.organisation.platform.events.Ready2Process
+import be.uclouvain.organisation.events.JoinOrganisation
 
 /** 
  * @author manjah
@@ -40,7 +40,9 @@ abstract behavior ManagerObserverRole extends ObserverRole {
 	// protected val innerTracker_detectorsMap = Collections.synchronizedMap(new HashMap<UUID, String>)
 	on RoleRegistered {
 		info("Received role Registered from " + occurrence.source.ID)
-		wake(new JoinPlatform(organizationContext.get, ADN.get.platformName))[it.ID == occurrence.source.ID]
+		wake(new JoinOrganisation(organizationContext.get.ID, organizationContext.get.defaultSpace.spaceID.ID)) [
+			it.ID == occurrence.source.ID
+		]
 	}
 
 	on AgentSpawned {		

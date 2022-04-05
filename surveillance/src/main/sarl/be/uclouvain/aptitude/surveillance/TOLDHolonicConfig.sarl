@@ -4,10 +4,8 @@
 package be.uclouvain.aptitude.surveillance
 
 import be.uclouvain.organisation.util.HolonicConfig
-import io.sarl.lang.core.AgentContext
-import java.util.UUID
 import java.util.HashMap
-import io.sarl.lang.core.Agent
+import java.util.UUID
 
 /** 
  * @author manjah
@@ -15,28 +13,9 @@ import io.sarl.lang.core.Agent
  */
 class TOLDConfig extends HolonicConfig {
 	
-	var parentContext : AgentContext
-	val INIT_TASKS : HashMap<String, Class<? extends Agent>>
 	val subTOLDConfig = new HashMap <TOLDConfig,UUID>
-	var accountablePlatform : String 
-	
-	new (l : int, platformName : String, parent : AgentContext, init_tasks : HashMap<String, Class<? extends Agent>>) {
-		
+	new (l : int) {
 		super(l)
-		this.parentContext = parent
-		this.INIT_TASKS = init_tasks
-		this.accountablePlatform =  platformName
-	}
-	
-	def getAccountablePlatform{
-		
-		return accountablePlatform
-	}
-	def getParentContext {
-		return parentContext
-	}
-	def getInit_tasks {
-		return INIT_TASKS
 	}
 	def addSubTOLD(wc : TOLDConfig, id: UUID) {
 		this.subTOLDConfig.put(wc,id)

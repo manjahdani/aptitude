@@ -23,7 +23,7 @@ behavior ElementRole extends Role {
 
 	on InteractivityOrganizationInfo {
 		
-		updateContextInfo(occurrence.context.ID, occurrence.privateCommunicationChannelID)
+		updateContextInfo(occurrence.contextID, occurrence.privateCommunicationChannelID)
 	}
 	
 	on ElementInformation {

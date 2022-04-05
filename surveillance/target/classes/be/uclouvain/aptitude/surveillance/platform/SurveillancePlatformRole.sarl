@@ -1,16 +1,17 @@
 package be.uclouvain.aptitude.surveillance.platform
 
-import be.uclouvain.organisation.events.AddMember
+import be.uclouvain.aptitude.surveillance.algorithm.events.AgentAlgorithm
 import be.uclouvain.organisation.events.Identification
 import be.uclouvain.organisation.events.SignalID
 import be.uclouvain.organisation.platform.PlatformCapacity
 import be.uclouvain.organisation.platform.PlatformRole
+import be.uclouvain.organisation.platform.events.AddAlgorithm
 import be.uclouvain.organisation.platform.events.AddObserver
 import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
 import be.uclouvain.organisation.platform.events.ComputationalRessources
-import be.uclouvain.organisation.platform.events.LocalDatabaseRequest
 import be.uclouvain.organisation.platform.util.MembershipRule
 import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Logging
@@ -21,7 +22,6 @@ import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
-import be.uclouvain.organisation.platform.events.AddAlgorithm
 
 /** 
  * 
@@ -34,7 +34,7 @@ import be.uclouvain.organisation.platform.events.AddAlgorithm
  * 
  */
 behavior SurveillancePlatformRole extends PlatformRole {
-	uses InnerContextAccess, ExternalContextAccess, Logging, PlatformCapacity, Schedules, Behaviors
+	uses InnerContextAccess, ExternalContextAccess, Logging, PlatformCapacity, Schedules, Behaviors, DefaultContextInteractions
 	
 	protected val participants = Collections.synchronizedMap(new HashMap<String, UUID>) // @FIXME LOW clarify MAP - Lists and so on. clarify also if the variables must be concurrent or not
 	val request = Collections.synchronizedList(new LinkedList<String>)
@@ -43,11 +43,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	protected var allocated_ressource = new AtomicReference<String>
 	
 	
-	on LocalDatabaseRequest {
-		info("received a request from " + occurrence.source.ID.toString.substring(0, 5) + " to connect with a database ")
-		emit(privateSpacesListeners.get(TOLDID),
-			new AddMember(occurrence.source.ID,privateSpacesListeners.get(occurrence.source.ID)))
-	}
+
 	
 	on ComputationalRessources {
 		//info("Received computational resources: " + occurrence.client_id + "from ")
@@ -62,6 +58,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	}
  
 	
+	/** 
 	
 	on AddObserver {
 		val signal = occurrence.signalProvider
@@ -72,11 +69,10 @@ behavior SurveillancePlatformRole extends PlatformRole {
 			info("\n Partnership of " + signal.name.concat("-").concat(receiver.name) + "legal ")
 			synchronized (this) {
 				if (!participants.containsKey(signal.name)){
-					info("-"+signal.name+"-"+"Algorithm not available" + participants.keySet)
+					info("Algorithm not available of name - "+signal.name+ " + participants are : " + participants.keySet)
 					if (!request.contains(signal)) {
 						request.add(signal.name)
-						emit(agentAlgorithm.get(occurrence.signalProvider.task),
-							new AlgorithmJoinPlatform(innerContext, signal.name))}
+						emitToParent(new AlgorithmJoinPlatform(this.ID, innerDefaultSpace.spaceID.ID, signal.name))}
 					waitfor(occurrence.missionID,signal.name, occurrence.source.ID)
 				} else {
 					debug("Algorithm is already available" + signal.name)
@@ -89,7 +85,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 			debug("\n Partnership of " + signal.name.concat("-").concat(receiver.name) + "is not legal ")
 		}
 	}
-	
+	*/
 	
 	on AddAlgorithm {
 		
@@ -101,8 +97,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 			info("-" + toRecruit + "-" + "Algorithm not available" + participants.keySet)
 			if (!request.contains(toRecruit)) {
 				request.add(toRecruit)
-				emit(agentAlgorithm.get(toRecruit),
-				new AlgorithmJoinPlatform(innerContext, toRecruit))
+				emit(new AlgorithmJoinPlatform(this.ID, innerDefaultSpace.spaceID.ID, toRecruit))[it!=me]
 			}
 			waitfor(occurrence.missionID, toRecruit, occurrence.source.ID)
 		} 
@@ -117,10 +112,9 @@ behavior SurveillancePlatformRole extends PlatformRole {
 	on AgentAlgorithm {
 		debug("encountered : " + occurrence.name + " - " + occurrence.source.ID.toString.substring(0,5))
 		agentAlgorithm.put(occurrence.name,occurrence.topic)
-		
 	}
 	synchronized def waitfor(mID : UUID,fullName : String, dest : UUID) {
-		debug("Waiting " + fullName +" as an original request from -  " + dest.toString.substring(0,5))
+		info("Waiting " + fullName +" as an original request from -  " + dest.toString.substring(0,5))
 		task("waitingfor".concat(fullName).concat(dest.toString)).every(500) [
 			if (participants.keySet.contains(fullName)) {
 				emit(privateSpacesListeners.get(dest),

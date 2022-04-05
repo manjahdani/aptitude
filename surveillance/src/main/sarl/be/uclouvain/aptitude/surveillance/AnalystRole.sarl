@@ -10,9 +10,6 @@ import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedQueue
-import be.uclouvain.organisation.platform.PlatformOrganizationInfo
-import be.uclouvain.organisation.events.Identification
-
 
 /** 
  * 
@@ -43,6 +40,7 @@ behavior AnalystRole extends ObserverRole{
 	val missionQueue = new ConcurrentLinkedQueue<SurveillanceMissionData>
 	
 	on Initialize {
+		info("Analyst role started")
 		missionQueue.add(occurrence.parameters.get(1) as SurveillanceMissionData)
 	}
 	

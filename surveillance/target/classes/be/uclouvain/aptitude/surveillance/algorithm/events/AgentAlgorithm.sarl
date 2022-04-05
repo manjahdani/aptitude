@@ -1,0 +1,21 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm.events
+
+import io.sarl.core.OpenEventSpace
+
+/** 
+ * @author manjah
+ * 
+ */
+event AgentAlgorithm {
+
+	val name : String
+	val topic : OpenEventSpace
+
+	new(n : String, o : OpenEventSpace) {
+		this.name = n
+		this.topic = o
+	}
+}

@@ -47,8 +47,6 @@ agent Boot extends Paraddis {
 	// val clientSender = new UDPSender() // homeMade client to send UDP message
 	val INIT_TASKS = new HashMap<String, Class<? extends Agent>>
 	
-
-	
 	on Initialize {
 		loggingName = this.ID + "-Boot"
 		// info("System started")
@@ -67,12 +65,13 @@ agent Boot extends Paraddis {
 		// WorldHolon.addSubWorld(wc)
 		// }
 		// info("Setting the agents")
-		var PlatformHolonConfig = new PlatformConfig(0, 5, "LLN")
+		var PlatformHolonConfig = new PlatformConfig(0, 5, "LLN", INIT_TASKS)
 		for (c : INITIAL_CAMERAS) {
-			PlatformHolonConfig.addSubPlatform(new PlatformConfig(1, 100, c))
+			PlatformHolonConfig.addSubPlatform(new PlatformConfig(1, 100, c, INIT_TASKS))
 		}
 
-		spawn(TOLDAgent, new TOLDConfig(0,"LLN", null, INIT_TASKS))
+		
+		spawn(TOLDAgent, new TOLDConfig(0))
 		spawn(PlatformAgent, PlatformHolonConfig, AVAILABLE_RESSOURCES)
 		spawn(User, new HolonicUserConfig(0, "UserAccessManager", INITIAL_CAMERAS))
 		// StartSimulation

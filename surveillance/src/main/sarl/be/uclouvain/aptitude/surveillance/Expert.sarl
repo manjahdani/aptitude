@@ -48,7 +48,7 @@ agent Expert extends Paraddis {
 	}
 	
 	on NewMission {
-
+		
 		registerBehavior(new AnalystRole(this), ADN.get ,occurrence.mission)
 		// Check whether the agent already lives in the context of the platform where it has to pursue the mission
 		// We assume that the platformOpenChanel is created within the platform such that we could retrieve the contextID which is the platform ID.  
@@ -58,16 +58,13 @@ agent Expert extends Paraddis {
 				it.ID == occurrence.mission.platformID
 			] 	
 		}
-		
-		//val PlatformSpace = platformlistenersSpaceIDs.get(PlatformID)
-		// MissionList.put(occurrence.missionData.entityID, PlatformSpace)
 		missionList.put(occurrence.mission.missionID, occurrence.mission.platformID)
 		encounteredPlatforms.put(occurrence.mission.platformID, occurrence.platformOpenChannel)
 	}
 	
 	
 	on ContextJoined {
-		emit(getContext(occurrence.defaultSpaceID).defaultSpace, new Identification(ADN.get.name))
+		emit(getContext(occurrence.holonContextID).defaultSpace, new Identification(ADN.get.name))
 	}
 
 	def isInContext(contextID : UUID) {

@@ -1,6 +1,5 @@
 package be.uclouvain.organisation
 
-import io.sarl.lang.core.AgentContext
 import java.util.UUID
 
 /** 
@@ -29,7 +28,7 @@ event OrganizationInfo {
 			/** 
 		 * Joined Context
 		 */
-	val context : AgentContext
+	val contextID : UUID
 
 	/** 
 	 * A private space used for the communication
@@ -41,8 +40,8 @@ event OrganizationInfo {
 	 * @param	ctxt	The joined context
 	 * @param	sid	    The ID of the space 
 	 */
-	new (ctxt : AgentContext, sid : UUID) {
-		this.context = ctxt
+	new (ctxt : UUID, sid : UUID) {
+		this.contextID = ctxt
 		this.privateCommunicationChannelID = sid
 	}
 }

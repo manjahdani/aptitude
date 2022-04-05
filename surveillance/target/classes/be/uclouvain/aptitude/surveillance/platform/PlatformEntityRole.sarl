@@ -1,0 +1,32 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.platform
+
+import be.uclouvain.organisation.events.JoinOrganisation
+import be.uclouvain.organisation.platform.events.Ready
+import be.uclouvain.organisation.told.entity.EntityRole
+import be.uclouvain.organisation.told.events.Query
+import io.sarl.core.ExternalContextAccess
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior PlatformEntityRole extends EntityRole {
+	uses ExternalContextAccess
+	
+	override Ready2Work{
+		emit(selfSpace, new Ready)
+		emit(privateOrganizationSpace.get, new Query("AlgorithmInfo"))
+	}
+	on JoinOrganisation{
+		join(occurrence.contextID,occurrence.defaultSpaceID)
+	}
+	/** 
+	on LocalDatabaseRequest {
+		info("received a request from " + occurrence.source.ID.toString.substring(0, 5) +
+			" to connect with a database ")
+		emit(privateOrganizationSpace.get, new AddMember(occurrence.source.ID, privateSpacesListeners.get(occurrence.source.ID)))
+	}*/
+}

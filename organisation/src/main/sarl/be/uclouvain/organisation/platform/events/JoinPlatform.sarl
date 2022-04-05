@@ -2,8 +2,7 @@
  */
 package be.uclouvain.organisation.platform.events
 
-import be.uclouvain.organisation.events.JoinOrganisation
-import io.sarl.lang.core.AgentContext
+import java.util.UUID
 
 /** 
  * The event (Algorithm)JoinPlatform invites the receiver (an Algorithm) to join a Context
@@ -18,20 +17,24 @@ import io.sarl.lang.core.AgentContext
  * @mavengroupid $be.uclouvain.aptitude$
  * @mavenartifactid $organisation$
  */
-event AlgorithmJoinPlatform extends JoinOrganisation {
+event AlgorithmJoinPlatform {
 	
+	val contextID : UUID
+	val defaultSpaceID : UUID
 	var name : String // Name of the algorithm
 	var task : String // Which task will be done
 
+	new (ctxt: UUID, sid : UUID, n : String, t : String) {
 
-	new (context : AgentContext, n : String, t : String) {
-		super(context)
-		this.name = n
+		this.contextID = ctxt
+		this.defaultSpaceID = sid
+		this.name = n //
 		this.task = t
 	}
 
-	new (context : AgentContext, n : String) {
-		super(context)
-		this.name = n //@FIXME Revisit as the problem is that we change the paradigm, we know request only that only a task join.
+	new (ctxt : UUID, sid : UUID, n : String) {
+		this.contextID = ctxt
+		this.defaultSpaceID = sid
+		this.name = n //@FIXME MEDIUM Revisit as the problem is that we change the paradigm, we know request only that only a task join.
 	}
 }

@@ -6,7 +6,6 @@ package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ResumeTrackingMission
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingRequest
-import be.uclouvain.organisation.events.JoinPlatform
 import be.uclouvain.organisation.platform.ObserverRole
 import be.uclouvain.organisation.platform.events.ScenarioInfo
 import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
@@ -22,6 +21,7 @@ import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
 import be.uclouvain.python_access.BBoxes2DSignal
+import be.uclouvain.organisation.events.JoinOrganisation
 
 /** 
  * @author manjah
@@ -93,7 +93,7 @@ behavior SingleTrackerMultiDetectorObserverRole extends ObserverRole {
 		// In this, we choose that the missionID is equivalent to the subprocess ID
 		val mbID = occurrence.agentID
 		if(memberAgents.contains(mbID)){
-		wake(new JoinPlatform(organizationContext.get, ADN.get.platformName))[it.ID ==mbID]
+		wake(new JoinOrganisation(organizationContext.get.ID, organizationContext.get.defaultSpace.spaceID.ID))[it.ID ==mbID]
 		}
 	}
 	

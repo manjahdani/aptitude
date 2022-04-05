@@ -4,6 +4,7 @@
 package be.uclouvain.organisation.told
 
 import java.util.UUID
+import java.util.HashMap
 
 /** 
  * Provide tools to access an (internal-external) database 
@@ -20,5 +21,6 @@ capacity AccessDatabaseCapacity {
 	def read(key:UUID) : Object    // enables the access to an entry in a database 
 	def create(key : UUID, data : Object) // enables the creation an entry in a database 
 	def update(key : UUID, data : Object) // enables the update of an entry in a database
-	def delete(key:UUID) // enables the deletion of an entry in a database	 
+	def delete(key:UUID) // enables the deletion of an entry in a database
+	def getDatabase : HashMap<UUID, Object>
 }

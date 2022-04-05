@@ -3,21 +3,20 @@
  */
 package be.uclouvain.aptitude.surveillance.platform
 
-import be.uclouvain.organisation.events.JoinPlatform
+import be.uclouvain.aptitude.surveillance.platform.events.AgentPlatform
 import be.uclouvain.organisation.platform.PlatformRole
 import be.uclouvain.organisation.platform.events.ComputationalRessources
-import be.uclouvain.organisation.platform.events.LocalDatabaseRequest
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
-import io.sarl.core.Schedules
 import java.util.ArrayList
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedQueue
+import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
 
 /** 
  * @TODO To complete
@@ -25,7 +24,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
  */
 behavior ManagerPlatformRole extends PlatformRole {
 	
-	uses DefaultContextInteractions, Schedules, Logging, Behaviors
+	uses DefaultContextInteractions, Logging, Behaviors
 
 	val subPlatformsOpenSpaces = new HashMap<String, OpenEventSpace> // TreeMap of the sub-worlds composing the world. It is used to be able to communicate with other worlds
 	val subPlatformsIDs = new HashMap<UUID,String>
@@ -45,20 +44,7 @@ behavior ManagerPlatformRole extends PlatformRole {
 		wake(new ComputationalRessources(a))[it.ID== occurrence.source.ID]	
 		if (!subPlatformsOpenSpaces.containsKey(occurrence.name)) {
 			subPlatformsOpenSpaces.put(occurrence.name, occurrence.topic)
-			emit(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it.ID != this.ID]
+			emit(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it != me] 		// It is okay to send it to the Universe Context as it is omniscient
 		}
-	} // It is okay to send it to the Universe Context as it is omniscient
-	
-
-	
-	on LocalDatabaseRequest {
-		task("wait4TOLD".concat(occurrence.source.ID.toString)).every(100) [
-				if (TOLDID.get !== null) {
-					emit(
-						new JoinPlatform(occurrence.contextID, subPlatformsIDs.get(occurrence.source.ID))) 
-						[it.ID == TOLDID.get] // privateSpacesListeners.get(TOLDID).
-				task("wait4TOLD".concat(occurrence.source.ID.toString)).cancel
-					}
-			]
-		}
+	}
 }

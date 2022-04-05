@@ -3,18 +3,20 @@ package be.uclouvain.organisation.told
 import be.uclouvain.organisation.OrganizationalRole
 import be.uclouvain.organisation.events.AddMember
 import be.uclouvain.organisation.events.AuthorizationToJoinContext
-import be.uclouvain.organisation.platform.PlatformOrganizationInfo
+import be.uclouvain.organisation.events.JoinOrganisation
 import be.uclouvain.organisation.told.events.AddEntry
 import be.uclouvain.organisation.told.events.DataEntry
 import be.uclouvain.organisation.told.events.DeleteEntry
+import be.uclouvain.organisation.told.events.Query
 import be.uclouvain.organisation.told.events.QueryAnswer
 import be.uclouvain.organisation.told.events.ReadEntry
-import io.sarl.core.Behaviors
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import io.sarl.core.ContextJoined
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Logging
+import java.util.HashMap
 import java.util.UUID
-import java.util.concurrent.atomic.AtomicReference
 
 /** 
  * Trusted Observations and Learning Database is a database aiming to achieve two goals. 
@@ -33,18 +35,10 @@ import java.util.concurrent.atomic.AtomicReference
 
 behavior TOLDRole extends OrganizationalRole {
 	
-	uses Behaviors, AccessDatabaseCapacity, InnerContextAccess,Logging, ExternalContextAccess
-	
-	
-	protected val platformID = new AtomicReference<UUID>
-
-	/*
-	 * The platform registerStrongParticipant the context of a platform 
-	 */
-
+	uses AccessDatabaseCapacity, InnerContextAccess,Logging, ExternalContextAccess
 	
 	on AddEntry{
-		debug("creating entry for " + occurrence.key.toString.substring(0,5))
+		debug("creating entry for " + occurrence.key)
 		create(occurrence.key, occurrence.data)
 	}
 	on DeleteEntry{
@@ -62,33 +56,41 @@ behavior TOLDRole extends OrganizationalRole {
 
 	
 	on AddMember{
-		info("received add member from " + occurrence.source.ID.toString.substring(0, 5) + "to invite within my context " + occurrence.memberID)
-		
 		emit(occurrence.communicationChannel,
-			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID))[it.ID==occurrence.memberID]
+				new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID)) [
+				it.ID == occurrence.memberID
+			]
 	}
+	
+	on ContextJoined{
+		info("Joining context " + occurrence.holonContextID)
+		if(occurrence.holonContextID!= this.ID){
+			
+			emit(getContext(occurrence.holonContextID).defaultSpace,new JoinOrganisation(this.ID,innerContext.defaultSpace.spaceID.ID))
+		[it.ID == occurrence.holonContextID]
+	}}
 
 	on ReadEntry {
 		debug("Reading entry and sending -" + read(occurrence.key))
 		emit(privateSpacesListeners.get(occurrence.source.ID), new QueryAnswer(read(occurrence.key)))
 	}
 
-
-	on PlatformOrganizationInfo {
-		info("Platform organisation - " + occurrence.platformName + " encountered ")
-		platformID.set(occurrence.source.ID)
-		if (!privateSpacesListeners.containsKey(platformID)) {
-			info("Platform was not encountered")
-			val privateChannel = retrieveOrCreateOpenSpaceWithID(occurrence.context,occurrence.privateCommunicationChannelID)
-			privateSpacesListeners.put(platformID.get, privateChannel)
-			privateChannel.registerStrongParticipant(asEventListener)
-			emit(privateChannel, getOrganizationInfo(platformID.get))[it.ID == platformID]
-		}	
-	} 
+	on Query {
 		
-	
+		assert privateSpacesListeners.keySet.contains(occurrence.source.ID), "Unknown access"
+		
+		switch (occurrence.message) {
+		case "AlgorithmInfo" :{
+			emit(privateSpacesListeners.get(occurrence.source.ID),new QueryAnswer(
+										new HashMap(database.filter[p1, p2|p2 instanceof AlgorithmInfo])))
+			}
+		default:{
+			warning("Unknwon message type" + occurrence.message)
+		}
+		}
+	}
 	def getOrganizationInfo(memberID : UUID) : TOLDOrganizationInfo{
 		
-		return new TOLDOrganizationInfo(innerContext, privateSpacesListeners.get(memberID).spaceID.ID, read(memberID))
+		return new TOLDOrganizationInfo(this.ID, privateSpacesListeners.get(memberID).spaceID.ID, read(memberID))
 	}
 }

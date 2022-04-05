@@ -14,10 +14,15 @@ import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
-import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
+import be.uclouvain.aptitude.surveillance.platform.events.AgentPlatform
+import be.uclouvain.organisation.platform.events.Ready
+import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
+import java.util.HashMap
+import be.uclouvain.organisation.told.util.AlgorithmInfo
+import be.uclouvain.organisation.told.events.QueryAnswer
 
 /**
  * 
@@ -34,28 +39,42 @@ agent PlatformAgent extends Paraddis {
 	uses Logging, Behaviors, InnerContextAccess, Lifecycle, DefaultContextInteractions
 
 	 
-	var openChanel : OpenEventSpace 
+	
 	val platformConfig : AtomicReference<PlatformConfig> = new AtomicReference<PlatformConfig>
 	
 
 	on Initialize {
-
 		platformConfig.set(occurrence.parameters.get(0) as PlatformConfig)
 		loggingName = this.ID + "-Platform-" + platformConfig.get.location + "-" + platformConfig.get.getLevel()
+		info("Initialazing" + defaultSpace.spaceID)
+		registerBehavior(new PlatformEntityRole(this))
+		emit(new LocalDatabaseRequest(this.ID,innerDefaultSpace.spaceID.ID))[it != me]
 		
-		for (swc : platformConfig.get.subPlatformConfig) {
-			val randomID = UUID.randomUUID
-			spawnInContextWithID(PlatformAgent, randomID, innerContext, swc)}
 		if (platformConfig.get.getLevel > 0) {
-			info("Ready to receive operating mission")
-			openChanel = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification,UUID.randomUUID)
-			openChanel.registerStrongParticipant(asEventListener)
-			emitToParent(new AgentPlatform(platformConfig.get.location, this.ID, openChanel))
+			val openChannel = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
+			openChannel.registerStrongParticipant(asEventListener)
+			
+			emitToParent(new AgentPlatform(platformConfig.get.location, this.ID, openChannel))
 			setSkill(new PlatformSkill(platformConfig.get), PlatformCapacity)
 			registerBehavior(new SurveillancePlatformRole(this), platformConfig.get.getLocation)
-			emitToParent(new LocalDatabaseRequest(innerContext)) 
 		} else {
 			registerBehavior(new ManagerPlatformRole(this), platformConfig.get.getLocation, occurrence.parameters.get(1))
+		}
+	}
+	
+	on QueryAnswer {		
+		var registeredAlgorithms = occurrence.answerObject as HashMap<UUID, AlgorithmInfo>
+		for (t : platformConfig.get.tasks.keySet) {
+		 spawnInContext(Algorithm, innerContext, platformConfig.get.tasks, new AlgorithmInfo(t, "none", t),
+		 new HashMap(registeredAlgorithms.filter[p1, p2|p2.task == t])) 
+		 }
+	}
+	
+	on Ready {
+		info("Ready to receive operating mission")
+		for (swc : platformConfig.get.subPlatformConfig) {
+			val randomID = UUID.randomUUID
+			spawnInContextWithID(PlatformAgent, randomID, innerContext, swc)
 		}
 	}
 }

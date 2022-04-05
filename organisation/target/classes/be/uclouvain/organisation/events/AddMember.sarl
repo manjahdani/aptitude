@@ -41,6 +41,11 @@ event AddMember {
 		this.communicationChannel = comChannel
 		this.memberID = mID
 	}
+
+	new(mID : UUID) {
+		this.communicationChannel = null
+		this.memberID = mID
+	}
 	
 	
 }

@@ -9,8 +9,6 @@ import be.uclouvain.organisation.events.AuthorizationToPerformMission
 import be.uclouvain.organisation.events.RequestToJoin
 import be.uclouvain.organisation.platform.events.Request2PerformMission
 import be.uclouvain.organisation.platform.events.StopMission
-import be.uclouvain.organisation.told.TOLDOrganizationInfo
-import io.sarl.core.Behaviors
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
@@ -41,10 +39,9 @@ import java.util.concurrent.atomic.AtomicReference
 
 
 behavior PlatformRole extends OrganizationalRole {
-	uses Behaviors, InnerContextAccess, ExternalContextAccess, Logging
+	uses InnerContextAccess, ExternalContextAccess, Logging
 
-	protected var TOLDID = new AtomicReference<UUID>
-	
+
 	protected val missionSpace= new HashMap<UUID, OpenEventSpace> // @FIXME MEDIUM one has to investivagete whether it is usefulUsed for the communications among observers.
 	val location = new AtomicReference<String>
 	
@@ -52,25 +49,6 @@ behavior PlatformRole extends OrganizationalRole {
 	on Initialize {
 		location.set(occurrence.parameters.get(0).toString)
 	}
-
-
-	on TOLDOrganizationInfo {
-		TOLDID.set(occurrence.source.ID)
-		//info("met TOLD organisation - " + TOLDID.toString.substring(0, 5))
-		if (!privateSpacesListeners.containsKey(TOLDID.get)) { // Not Encountered
-			info("TOLD was not encountered")
-			var pChannel = retrieveOrCreateOpenSpaceWithID(occurrence.context, occurrence.privateCommunicationChannelID)
-
-			privateSpacesListeners.put(TOLDID.get, pChannel)
-			pChannel.registerStrongParticipant(asEventListener)
-			emit(pChannel,
-				new PlatformOrganizationInfo(innerContext, privateSpacesListeners.get(TOLDID).spaceID.ID, location.get)) [
-				it.ID == TOLDID.get
-			]
-		//PlatformTOLDSpace.registerStrongParticipant(asEventListener)
-		//PlatformTOLDSpace.emit(new JoinOrganisation(innerContext))
-	}}
-	
 	on Request2PerformMission {
 		// RuleManagement(new MembershipInfoRule(occurrence.source, occurrence.SourceEventSpace, occurrence.entityData))
 		// if (true) {
@@ -103,7 +81,7 @@ behavior PlatformRole extends OrganizationalRole {
 	
 	def getOrganizationInfo(memberID : UUID) : OrganizationInfo {
 
-		return (new PlatformOrganizationInfo(innerContext, privateSpacesListeners.get(memberID).spaceID.ID, location.get))
+		return (new PlatformOrganizationInfo(this.ID, privateSpacesListeners.get(memberID).spaceID.ID, location.get))
 	}
 }
 

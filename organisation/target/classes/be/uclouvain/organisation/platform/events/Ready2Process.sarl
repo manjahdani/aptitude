@@ -8,3 +8,5 @@ package be.uclouvain.organisation.platform.events
  * 
  */
 event Ready2Process
+
+event Ready

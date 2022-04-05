@@ -5,12 +5,12 @@ package be.uclouvain.organisation
 
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.ExternalContextAccess
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
-import io.sarl.lang.core.AgentContext
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
@@ -25,7 +25,7 @@ import java.util.UUID
  * @mavenartifactid $organisation$
  */
 abstract behavior OrganizationalRole {
-	uses InnerContextAccess,Behaviors, DefaultContextInteractions
+	uses InnerContextAccess,Behaviors, DefaultContextInteractions, ExternalContextAccess
 
 	protected val privateSpacesListeners = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>)
 	
@@ -42,13 +42,9 @@ abstract behavior OrganizationalRole {
 		//" with private Space [\n id = " + privateSpacesListeners.get(memberID).spaceID.ID + "\n contextID = " +
 		//	privateSpacesListeners.get(memberID).spaceID.contextID + "]\n")
 		
-		if (occurrence.inDefaultSpace) {
-			emit(getOrganizationInfo(memberID))[it.ID == memberID]}
-		else
-		{
+		if (!occurrence.inDefaultSpace) {
 			wake(getOrganizationInfo(memberID))[it.ID==memberID]
 		}
-		
 	}
 
 	// Remove the channel. 
@@ -57,7 +53,7 @@ abstract behavior OrganizationalRole {
 	}
 	abstract def getOrganizationInfo(memberID : UUID) : OrganizationInfo
 
-	def retrieveOrCreateOpenSpaceWithID(ctxt : AgentContext,sid : UUID) {
-		return ctxt.getOrCreateSpaceWithID(OpenEventSpaceSpecification, sid)
+	def retrieveOrCreateOpenSpaceWithID(ctxt : UUID,sid : UUID) {
+		return getContext(ctxt).getOrCreateSpaceWithID(OpenEventSpaceSpecification, sid)
 	}
 }

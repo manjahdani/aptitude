@@ -4,10 +4,8 @@
 package be.uclouvain.aptitude.surveillance.algorithm
 
 import be.uclouvain.aptitude.surveillance.Paraddis
-import be.uclouvain.aptitude.surveillance.platform.AgentAlgorithm
-import be.uclouvain.aptitude.surveillance.platform.AgentPlatform
 import be.uclouvain.organisation.events.Identification
-import be.uclouvain.organisation.events.JoinPlatform
+
 import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
 import be.uclouvain.organisation.told.entity.EntityRole
 import be.uclouvain.organisation.told.util.AlgorithmInfo
@@ -25,6 +23,9 @@ import io.sarl.lang.core.AgentContext
 import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
+import be.uclouvain.aptitude.surveillance.platform.events.AgentPlatform
+import be.uclouvain.aptitude.surveillance.algorithm.events.AgentAlgorithm
+import be.uclouvain.organisation.events.JoinOrganisation
 
 /** 
  * Agent with a set of tasks (Goals) and a model (Belief). 
@@ -82,6 +83,7 @@ agent Algorithm extends Paraddis{
 		openChanel.get.registerStrongParticipant(asEventListener)
 		debug("atomic agent with task: " + ADN.get.task + " & belief : " + ADN.get.belief.replace("F:/aptitude/surveillance/src/main/resources/", ""))
 		if (ADN.get.level == 0) {
+			
 			registerBehavior(new ManagerAlgorithmRole(this), INIT_TASKS, ADN.get)
 			var toSpawn = occurrence.parameters.get(2) as HashMap<UUID, AlgorithmInfo>
 			for (e : toSpawn.keySet) {
@@ -95,11 +97,6 @@ agent Algorithm extends Paraddis{
 		 }
 	}
 
-	on AlgorithmJoinPlatform {
-		info("deploys " + ADN.get.task + " named " + occurrence.name + " performing in platform " +
-			occurrence.source.ID)
-		// wake(new AlgorithmNeeded(occurrence.contextID, occurrence.name, ADN.get.task, ADN.get.belief))
-	}
 	on AgentPlatform {
 		debug("encounters : " + occurrence.name + " agent")
 		agentPlatformSpaces.put(occurrence.name, occurrence.topic)
@@ -108,9 +105,9 @@ agent Algorithm extends Paraddis{
 		wake(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it.ID !== this.ID]
 	}
 	
-	on JoinPlatform {
+	on JoinOrganisation {
 		//info("Received join platfom " + occurrence.contextID.ID)
-		join(occurrence.contextID.ID,occurrence.contextID.defaultSpace.spaceID.ID)
+		join(occurrence.contextID,occurrence.defaultSpaceID)
 	}
 	
 	
