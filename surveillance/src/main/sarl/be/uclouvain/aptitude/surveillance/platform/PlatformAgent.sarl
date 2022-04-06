@@ -46,14 +46,12 @@ agent PlatformAgent extends Paraddis {
 	on Initialize {
 		platformConfig.set(occurrence.parameters.get(0) as PlatformConfig)
 		loggingName = this.ID + "-Platform-" + platformConfig.get.location + "-" + platformConfig.get.getLevel()
-		info("Initialazing" + defaultSpace.spaceID)
 		registerBehavior(new PlatformEntityRole(this))
-		emit(new LocalDatabaseRequest(this.ID,innerDefaultSpace.spaceID.ID))[it != me]
+		emit(new LocalDatabaseRequest(this.ID,innerDefaultSpace.spaceID.ID))[!me]
 		
 		if (platformConfig.get.getLevel > 0) {
 			val openChannel = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID)
 			openChannel.registerStrongParticipant(asEventListener)
-			
 			emitToParent(new AgentPlatform(platformConfig.get.location, this.ID, openChannel))
 			setSkill(new PlatformSkill(platformConfig.get), PlatformCapacity)
 			registerBehavior(new SurveillancePlatformRole(this), platformConfig.get.getLocation)
@@ -62,12 +60,14 @@ agent PlatformAgent extends Paraddis {
 		}
 	}
 	
-	on QueryAnswer {		
+	on QueryAnswer {
+		if(platformConfig.get.level==0){
+		info("Query received")		
 		var registeredAlgorithms = occurrence.answerObject as HashMap<UUID, AlgorithmInfo>
 		for (t : platformConfig.get.tasks.keySet) {
 		 spawnInContext(Algorithm, innerContext, platformConfig.get.tasks, new AlgorithmInfo(t, "none", t),
 		 new HashMap(registeredAlgorithms.filter[p1, p2|p2.task == t])) 
-		 }
+		 }}
 	}
 	
 	on Ready {

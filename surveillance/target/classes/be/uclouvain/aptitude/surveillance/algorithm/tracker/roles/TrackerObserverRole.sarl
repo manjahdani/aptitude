@@ -14,6 +14,7 @@ import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.UUID
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinSkill
 
 /** 
  * @author manjah
@@ -22,7 +23,7 @@ import java.util.UUID
 //val dynamicTrackingMemory = Collections.synchronizedList(new LinkedList<ArrayList<BBoxes2D>>)
 
 
-behavior SingleTrackerSingleDetectorObserverRole extends PythonTwinObserverRole {
+behavior TrackerObserverRole extends PythonTwinObserverRole {
 	
 	uses TrackerPythonTwinCapacity,Logging, ExternalContextAccess
 
@@ -48,13 +49,16 @@ behavior SingleTrackerSingleDetectorObserverRole extends PythonTwinObserverRole 
 
 	on BBoxes2DSignal {
 		if(!processedImages.contains(occurrence.bboxes2D.frameNumber)){
+			warning("Received frame" + occurrence.bboxes2D.frameNumber)
 			Signal2Perception(occurrence.bboxes2D)
 			processedImages.add(occurrence.bboxes2D.frameNumber)
 		}
 	}
 	
 	override processingMissionWithID(mID : UUID) {
-		warning("Single Tracker Observer Role started in organization TODO: auto-generated method stub")
+		warning("Single Tracker Sensor Role processing mID - " + mID)
+		setSkillIfAbsent(new TrackerPythonTwinSkill(ADN.get.belief, ADN.get.platformName, computation_location.get))
+		
 	}
 	
 }

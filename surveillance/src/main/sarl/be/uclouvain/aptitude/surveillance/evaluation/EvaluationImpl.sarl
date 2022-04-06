@@ -46,7 +46,7 @@ skill EvaluationImpl extends PythonTwinAccess implements Evaluation {
 			topicRequestSub = null
 			val topicName = "evaluation_" + owner.ID.toString + "_" + message.clientName
 			topicSignalAcquisition = CommunicationManager.instance.subscribeTopic(topicName, this)
-			info("EvalPartnerFound")
+			//info("EvalPartnerFound")
 			wake(new PartnerEvaluationFound(message.clientName))
 		}
 	}

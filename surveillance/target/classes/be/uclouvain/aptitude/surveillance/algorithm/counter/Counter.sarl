@@ -19,14 +19,14 @@ agent Counter extends Algorithm {
 	uses Behaviors, DefaultContextInteractions, Logging
 	
 	on RegisterUnitaryRole {
-		info("Registering behaviours as atomic Counter")
+		//info("Registering behaviours as atomic Counter")
 		registerBehavior(new CounterSensorRole(this), ADN.get)
 		registerBehavior(new CounterObserverRole(this), ADN.get)
 		emitToParent(new RoleRegistered)
 	}
 
 	on BecomeManager {
-		info("Registering behaviours as manager Counter")
+		//info("Registering behaviours as manager Counter")
 		registerBehavior(new CounterManagerObserverRole(this), ADN.get)
 		registerBehavior(new CounterManagerSensorRole(this), ADN.get)
 		emitToParent(new RoleRegistered)

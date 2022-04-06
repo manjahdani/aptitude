@@ -4,10 +4,10 @@
 package be.uclouvain.aptitude.surveillance.algorithm
 
 import be.uclouvain.aptitude.surveillance.Paraddis
+import be.uclouvain.aptitude.surveillance.algorithm.events.AgentAlgorithm
+import be.uclouvain.aptitude.surveillance.platform.events.AgentPlatform
 import be.uclouvain.organisation.events.Identification
-
-import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
-import be.uclouvain.organisation.told.entity.EntityRole
+import be.uclouvain.organisation.events.JoinOrganisation
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import io.sarl.core.Behaviors
 import io.sarl.core.ContextJoined
@@ -23,9 +23,6 @@ import io.sarl.lang.core.AgentContext
 import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
-import be.uclouvain.aptitude.surveillance.platform.events.AgentPlatform
-import be.uclouvain.aptitude.surveillance.algorithm.events.AgentAlgorithm
-import be.uclouvain.organisation.events.JoinOrganisation
 
 /** 
  * Agent with a set of tasks (Goals) and a model (Belief). 
@@ -71,17 +68,19 @@ agent Algorithm extends Paraddis{
 
 	val agentPlatformSpaces = new HashMap<String, OpenEventSpace>
 	var subHolons = new HashMap<AgentContext, UUID>
-	var openChanel = new AtomicReference<OpenEventSpace>
+	var openChannel = new AtomicReference<OpenEventSpace>
 	val INIT_TASKS = new HashMap<String, Class<? extends Agent>>
 
 	on Initialize {
 		INIT_TASKS.putAll(occurrence.parameters.get(0) as HashMap<String, Class<? extends Agent>>)
 		ADN.set(occurrence.parameters.get(1) as AlgorithmInfo) 
 		loggingName = this.ID + "-" + ADN.get.task+"-" + ADN.get.name + "-" + ADN.get.level 
-		registerBehavior(new EntityRole(this))
-		openChanel.set(innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID))
-		openChanel.get.registerStrongParticipant(asEventListener)
-		debug("atomic agent with task: " + ADN.get.task + " & belief : " + ADN.get.belief.replace("F:/aptitude/surveillance/src/main/resources/", ""))
+		openChannel.set(innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID))
+		openChannel.get.registerStrongParticipant(asEventListener)
+		debug("atomic agent with task: " + ADN.get.task + " & belief : " +
+			ADN.get.belief.replace("F:/aptitude/surveillance/src/main/resources/", ""))
+			
+		registerBehavior(new AlgorithmEntity(this))
 		if (ADN.get.level == 0) {
 			
 			registerBehavior(new ManagerAlgorithmRole(this), INIT_TASKS, ADN.get)
@@ -90,18 +89,13 @@ agent Algorithm extends Paraddis{
 				spawnInContextWithID(Algorithm, e, innerContext, INIT_TASKS,toSpawn.get(e))
 			}
 		}
-		if(ADN.get.level>1){
-			
-			registerBehavior(new AlgorithmEntity(this))
-			
-		 }
 	}
 
 	on AgentPlatform {
 		debug("encounters : " + occurrence.name + " agent")
 		agentPlatformSpaces.put(occurrence.name, occurrence.topic)
 		occurrence.topic.registerStrongParticipant(asEventListener)
-		emit(occurrence.topic, new AgentAlgorithm(ADN.get.name, openChanel.get))
+		emit(occurrence.topic, new AgentAlgorithm(ADN.get.name, openChannel.get))
 		wake(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it.ID !== this.ID]
 	}
 	
@@ -113,8 +107,7 @@ agent Algorithm extends Paraddis{
 	
 	on AlgorithmNeeded  { //
 			if (occurrence.name === ADN.get.name) {
-			info(
-				"clones name " +occurrence.name + " and belief : " +" \n to answer the request of " + occurrence.source.ID)
+			//info("clones name " +occurrence.name + " and belief : " +" \n to answer the request of " + occurrence.source.ID)
 		
 			subHolons.put(occurrence.contextID, occurrence.agentID)
 
@@ -133,9 +126,14 @@ agent Algorithm extends Paraddis{
 	}
 
 	on ContextJoined {
-		emit(getContext(occurrence.holonContextID).defaultSpace,
+		if(isInContext(occurrence.holonContextID)){
+		emit(
+			getContext(occurrence.holonContextID).defaultSpace,
 			new Identification(ADN.get.name)
-		)
+		)}
+		else{
+			join(occurrence.holonContextID,occurrence.defaultSpaceID)
+		}
 	}
 }
 

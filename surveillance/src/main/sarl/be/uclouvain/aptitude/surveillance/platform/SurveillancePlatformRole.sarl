@@ -6,10 +6,8 @@ import be.uclouvain.organisation.events.SignalID
 import be.uclouvain.organisation.platform.PlatformCapacity
 import be.uclouvain.organisation.platform.PlatformRole
 import be.uclouvain.organisation.platform.events.AddAlgorithm
-import be.uclouvain.organisation.platform.events.AddObserver
 import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
 import be.uclouvain.organisation.platform.events.ComputationalRessources
-import be.uclouvain.organisation.platform.util.MembershipRule
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
@@ -34,7 +32,7 @@ import java.util.concurrent.atomic.AtomicReference
  * 
  */
 behavior SurveillancePlatformRole extends PlatformRole {
-	uses InnerContextAccess, ExternalContextAccess, Logging, PlatformCapacity, Schedules, Behaviors, DefaultContextInteractions
+	uses InnerContextAccess, ExternalContextAccess, Logging, Schedules, Behaviors, DefaultContextInteractions
 	
 	protected val participants = Collections.synchronizedMap(new HashMap<String, UUID>) // @FIXME LOW clarify MAP - Lists and so on. clarify also if the variables must be concurrent or not
 	val request = Collections.synchronizedList(new LinkedList<String>)

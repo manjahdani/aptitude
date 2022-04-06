@@ -9,6 +9,7 @@ import io.sarl.core.Logging
 import be.uclouvain.organisation.platform.events.PauseMission
 import be.uclouvain.organisation.platform.events.ResumeMission
 import be.uclouvain.organisation.platform.events.StartMission
+import java.util.concurrent.atomic.AtomicInteger
 
 /** 
  * @author manjah
@@ -25,7 +26,7 @@ import be.uclouvain.organisation.platform.events.StartMission
 abstract behavior PythonTwinObserverRole extends ObserverRole {
 	uses Logging, PythonTwinAccessCapacity
 	
-	var counter =0
+	val counter = new AtomicInteger(0)
 	on PauseMission {
 		warning("Pause Mission from " + occurrence.source.ID)
 		orderedMissionList.get(occurrence.missionID).setMissionInative
@@ -38,13 +39,13 @@ abstract behavior PythonTwinObserverRole extends ObserverRole {
 			updateStreamAccess(6, occurrence.frameNumber)
 			}
 		
-		if (counter > 0) {
+		if (counter.get > 0) {
 			warning("UpdatingStreamAccess - Action 3 Starting at frame " + occurrence.frameNumber)
 			updateStreamAccess(3)
 		}
 		else {
 			warning("UpdatingStreamAccess - Action 1 Starting at frame " + occurrence.frameNumber)
-			counter=1
+			counter.set(1)
 			updateStreamAccess(1)
 		}
 		

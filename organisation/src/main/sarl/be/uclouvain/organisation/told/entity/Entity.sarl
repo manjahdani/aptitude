@@ -28,7 +28,7 @@ behavior EntityRole extends Role{
 	uses Logging, ExternalContextAccess
 	
 	on TOLDOrganizationInfo {
-		info("met TOLD - " + occurrence.contextID)
+		//info("met TOLD - " + occurrence.contextID)
 		updateContextInfo(occurrence.contextID, occurrence.privateCommunicationChannelID)
 		Ready2Work
 	}
@@ -36,9 +36,8 @@ behavior EntityRole extends Role{
 		//Do nothing
 	}
 	on AuthorizationToJoinContext {
-		val mbID = occurrence.source.ID
-		info("receives authorisation to join the context of - " + mbID + " and space " +
-			occurrence.defaultSpaceID)
+		//info("receives authorisation to join the context of - " + mbID + " and space " +
+			//occurrence.defaultSpaceID)
 		join(occurrence.contextID, occurrence.defaultSpaceID)
 	}
 }

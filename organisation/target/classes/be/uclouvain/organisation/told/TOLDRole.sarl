@@ -56,7 +56,8 @@ behavior TOLDRole extends OrganizationalRole {
 
 	
 	on AddMember{
-		emit(occurrence.communicationChannel,
+		val sourceContextID = occurrence.source.spaceID.contextID
+		emit(getContext(sourceContextID).defaultSpace,
 				new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID)) [
 				it.ID == occurrence.memberID
 			]

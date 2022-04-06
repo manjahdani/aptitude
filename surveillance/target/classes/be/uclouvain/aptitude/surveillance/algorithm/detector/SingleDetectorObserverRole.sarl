@@ -13,19 +13,8 @@ import java.util.UUID
 /** 
  * @author manjah
  * 
- * /* 
- * PLAY = 1
- * PAUSE = 2
- * RESUME = 3
- * STOP = 4
- * RESTART = 5
- * SEEK = 6
- * KILL = 7
- * 
- * 
- * 
  */
-behavior SingleDetectorObserverRole extends PythonTwinObserverRole {
+behavior DetectorObserverRole extends PythonTwinObserverRole {
 	uses Logging, Schedules, DefaultContextInteractions
 
 	on PartnerDetectionFound {
@@ -37,7 +26,8 @@ behavior SingleDetectorObserverRole extends PythonTwinObserverRole {
 	}
 	
 	override processingMissionWithID(mID : UUID) {
-		setSkill(new DetectorPythonTwin(ADN.get.belief, ADN.get.platformName, computation_location.get))
+		
+		setSkillIfAbsent(new DetectorPythonTwin(ADN.get.belief, ADN.get.platformName, computation_location.get))
 	}
 	
 }

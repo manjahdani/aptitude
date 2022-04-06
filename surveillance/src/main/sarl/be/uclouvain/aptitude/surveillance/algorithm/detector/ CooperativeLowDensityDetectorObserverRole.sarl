@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicReference
  * @author manjah
  * 
  */
-behavior CooperativeMasterStudentDetectorsObserverRole extends ManagerObserverRole {
+behavior CooperativeLowDensityDetectorObserverRole extends ManagerObserverRole {
 	uses Logging, Behaviors, DefaultContextInteractions
 	
 	val studentID = new AtomicReference<UUID>
@@ -35,7 +35,6 @@ behavior CooperativeMasterStudentDetectorsObserverRole extends ManagerObserverRo
 
 	
 	on Initialize {
-		info("Multi-Detecter role started.")
 		SENSORS.put("BACKGROUND", new Metadata(0, "VEHICLE", 200))
 		SENSORS.put("YOLO", new Metadata(1, "VEHICLE", 500))
 		emitToParent(new Ready2Process)
@@ -45,19 +44,18 @@ behavior CooperativeMasterStudentDetectorsObserverRole extends ManagerObserverRo
 		if (occurrence.source.ID.equals(studentID.get)) {
 			warning("EnableStreamAccess at frame " + 0)
 			wake(new StartMission(occurrence.source.ID,0))[it.ID == occurrence.source.ID]
-		} 
-
+		}
 	}
 	on Activity {
 		if (!listeningTOTeacher.get) {
-			warning("starting master")
+			warning("Activity noticed starting object classification")
 		wake(new StartMission(occurrence.source.ID, occurrence.frameNumber))[it.ID == masterID.get]
 		listeningTOTeacher.set(true)
 		}
 	}
 	on NoActivity {
 		if(listeningTOTeacher.get){
-			warning("pausing master")
+			warning("pausing detector")
 		wake(new PauseMission(masterID.get))[it.ID == masterID]
 		listeningTOTeacher.set(false)
 		}

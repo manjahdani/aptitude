@@ -83,11 +83,8 @@ abstract behavior ObserverRole extends ScenarioRole {
 			]
 		}
 		else{
-			//@FIXME HIGH N'imp
 			info("Known signal = " + signalID)
 			emit(providers.get(signalID),new ResumeMission(missionID, true))[it.ID == signalID]
-			info("Trying now in the default")
-			emit(organizationContext.get.defaultSpace, new ResumeMission(missionID, true))[it.ID == signalID]
 		}
 	}
 

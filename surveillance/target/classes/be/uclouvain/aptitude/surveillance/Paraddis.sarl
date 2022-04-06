@@ -12,6 +12,8 @@ import io.sarl.core.Schedules
 import io.sarl.core.MemberJoined
 import io.sarl.core.ParticipantJoined
 import io.sarl.core.Behaviors
+import java.util.UUID
+import io.sarl.core.ExternalContextAccess
 
 /** 
  * The agent gives global trait to agents. 
@@ -27,7 +29,7 @@ import io.sarl.core.Behaviors
 
 
 agent Paraddis {
-	uses Lifecycle, Logging, InnerContextAccess, Schedules, Behaviors
+	uses Lifecycle, Logging, InnerContextAccess, Schedules, Behaviors, ExternalContextAccess
 
 	protected var AgentType : String = 'Unknown'
 	
@@ -96,6 +98,15 @@ agent Paraddis {
 		}
 	}
 
+	def isInContext(contextID : UUID) {
+
+		for (ctxt : allContexts) {
+			if (ctxt.ID == contextID) {
+				return true
+			}
+		}
+		return false
+	}
 	
 	def KillMembers {
 		
@@ -119,6 +130,7 @@ agent Paraddis {
 			tasksInProgress.remove(t)
 			// @DEBUG info("done cancelling : " + getActiveTasks)
 	}
+	
 	
 	val waitTask = task("final-task")
 	waitTask.every(1000)[

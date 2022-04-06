@@ -12,24 +12,24 @@ import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
 import java.util.concurrent.atomic.AtomicInteger
+import be.uclouvain.organisation.platform.SensorRole
 
 /** 
  * @author manjah
  * 
  */
-behavior ActivityDetectorSignalRole extends DetectorSignalRole {
+behavior ActivityDetectorSensorRole extends SensorRole {
 	uses Logging, DefaultContextInteractions, ExternalContextAccess
 
 	val noActivityFrames = new AtomicInteger(0)
 	val total_detectionTime = new AtomicDouble(0)
 	
 	 on BBoxes2DResult {
-		// info("Detector - frameNumber- lastframe " + occurrence.bboxes2D.frameNumber + occurrence.bboxes2D.lastFrame)
+		//info("Detector - frameNumber- lastframe " + occurrence.bboxes2D.frameNumber + occurrence.bboxes2D.lastFrame)
 		// Compute the detection time
 		total_detectionTime.addAndGet(occurrence.bboxes2D.detectionTime)
 		if(!occurrence.bboxes2D.bboxes.isEmpty){
 			emitToParent(new Activity(occurrence.bboxes2D.frameNumber))
-			// emit(selfSpace,new PauseMission(this.ID))
 			noActivityFrames.set(0)
 		}
 		else {

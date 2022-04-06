@@ -103,7 +103,7 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 			database.put(key, null)
 			return null
 		} else if (database.get(key) === null) {
-			info("key present but value is null")
+			debug("key present but value is null")
 			return null
 		}
 		debug("Access OK returning - " + database.get(key))

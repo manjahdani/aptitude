@@ -90,10 +90,8 @@ behavior CounterObserverRole extends ObserverRole {
 //	}
 	
 	on CompetitionOver {
-		
 		val sID = occurrence.providerID
 		var mData = orderedMissionList.values.findFirst[signalID == sID]
-		info("Competition over"+ mData.cautionLevel+ mData.signalID)
 		providers.get(sID).emit(new TrackingRequest(mData.missionID,occurrence.selectedAlgorithmID))
 	}
 	

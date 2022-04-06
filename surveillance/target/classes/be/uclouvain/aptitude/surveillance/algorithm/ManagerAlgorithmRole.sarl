@@ -3,8 +3,10 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm
 
+import be.uclouvain.organisation.events.JoinOrganisation
 import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
 import be.uclouvain.organisation.told.util.AlgorithmInfo
+import be.uclouvain.organisation.util.OrganisationID
 import io.sarl.core.AgentSpawned
 import io.sarl.core.Behaviors
 import io.sarl.core.Initialize
@@ -15,16 +17,13 @@ import io.sarl.lang.core.Agent
 import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
-import io.sarl.core.DefaultContextInteractions
-import be.uclouvain.organisation.util.OrganisationID
-import be.uclouvain.organisation.events.JoinOrganisation
 
 /** 
  * @author manjah
  * 
  */
 behavior ManagerAlgorithmRole {
-	uses Logging, Lifecycle, InnerContextAccess,Behaviors, DefaultContextInteractions
+	uses Logging, Lifecycle, InnerContextAccess,Behaviors
 	
 	val subAlgorithmsPlatformMap = new HashMap<UUID, OrganisationID>
 	val INIT_TASKS = new HashMap<String, Class<? extends Agent>>
@@ -46,7 +45,7 @@ behavior ManagerAlgorithmRole {
 	}
 	on AgentSpawned{
 		if (subAlgorithmsPlatformMap.keySet.contains(occurrence.agentID)) {
-			info("Invitation to become manager to - " + occurrence.agentID)
+			//info("Invitation to become manager to - " + occurrence.agentID)
 			wake(new BecomeManager)[it.ID==occurrence.agentID]
 		}	
 	}

@@ -91,7 +91,7 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 	on ResumeTrackingMission {
 		info("Resuming mission" + occurrence.missionID +" with "+ occurrence.detector)
 		setSkill(new TrackerPythonTwinSkill(ADN.get.belief, ADN.get.platformName,computation_location.get))
-		registerBehavior(new SingleTrackerSingleDetectorObserverRole(this.owner))
+		registerBehavior(new TrackerObserverRole(this.owner))
 		info("Come here " + occurrence.detector)
 		missionList.get(occurrence.missionID).dynamicAdaptation = false		
 		enableDataAcquisition(occurrence.missionID,newArrayList(occurrence.detector), "DETECTOR")
@@ -111,7 +111,7 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 		else {
 			warning("Single Tracker processing mID - " + mID)
 			setSkill(new TrackerPythonTwinSkill(ADN.get.belief, ADN.get.platformName, computation_location.get))
-			registerBehavior(new SingleTrackerSingleDetectorObserverRole(this.owner), ADN.get)
+			registerBehavior(new TrackerObserverRole(this.owner), ADN.get)
 			enableDataAcquisition(mID,"DETECTOR") 
 			}
 		}

@@ -16,7 +16,6 @@ import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedQueue
-import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
 
 /** 
  * @TODO To complete
@@ -44,7 +43,7 @@ behavior ManagerPlatformRole extends PlatformRole {
 		wake(new ComputationalRessources(a))[it.ID== occurrence.source.ID]	
 		if (!subPlatformsOpenSpaces.containsKey(occurrence.name)) {
 			subPlatformsOpenSpaces.put(occurrence.name, occurrence.topic)
-			emit(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it != me] 		// It is okay to send it to the Universe Context as it is omniscient
+			emit(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[!me] 		// It is okay to send it to the Universe Context as it is omniscient
 		}
 	}
 }

@@ -40,7 +40,7 @@ agent Boot extends Paraddis {
 	// val junctionList = "MacqWoolridge"
 	// @Parameters
 	
-	val INITIAL_CAMERAS = newArrayList("S04C035")//, "S04C035") // "MOT17-04", "MOT17-02")
+	val INITIAL_CAMERAS = newArrayList("S03C012")//, "S04C035") // "MOT17-04", "MOT17-02")
 	val AVAILABLE_RESSOURCES = newArrayList("1000")//, "1000")
 
 	val client : DatagramSocket = new DatagramSocket(65000) // A client to listen requests

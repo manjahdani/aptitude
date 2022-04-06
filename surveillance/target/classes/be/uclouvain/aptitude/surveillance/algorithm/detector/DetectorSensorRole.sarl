@@ -9,14 +9,15 @@ import be.uclouvain.python_access.BBoxes2DSignal
 import be.uclouvain.python_access.messages.BBoxes2DMessage
 import io.sarl.core.ExternalContextAccess
 
-behavior DetectorSignalRole extends SensorRole {
+behavior DetectorSensorRole extends SensorRole {
 	
 	uses ExternalContextAccess
 
 	on BBoxes2DResult {
 		val signal = Signal2Transmit(occurrence.bboxes2D)
+		//warning("Received detection" + occurrence.bboxes2D.frameNumber + "listeners"+ listeners.keySet)
 		for (listenersSpace : listeners.values) {
-			emit(listenersSpace, signal)[it.ID !== this.ID]
+			emit(listenersSpace, signal)[!me]
 		}
 	}
 

@@ -66,14 +66,4 @@ agent Expert extends Paraddis {
 	on ContextJoined {
 		emit(getContext(occurrence.holonContextID).defaultSpace, new Identification(ADN.get.name))
 	}
-
-	def isInContext(contextID : UUID) {
-
-		for (ctxt : allContexts) {
-			if (ctxt.ID == contextID) {
-				return true
-			}
-		}
-		return false
-	}
 }

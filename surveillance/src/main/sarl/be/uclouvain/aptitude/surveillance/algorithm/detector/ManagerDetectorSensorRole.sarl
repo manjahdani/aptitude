@@ -4,6 +4,7 @@
 package be.uclouvain.aptitude.surveillance.algorithm.detector
 
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
+import be.uclouvain.python_access.BBoxes2DSignal
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
 
@@ -11,13 +12,21 @@ import io.sarl.core.Logging
  * @author manjah
  * 
  */
-behavior ManagerDetectorSignalRole extends DetectorSignalRole {
+behavior ManagerDetectorSensorRole extends DetectorSensorRole {
 	uses Logging, ExternalContextAccess
 
 	on LastFrame {
 		for (listenersSpace : listeners.values) {
 			info("LastFrame")
 			emit(listenersSpace, new LastFrame(occurrence.frameNumber))[it.ID !== this.ID]
+		}
+	}
+
+	on BBoxes2DSignal {
+		val signal = Signal2Transmit(occurrence.bboxes2D)
+		//warning("Received detection" + occurrence.bboxes2D.frameNumber + "listeners" + listeners.keySet)
+		for (listenersSpace : listeners.values) {
+			emit(listenersSpace, signal)[!me]
 		}
 	}
 }

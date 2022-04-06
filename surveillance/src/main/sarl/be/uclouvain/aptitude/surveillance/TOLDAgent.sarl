@@ -45,7 +45,6 @@ agent TOLDAgent extends Paraddis {
 	val distributionMap = Collections.synchronizedMap(new HashMap<UUID, OrganisationID>) 
 	  
 	on Initialize {
-		info("TOLD Initialising")
 		setSkill(new VirtualDatabaseSkill, AccessDatabaseCapacity)
 		registerBehavior(new TOLDRole(this))
 		config.set(occurrence.parameters.get(0) as TOLDConfig)

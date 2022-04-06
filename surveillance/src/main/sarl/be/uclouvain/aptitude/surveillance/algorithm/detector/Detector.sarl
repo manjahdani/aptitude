@@ -21,21 +21,21 @@ agent Detector extends Algorithm {
 	
 	on BecomeManager {
 		info("Becoming Manager")
-		registerBehavior(new CooperativeMasterStudentDetectorsObserverRole(this), ADN.get)
-		registerBehavior(new ManagerDetectorSignalRole(this), ADN.get)
+		registerBehavior(new CooperativeLowDensityDetectorObserverRole(this), ADN.get)
+		registerBehavior(new ManagerDetectorSensorRole(this), ADN.get)
 		emitToParent(new RoleRegistered)
 	}
 	on AddMissionAsStudent {
 		info("Becoming Student Atomic")
-		registerBehavior(new ActivityDetectorSignalRole(this), ADN.get)
-		registerBehavior(new SingleDetectorObserverRole(this), ADN.get)
+		registerBehavior(new ActivityDetectorSensorRole(this), ADN.get)
+		registerBehavior(new DetectorObserverRole(this), ADN.get)
 		emitToParent(new RoleRegistered)
 	}
 
 	on AddMissionAsMaster {
 		info("Becoming Master Atomic")
-		registerBehavior(new DetectorSignalRole(this), ADN.get)
-		registerBehavior(new SingleDetectorObserverRole(this), ADN.get)
+		registerBehavior(new DetectorSensorRole(this), ADN.get)
+		registerBehavior(new DetectorObserverRole(this), ADN.get)
 		emitToParent(new RoleRegistered)
 	}
 	

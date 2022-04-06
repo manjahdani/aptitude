@@ -49,7 +49,7 @@ behavior AlgorithmSelectorRole extends Role {
 	on PartnerEvaluationFound {
 		//partnerName = occurrence.partnerName
 		
-		info("Eval found partner" + occurrence.partnerName)
+		//info("Eval found partner " + occurrence.partnerName)
 		this.compDuration = System.currentTimeMillis()
 	}
 

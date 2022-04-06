@@ -3,8 +3,6 @@
  */
 package be.uclouvain.organisation.events
 
-
-import io.sarl.core.OpenEventSpace
 import java.util.UUID
 
 /** 
@@ -35,17 +33,8 @@ import java.util.UUID
 event AddMember {
 	
 	var memberID : UUID
-	val communicationChannel : OpenEventSpace
-
-	new(mID : UUID, comChannel : OpenEventSpace) {
-		this.communicationChannel = comChannel
-		this.memberID = mID
-	}
 
 	new(mID : UUID) {
-		this.communicationChannel = null
 		this.memberID = mID
 	}
-	
-	
 }
