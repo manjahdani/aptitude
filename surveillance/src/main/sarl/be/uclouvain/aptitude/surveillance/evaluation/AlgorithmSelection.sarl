@@ -3,9 +3,10 @@
  */
 package be.uclouvain.aptitude.surveillance.evaluation
 
-import be.uclouvain.aptitude.surveillance.algorithm.util.EvaluationResults
 import java.util.UUID
 import be.uclouvain.python_access.messages.EvaluationMessage
+import be.uclouvain.aptitude.surveillance.algorithm.util.APTITUDE_EvaluationResults
+import be.uclouvain.aptitude.surveillance.algorithm.util.EvaluationResults
 
 /** 
  * @author manjah
@@ -13,7 +14,7 @@ import be.uclouvain.python_access.messages.EvaluationMessage
  */
 capacity AlgorithmSelection {
 
-	def addEvalutionResults(testID : UUID, s : EvaluationResults)
+	def addEvalutionResults(testID : UUID, s : APTITUDE_EvaluationResults)
 
 	def processEvaluationMessage(testID : UUID, e : EvaluationMessage) : boolean
 	

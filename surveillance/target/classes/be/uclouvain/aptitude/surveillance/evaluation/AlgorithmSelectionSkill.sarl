@@ -3,78 +3,52 @@
  */
 package be.uclouvain.aptitude.surveillance.evaluation
 
+import be.uclouvain.aptitude.surveillance.algorithm.util.APTITUDE_EvaluationResults
 import be.uclouvain.aptitude.surveillance.algorithm.util.EvaluationResults
 import be.uclouvain.python_access.messages.EvaluationMessage
+import io.sarl.core.Behaviors
 import io.sarl.core.Logging
-import java.util.TreeMap
+import java.util.HashMap
+import java.util.TreeSet
 import java.util.UUID
-import be.uclouvain.organisation.platform.util.HyperParameters
 
 /** 
  * @author manjah
  * 
  */
 skill AlgorithmSelectionSkill implements AlgorithmSelection {
-	
-	uses Logging
+	uses Logging, Behaviors
 
-	val compResults = new TreeMap<UUID, EvaluationResults>
-	
-	var param : HyperParameters
-	
-	new (p : HyperParameters)
-	{
-		this.param=p
-	}
-	
-	def selectAlgorithm():EvaluationResults {
+	val compResults = new HashMap<UUID, APTITUDE_EvaluationResults>
 
-		info("Competition is over. Lets choose the Champion !")
-		var rankedResult = new TreeMap<Double, String>
-		for (l : compResults.values) {
-			var sframe = (l.trackingTime + l.detectionTime) / l.frame
-			var effeciency = (0.51 - 2 * sframe) / (0.49)
-			info("Competitor - " + l.competitorID + " - \n HOTA: " + l.HOTA + 
-				" \n +" + "-trackingTime" + l.trackingTime +
-				" \n +" + "-detectionTime" + l.detectionTime +
-			 	"-\n Efficiency:" + effeciency +"\n l.frame" + l.frame)
-			rankedResult.put(metric_APTITUDE(l.HOTA, effeciency, param.cautionLevel), l.belief)
-		}
-		info(rankedResult + "\n Congratulations to " + rankedResult.lastEntry)
-		
-		var selectedAlgorithm = compResults.values.filter[belief == rankedResult.lastEntry.value].get(0)
-			
-		return selectedAlgorithm
-	}
 	
-	def metric_APTITUDE(hota : double, effeciency : double,  beta : int) {
-		return hota //+ beta*effeciency
-	}
-
-	def addEvalutionResults(testID : UUID, e : EvaluationResults) {
-		compResults.put(testID, e)
-	}
-
+	def addEvalutionResults(testID : UUID, s : APTITUDE_EvaluationResults) {
+		compResults.put(testID,s)
+	}	
+	
 	def processEvaluationMessage(testID : UUID, e : EvaluationMessage) : boolean {
-		
-		//@FIXME LOW strange behavior
-		try{
-			if (compResults.get(testID).HOTA == 0) {
+		if(compResults.get(testID).HOTA==0){
 			compResults.get(testID).setValues(e)
-			println("***********************")
-			println("           reqID \t" + e.requestID)
-			compResults.get(e.requestID).EvaluationPrint
+			wake(new RegisterEvaluationMessage(compResults.get(testID)))[it.ID == this.ID]
 			return true
-			
-			}
-			return false
-		}
-		catch(f:NullPointerException){
-			
-			info("NullPointer" + "testID " + testID + "E=" + e)
-			
 		}
 		return false
 	}
+	
+	synchronized def selectAlgorithm : EvaluationResults {
+		
+		val rankedResults : TreeSet<APTITUDE_EvaluationResults> =new TreeSet(compResults.values)
+	
+		for(r : rankedResults){
+			info("\n *************") 
+			info("\n Competitor, " + r.competitorID) 
+			info("\n Detection time, " + r.detectionTime)
+			info("\n Tracking time, " + r.trackingTime)
+	    	info("\n HOTA, "+ r.HOTA)
+	    	info( "\n Efficiency, " + r.effiency)
+	    	info("\n APTITUDE_Score, " + r.APTITUDE_score)
+		}
+		return rankedResults.get(0)
+	}
+	
 }
-

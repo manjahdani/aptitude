@@ -4,7 +4,7 @@
 package be.uclouvain.aptitude.surveillance.evaluation
 
 import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
-import be.uclouvain.aptitude.surveillance.algorithm.util.EvaluationResults
+import be.uclouvain.aptitude.surveillance.algorithm.util.APTITUDE_EvaluationResults
 import be.uclouvain.aptitude.surveillance.algorithm.util.Metric
 import be.uclouvain.organisation.Role
 import be.uclouvain.python_access.EvaluationResult
@@ -16,6 +16,7 @@ import io.sarl.core.Logging
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicReference
 
 /** 
  * @TODO : To complete
@@ -34,16 +35,17 @@ behavior AlgorithmSelectorRole extends Role {
 	protected var compDuration : long
 	protected var numberTests = 0 
 	
-	protected var score : Metric; 
+	protected val score = new AtomicReference<Metric> 
 	protected var gts : String
 	
 	on Initialize {
-
-		score = occurrence.parameters.get(3) as Metric
-		gts = new String(Files.readAllBytes(Paths.get(score.gtFilePatch)))
-		setSkill(new AlgorithmSelectionSkill(score.params), AlgorithmSelection)
+		wake(new CreateEvaluatorEntity)[it.ID == this.ID]
+		score.set(occurrence.parameters.get(3) as Metric)
+		gts = new String(Files.readAllBytes(Paths.get(score.get.gtFilePatch)))
+		setSkill(new AlgorithmSelectionSkill, AlgorithmSelection)
 		selfSpace.registerStrongParticipant(asEventListener)
-}
+		
+	}
 
 	
 	on PartnerEvaluationFound {
@@ -62,15 +64,16 @@ behavior AlgorithmSelectorRole extends Role {
 		
 		var predictions = new String(Files.readAllBytes(Paths.get(occurrence.pred_file_Path)));
 		var testID = UUID.randomUUID
-		info("Sending to evaluation" + testID)
+		//info("Sending to evaluation - " + testID)
 		addEvalutionResults(testID,
-			new EvaluationResults(
+			new APTITUDE_EvaluationResults(
 				occurrence.source.ID, 
 				occurrence.observerID, 
 				occurrence.pred_file_Path, 
 				occurrence.total_time_detection,
 				occurrence.total_time_tracking, 
-				occurrence.frameNumber))
+				occurrence.frameNumber, 
+				occurrence.processingParameters))
 		sendEvaluationRequest(testID.toString, predictions, gts)
 	}
 
@@ -87,10 +90,7 @@ behavior AlgorithmSelectorRole extends Role {
 				info("HOTA" + occurrence.result.HOTA)
 				if (numberTests == 1) {
 					var selected = selectAlgorithm()
-					
 					selfSpace.emit(this.ID,new CompetitionOver(selected.providerID,selected.competitorID))
-
-
 				}
 			}
 			else{

@@ -16,7 +16,7 @@ import be.uclouvain.python_access.messages.EvaluationMessage
  * @mavenartifactid $surveillance$
  * 
  */
-class EvaluationResults{
+class EvaluationResults {
 
 	val providerID : UUID 
 	val competitorID : UUID
@@ -198,4 +198,5 @@ class EvaluationResults{
 		// println("HOTA_ARRAY" + HOTA_Array.toString)
 		System.out.format("***********************")
 	}
+	
 }

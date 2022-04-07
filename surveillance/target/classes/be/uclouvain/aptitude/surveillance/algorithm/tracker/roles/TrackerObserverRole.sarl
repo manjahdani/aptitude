@@ -49,7 +49,6 @@ behavior TrackerObserverRole extends PythonTwinObserverRole {
 
 	on BBoxes2DSignal {
 		if(!processedImages.contains(occurrence.bboxes2D.frameNumber)){
-			warning("Received frame" + occurrence.bboxes2D.frameNumber)
 			Signal2Perception(occurrence.bboxes2D)
 			processedImages.add(occurrence.bboxes2D.frameNumber)
 		}

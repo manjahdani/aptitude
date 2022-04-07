@@ -4,6 +4,7 @@
 package be.uclouvain.aptitude.surveillance.algorithm
 
 import java.util.UUID
+import be.uclouvain.organisation.platform.util.HyperParameters
 
 /** 
  * @TODO : Descrribe
@@ -17,23 +18,31 @@ import java.util.UUID
  */
 event LastFrame {
 	
-	var frameNumber : int
-	var pred_file_Path : String
-	var total_time_detection : double
-	var total_time_tracking : double
-	var observerID : UUID
-	new (f : int, p : String, total_time_detection : double, total_time_tracking : double, id : UUID)
+	val frameNumber : int
+	val pred_file_Path : String
+	val total_time_detection : double
+	val total_time_tracking : double
+	val observerID : UUID
+	val processingParameters : HyperParameters
+	
+	new (f : int, p : String, tt_detection : double, tt_tracking : double, id : UUID, hp : HyperParameters)
 	{
 		this.frameNumber = f
 		this.pred_file_Path = p
-		this.total_time_detection = total_time_detection
-		this.total_time_tracking = total_time_tracking
+		this.total_time_detection = tt_detection
+		this.total_time_tracking = tt_tracking
 		this.observerID = id
+		this.processingParameters=hp
 	}
 	
 	new (f : int)
 	{
-		this.frameNumber=f
+		this.frameNumber = f
+		this.pred_file_Path = null
+		this.total_time_detection = 0
+		this.total_time_tracking = 0
+		this.observerID = null
+		this.processingParameters = null
 	}
 	
 	

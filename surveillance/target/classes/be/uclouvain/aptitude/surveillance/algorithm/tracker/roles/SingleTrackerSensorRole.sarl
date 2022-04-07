@@ -16,6 +16,7 @@ import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.UUID
+import be.uclouvain.organisation.platform.util.HyperParameters
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -42,7 +43,7 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 	var totalTrackerTime : double = 0
 	var totalDetectorTime : double = 0
 
-	var frameLimit : int = 1000
+	var frameLimit : int = 400
 
 	on BBoxes2DTrackResult {
 
@@ -73,17 +74,10 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 					("F:\\Database\\".concat(this.ID.toString) + ".txt"),
 					totalDetectorTime, 
 					totalTrackerTime,
-					ADN.get.ID))[it.ID == l]
+					ADN.get.ID,
+					(new HyperParameters(1,false))// @FIXME VERY VERY HIGH MANUAL
+					))[it.ID == l]
 			}
-
-		/** 
-			listeners.get(l).emit(this.ID,
-			new LastFrame(
-				occurrence.bboxes2DTrack.frameNumber, 
-				("F:\\Database\\".concat(this.ID.toString) + ".txt"),
-				totalDetectorTime, 
-				totalTrackerTime))[it.ID == l]
-			}*/
 		}
 	
 	}

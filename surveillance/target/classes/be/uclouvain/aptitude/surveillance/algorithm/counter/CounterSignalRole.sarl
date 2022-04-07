@@ -42,8 +42,8 @@ behavior CounterSensorRole extends SensorRole {
 								 computation_location,
 								 new Metric(
 								 	"APTITUDE",
-					             	"F:/pythonToolbox/pytb-agent/videos/".concat(ADN.get.platformName).concat("/gt/gt.txt"), //@FIXME HIGH Manual
-					                missionList.get(mID).hyperParameters))
+					             	"F:/pythonToolbox/pytb-agent/videos/".concat(ADN.get.platformName).concat("/gt/gt.txt"))) //@FIXME HIGH Manual
+					           
 		}
 		enableDataAcquisition(mID,"TRACKER")
 	}

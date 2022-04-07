@@ -10,6 +10,7 @@ import be.uclouvain.organisation.told.util.AlgorithmInfo
 import java.util.HashMap
 import java.io.FileWriter
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
+import be.uclouvain.aptitude.surveillance.algorithm.util.APTITUDE_EvaluationResults
 
 /** 
  * @author manjah
@@ -55,10 +56,19 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 		
 		if (data instanceof BBoxe2D[]) {
 			updateGroundtruth(database.get(key) as FileWriter, data)
-		} else {
+		} 
+		else if (data instanceof APTITUDE_EvaluationResults){
+			updateTest(database.get(key) as FileWriter, data)
+		}
+		else {
 			debug("I do not recognize the class" + data.class)
 		}
 	}
+	synchronized def updateTest(writer : FileWriter, data : APTITUDE_EvaluationResults){
+		info("Updating test")
+		writer.write("HOTA," + data.HOTA)
+	}
+	
 	
 	synchronized def updateGroundtruth(writer : FileWriter, boxe2ds : BBoxe2D[]) {
 		

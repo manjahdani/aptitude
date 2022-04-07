@@ -3,8 +3,6 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm.util
 
-import be.uclouvain.organisation.platform.util.HyperParameters
-
 /** 
  * @author manjah
  * 
@@ -13,21 +11,17 @@ class Metric {
 	
 	var scoreName : String
 	var gtFilePath:String
-	var params : HyperParameters
-	
-	new (score : String, gtPatch : String,  p : HyperParameters)
+
+	new (score : String, gtPatch : String)
 	{
 		this.gtFilePath = gtPatch
 		this.scoreName = score
-		this.params = p 
+		
 	}
 	def getScoreName{
 		return this.scoreName
 	}
 	def getGtFilePatch{
 		return this.gtFilePath
-	}
-	def getParams{
-		return this.params
 	}
 }

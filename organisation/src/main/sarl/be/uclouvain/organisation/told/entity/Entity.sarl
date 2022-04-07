@@ -25,7 +25,7 @@ import io.sarl.core.Logging
  */
 behavior EntityRole extends Role{
 	
-	uses Logging, ExternalContextAccess
+	uses ExternalContextAccess
 	
 	on TOLDOrganizationInfo {
 		//info("met TOLD - " + occurrence.contextID)

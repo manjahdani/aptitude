@@ -80,7 +80,7 @@ agent Algorithm extends Paraddis{
 		debug("atomic agent with task: " + ADN.get.task + " & belief : " +
 			ADN.get.belief.replace("F:/aptitude/surveillance/src/main/resources/", ""))
 			
-		registerBehavior(new AlgorithmEntity(this))
+		registerBehavior(new AlgorithmEntity(this), "F:\\Database\\".concat(this.ID.toString) + ".txt")
 		if (ADN.get.level == 0) {
 			
 			registerBehavior(new ManagerAlgorithmRole(this), INIT_TASKS, ADN.get)

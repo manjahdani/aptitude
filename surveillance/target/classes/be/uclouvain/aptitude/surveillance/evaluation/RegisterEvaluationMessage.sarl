@@ -1,0 +1,18 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.evaluation
+
+import be.uclouvain.aptitude.surveillance.algorithm.util.APTITUDE_EvaluationResults
+
+/** 
+ * @author manjah
+ * 
+ */
+event RegisterEvaluationMessage{
+	
+	val eval_message : APTITUDE_EvaluationResults 
+	new (e : APTITUDE_EvaluationResults){
+		this.eval_message=e
+	}
+}

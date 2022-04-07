@@ -77,9 +77,7 @@ behavior TOLDRole extends OrganizationalRole {
 	}
 
 	on Query {
-		
 		assert privateSpacesListeners.keySet.contains(occurrence.source.ID), "Unknown access"
-		
 		switch (occurrence.message) {
 		case "AlgorithmInfo" :{
 			emit(privateSpacesListeners.get(occurrence.source.ID),new QueryAnswer(

@@ -38,7 +38,8 @@ behavior TrackerSensorRole extends SensorRole {
 					occurrence.pred_file_Path, 
 					occurrence.total_time_detection,
 					occurrence.total_time_tracking, 
-					occurrence.observerID))[it.ID == l]
+					occurrence.observerID, 
+					occurrence.processingParameters))[it.ID == l]
 			// listeners.get(l).emit(this.ID,)[it.ID == l]}
 		}
 	}
