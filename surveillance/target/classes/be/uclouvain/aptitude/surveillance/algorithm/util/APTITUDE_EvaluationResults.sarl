@@ -13,27 +13,28 @@ import be.uclouvain.organisation.platform.util.HyperParameters
  */
 class APTITUDE_EvaluationResults extends EvaluationResults implements Comparable<APTITUDE_EvaluationResults> {
 	
-	val beta : HyperParameters
-
-	new (pid : UUID, id : UUID, s : String, ts : double, tt : double, f : int, hp :HyperParameters){
-		super(pid,id,s,ts,tt,f)
-		this.beta=hp
-	}
-	def getFps {
-		return (this.trackingTime + this.detectionTime) / this.frame
-	}
-
-	def getEffiency {
-		return (0.51 - 2 * fps) / (0.49)
+	public val cautionLevel : int
+	public val total_time  : double
+	public val fps_detection : double
+	public val fps_tracking : double
+	public val fps_total : double
+	public var efficiency : double 
+	public var APTITUDE_score : double
+	
+	new (pid : UUID, id : UUID, s : String, dt : double, tt : double, f : int, hp :HyperParameters){
+		super(pid,id,s,dt,tt,f)
+		this.cautionLevel = hp.cautionLevel.get
+		this.total_time = dt+tt
+		this.fps_detection=f/dt
+		this.fps_tracking= f/tt
+		this.fps_total = f/this.total_time
+		
 	}
 	
-	def getBeta{
-		return this.beta.cautionLevel
+	def updateMetrics {
+		this.efficiency = (0.51 - 2 * this.fps_total) / (0.49)
+		this.APTITUDE_score = this.HOTA + this.cautionLevel * this.efficiency
 	}
-	def APTITUDE_score {
-		return HOTA + beta.cautionLevel*effiency
-	}
-
 	def compareTo(o : APTITUDE_EvaluationResults) : int {
 		if(APTITUDE_score > o.APTITUDE_score){
 			return 1

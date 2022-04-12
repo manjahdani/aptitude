@@ -22,7 +22,7 @@
     },
     "Preproc":{
     	    "roi": {
-            	"path": "F:\\pythonToolbox\\pytb-agent\\videos\\S03C012\\roi.jpg"
+            	"path": "F:\\pythonToolbox\\pytb-agent\\videos\\S03C012\\roi_test.jpg"
         },
         "border":{
             "centered": false

@@ -31,16 +31,8 @@ skill TrackerPythonTwinSkill extends ObserverPythonAccess implements TrackerPyth
 	
 	uses Behaviors, Schedules
 
-	val FRAME_WIDTH = 1920.0 // @FIXME MEDIUM hardcoded value
-	var FRAME_HEIGHT = 1080.0 // @FIXME MEDIUM hardcoded value
-	
-	//val FRAME_WIDTH = 960.0 // @FIXME MEDIUM hardcoded value
-	//var FRAME_HEIGHT = 540.0 // @FIXME MEDIUM hardcoded value
-	
 	var totalTrackerTime : double = 0
 	var totalDetectorTime : double = 0
-	
-	
 	
 	def update(m : BaseMessage) {
 		if (m instanceof BBoxes2DTrackMessage) {

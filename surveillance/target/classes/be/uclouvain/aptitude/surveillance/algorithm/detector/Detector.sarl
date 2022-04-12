@@ -20,13 +20,13 @@ agent Detector extends Algorithm {
 	uses Behaviors, DefaultContextInteractions,Logging
 	
 	on BecomeManager {
-		info("Becoming Manager")
+		debug("Becoming Manager")
 		registerBehavior(new CooperativeLowDensityDetectorObserverRole(this), ADN.get)
 		registerBehavior(new ManagerDetectorSensorRole(this), ADN.get)
 		emitToParent(new RoleRegistered)
 	}
 	on AddMissionAsStudent {
-		info("Becoming Student Atomic")
+		debug("Becoming Student Atomic")
 		registerBehavior(new ActivityDetectorSensorRole(this), ADN.get)
 		registerBehavior(new DetectorObserverRole(this), ADN.get)
 		emitToParent(new RoleRegistered)

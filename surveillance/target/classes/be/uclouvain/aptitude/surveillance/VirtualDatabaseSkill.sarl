@@ -11,6 +11,8 @@ import java.util.HashMap
 import java.io.FileWriter
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.aptitude.surveillance.algorithm.util.APTITUDE_EvaluationResults
+import com.opencsv.CSVWriter
+import java.util.ArrayList
 
 /** 
  * @author manjah
@@ -57,19 +59,35 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 		if (data instanceof BBoxe2D[]) {
 			updateGroundtruth(database.get(key) as FileWriter, data)
 		} 
-		else if (data instanceof APTITUDE_EvaluationResults){
-			updateTest(database.get(key) as FileWriter, data)
+		else if (data instanceof String[]){
+			updateTest(database.get(key) as CSVWriter, data)
 		}
 		else {
 			debug("I do not recognize the class" + data.class)
 		}
 	}
-	synchronized def updateTest(writer : FileWriter, data : APTITUDE_EvaluationResults){
+	// synchronized def updateTest(writer : CSVWriter, data : APTITUDE_EvaluationResults){
+	synchronized def updateTest(writer : CSVWriter, nextLine:String[]) {
 		info("Updating test")
-		writer.write("HOTA," + data.HOTA)
+		writer.writeNext(nextLine)
+		
+		/** 
+		var header = new ArrayList<String>()
+		for (a : data.class.fields) {
+			header.add(a.name)
+		}*/
+		/** 		
+		var values = new ArrayList<String>() 
+		for (a : data.class.fields) {
+			values.add(a.get(data).toString)
+		 * }
+		 */
+		//writer.writeNext(header as String[])
+		//writer.writeNext(values as String[])
+		//writer.write("HOTA," + "detection time," + "tracking time," + "numberOfFrames" +"\n")
+		//writer.write(data.HOTA + "," + data.detectionTime + "," + data.trackingTime + "," + data.frame +"\n")
 	}
-	
-	
+
 	synchronized def updateGroundtruth(writer : FileWriter, boxe2ds : BBoxe2D[]) {
 		
 		
@@ -88,15 +106,19 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 	
 
 
-	override delete(key : UUID) {
+	def delete(key : UUID) {
 		// TODO Auto-generated code.
-		debug("Deleting..." + key)
+		info("Deleting..." + key)
 		assert database.keySet.contains(key),"Cannot remove a key not present in database"
 		
 		if (database.get(key) instanceof FileWriter) {
 			(database.get(key) as FileWriter).close
 			debug("closed the file of " + key)
-		} else {
+		} 
+		else if (database.get(key) instanceof CSVWriter) {
+			(database.get(key) as CSVWriter).close
+		}
+		else {
 			info("Object of " + key + " not FileWriter")
 		}
 		database.remove(key)
@@ -106,7 +128,7 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 		return this.database
 	}
 
-	override read(key : UUID) : Object {
+	def read(key : UUID) : Object {
 		debug("reading for " + key.toString.substring(0, 5))
 		if (!database.keySet.contains(key)) {
 			debug("The key is not in the data-base, temporarily added a null object")
@@ -120,7 +142,7 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 		return database.get(key)
 	}
 
-	override create(key : UUID, data : Object) {
+	def create(key : UUID, data : Object) {
 		
 		debug("creating for " + key.toString.substring(0, 5) + " an object " + data)
 		database.put(key, data)

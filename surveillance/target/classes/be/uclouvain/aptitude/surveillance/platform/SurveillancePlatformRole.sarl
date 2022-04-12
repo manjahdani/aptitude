@@ -89,10 +89,10 @@ behavior SurveillancePlatformRole extends PlatformRole {
 		
 		
 		val toRecruit = occurrence.algorithmTask
-		info("adding algorithm " + toRecruit +" current participants" + participants.keySet)
+		debug("adding algorithm " + toRecruit +" current participants" + participants.keySet)
 		
 		if (!participants.containsKey(toRecruit)) {
-			info("-" + toRecruit + "-" + "Algorithm not available" + participants.keySet)
+			debug("-" + toRecruit + "-" + "Algorithm not available" + participants.keySet)
 			if (!request.contains(toRecruit)) {
 				request.add(toRecruit)
 				emit(new AlgorithmJoinPlatform(this.ID, innerDefaultSpace.spaceID.ID, toRecruit))[it!=me]
@@ -101,7 +101,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 		} 
 		else{
 		
-		info("Algorithm is already available " + toRecruit)
+		//info("Algorithm is already available " + toRecruit)
 				
 		emit(privateSpacesListeners.get(occurrence.source.ID),
 			new SignalID(occurrence.missionID, participants.get(toRecruit),toRecruit))
@@ -112,7 +112,7 @@ behavior SurveillancePlatformRole extends PlatformRole {
 		agentAlgorithm.put(occurrence.name,occurrence.topic)
 	}
 	synchronized def waitfor(mID : UUID,fullName : String, dest : UUID) {
-		info("Waiting " + fullName +" as an original request from -  " + dest.toString.substring(0,5))
+		debug("Waiting " + fullName +" as an original request from -  " + dest.toString.substring(0,5))
 		task("waitingfor".concat(fullName).concat(dest.toString)).every(500) [
 			if (participants.keySet.contains(fullName)) {
 				emit(privateSpacesListeners.get(dest),

@@ -15,8 +15,8 @@ import java.util.HashMap
  */
 class HyperParameters implements Comparable<HyperParameters> {
 
-	val cautionLevel= new AtomicInteger(-1)
-	val dynamicAdaptationEnabled = new AtomicBoolean(false)
+	public val cautionLevel= new AtomicInteger(-1)
+	public val dynamicAdaptationEnabled = new AtomicBoolean(false)
 	protected var checkList = Collections.synchronizedMap(new HashMap<String, Boolean>)
 	new () {
 		checkList.put("CautionLevelSetKnownAndNotNull", false)

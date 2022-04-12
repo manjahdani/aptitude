@@ -9,9 +9,11 @@ import be.uclouvain.aptitude.surveillance.TOLDConfig
 import be.uclouvain.aptitude.surveillance.algorithm.counter.Counter
 import be.uclouvain.aptitude.surveillance.algorithm.detector.Detector
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.Tracker
+import be.uclouvain.aptitude.surveillance.algorithm.util.APTITUDE_EvaluationResults
 import be.uclouvain.aptitude.surveillance.platform.PlatformAgent
 import be.uclouvain.aptitude.surveillance.user.HolonicUserConfig
 import be.uclouvain.aptitude.surveillance.user.User
+import be.uclouvain.organisation.platform.util.HyperParameters
 import be.uclouvain.organisation.platform.util.PlatformConfig
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
@@ -22,6 +24,7 @@ import io.sarl.lang.core.Agent
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.util.HashMap
+import java.util.UUID
 import javafx.application.Application
 
 /** 
@@ -50,7 +53,6 @@ agent Boot extends Paraddis {
 	on Initialize {
 		loggingName = this.ID + "-Boot"
 		// info("System started")
-		
 		INIT_TASKS.put("DETECTOR", Detector)
 		INIT_TASKS.put("TRACKER", Tracker)
 		INIT_TASKS.put("COUNTER", Counter)

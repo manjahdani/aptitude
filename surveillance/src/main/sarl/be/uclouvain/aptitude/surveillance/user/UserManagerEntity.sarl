@@ -42,7 +42,7 @@ behavior UserManagerEntity extends OrganizationalRole{
 	}
 	
 	on AuthenticateUser {
-		info("Authentification of user " + occurrence.userID)
+		debug("Authentification of user " + occurrence.userID)
 		usersList.add(occurrence.userID)
 		spawnInContextWithID(
 			User,

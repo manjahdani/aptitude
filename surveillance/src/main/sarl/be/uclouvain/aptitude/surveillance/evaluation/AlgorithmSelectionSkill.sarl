@@ -29,6 +29,7 @@ skill AlgorithmSelectionSkill implements AlgorithmSelection {
 	def processEvaluationMessage(testID : UUID, e : EvaluationMessage) : boolean {
 		if(compResults.get(testID).HOTA==0){
 			compResults.get(testID).setValues(e)
+			compResults.get(testID).updateMetrics
 			wake(new RegisterEvaluationMessage(compResults.get(testID)))[it.ID == this.ID]
 			return true
 		}
@@ -38,16 +39,16 @@ skill AlgorithmSelectionSkill implements AlgorithmSelection {
 	synchronized def selectAlgorithm : EvaluationResults {
 		
 		val rankedResults : TreeSet<APTITUDE_EvaluationResults> =new TreeSet(compResults.values)
-	
+	/**
 		for(r : rankedResults){
 			info("\n *************") 
 			info("\n Competitor, " + r.competitorID) 
 			info("\n Detection time, " + r.detectionTime)
 			info("\n Tracking time, " + r.trackingTime)
 	    	info("\n HOTA, "+ r.HOTA)
-	    	info( "\n Efficiency, " + r.effiency)
+	    	info( "\n Efficiency, " + r.efficiency)
 	    	info("\n APTITUDE_Score, " + r.APTITUDE_score)
-		}
+		}*/
 		return rankedResults.get(0)
 	}
 	

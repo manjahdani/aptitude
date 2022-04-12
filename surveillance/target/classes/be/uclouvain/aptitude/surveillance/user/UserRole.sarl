@@ -34,7 +34,7 @@ behavior UserRole extends ElementRole {
 			occurrence.mission.missionID,
 			occurrence.mission.clientID,
 			occurrence.platformOpenChannel.spaceID.contextID,
-			occurrence.mission.cautionLevel,
+			occurrence.mission.cautionLevel.get,
 			occurrence.mission.dynamicAdaptationEnabled
 		) // @FIXME HIGH we copy because occurrence.platformOpenChannel is null and its due to another fixme in UserSkill
 		wake(

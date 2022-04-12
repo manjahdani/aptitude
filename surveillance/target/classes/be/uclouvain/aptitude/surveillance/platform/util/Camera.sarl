@@ -1,0 +1,31 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.platform.util
+
+/** 
+ * @author manjah
+ * 
+ */
+class Camera {
+	
+	val camera_id : String
+	val frame_width : double
+	val frame_height : double
+	
+	new (id : String, w:double, h:double){
+		this.camera_id = id
+		this.frame_width = w
+		this.frame_height = h
+	}
+	
+	def getCamera_id :String{
+		return this.camera_id
+	}
+	def getFrame_width : double{
+		return this.frame_width
+	}
+	def getFrame_height{
+		return this.frame_height
+	}
+}
