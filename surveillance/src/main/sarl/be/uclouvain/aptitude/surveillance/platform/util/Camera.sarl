@@ -12,13 +12,16 @@ class Camera {
 	val camera_id : String
 	val frame_width : double
 	val frame_height : double
-	
-	new (id : String, w:double, h:double){
+	val frame_limit : int
+	new (id : String, w:double, h:double,l:int){
 		this.camera_id = id
 		this.frame_width = w
 		this.frame_height = h
+		this.frame_limit = l
 	}
-	
+	def getFrame_limit : int{
+		return this.frame_limit
+	}
 	def getCamera_id :String{
 		return this.camera_id
 	}

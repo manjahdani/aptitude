@@ -1,0 +1,19 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.platform.events
+
+import be.uclouvain.aptitude.surveillance.platform.util.Camera
+
+/** 
+ * @author manjah
+ * 
+ * @FIXME MEDIUM should be in organisation
+ */
+event SensorInfo{
+	val cameraSettings : Camera
+	
+	new (c:Camera){
+		this.cameraSettings=c
+	}
+}

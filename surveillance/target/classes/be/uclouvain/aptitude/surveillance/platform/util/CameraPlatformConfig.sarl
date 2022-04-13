@@ -1,0 +1,31 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.platform.util
+
+import be.uclouvain.organisation.platform.util.PlatformConfig
+import java.util.HashMap
+import io.sarl.lang.core.Agent
+
+/** 
+ * @author manjah
+ * 
+ */
+class CameraPlatformConfig extends PlatformConfig {
+	
+	val camera : Camera
+
+	new (lvl : int, entity_max : int, init_tasks : HashMap<String, Class<? extends Agent>>, c : Camera){
+		super(lvl,entity_max,init_tasks,c.camera_id)
+		this.camera=c
+	}
+	def getWidth:double{
+		return this.camera.frame_width
+	}
+	def getHeight:double{
+		return this.camera.frame_height
+	}
+	def getCamera : Camera{
+		return this.camera
+	}
+}

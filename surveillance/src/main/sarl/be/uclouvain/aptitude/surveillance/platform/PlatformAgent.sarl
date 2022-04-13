@@ -54,9 +54,9 @@ agent PlatformAgent extends Paraddis {
 			openChannel.registerStrongParticipant(asEventListener)
 			emitToParent(new AgentPlatform(platformConfig.get.location, this.ID, openChannel))
 			setSkill(new PlatformSkill(platformConfig.get), PlatformCapacity)
-			registerBehavior(new SurveillancePlatformRole(this), platformConfig.get.getLocation)
+			registerBehavior(new CameraPlatformRole(this), platformConfig.get)
 		} else {
-			registerBehavior(new ManagerPlatformRole(this), platformConfig.get.getLocation, occurrence.parameters.get(1))
+			registerBehavior(new ManagerPlatformRole(this), platformConfig.get, occurrence.parameters.get(1))
 		}
 	}
 	

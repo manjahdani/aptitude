@@ -3,7 +3,6 @@ package be.uclouvain.aptitude.surveillance.platform
 import be.uclouvain.aptitude.surveillance.algorithm.events.AgentAlgorithm
 import be.uclouvain.organisation.events.Identification
 import be.uclouvain.organisation.events.SignalID
-import be.uclouvain.organisation.platform.PlatformCapacity
 import be.uclouvain.organisation.platform.PlatformRole
 import be.uclouvain.organisation.platform.events.AddAlgorithm
 import be.uclouvain.organisation.platform.events.AlgorithmJoinPlatform
@@ -20,6 +19,11 @@ import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
+import io.sarl.core.Initialize
+import be.uclouvain.aptitude.surveillance.platform.util.CameraPlatformConfig
+import be.uclouvain.aptitude.surveillance.platform.util.Camera
+import be.uclouvain.organisation.platform.events.SensorInfoRequest
+import be.uclouvain.aptitude.surveillance.platform.events.SensorInfo
 
 /** 
  * 
@@ -31,18 +35,24 @@ import java.util.concurrent.atomic.AtomicReference
  * @mavenartifactid $organisation$
  * 
  */
-behavior SurveillancePlatformRole extends PlatformRole {
+behavior CameraPlatformRole extends PlatformRole {
 	uses InnerContextAccess, ExternalContextAccess, Logging, Schedules, Behaviors, DefaultContextInteractions
 	
 	protected val participants = Collections.synchronizedMap(new HashMap<String, UUID>) // @FIXME LOW clarify MAP - Lists and so on. clarify also if the variables must be concurrent or not
 	val request = Collections.synchronizedList(new LinkedList<String>)
 	protected val agentAlgorithm = new HashMap<String, OpenEventSpace>
 	
-	protected var allocated_ressource = new AtomicReference<String>
-	
+	protected val allocated_ressource = new AtomicReference<String>
+	var cameraSettings = new AtomicReference<Camera>
+	on Initialize {
+		cameraSettings.set(( occurrence.parameters.get(0) as CameraPlatformConfig).camera)
+	}
 	
 
-	
+	on SensorInfoRequest{
+		info("receveid a request for sensor")
+		emit(privateSpacesListeners.get(occurrence.source.ID), new SensorInfo(cameraSettings.get))
+	}
 	on ComputationalRessources {
 		//info("Received computational resources: " + occurrence.client_id + "from ")
 		allocated_ressource.set(occurrence.client_id)

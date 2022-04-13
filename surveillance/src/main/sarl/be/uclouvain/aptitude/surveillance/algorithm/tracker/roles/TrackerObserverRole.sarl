@@ -15,6 +15,10 @@ import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.UUID
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinSkill
+import be.uclouvain.organisation.platform.events.SensorInfoRequest
+import be.uclouvain.aptitude.surveillance.platform.events.SensorInfo
+import java.util.concurrent.atomic.AtomicReference
+import be.uclouvain.aptitude.surveillance.platform.util.Camera
 
 /** 
  * @author manjah
@@ -28,7 +32,7 @@ behavior TrackerObserverRole extends PythonTwinObserverRole {
 	uses TrackerPythonTwinCapacity,Logging, ExternalContextAccess
 
 	val processedImages = new ArrayList<Integer>
-	
+	val cameraSettings = new AtomicReference<Camera>
 	on PartnerTrackingFound {
 		//info("Tracking Partner found: " +  occurrence.partnerName)
 	}
@@ -53,10 +57,23 @@ behavior TrackerObserverRole extends PythonTwinObserverRole {
 			processedImages.add(occurrence.bboxes2D.frameNumber)
 		}
 	}
-	
+
+	on SensorInfo {
+		this.cameraSettings.set(occurrence.cameraSettings)
+		info("Received sensorInfo")
+		setSkillIfAbsent(new TrackerPythonTwinSkill(
+			ADN.get.belief,
+			ADN.get.platformName,
+			computation_location.get,
+			cameraSettings.get.frame_width,
+			cameraSettings.get.frame_height
+		))
+	}
 	override processingMissionWithID(mID : UUID) {
 		warning("Single Tracker Sensor Role processing mID - " + mID)
-		setSkillIfAbsent(new TrackerPythonTwinSkill(ADN.get.belief, ADN.get.platformName, computation_location.get))
+		
+		emit(privateOrganizationSpace.get,new SensorInfoRequest)
+		
 		
 	}
 	

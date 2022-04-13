@@ -1,0 +1,10 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform.events
+
+/** 
+ * @author manjah
+ * 
+ */
+event SensorInfoRequest

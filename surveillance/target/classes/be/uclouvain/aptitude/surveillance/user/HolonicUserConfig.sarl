@@ -4,8 +4,8 @@
 package be.uclouvain.aptitude.surveillance.user
 
 import be.uclouvain.organisation.util.HolonicConfig
+import java.util.ArrayList
 import java.util.Collection
-import java.util.LinkedList
 
 /** 
  * @author manjah
@@ -15,7 +15,7 @@ class HolonicUserConfig extends HolonicConfig {
 	
 	var name : String
 	
-	var initialPlatforms = new LinkedList<String>
+	var initialPlatforms = new ArrayList<String>
 
 	new(lvl : int, id : String){
 		super(lvl)

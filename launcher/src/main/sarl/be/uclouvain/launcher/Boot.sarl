@@ -9,11 +9,10 @@ import be.uclouvain.aptitude.surveillance.TOLDConfig
 import be.uclouvain.aptitude.surveillance.algorithm.counter.Counter
 import be.uclouvain.aptitude.surveillance.algorithm.detector.Detector
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.Tracker
-import be.uclouvain.aptitude.surveillance.algorithm.util.APTITUDE_EvaluationResults
 import be.uclouvain.aptitude.surveillance.platform.PlatformAgent
+import be.uclouvain.aptitude.surveillance.platform.util.Camera
 import be.uclouvain.aptitude.surveillance.user.HolonicUserConfig
 import be.uclouvain.aptitude.surveillance.user.User
-import be.uclouvain.organisation.platform.util.HyperParameters
 import be.uclouvain.organisation.platform.util.PlatformConfig
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
@@ -24,8 +23,9 @@ import io.sarl.lang.core.Agent
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.util.HashMap
-import java.util.UUID
 import javafx.application.Application
+import be.uclouvain.aptitude.surveillance.platform.util.CameraPlatformConfig
+import java.util.ArrayList
 
 /** 
  * 
@@ -43,7 +43,7 @@ agent Boot extends Paraddis {
 	// val junctionList = "MacqWoolridge"
 	// @Parameters
 	
-	val INITIAL_CAMERAS = newArrayList("S03C012")//, "S04C035") // "MOT17-04", "MOT17-02")
+	val INITIAL_CAMERAS = newArrayList(new Camera("S03C012",2560,1920,400))//, "S04C035") // "MOT17-04", "MOT17-02")
 	val AVAILABLE_RESSOURCES = newArrayList("1000")//, "1000")
 
 	val client : DatagramSocket = new DatagramSocket(65000) // A client to listen requests
@@ -67,15 +67,15 @@ agent Boot extends Paraddis {
 		// WorldHolon.addSubWorld(wc)
 		// }
 		// info("Setting the agents")
-		var PlatformHolonConfig = new PlatformConfig(0, 5, "LLN", INIT_TASKS)
+		var PlatformHolonConfig = new PlatformConfig(0, 5, INIT_TASKS, "LLN")
+		var AVAILABLE_CAMERAS = new ArrayList<String>
 		for (c : INITIAL_CAMERAS) {
-			PlatformHolonConfig.addSubPlatform(new PlatformConfig(1, 100, c, INIT_TASKS))
+			PlatformHolonConfig.addSubPlatform(new CameraPlatformConfig(1, 100, INIT_TASKS, c))
+			AVAILABLE_CAMERAS.add(c.camera_id)
 		}
-
-		
 		spawn(TOLDAgent, new TOLDConfig(0))
 		spawn(PlatformAgent, PlatformHolonConfig, AVAILABLE_RESSOURCES)
-		spawn(User, new HolonicUserConfig(0, "UserAccessManager", INITIAL_CAMERAS))
+		spawn(User, new HolonicUserConfig(0, "UserAccessManager", AVAILABLE_CAMERAS))
 		// StartSimulation
 	}
 

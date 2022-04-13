@@ -17,6 +17,10 @@ import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.UUID
 import be.uclouvain.organisation.platform.util.HyperParameters
+import be.uclouvain.aptitude.surveillance.platform.events.SensorInfo
+import java.util.concurrent.atomic.AtomicReference
+import be.uclouvain.aptitude.surveillance.platform.util.Camera
+import be.uclouvain.organisation.platform.events.SensorInfoRequest
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -42,9 +46,7 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 
 	var totalTrackerTime : double = 0
 	var totalDetectorTime : double = 0
-
-	var frameLimit : int = 400
-
+	val cameraSettings = new AtomicReference<Camera>
 	on BBoxes2DTrackResult {
 
 		totalDetectorTime += occurrence.bboxes2DTrack.detectionTime
@@ -61,7 +63,7 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 		
 		info("Processed frame #" + occurrence.bboxes2DTrack.frameNumber)
 		
-		if (occurrence.bboxes2DTrack.lastFrame || occurrence.bboxes2DTrack.frameNumber >= frameLimit) {
+		if (occurrence.bboxes2DTrack.lastFrame || occurrence.bboxes2DTrack.frameNumber >= cameraSettings.get.frame_limit) {
 			emit(selfSpace, new TrackingTaskOver)
 			
 			info("Tracking job done... " + "sending the information to " + listeners.keySet)
@@ -83,8 +85,14 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 	}
 	
 	on ResumeTrackingMission {
-		info("Resuming mission" + occurrence.missionID +" with "+ occurrence.detector)
-		setSkill(new TrackerPythonTwinSkill(ADN.get.belief, ADN.get.platformName,computation_location.get))
+		info("Resuming mission" + occurrence.missionID + " with " + occurrence.detector)
+		setSkillIfAbsent(new TrackerPythonTwinSkill(
+			ADN.get.belief,
+			ADN.get.platformName,
+			computation_location.get,
+			cameraSettings.get.frame_width,
+			cameraSettings.get.frame_height
+		))
 		registerBehavior(new TrackerObserverRole(this.owner))
 		info("Come here " + occurrence.detector)
 		missionList.get(occurrence.missionID).dynamicAdaptation = false		
@@ -97,14 +105,24 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 			computation_location.get
 		))
 	}
+	on SensorInfo {
+		this.cameraSettings.set(occurrence.cameraSettings)
+		info("Received sensorInfo")
+		setSkillIfAbsent(new TrackerPythonTwinSkill(ADN.get.belief, 
+													ADN.get.platformName, 
+													computation_location.get, 
+													cameraSettings.get.frame_width,
+													cameraSettings.get.frame_height
+		))
+	}
 	override processingMissionWithID(mID : UUID) {
-		
+		emit(privateOrganizationSpace.get, new SensorInfoRequest)
 		if (missionList.get(mID).isDynamicAdaptationEnabled) {
 			registerBehavior(new SingleTrackerMultiDetectorObserverRole(owner),this.ADN.get)
 		} 
 		else {
 			warning("Single Tracker processing mID - " + mID)
-			setSkill(new TrackerPythonTwinSkill(ADN.get.belief, ADN.get.platformName, computation_location.get))
+			
 			registerBehavior(new TrackerObserverRole(this.owner), ADN.get)
 			enableDataAcquisition(mID,"DETECTOR") 
 			}

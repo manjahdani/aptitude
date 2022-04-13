@@ -21,23 +21,23 @@ import io.sarl.lang.core.Agent
 class PlatformConfig extends HolonicConfig {
 	val subPlatformConfig = new LinkedList<PlatformConfig> // The configuration of its sub-Platforms.
 	val CPU_MAX_USAGE = new AtomicInteger()
-	var location : String
 	val TASKS = new HashMap < String, Class<? extends Agent>>
+	val name : String 
 	/** 
 	 * Constructor
 	 * 
 	 * @param	lvl	The hierarchical level of the Platform(0 is the highest level)
 	 * @param	shp	The shape of the Platform
 	 */
-	new (lvl : int, entity_max : int, location : String, init_tasks :HashMap<String, Class<? extends Agent>>) {
+	new (lvl : int, entity_max : int, init_tasks :HashMap<String, Class<? extends Agent>>, n:String) {
 		super(lvl)
 		this.CPU_MAX_USAGE.set(entity_max)
-		this.location=location
 		TASKS.putAll(init_tasks)
+		this.name = n
 	}
 
 	def getLocation {
-		return this.location
+		return this.name
 	}
 	def getTasks{
 		return this.TASKS

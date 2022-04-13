@@ -18,6 +18,7 @@ import io.sarl.core.OpenEventSpaceSpecification
 import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
+import be.uclouvain.organisation.platform.util.PlatformConfig
 
 /** 
  * The Platform manages the storage and/or computing of resources. A Platform could include sub-Platforms (holonic). 
@@ -47,7 +48,7 @@ behavior PlatformRole extends OrganizationalRole {
 	
 
 	on Initialize {
-		location.set(occurrence.parameters.get(0).toString)
+		location.set(( occurrence.parameters.get(0) as PlatformConfig).location)
 	}
 	on Request2PerformMission {
 		// RuleManagement(new MembershipInfoRule(occurrence.source, occurrence.SourceEventSpace, occurrence.entityData))
