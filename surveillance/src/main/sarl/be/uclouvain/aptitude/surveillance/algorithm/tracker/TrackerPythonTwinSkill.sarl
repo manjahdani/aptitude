@@ -37,6 +37,8 @@ skill TrackerPythonTwinSkill extends ObserverPythonAccess implements TrackerPyth
 	val FRAME_HEIGHT:double
 	new (config : String, platformName : String, computation_resources_location : String, w : double, h:double){
 		super(config,platformName,computation_resources_location)
+		assert w>0, "width of the frame must be greater than 0"
+		assert h>0, "height of the frame must be greater than 0" 
 		this.FRAME_WIDTH=w
 		this.FRAME_HEIGHT=h
 	}

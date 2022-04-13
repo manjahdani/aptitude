@@ -60,7 +60,7 @@ behavior CameraPlatformRole extends PlatformRole {
 	
 	on Identification {
 		
-		warning("new participant: " + occurrence.fullName )
+		debug("new participant: " + occurrence.fullName ) //@FIXME MEDIUM the role receives the information twice. Probably algorithm send it. 
 		participants.put(occurrence.fullName, occurrence.source.ID)
 		wake(new ComputationalRessources(allocated_ressource.get))[it.ID == occurrence.source.ID]
 	}

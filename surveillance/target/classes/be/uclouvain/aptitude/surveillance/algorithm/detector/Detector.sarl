@@ -33,7 +33,7 @@ agent Detector extends Algorithm {
 	}
 
 	on AddMissionAsMaster {
-		info("Becoming Master Atomic")
+		debug("Becoming Master Atomic")
 		registerBehavior(new DetectorSensorRole(this), ADN.get)
 		registerBehavior(new DetectorObserverRole(this), ADN.get)
 		emitToParent(new RoleRegistered)

@@ -3,16 +3,14 @@
  */
 package be.uclouvain.aptitude.surveillance
 
-import be.uclouvain.organisation.told.AccessDatabaseCapacity
-import io.sarl.core.Logging
-import java.util.UUID
-import be.uclouvain.organisation.told.util.AlgorithmInfo
-import java.util.HashMap
-import java.io.FileWriter
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
-import be.uclouvain.aptitude.surveillance.algorithm.util.APTITUDE_EvaluationResults
+import be.uclouvain.organisation.told.AccessDatabaseCapacity
+import be.uclouvain.organisation.told.util.AlgorithmInfo
 import com.opencsv.CSVWriter
-import java.util.ArrayList
+import io.sarl.core.Logging
+import java.io.FileWriter
+import java.util.HashMap
+import java.util.UUID
 
 /** 
  * @author manjah
@@ -23,7 +21,7 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 
 	protected val database : HashMap<UUID, Object> = new HashMap<UUID, Object> // UUID has been chosen to ensure privacy @TODO : Develop
 	
-	val A = ","+"-1"+","+"-1"+","+"-1"+","+"-1"+"\n"
+	val A = ","+"1"+","+"-1"+","+"-1"+","+"-1"+"\n"
 
 	def install {
 		database.put(UUID.randomUUID,

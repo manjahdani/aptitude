@@ -59,9 +59,9 @@ abstract behavior ObserverRole extends ScenarioRole {
 		// Removing the flag results in nullException as the role
 		// receives a request from a innerAgent but did not include it in its providers.
 		var providerID = occurrence.source.ID
-		info("Param requests from agentID :=" + providerID.toString.substring(0, 5)) 
+		//info("Param requests from agentID :=" + providerID.toString.substring(0, 5)) 
 		var MD = orderedMissionList.get(occurrence.missionID)
-		info("Sending parameters \n" + " s = " + MD.cautionLevel + " to " + providerID.toString.substring(0, 5))
+		//info("Sending parameters \n" + " s = " + MD.cautionLevel + " to " + providerID.toString.substring(0, 5))
 		emit(providers.get(providerID), new ProcessingHyperParameters(
 			occurrence.missionID, orderedMissionList.get(occurrence.missionID).hyperParameters))[it.ID == providerID]
 	}

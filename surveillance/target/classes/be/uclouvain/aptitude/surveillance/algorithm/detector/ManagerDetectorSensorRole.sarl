@@ -24,7 +24,7 @@ behavior ManagerDetectorSensorRole extends DetectorSensorRole {
 
 	on BBoxes2DSignal {
 		val signal = Signal2Transmit(occurrence.bboxes2D)
-		//warning("Received detection" + occurrence.bboxes2D.frameNumber + "listeners" + listeners.keySet)
+		debug("Received detection" + occurrence.bboxes2D.frameNumber + "listeners" + listeners.keySet)
 		for (listenersSpace : listeners.values) {
 			emit(listenersSpace, signal)[!me]
 		}

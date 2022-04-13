@@ -26,7 +26,6 @@ behavior DetectorObserverRole extends PythonTwinObserverRole {
 	}
 	
 	override processingMissionWithID(mID : UUID) {
-		
 		setSkillIfAbsent(new DetectorPythonTwin(ADN.get.belief, ADN.get.platformName, computation_location.get))
 	}
 	

@@ -49,6 +49,7 @@ behavior TrackerObserverRole extends PythonTwinObserverRole {
 		updateContextInfo(occurrence.organizationContext.ID, occurrence.privateCommunicationChannelID)
 		checkList.replace("context", true)
 		checkList.replace("computation_location", true)
+		emit(privateOrganizationSpace.get, new SensorInfoRequest)
 	}
 
 	on BBoxes2DSignal {
@@ -71,10 +72,6 @@ behavior TrackerObserverRole extends PythonTwinObserverRole {
 	}
 	override processingMissionWithID(mID : UUID) {
 		warning("Single Tracker Sensor Role processing mID - " + mID)
-		
-		emit(privateOrganizationSpace.get,new SensorInfoRequest)
-		
-		
 	}
 	
 }
