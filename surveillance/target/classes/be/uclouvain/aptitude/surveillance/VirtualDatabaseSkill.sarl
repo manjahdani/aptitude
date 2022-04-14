@@ -88,8 +88,7 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 	
 
 
-	def delete(key : UUID) {
-		// TODO Auto-generated code.
+	synchronized def delete(key : UUID) {
 		info("Deleting..." + key)
 		assert database.keySet.contains(key),"Cannot remove a key not present in database"
 		

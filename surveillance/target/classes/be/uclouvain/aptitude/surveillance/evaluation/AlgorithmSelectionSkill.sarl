@@ -30,6 +30,10 @@ skill AlgorithmSelectionSkill implements AlgorithmSelection {
 		if(compResults.get(testID).HOTA==0){
 			compResults.get(testID).setValues(e)
 			compResults.get(testID).updateMetrics
+			
+			info("HOTA : " + compResults.get(testID).HOTA + 
+				'\n detection time' + compResults.get(testID).detectionTime 
+				 + '\n tracking time ' + compResults.get(testID).trackingTime)
 			wake(new RegisterEvaluationMessage(compResults.get(testID)))[it.ID == this.ID]
 			return true
 		}

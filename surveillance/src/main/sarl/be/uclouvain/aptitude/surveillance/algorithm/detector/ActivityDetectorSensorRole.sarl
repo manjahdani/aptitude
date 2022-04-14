@@ -37,12 +37,12 @@ behavior ActivityDetectorSensorRole extends SensorRole {
 			emitToParent(new NoActivity(occurrence.bboxes2D.frameNumber))}
 		}
 		if(occurrence.bboxes2D.lastFrame){
-			warning("Background Reached LastFrame" + total_detectionTime)
+			warning("Background Reached LastFrame : " + total_detectionTime)
 			emit(selfSpace,new PauseMission(this.ID))
 			//emitToParent(new LastFrame(occurrence.bboxes2D.frameNumber))
 		}
 		if (occurrence.bboxes2D.frameNumber == 1000) {
-			warning("Background Reached LastFrame" + total_detectionTime)
+			warning("Background Reached LastFrame :" + total_detectionTime)
 		}
 		
 	}

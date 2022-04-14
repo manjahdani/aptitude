@@ -89,8 +89,8 @@ behavior AlgorithmSelectorRole extends Role {
 			 info("Message Evaluation Received")
 			if (processEvaluationMessage(occurrence.result.requestID, occurrence.result)) {
 				numberTests += 1
-				info("Recording the result" +"numberTests of Competitor " + occurrence.result.requestID)
-				info("HOTA : " + occurrence.result.HOTA)
+				info("Recording the result : " +"numberTests of Competitor " + occurrence.result.requestID)
+			
 				if (numberTests == 1) {
 					var selected = selectAlgorithm()
 					selfSpace.emit(this.ID,new CompetitionOver(selected.providerID,selected.competitorID))
