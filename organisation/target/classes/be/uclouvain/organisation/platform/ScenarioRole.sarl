@@ -72,17 +72,12 @@ abstract behavior ScenarioRole extends Role {
 		ADN.get.platformName = occurrence.platformName
 		checkList.replace("context", true)
 	}
-	
-	on StopMission { //@TODO HIGH program a behavior on stopMission
-		/** 
-		if (listeners.keySet.contains(occurrence.source.ID)) {
-			info("I received the StopMission")
-			listeners.remove(occurrence.source.ID)
-		} else {
-			info("I do not recognize the provider" + occurrence.expertID)
-		 * }
-		 */
+
+	on StopMission {
+		assert missionList.containsKey(occurrence.missionID),"Mission unknown, possible breach"
+		missionList.remove(occurrence.missionID)
 	}
+
 	on LeavePlatform { // @TODO HIGH program a behavior on LeavePlatform
 		// join(BaseContext.ID, BaseSpace.spaceID.ID)
 		// info("ObserverLeaving")

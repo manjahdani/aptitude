@@ -10,6 +10,7 @@ import be.uclouvain.organisation.platform.events.PauseMission
 import be.uclouvain.organisation.platform.events.ResumeMission
 import be.uclouvain.organisation.platform.events.StartMission
 import java.util.concurrent.atomic.AtomicInteger
+import be.uclouvain.organisation.platform.events.StopMission
 
 /** 
  * @author manjah
@@ -51,6 +52,11 @@ abstract behavior PythonTwinObserverRole extends ObserverRole {
 		
 	}
 
+	on StopMission {
+		warning("Pausing Python TWIN")
+		updateStreamAccess(4)
+	}
+
 	on ResumeMission {
 		orderedMissionList.get(occurrence.missionID).setMissionActive
 		resumeMission(occurrence.reInitialization)
@@ -74,10 +80,4 @@ abstract behavior PythonTwinObserverRole extends ObserverRole {
 			updateStreamAccess(3)
 		}
 	}
-	
-	def stopMission() {
-		updateStreamAccess(4)
-	}
-
-
 }

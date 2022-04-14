@@ -17,6 +17,7 @@ import io.sarl.core.Schedules
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
+import be.uclouvain.organisation.platform.events.StopMission
 
 /** 
  * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 
@@ -73,7 +74,7 @@ abstract behavior ObserverRole extends ScenarioRole {
 		val mID= occurrence.missionID
 		
 		if(!providers.containsKey(signalID)){
-			orderedMissionList.get(mID).signalID = signalID
+			orderedMissionList.get(mID).providerID = signalID
 			// create a new private communication space between the signal and observer and listen to it
 			val sID = UUID.randomUUID
 			val comSpace = organizationContext.get.getOrCreateSpaceWithID(OpenEventSpaceSpecification,
@@ -102,24 +103,30 @@ abstract behavior ObserverRole extends ScenarioRole {
 	
 	on RecruitSignal {
 		
-		orderedMissionList.put(occurrence.missionData.missionID, occurrence.missionData)
-		if (privateOrganizationSpace.get !== null) {
-			requestAlgorithm(occurrence.missionData.missionID, occurrence.task)
-		}
-		else{
-			task("recuitSignal".concat(occurrence.missionData.missionID.toString)).every(100) [
-				if (privateOrganizationSpace.get !== null) {
-					requestAlgorithm(occurrence.missionData.missionID, occurrence.task)
-					task("recuitSignal".concat(occurrence.missionData.missionID.toString)).cancel
-				}
-				else{
-					info("trying to recruit but no platform")
-				}
-			]
-		}
+		missionList.put(occurrence.missionData.missionID, occurrence.missionData)
+		requestAlgorithm(occurrence.missionData.missionID, occurrence.task)
 		processingMissionWithID(occurrence.missionData.missionID)
 	}
+	
+	def processingMissionWithID(mID : UUID) {
+		orderedMissionList.put(mID, missionList.get(mID))
+	}
 
+	
+	on StopMission {
+		
+		orderedMissionList.remove(occurrence.missionID)
+		
+		info("Stop mission, removing listener" + occurrence.source.ID)
+		val providersID = providers.keySet.clone
+		for (p : providersID) {
+			emit(providers.get(p), new StopMission(occurrence.missionID))[!me]
+			info("Removing provider " + p)
+			providers.remove(p)
+		}
+	}
+	
+	
 	on ProcessMission{
 
 		missionList.put(occurrence.missionData.missionID, occurrence.missionData)
@@ -129,7 +136,20 @@ abstract behavior ObserverRole extends ScenarioRole {
 	def requestAlgorithm(mID : UUID, algoTask : String) {
 
 		info("Observer recruits request t = " + algoTask)
-		emit(privateOrganizationSpace.get, new AddAlgorithm(mID, algoTask))
+		
+		if (privateOrganizationSpace.get !== null) {
+			emit(privateOrganizationSpace.get, new AddAlgorithm(mID, algoTask))
+		} else {
+			task("recuitSignal".concat(mID.toString)).every(100) [
+				if (privateOrganizationSpace.get !== null) {
+					emit(privateOrganizationSpace.get, new AddAlgorithm(mID, algoTask))
+					task("recuitSignal".concat(mID.toString)).cancel
+				} else {
+					info("trying to recruit but no platform")
+				}
+			]
+		}
+		
 	}
 }
 

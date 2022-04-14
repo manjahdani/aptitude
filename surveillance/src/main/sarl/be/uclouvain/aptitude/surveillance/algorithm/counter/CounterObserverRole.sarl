@@ -91,12 +91,8 @@ behavior CounterObserverRole extends ObserverRole {
 	
 	on CompetitionOver {
 		val sID = occurrence.providerID
-		var mData = orderedMissionList.values.findFirst[signalID == sID]
+		var mData = orderedMissionList.values.findFirst[providerID == sID]
 		providers.get(sID).emit(new TrackingRequest(mData.missionID,occurrence.selectedAlgorithmID))
-	}
-	
-	def processingMissionWithID(mID : UUID) {
-		warning("TODO: auto-generated method stub")
 	}
 	
 }

@@ -71,7 +71,7 @@ behavior SingleTrackerMultiDetectorObserverRole extends ObserverRole {
 		info("Pausing my provider = " + detectorToPause)
 		var detectorID = activeProviders.get(detectorToPause)
 		
-		val mData = orderedMissionList.values.findFirst[signalID==detectorID]
+		val mData = orderedMissionList.values.findFirst[providerID==detectorID]
 		info("Pausing mission" + mData.missionID + detectorID)
 		//wake
 		//emit(providers.get(detectorID), new PauseMission(mData.missionID))[it.ID == detectorID]

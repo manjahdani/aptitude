@@ -45,6 +45,8 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 	var totalTrackerTime : double = 0
 	var totalDetectorTime : double = 0
 	val cameraSettings = new AtomicReference<Camera>
+	
+	
 	on BBoxes2DTrackResult {
 
 		totalDetectorTime += occurrence.bboxes2DTrack.detectionTime
@@ -75,7 +77,7 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 					totalDetectorTime, 
 					totalTrackerTime,
 					ADN.get.ID,
-					(new HyperParameters(1,false))// @FIXME VERY VERY HIGH MANUAL
+					(new HyperParameters(1,false))// @FIXME VERY VERY VERY HIGH MANUAL
 					))[it.ID == l]
 			}
 		}
@@ -94,7 +96,7 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 		registerBehavior(new TrackerObserverRole(this.owner))
 		info("Come here " + occurrence.detector)
 		missionList.get(occurrence.missionID).dynamicAdaptation = false		
-		enableDataAcquisition(occurrence.missionID,newArrayList(occurrence.detector), "DETECTOR")
+		enableDataAcquisition(occurrence.missionID, "DETECTOR")
 	}
 
 	on ScenarioInfoRequest{
@@ -121,7 +123,7 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 		//else {
 			warning("Single Tracker processing mID - " + mID)
 			
-			registerBehavior(new TrackerObserverRole(this.owner), ADN.get)
+			registerBehavior(new TrackerObserverRole(this.owner),ADN.get)
 			enableDataAcquisition(mID,"DETECTOR") 
 			//}
 		}

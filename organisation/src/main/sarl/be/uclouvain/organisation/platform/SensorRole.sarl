@@ -14,10 +14,10 @@ import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.Schedules
-import java.util.ArrayList
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
+import be.uclouvain.organisation.platform.events.StopMission
 
 /** 
  * @author manjah
@@ -51,14 +51,15 @@ abstract behavior SensorRole extends ScenarioRole {
 		}
 	}
 
-
+	on StopMission {
+		assert listeners.containsKey(occurrence.source.ID),"Listener unknown, possible hack"
+		info("Stop mission, removing listener" + occurrence.source.ID)
+		listeners.remove(occurrence.source.ID)
+	}
 	
 	override Ready2Process {
 		emitToParent( new Ready2Process)
 	}
-	
-
-	
 	def waitMissionParam(mID : UUID) {
 
 		task("rMP".concat(mID.toString)).every(1000) [
@@ -66,9 +67,10 @@ abstract behavior SensorRole extends ScenarioRole {
 			if (MD.hyperParameters.paramKnown) {
 				info("Sensor role |param{s= " + MD.cautionLevel +" dynamicAdaptation=" + MD.isDynamicAdaptationEnabled + "}|mID "+mID)
 				processingMissionWithID(mID)
+				task("rMP".concat(mID.toString)).cancel
 				loggingName = this.ID + "-ALGORITHM-" + ADN.get.name + "-" + ADN.get.level + "-" +
 					ADN.get.platformName + "-" + computation_location
-				task("rMP".concat(mID.toString)).cancel
+				
 			} else {
 				//info("Waiting for command MID = " + mID + " hp " + MD.hyperParametersAsAString)
 			}
@@ -77,15 +79,6 @@ abstract behavior SensorRole extends ScenarioRole {
 
 	def processingMissionWithID(mID : UUID) {
 		emit(selfSpace, new ProcessMission(missionList.get(mID)))
-	}
-	
-
-	def enableDataAcquisition(mID : UUID, signals : ArrayList<String>, signalType : String) {
-
-		for (s : signals) {
-			info("Sensor request " + s + " as " + signalType)
-			emit(selfSpace, new RecruitSignal(missionList.get(mID), s, signalType))
-		}
 	}
 
 	def enableDataAcquisition(mID : UUID, signalType : String) {
