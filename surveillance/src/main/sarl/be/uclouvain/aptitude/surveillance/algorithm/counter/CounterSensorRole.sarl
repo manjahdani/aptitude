@@ -31,10 +31,13 @@ behavior CounterSensorRole extends SensorRole {
 
 		if (missionList.get(mID).dynamicAdaptationEnabled) {
 			warning("Let the competition start !")
-			setSkill(new EvaluationImpl(
-								CONFIG_PATH, 
-								ADN.get.name, 
-								computation_location.get), 
+		}
+		else{
+			warning("Let the evaluation start")}
+		
+		setSkill(new EvaluationImpl(CONFIG_PATH, 
+									ADN.get.name, 
+								    computation_location.get), 
 					Evaluation,
 				    PythonTwinAccessCapacity)
 			registerBehavior(new AlgorithmSelectorRole(this.owner),
@@ -44,7 +47,7 @@ behavior CounterSensorRole extends SensorRole {
 								 	"APTITUDE",
 					             	"F:/pythonToolbox/pytb-agent/videos/".concat(ADN.get.platformName).concat("/gt/gt.txt"))) //@FIXME HIGH Manual
 					           
-		}
+		
 		enableDataAcquisition(mID,"TRACKER")
 	}
 }

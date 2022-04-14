@@ -67,12 +67,12 @@ abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 		jsonConfigtmp.put("Setup", ressourceslocation)
 
 		// Adding the video path
-		var video = new HashMap<String, String>
+		val video = new HashMap<String, String>
 		video.put("path", "./pytb-agent/videos/".concat(platformName).concat("/vdo.avi"))
 		// Adding the roi path
-		var pathRoi = new HashMap<String, String>
+		val pathRoi = new HashMap<String, String>
 		pathRoi.put("path", "./pytb-agent/videos/".concat(platformName).concat("/roi.jpg"))
-		var a = jsonConfigtmp.get("Preproc") as HashMap<String, HashMap<String, String>>
+		val a = jsonConfigtmp.get("Preproc") as HashMap<String, HashMap<String, String>>
 		a.put("roi", pathRoi)
 		// Final concatenation
 		jsonConfigtmp.put("Video", video)
@@ -116,13 +116,6 @@ abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 		]
 	}
 
-	/* 
-	 * info("I am sending the action: " + actionID)
-	 * var actionMessage = new ActionMessage() //@TODO : Strange way of doing it
-	 * actionMessage.actionID = actionID
-	 * 
-	 * CommunicationManager.instance.publishMessage(topicSignalAcquisition, actionMessage)
-	 */
 	@SuppressWarnings("potential_field_synchronization_problem")
 	def updateStreamAccess(actionID : int) {
 		debug("Updating Stream Access" + actionID)

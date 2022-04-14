@@ -61,7 +61,6 @@ behavior TrackerObserverRole extends PythonTwinObserverRole {
 
 	on SensorInfo {
 		this.cameraSettings.set(occurrence.cameraSettings)
-		info("Received sensorInfo")
 		setSkillIfAbsent(new TrackerPythonTwinSkill(
 			ADN.get.belief,
 			ADN.get.platformName,

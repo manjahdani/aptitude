@@ -63,7 +63,7 @@ behavior UserManagerEntity extends OrganizationalRole{
 	}
 	 
 	def accessRight (s:String){
-		return PlatformListenersSpaceIDs.keySet 		// @TODO Develop a user rights access !
+		return PlatformListenersSpaceIDs.keySet 		// @TODO Develop user rights access !
 	}
 	
 	def getOrganizationInfo(memberID : UUID) : OrganizationInfo {

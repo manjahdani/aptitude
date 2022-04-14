@@ -69,17 +69,18 @@ behavior CooperativeLowDensityDetectorObserverRole extends ManagerObserverRole {
 		val mission = missionList.get(mID)
 		if (mission.dynamicAdaptationEnabled) {
 			if (position == 0) {
-				warning("Starting Activity Detection Role of " + mbID)
+				warning("Activity detector Role of " + mbID)
 				studentID.set(mbID)
 				return new AddMissionAsActivityDetector
 			} else {
-				warning("Starting normal detector role " + mbID)
+				warning("Detector role " + mbID)
 				masterID.set(mbID)
 				return new AddMissionAsDetector
 			}
 		}
 		else{
-			if(position==mission.cautionLevel){
+			if (position == mission.cautionLevel) {
+				studentID.set(mbID)
 				return new AddMissionAsDetector
 			}
 			else{

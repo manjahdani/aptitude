@@ -64,7 +64,7 @@ abstract behavior SensorRole extends ScenarioRole {
 		task("rMP".concat(mID.toString)).every(1000) [
 			val MD = missionList.get(mID)
 			if (MD.hyperParameters.paramKnown) {
-				info("Sensor role |param{s= " + MD.cautionLevel +" isMaster=" + MD.isDynamicAdaptationEnabled + "}|mID "+mID)
+				info("Sensor role |param{s= " + MD.cautionLevel +" dynamicAdaptation=" + MD.isDynamicAdaptationEnabled + "}|mID "+mID)
 				processingMissionWithID(mID)
 				loggingName = this.ID + "-ALGORITHM-" + ADN.get.name + "-" + ADN.get.level + "-" +
 					ADN.get.platformName + "-" + computation_location

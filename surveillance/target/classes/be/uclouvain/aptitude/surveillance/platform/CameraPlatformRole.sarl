@@ -50,7 +50,6 @@ behavior CameraPlatformRole extends PlatformRole {
 	
 
 	on SensorInfoRequest{
-		info("receveid a request for sensor")
 		emit(privateSpacesListeners.get(occurrence.source.ID), new SensorInfo(cameraSettings.get))
 	}
 	on ComputationalRessources {

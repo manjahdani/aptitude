@@ -105,7 +105,7 @@ skill UserSkill implements UserElementCapacity {
 					UUID.randomUUID,
 					entityID,
 					null, //FIXME HIGH Should it be null ? 
-					entityList.get(entityID).evolution, true), availablePlatforms.get(msg.sceneID)) //@FIXME HIGH hardcoded true
+					entityList.get(entityID).evolution,false), availablePlatforms.get(msg.sceneID)) //@FIXME HIGH hardcoded true
 				)
 		entityList.get(entityID).screenID = msg.sceneID
 		updateBehavior(getExpertTypeList)
@@ -157,6 +157,7 @@ skill UserSkill implements UserElementCapacity {
 
 		var allStats : ActorStats[] = newArrayOfSize(1)
 	
+		
 		allStats.set(0, new ActorStats(this.ID.toString, "20"))
 
 		outputSend(new UDP_Message_AckAuthenticateMobile(playerID, cd, getObjectList, allStats, screens))

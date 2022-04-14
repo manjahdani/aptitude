@@ -117,15 +117,15 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 	}
 	override processingMissionWithID(mID : UUID) {
 		emit(privateOrganizationSpace.get, new SensorInfoRequest)
-		if (missionList.get(mID).isDynamicAdaptationEnabled) {
-			registerBehavior(new SingleTrackerMultiDetectorObserverRole(owner),this.ADN.get)
-		} 
-		else {
+		//if (missionList.get(mID).isDynamicAdaptationEnabled) {
+		//	registerBehavior(new SingleTrackerMultiDetectorObserverRole(owner),this.ADN.get)
+		//} 
+		//else {
 			warning("Single Tracker processing mID - " + mID)
 			
 			registerBehavior(new TrackerObserverRole(this.owner), ADN.get)
 			enableDataAcquisition(mID,"DETECTOR") 
-			}
+			//}
 		}
 
 }
