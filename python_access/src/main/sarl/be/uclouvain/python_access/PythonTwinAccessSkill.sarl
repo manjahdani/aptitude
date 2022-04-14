@@ -62,18 +62,26 @@ abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 		var jsonConfigtmp = parser.parse(new FileReader(configPath)) as JSONObject;
 
 		// Adding the computation ressources location
-		var ressourceslocation = new HashMap<String, String>
+		
+		
+		var ressourceslocation = new JSONObject()
 		ressourceslocation.put("client_id", computation_resources_location)
 		jsonConfigtmp.put("Setup", ressourceslocation)
 
 		// Adding the video path
-		val video = new HashMap<String, String>
+		val video = new JSONObject()
 		video.put("path", "./pytb-agent/videos/".concat(platformName).concat("/vdo.avi"))
 		// Adding the roi path
-		val pathRoi = new HashMap<String, String>
+		val pathRoi = new JSONObject()
 		pathRoi.put("path", "./pytb-agent/videos/".concat(platformName).concat("/roi.jpg"))
-		val a = jsonConfigtmp.get("Preproc") as HashMap<String, HashMap<String, String>>
-		a.put("roi", pathRoi)
+		//val a = jsonConfigtmp.get("Preproc") as HashMap<String, HashMap<String, String>>
+		//a.put("roi", pathRoi)
+		val max_outside_roi_thresh = 0.1
+		pathRoi.put("max_outside_roi_thresh", max_outside_roi_thresh)
+		val a = jsonConfigtmp.get("Postproc") as HashMap<String, HashMap<String, String>>
+	    a.put("roi", pathRoi)
+	   
+		
 		// Final concatenation
 		jsonConfigtmp.put("Video", video)
 		jsonConfig = jsonConfigtmp

@@ -68,22 +68,6 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 	synchronized def updateTest(writer : CSVWriter, nextLine:String[]) {
 		info("Updating test")
 		writer.writeNext(nextLine)
-		
-		/** 
-		var header = new ArrayList<String>()
-		for (a : data.class.fields) {
-			header.add(a.name)
-		}*/
-		/** 		
-		var values = new ArrayList<String>() 
-		for (a : data.class.fields) {
-			values.add(a.get(data).toString)
-		 * }
-		 */
-		//writer.writeNext(header as String[])
-		//writer.writeNext(values as String[])
-		//writer.write("HOTA," + "detection time," + "tracking time," + "numberOfFrames" +"\n")
-		//writer.write(data.HOTA + "," + data.detectionTime + "," + data.trackingTime + "," + data.frame +"\n")
 	}
 
 	synchronized def updateGroundtruth(writer : FileWriter, boxe2ds : BBoxe2D[]) {

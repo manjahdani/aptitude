@@ -32,7 +32,7 @@
             "pref_implem" : "Malisiewicz",
             "nms_thresh" : 0.45
         },
-        "coi": "[0,2,3,4,5,6,8,9, 10]",
+        "coi": "[0,2,3,4,5,6,8,9,10]",
         "min_area" :125
     }
 }

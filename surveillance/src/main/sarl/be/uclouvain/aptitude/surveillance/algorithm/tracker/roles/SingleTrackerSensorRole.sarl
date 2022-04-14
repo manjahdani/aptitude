@@ -29,10 +29,8 @@ import be.uclouvain.organisation.platform.events.SensorInfoRequest
  * @TODO MEDIUM
  * It does make sens to have a certain window of information in memory and the 
  * other one stored in a database. Therefore, the database with a certain window in situ and otherwise stored in TOLD
- * We need to find a way such that the information is synchronized before potential fusion 
+ * We need to find a way such that the information is synchronised before potential fusion 
  *
- * 
- * 
  * @author $Author: manjahdani$
  * @version $0.0.2$
  * @date $16/04/2021$
