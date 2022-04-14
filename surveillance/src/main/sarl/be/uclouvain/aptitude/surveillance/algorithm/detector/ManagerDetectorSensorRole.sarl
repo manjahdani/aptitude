@@ -18,6 +18,7 @@ behavior ManagerDetectorSensorRole extends DetectorSensorRole {
 	on LastFrame {
 		for (listenersSpace : listeners.values) {
 			info("LastFrame")
+			
 			emit(listenersSpace, new LastFrame(occurrence.frameNumber))[it.ID !== this.ID]
 		}
 	}

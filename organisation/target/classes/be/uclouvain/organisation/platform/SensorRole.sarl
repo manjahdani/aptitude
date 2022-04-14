@@ -27,7 +27,7 @@ abstract behavior SensorRole extends ScenarioRole {
 	uses Logging, Schedules, ExternalContextAccess, Behaviors, DefaultContextInteractions
 
 	protected val listeners = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the client and the role
-	protected val missionList = Collections.synchronizedMap(new HashMap<UUID, SurveillanceMissionData>) // A map between mission ID that it needs to answer to and their data
+	
 	
 	on ProcessingHyperParameters {
 		debug("param received " + "MID = " + occurrence.missionID + " hp " + occurrence.param.hyperParametersAsAString)
@@ -64,8 +64,7 @@ abstract behavior SensorRole extends ScenarioRole {
 		task("rMP".concat(mID.toString)).every(1000) [
 			val MD = missionList.get(mID)
 			if (MD.hyperParameters.paramKnown) {
-				info("Sensor - start the processing role for mid = " + mID+ "\n at location - " + ". Parameters are: s= " + MD.cautionLevel +
-						" isMaster=" + MD.isDynamicAdaptationEnabled)
+				info("Sensor role |param{s= " + MD.cautionLevel +" isMaster=" + MD.isDynamicAdaptationEnabled + "}|mID "+mID)
 				processingMissionWithID(mID)
 				loggingName = this.ID + "-ALGORITHM-" + ADN.get.name + "-" + ADN.get.level + "-" +
 					ADN.get.platformName + "-" + computation_location

@@ -66,35 +66,6 @@ behavior CameraPlatformRole extends PlatformRole {
 	}
  
 	
-	/** 
-	
-	on AddObserver {
-		val signal = occurrence.signalProvider
-		val receiver = occurrence.signalReceiver
-		info("adding observer from " + signal.name + " to " + receiver.name)
-		if (RuleManagement(new MembershipRule(occurrence.signalProvider, occurrence.signalReceiver))) {
-
-			info("\n Partnership of " + signal.name.concat("-").concat(receiver.name) + "legal ")
-			synchronized (this) {
-				if (!participants.containsKey(signal.name)){
-					info("Algorithm not available of name - "+signal.name+ " + participants are : " + participants.keySet)
-					if (!request.contains(signal)) {
-						request.add(signal.name)
-						emitToParent(new AlgorithmJoinPlatform(this.ID, innerDefaultSpace.spaceID.ID, signal.name))}
-					waitfor(occurrence.missionID,signal.name, occurrence.source.ID)
-				} else {
-					debug("Algorithm is already available" + signal.name)
-					emit(privateSpacesListeners.get(occurrence.source.ID),
-						new SignalID(occurrence.missionID,participants.get(occurrence.signalProvider.name), occurrence.signalProvider.name))
-				}
-			}
-		}
-		else {
-			debug("\n Partnership of " + signal.name.concat("-").concat(receiver.name) + "is not legal ")
-		}
-	}
-	*/
-	
 	on AddAlgorithm {
 		
 		

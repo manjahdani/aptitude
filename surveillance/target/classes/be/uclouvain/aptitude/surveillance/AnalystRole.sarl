@@ -40,25 +40,24 @@ behavior AnalystRole extends ObserverRole{
 	val missionQueue = new ConcurrentLinkedQueue<SurveillanceMissionData>
 	
 	on Initialize {
-		info("Analyst role started")
 		missionQueue.add(occurrence.parameters.get(1) as SurveillanceMissionData)
 	}
 	
 	override Ready2Process(){
-		info("asks for algorithm performing vehicle counting to platform")
+		debug("asks permission to platform")
 		val mission = missionQueue.poll
 		orderedMissionList.put(mission.missionID, mission)
 		emit(privateOrganizationSpace.get, new Request2PerformMission(mission))
 	}
 	on AuthorizationToPerformMission {
-		info("Received authorisation to perform a mission within the space : " + occurrence.missionSpaceInPlatformID)
+		info("Authorisation to perform a mission within the space : " + occurrence.missionSpaceInPlatformID)
 		providers.put(this.ID,retrieveOrCreateOpenSpaceWithID(occurrence.missionSpaceInPlatformID)); 
 		providers.get(this.ID).registerStrongParticipant(asEventListener) 
 		processingMissionWithID(occurrence.missionID)
 	}
 	
 	override processingMissionWithID(mID : UUID) {
-		info("starts mission of vehicle counting with hyperParameters:  " + orderedMissionList.get(mID).hyperParametersAsAString)
+		info("starts vehicle counting with param{:  " + orderedMissionList.get(mID).hyperParametersAsAString +"}")
 		requestAlgorithm(mID,"COUNTER")
 	}
 	

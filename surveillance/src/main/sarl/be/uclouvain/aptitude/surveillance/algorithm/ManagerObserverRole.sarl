@@ -62,7 +62,7 @@ abstract behavior ManagerObserverRole extends ObserverRole {
 			val internalMissionID = UUID.randomUUID // create a random uid for a sub-mission aimed at answering the mission with uid = mID 
 			internal_externalMap.put(internalMissionID, mID) // table {key := uid} of the an internal mission, {value:= uid of the ordered mission}
 			val newInternalMission = new SurveillanceMissionData(internalMissionID, this.ID, organizationContext.get.ID,
-				SENSORS.get(s).performance, isDynamicAdaptionEnabled.get)
+				missionList.get(mID).cautionLevel.get, missionList.get(mID).dynamicAdaptationEnabled)
 			orderedMissionList.put(internalMissionID, newInternalMission)
 			innerProcess_ParametersMap.put(
 				new HyperParameters(SENSORS.get(s).performance, 
@@ -76,7 +76,7 @@ abstract behavior ManagerObserverRole extends ObserverRole {
 	}
 
 	on Ready2Process {
-		info("Agent - " + occurrence.source.ID +" is ready to operate")
+		debug("Agent - " + occurrence.source.ID +" is ready to operate")
 		val mbID = occurrence.source.ID
 		wake(new AddMission(mbID, providers.get(mbID).spaceID.ID)) [
 			it.ID == mbID

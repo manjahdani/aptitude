@@ -107,7 +107,7 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 	}
 	on SensorInfo {
 		this.cameraSettings.set(occurrence.cameraSettings)
-		warning("Received sensor info width = " + cameraSettings.get.frame_width + " height = " +cameraSettings.get.frame_height)
+		warning("Cam width = " + cameraSettings.get.frame_width + "; height = " +cameraSettings.get.frame_height)
 		setSkillIfAbsent(new TrackerPythonTwinSkill(ADN.get.belief, 
 													ADN.get.platformName, 
 													computation_location.get, 

@@ -61,30 +61,31 @@ abstract behavior ObserverRole extends ScenarioRole {
 		var providerID = occurrence.source.ID
 		//info("Param requests from agentID :=" + providerID.toString.substring(0, 5)) 
 		var MD = orderedMissionList.get(occurrence.missionID)
-		//info("Sending parameters \n" + " s = " + MD.cautionLevel + " to " + providerID.toString.substring(0, 5))
+		info("Sending parameters \n" + " s = " + MD.cautionLevel + " to " + providerID.toString.substring(0, 5))
 		emit(providers.get(providerID), new ProcessingHyperParameters(
 			occurrence.missionID, orderedMissionList.get(occurrence.missionID).hyperParameters))[it.ID == providerID]
 	}
 	on SignalID {
 		
-		var signalID = occurrence.signalID
-		val missionID= occurrence.missionID
+		val signalID = occurrence.signalID
+		val mID= occurrence.missionID
 		
 		if(!providers.containsKey(signalID)){
-			orderedMissionList.get(missionID).signalID = signalID
+			orderedMissionList.get(mID).signalID = signalID
 			// create a new private communication space between the signal and observer and listen to it
+			val sID = UUID.randomUUID
 			val comSpace = organizationContext.get.getOrCreateSpaceWithID(OpenEventSpaceSpecification,
-				UUID.randomUUID)
+				sID)
 			comSpace.registerStrongParticipant(asEventListener)
 			providers.put(signalID, comSpace)
-			info("Received provider ID sending sid " + comSpace.spaceID.ID)
-			emit(organizationContext.get.defaultSpace, new AddMission(occurrence.missionID, comSpace.spaceID.ID)) [
+			//info("Received provider ID sending sid " + comSpace.spaceID.ID)
+			emit(organizationContext.get.defaultSpace, new AddMission(occurrence.missionID, sID)) [
 				it.ID == signalID
 			]
 		}
 		else{
 			info("Known signal = " + signalID)
-			emit(providers.get(signalID),new ResumeMission(missionID, true))[it.ID == signalID]
+			emit(providers.get(signalID),new ResumeMission(mID, true))[it.ID == signalID]
 		}
 	}
 
@@ -119,27 +120,13 @@ abstract behavior ObserverRole extends ScenarioRole {
 
 	on ProcessMission{
 
-		orderedMissionList.put(occurrence.missionData.missionID, occurrence.missionData)
+		missionList.put(occurrence.missionData.missionID, occurrence.missionData)
 		processingMissionWithID(occurrence.missionData.missionID)
 	}
-
-	//	def requestAlgorithm(mID : UUID, algoName : String, algoTask : String) {
-//		
-//		info("Observer recruits request for name = " + algoName + " t = " +algoTask)
-//		
-//		//emit(privateOrganizationSpace.get, new AddAlgorithm(mID, algoTask))
-//		
-//		emit(privateOrganizationSpace.get, new AddObserver(
-//			mID,
-//			new AlgorithmInfo(algoName, algoTask),
-//			new AlgorithmInfo(ADN.get.name, ADN.get.task)
-//		))[it.ID == organizationContext.get.ID]
-//	}
 
 	def requestAlgorithm(mID : UUID, algoTask : String) {
 
 		info("Observer recruits request t = " + algoTask)
-
 		emit(privateOrganizationSpace.get, new AddAlgorithm(mID, algoTask))
 	}
 }

@@ -17,6 +17,7 @@ import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
+import be.uclouvain.organisation.platform.util.SurveillanceMissionData
 
 /** 
  * @author manjah
@@ -29,6 +30,7 @@ abstract behavior ScenarioRole extends Role {
 	protected val computation_location = new AtomicReference<String>
 	protected val checkList = Collections.synchronizedMap(new HashMap<String, Boolean>)
 	protected val isRoleActive = new AtomicBoolean(true)
+	protected val missionList = Collections.synchronizedMap(new HashMap<UUID, SurveillanceMissionData>) // A map between mission ID that it needs to answer to and their data
 	
 	on Initialize {
 

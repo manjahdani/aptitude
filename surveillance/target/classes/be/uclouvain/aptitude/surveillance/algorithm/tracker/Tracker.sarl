@@ -27,7 +27,7 @@ agent Tracker extends Algorithm {
 		emitToParent(new RoleRegistered)
 	}
 	on BecomeManager {
-		warning("Becoming a tracker manager")
+		debug("Becoming a tracker manager")
 		registerBehavior(new ManagerTrackerObserverRole(this), ADN.get)
 		registerBehavior(new TrackerSensorRole(this), ADN.get)
 		emitToParent(new RoleRegistered)

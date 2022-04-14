@@ -33,7 +33,7 @@ behavior ManagerAlgorithmRole {
 		INIT_TASKS.putAll(occurrence.parameters.get(0) as HashMap<String, Class<? extends Agent>>)
 	}
 	on AlgorithmJoinPlatform {
-		info("deploys " + ADN.get.task + " named " + occurrence.name + " performing in platform " +
+		debug("deploys " + ADN.get.task + " named " + occurrence.name + " performing in platform " +
 			occurrence.source.ID)
 		val cloneID = UUID.randomUUID
 		subAlgorithmsPlatformMap.put(cloneID, new OrganisationID(

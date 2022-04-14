@@ -50,8 +50,8 @@ skill UserSkill implements UserElementCapacity {
 
 	val playerID : String
 	val entityList : HashMap<UUID, CharacterData> = new HashMap<UUID, CharacterData>
-	val AVAILABLE_EXPERTS = new AtomicInteger(4) //@FIXME MEDIUM HARDCODED VALUE
-	val EXPERTISE_DEGREE = newArrayList(1, 2, 3, 0) //@FIXME MEDIUM HARDCODE VALUE
+	val AVAILABLE_EXPERTS = new AtomicInteger(2) //@FIXME MEDIUM HARDCODED VALUE
+	val EXPERTISE_DEGREE = newArrayList(0,1) //@FIXME MEDIUM HARDCODE VALUE
 	var availablePlatforms = new ArrayList<String>
 	
 	
@@ -90,6 +90,8 @@ skill UserSkill implements UserElementCapacity {
 
 	@Pure def getObjectList  {
 		var objectsList : ObjectData[] = newArrayOfSize(1);
+		
+		
 		objectsList.set(0, new ObjectData(this.ID.toString, 1, 0))
 		return objectsList
 	}
@@ -134,11 +136,11 @@ skill UserSkill implements UserElementCapacity {
 	
 	def setupPhysicalDevice(cd : CharacterData[]) {
 
-		var objectsAuthorizations : SpawnObjectAuthorization[] = newArrayOfSize(4)
+		var objectsAuthorizations : SpawnObjectAuthorization[] = newArrayOfSize(2)
 		objectsAuthorizations.set(0, new SpawnObjectAuthorization(1, true))
 		objectsAuthorizations.set(1, new SpawnObjectAuthorization(2, true))
-		objectsAuthorizations.set(2, new SpawnObjectAuthorization(3, false))
-		objectsAuthorizations.set(3, new SpawnObjectAuthorization(4, false))
+		//objectsAuthorizations.set(2, new SpawnObjectAuthorization(3, false))
+		//objectsAuthorizations.set(3, new SpawnObjectAuthorization(4, false))
 
 		var charactersAuthorizations : SpawnCharacterAuthorization[] = newArrayOfSize(2)
 		charactersAuthorizations.set(0, new SpawnCharacterAuthorization(0, true))
@@ -154,7 +156,7 @@ skill UserSkill implements UserElementCapacity {
 		screens.set(1, screen2)
 
 		var allStats : ActorStats[] = newArrayOfSize(1)
-		
+	
 		allStats.set(0, new ActorStats(this.ID.toString, "20"))
 
 		outputSend(new UDP_Message_AckAuthenticateMobile(playerID, cd, getObjectList, allStats, screens))

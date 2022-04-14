@@ -5,8 +5,6 @@ package be.uclouvain.aptitude.surveillance.algorithm.detector
 
 import be.uclouvain.aptitude.surveillance.algorithm.ManagerObserverRole
 import be.uclouvain.aptitude.surveillance.algorithm.detector.events.Activity
-import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsMaster
-import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsStudent
 import be.uclouvain.aptitude.surveillance.algorithm.detector.events.NoActivity
 import be.uclouvain.organisation.platform.events.PauseMission
 import be.uclouvain.organisation.platform.events.StartMission
@@ -21,6 +19,9 @@ import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 import be.uclouvain.organisation.platform.events.Ready2Process
 import java.util.concurrent.atomic.AtomicReference
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsActivityDetector
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsDetector
+import be.uclouvain.aptitude.surveillance.CommitSuicide
 
 /** 
  * @author manjah
@@ -60,18 +61,31 @@ behavior CooperativeLowDensityDetectorObserverRole extends ManagerObserverRole {
 		listeningTOTeacher.set(false)
 		}
 	}
-	override provideRoleMessage(mbID : UUID) : Event {
+	override provideRoleMessage(mbID : UUID) : Event { //@FIXME VERY HIGH
 		val position = innerProcess_ParametersMap.values.toList.indexOf(mbID)
 		//info("member Joined " + mbID + "performance is" + position)
 		
+		val mID = internal_externalMap.get(mbID)
+		val mission = missionList.get(mID)
+		if (mission.dynamicAdaptationEnabled) {
 			if (position == 0) {
-			warning("Starting Student Role of " + mbID)
-			studentID.set(mbID)
-			return new AddMissionAsStudent
-		} else {
-			warning("Starting Master Role of " + mbID)
+				warning("Starting Activity Detection Role of " + mbID)
+				studentID.set(mbID)
+				return new AddMissionAsActivityDetector
+			} else {
+				warning("Starting normal detector role " + mbID)
 				masterID.set(mbID)
-			return new AddMissionAsMaster
+				return new AddMissionAsDetector
+			}
 		}
+		else{
+			if(position==mission.cautionLevel){
+				return new AddMissionAsDetector
+			}
+			else{
+				return new CommitSuicide
+			}
+		}
+			
 	}
 }
