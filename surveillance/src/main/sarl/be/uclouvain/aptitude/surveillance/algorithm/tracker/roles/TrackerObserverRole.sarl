@@ -6,13 +6,11 @@ package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
 import be.uclouvain.aptitude.surveillance.algorithm.PythonTwinObserverRole
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinCapacity
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinSkill
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingTaskOver
 import be.uclouvain.aptitude.surveillance.platform.events.SensorInfo
 import be.uclouvain.aptitude.surveillance.platform.util.Camera
 import be.uclouvain.organisation.platform.events.ScenarioInfo
 import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
 import be.uclouvain.organisation.platform.events.SensorInfoRequest
-import be.uclouvain.organisation.platform.events.StopMission
 import be.uclouvain.python_access.BBoxes2DSignal
 import be.uclouvain.python_access.PartnerTrackingFound
 import io.sarl.core.ExternalContextAccess
@@ -42,15 +40,6 @@ behavior TrackerObserverRole extends PythonTwinObserverRole {
 	on Initialize {
 		emit(selfSpace, new ScenarioInfoRequest)
 	}
-	
-	on TrackingTaskOver{
-		for(s : providers.keySet){
-		val mID = missionList.values.findFirst[providerID==s].missionID
-			info("Stopping" + s + "with mission ID" + mID)
-		emit(providers.get(s), new StopMission(mID))[!me]
-		}
-	}
-
 
 	on ScenarioInfo {
 		assert occurrence.client_id !== null, "Received computatation_location null"

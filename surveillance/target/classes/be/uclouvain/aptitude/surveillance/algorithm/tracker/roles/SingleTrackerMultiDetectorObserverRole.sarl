@@ -3,7 +3,6 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
 
-import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ResumeTrackingMission
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingRequest
 import be.uclouvain.organisation.platform.ObserverRole
@@ -64,7 +63,7 @@ behavior SingleTrackerMultiDetectorObserverRole extends ObserverRole {
 		}
 		wake(new ResumeTrackingMission(occurrence.missionID,innerTracker_detectorsMap.get(agentID)))[it.ID==this.ID]
 	}	
-	
+	/** 
 	on LastFrame {
 		
 		var detectorToPause = innerTracker_detectorsMap.get(occurrence.source.ID)
@@ -75,7 +74,7 @@ behavior SingleTrackerMultiDetectorObserverRole extends ObserverRole {
 		info("Pausing mission" + mData.missionID + detectorID)
 		//wake
 		//emit(providers.get(detectorID), new PauseMission(mData.missionID))[it.ID == detectorID]
-	}
+	}*/
 
 	on BBoxes2DSignal {
 		

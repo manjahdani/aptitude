@@ -40,14 +40,13 @@ behavior CounterSensorRole extends SensorRole {
 								    computation_location.get), 
 					Evaluation,
 				    PythonTwinAccessCapacity)
-			registerBehavior(new AlgorithmSelectorRole(this.owner),
-								 CONFIG_PATH, ADN.get.name, 
-								 computation_location,
-								 new Metric(
-								 	"APTITUDE",
-					             	"F:/pythonToolbox/pytb-agent/videos/".concat(ADN.get.platformName).concat("/gt/gt.txt"))) //@FIXME HIGH Manual
-					           
-		
+				    
+		registerBehavior(new AlgorithmSelectorRole(this.owner),
+						 CONFIG_PATH, ADN.get.name, 
+						 computation_location,
+						 	new Metric(
+								"APTITUDE",
+					             "F:/pythonToolbox/pytb-agent/videos/".concat(ADN.get.platformName).concat("/gt/gt.txt"))) //@FIXME HIGH Manual
 		enableDataAcquisition(mID,"TRACKER")
 	}
 }

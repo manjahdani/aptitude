@@ -4,7 +4,6 @@
 package be.uclouvain.aptitude.surveillance.algorithm
 
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingPerception
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingTaskOver
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.organisation.events.AddMember
 import be.uclouvain.organisation.platform.PlatformOrganizationInfo
@@ -22,6 +21,7 @@ import java.io.FileWriter
 import io.sarl.core.Behaviors
 import be.uclouvain.aptitude.surveillance.evaluation.EvaluatorEntityRole
 import be.uclouvain.aptitude.surveillance.evaluation.CreateEvaluatorEntity
+import be.uclouvain.organisation.platform.events.StopMission
 
 /** 
  * @author manjah
@@ -53,8 +53,8 @@ behavior AlgorithmEntity extends EntityRole {
 		emit(privateOrganizationSpace.get, new DataEntry(this.ID, a))
 		}
 	}
-	on TrackingTaskOver {
-		//info("Entity role asking to close the entry")
+	on StopMission {
+		info("Entity role asking to close the entry")
 		emit(privateOrganizationSpace.get,new DeleteEntry(this.ID))
 		killMe
 	}

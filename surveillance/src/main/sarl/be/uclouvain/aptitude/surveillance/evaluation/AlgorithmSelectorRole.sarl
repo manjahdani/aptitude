@@ -3,7 +3,6 @@
  */
 package be.uclouvain.aptitude.surveillance.evaluation
 
-import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
 import be.uclouvain.aptitude.surveillance.algorithm.util.APTITUDE_EvaluationResults
 import be.uclouvain.aptitude.surveillance.algorithm.util.Metric
 import be.uclouvain.organisation.Role
@@ -17,6 +16,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
+import be.uclouvain.aptitude.surveillance.algorithm.MissionResults
 
 /** 
  * @TODO : To complete
@@ -34,7 +34,7 @@ behavior AlgorithmSelectorRole extends Role {
 	
 	protected var compDuration : long
 	protected var numberTests = 0 
-	
+	protected val numberOfSimulations = 2
 	protected val score = new AtomicReference<Metric> 
 	protected var gts : String
 	
@@ -52,21 +52,15 @@ behavior AlgorithmSelectorRole extends Role {
 	
 	on PartnerEvaluationFound {
 		//partnerName = occurrence.partnerName
-		
 		//info("Eval found partner " + occurrence.partnerName)
 		this.compDuration = System.currentTimeMillis()
 	}
 
 	
-	on LastFrame {
-		info("Obtained the path to observations " + occurrence.pred_file_Path +"\n"
-			+ " that stopped at frame " 
-			+ occurrence.frameNumber
-		)
-		
+	on MissionResults {
 		var predictions = new String(Files.readAllBytes(Paths.get(occurrence.pred_file_Path)));
 		var testID = UUID.randomUUID
-		//info("Sending to evaluation - " + testID)
+		info("Sending to evaluation - " + testID)
 		addEvalutionResults(testID,
 			
 			new APTITUDE_EvaluationResults(
@@ -91,7 +85,7 @@ behavior AlgorithmSelectorRole extends Role {
 				numberTests += 1
 				info("Recording the result : " +"numberTests of Competitor " + occurrence.result.requestID)
 			
-				if (numberTests == 1) {
+				if (numberTests == numberOfSimulations) {
 					var selected = selectAlgorithm()
 					selfSpace.emit(this.ID,new CompetitionOver(selected.providerID,selected.competitorID))
 				}
@@ -99,8 +93,7 @@ behavior AlgorithmSelectorRole extends Role {
 			else{
 				info("Could not succed to add " +occurrence.result.uuid)
 			}
-			}
-			// print(Result) 
+		}
 	}
 	
 	def print(result : EvaluationMessage) {

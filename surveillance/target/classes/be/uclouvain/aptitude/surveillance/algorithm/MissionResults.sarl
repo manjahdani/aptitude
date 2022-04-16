@@ -16,7 +16,7 @@ import be.uclouvain.organisation.platform.util.HyperParameters
  * @mavenartifactid $organisation$
  * 
  */
-event LastFrame {
+event MissionResults {
 	
 	val frameNumber : int
 	val pred_file_Path : String
@@ -33,17 +33,5 @@ event LastFrame {
 		this.total_time_tracking = tt_tracking
 		this.observerID = id
 		this.processingParameters=hp
-	}
-	
-	new (f : int)
-	{
-		this.frameNumber = f
-		this.pred_file_Path = null
-		this.total_time_detection = 0
-		this.total_time_tracking = 0
-		this.observerID = null
-		this.processingParameters = null
-	}
-	
-	
+	}	
 }

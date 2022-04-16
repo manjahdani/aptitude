@@ -1,11 +1,9 @@
 package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
 
-import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinCapacity
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinSkill
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ResumeTrackingMission
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingPerception
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingTaskOver
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.organisation.platform.SensorRole
 import be.uclouvain.organisation.platform.events.ScenarioInfo
@@ -21,6 +19,7 @@ import be.uclouvain.aptitude.surveillance.platform.events.SensorInfo
 import java.util.concurrent.atomic.AtomicReference
 import be.uclouvain.aptitude.surveillance.platform.util.Camera
 import be.uclouvain.organisation.platform.events.SensorInfoRequest
+import be.uclouvain.aptitude.surveillance.algorithm.MissionResults
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -64,20 +63,18 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 		info("Processed frame #" + occurrence.bboxes2DTrack.frameNumber)
 		
 		if (occurrence.bboxes2DTrack.lastFrame || occurrence.bboxes2DTrack.frameNumber >= cameraSettings.get.frame_limit) {
-			emit(selfSpace, new TrackingTaskOver)
-			
+		
 			info("Tracking job done... " + "sending the information to " + listeners.keySet)
 			
-			
-			for (l : listeners.keySet) {
-				emit(listeners.get(l),
-					new LastFrame(
+			for (l : listeners.values) {
+				emit(l,
+					new MissionResults(
 						occurrence.bboxes2DTrack.frameNumber,
-					("F:\\Database\\".concat(this.ID.toString) + ".txt"),
-					totalDetectorTime, 
-					totalTrackerTime,
-					ADN.get.ID,
-					(new HyperParameters(1,false))// @FIXME VERY VERY VERY HIGH MANUAL
+						("F:\\Database\\".concat(this.ID.toString) + ".txt"),
+						 this.totalDetectorTime, 
+					     this.totalTrackerTime,
+					     ADN.get.ID,
+						(new HyperParameters(1,false))// @FIXME VERY VERY VERY HIGH MANUAL
 					))[it.ID == l]
 			}
 		}

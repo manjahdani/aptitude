@@ -125,7 +125,7 @@ abstract behavior ObserverRole extends ScenarioRole {
 			providers.remove(p)
 		}
 	}
-	
+
 	
 	on ProcessMission{
 
