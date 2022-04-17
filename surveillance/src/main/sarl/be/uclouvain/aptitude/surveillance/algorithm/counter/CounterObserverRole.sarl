@@ -13,6 +13,10 @@ import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.UUID
+import be.uclouvain.aptitude.surveillance.algorithm.MissionResults
+import be.uclouvain.organisation.platform.events.Request2PerformMission
+import be.uclouvain.organisation.platform.util.SurveillanceMissionData
+import be.uclouvain.organisation.events.AuthorizationToPerformMission
 
 /** 
  * The CounterRole is a behaviour that an agent Algorithm endorses upon a mission to count vehicles
@@ -34,7 +38,7 @@ behavior CounterObserverRole extends ObserverRole {
 	val objectToBeAnalyzed = new ArrayList<BBoxe2D>;
 	var lineCoords = #[1235, 700, 309, 664, 1477, 324, 1676, 310] //@FIXME MEDIUM MANUAL
 	// end
-	
+	val numberOfSimulations = 0
 	on Initialize {
 		info("The counting starts from now !")
 		
@@ -89,6 +93,23 @@ behavior CounterObserverRole extends ObserverRole {
 //			//counts, occurrence.observerName, this.ID.toString, occurrence.sensitivity)
 //	}
 	
+	on MissionResults {
+		emit(providers.get(occurrence.observerID),new StopMission(
+		val newMissionID = UUID.randomUUID
+		val newMissionData = new SurveillanceMissionData(newMissionID, 
+															this.ID,
+															organizationContext.get.ID,
+															occurrence.processingParameters)
+		orderedMissionList.put(newMissionID, newMissionData)
+		emit(privateOrganizationSpace.get, new Request2PerformMission(newMissionData))
+	}
+
+	on AuthorizationToPerformMission {
+		info("Authorisation to perform a mission within the space : " + occurrence.missionSpaceInPlatformID)
+		info("Simulation counting with param{:  " + orderedMissionList.get(occurrence.missionID).hyperParametersAsAString + "}")
+		requestAlgorithm(occurrence.missionID, "TRACKER")
+	}
+
 	on CompetitionOver {
 		val sID = occurrence.providerID
 		var mData = orderedMissionList.values.findFirst[providerID == sID]

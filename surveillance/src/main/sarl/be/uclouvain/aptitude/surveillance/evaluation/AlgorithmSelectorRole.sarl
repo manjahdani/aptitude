@@ -62,7 +62,6 @@ behavior AlgorithmSelectorRole extends Role {
 		var testID = UUID.randomUUID
 		info("Sending to evaluation - " + testID)
 		addEvalutionResults(testID,
-			
 			new APTITUDE_EvaluationResults(
 				occurrence.source.ID, 
 				occurrence.observerID, 

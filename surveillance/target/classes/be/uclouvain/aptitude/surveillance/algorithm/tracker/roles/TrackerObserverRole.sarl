@@ -18,6 +18,7 @@ import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.concurrent.atomic.AtomicReference
+import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ResumeTrackingMission
 
 /** 
  * @author manjah
@@ -57,8 +58,25 @@ behavior TrackerObserverRole extends PythonTwinObserverRole {
 		}
 	}
 
+	on ResumeTrackingMission {
+		warning("To program !! ")
+		info("Resuming mission" + occurrence.missionID + " with " + occurrence.detector)
+		setSkillIfAbsent(new TrackerPythonTwinSkill(
+			ADN.get.belief,
+			ADN.get.platformName,
+			computation_location.get,
+			cameraSettings.get.frame_width,
+			cameraSettings.get.frame_height
+		))
+		
+		info("Come here " + occurrence.detector)
+		missionList.get(occurrence.missionID).dynamicAdaptation = false
+		//enableDataAcquisition(occurrence.missionID, "DETECTOR")
+	}
+
 	on SensorInfo {
 		this.cameraSettings.set(occurrence.cameraSettings)
+		warning("Cam width = " + cameraSettings.get.frame_width + "; height = " + cameraSettings.get.frame_height)
 		setSkillIfAbsent(new TrackerPythonTwinSkill(
 			ADN.get.belief,
 			ADN.get.platformName,

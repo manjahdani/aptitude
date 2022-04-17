@@ -1,0 +1,19 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation.platform.events
+
+import java.util.UUID
+
+/** 
+ * @author manjah
+ * 
+ */
+event MissionEnded{
+	val missionID  : UUID
+	val terminusStatus : int
+	new(mID:UUID, state : int){
+		this.missionID=mID
+		this.terminusStatus=state
+	}
+}

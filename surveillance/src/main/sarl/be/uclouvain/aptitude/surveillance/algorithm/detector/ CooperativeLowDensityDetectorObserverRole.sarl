@@ -56,7 +56,7 @@ behavior CooperativeLowDensityDetectorObserverRole extends ManagerObserverRole {
 	}
 	on NoActivity {
 		if(listeningTOTeacher.get){
-			warning("pausing detector")
+			debug("pausing detector")
 		wake(new PauseMission(masterID.get))[it.ID == masterID]
 		listeningTOTeacher.set(false)
 		}

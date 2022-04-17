@@ -25,6 +25,11 @@ class SurveillanceMissionData extends MissionData{
 		super(missionID, clientID, platformID)
 		this.hyperParameters = new HyperParameters(cl,o)
 	}
+
+	new (missionID : UUID, clientID : UUID, platformID : UUID, hp : HyperParameters) {
+		super(missionID, clientID, platformID)
+		this.hyperParameters = hp
+	}
 	
 	def isDynamicAdaptationEnabled : boolean {
 		return this.hyperParameters.dynamicAdaptationEnabled.get

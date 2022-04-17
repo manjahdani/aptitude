@@ -53,7 +53,7 @@ skill UserSkill implements UserElementCapacity {
 	val AVAILABLE_EXPERTS = new AtomicInteger(2) //@FIXME MEDIUM HARDCODED VALUE
 	val EXPERTISE_DEGREE = newArrayList(0,1) //@FIXME MEDIUM HARDCODE VALUE
 	var availablePlatforms = new ArrayList<String>
-	val CompetitionEnabled = true
+	val CompetitionEnabled = false
 	
 	new (userID : String, avl_platforms : ArrayList<String>) {
 		

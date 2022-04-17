@@ -36,16 +36,17 @@ abstract behavior PythonTwinObserverRole extends ObserverRole {
 	
 	on StartMission {
 		if (occurrence.frameNumber > 0) {
-			warning("UpdatingStreamAccess - Seeking frame " + occurrence.frameNumber)
+			info("UpdatingStreamAccess - Seeking frame " + occurrence.frameNumber)
+			
 			updateStreamAccess(6, occurrence.frameNumber)
 			}
 		
 		if (counter.get > 0) {
-			warning("UpdatingStreamAccess - Action 3 Starting at frame " + occurrence.frameNumber)
+			info("UpdatingStreamAccess - Action 3 Starting at frame " + occurrence.frameNumber)
 			updateStreamAccess(3)
 		}
 		else {
-			warning("UpdatingStreamAccess - Action 1 Starting at frame " + occurrence.frameNumber)
+			info("UpdatingStreamAccess - Action 1 Starting at frame " + occurrence.frameNumber)
 			counter.set(1)
 			updateStreamAccess(1)
 		}

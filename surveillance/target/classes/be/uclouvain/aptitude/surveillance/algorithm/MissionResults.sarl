@@ -18,6 +18,7 @@ import be.uclouvain.organisation.platform.util.HyperParameters
  */
 event MissionResults {
 	
+	val missionID : UUID
 	val frameNumber : int
 	val pred_file_Path : String
 	val total_time_detection : double
@@ -25,8 +26,9 @@ event MissionResults {
 	val observerID : UUID
 	val processingParameters : HyperParameters
 	
-	new (f : int, p : String, tt_detection : double, tt_tracking : double, id : UUID, hp : HyperParameters)
+	new (mID : UUID, f : int, p : String, tt_detection : double, tt_tracking : double, id : UUID, hp : HyperParameters)
 	{
+		this.missionID=mID
 		this.frameNumber = f
 		this.pred_file_Path = p
 		this.total_time_detection = tt_detection

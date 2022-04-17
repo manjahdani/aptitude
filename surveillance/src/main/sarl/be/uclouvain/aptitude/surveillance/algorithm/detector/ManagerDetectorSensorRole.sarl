@@ -3,10 +3,10 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm.detector
 
-import be.uclouvain.aptitude.surveillance.algorithm.LastFrame
 import be.uclouvain.python_access.BBoxes2DSignal
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
+import be.uclouvain.organisation.platform.events.MissionOver
 
 /** 
  * @author manjah
@@ -15,11 +15,11 @@ import io.sarl.core.Logging
 behavior ManagerDetectorSensorRole extends DetectorSensorRole {
 	uses Logging, ExternalContextAccess
 
-	on LastFrame {
+	on MissionOver {
 		for (listenersSpace : listeners.values) {
 			info("LastFrame")
 			
-			emit(listenersSpace, new LastFrame(occurrence.frameNumber))[it.ID !== this.ID]
+			emit(listenersSpace, new MissionOver(occurrence.missionID,occurrence.terminusStatus))[it.ID !== this.ID]
 		}
 	}
 

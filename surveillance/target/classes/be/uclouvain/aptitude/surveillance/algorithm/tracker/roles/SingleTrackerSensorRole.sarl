@@ -83,17 +83,9 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 	
 	on ResumeTrackingMission {
 		info("Resuming mission" + occurrence.missionID + " with " + occurrence.detector)
-		setSkillIfAbsent(new TrackerPythonTwinSkill(
-			ADN.get.belief,
-			ADN.get.platformName,
-			computation_location.get,
-			cameraSettings.get.frame_width,
-			cameraSettings.get.frame_height
-		))
-		registerBehavior(new TrackerObserverRole(this.owner))
-		info("Come here " + occurrence.detector)
-		missionList.get(occurrence.missionID).dynamicAdaptation = false		
-		enableDataAcquisition(occurrence.missionID, "DETECTOR")
+		warning("To program")
+		//missionList.get(occurrence.missionID).dynamicAdaptation = false		
+		//enableDataAcquisition(occurrence.missionID, "DETECTOR")
 	}
 
 	on ScenarioInfoRequest{
@@ -104,13 +96,6 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 	}
 	on SensorInfo {
 		this.cameraSettings.set(occurrence.cameraSettings)
-		warning("Cam width = " + cameraSettings.get.frame_width + "; height = " +cameraSettings.get.frame_height)
-		setSkillIfAbsent(new TrackerPythonTwinSkill(ADN.get.belief, 
-													ADN.get.platformName, 
-													computation_location.get, 
-													cameraSettings.get.frame_width,
-													cameraSettings.get.frame_height
-		))
 	}
 	override processingMissionWithID(mID : UUID) {
 		emit(privateOrganizationSpace.get, new SensorInfoRequest)
@@ -118,10 +103,9 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 		//	registerBehavior(new SingleTrackerMultiDetectorObserverRole(owner),this.ADN.get)
 		//} 
 		//else {
-			warning("Single Tracker processing mID - " + mID)
-			
-			registerBehavior(new TrackerObserverRole(this.owner),ADN.get)
-			enableDataAcquisition(mID,"DETECTOR") 
+		warning("Single Tracker processing mID - " + mID)	
+		registerBehavior(new TrackerObserverRole(this.owner),ADN.get)
+		enableDataAcquisition(mID,"DETECTOR") 
 			//}
 		}
 
