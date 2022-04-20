@@ -14,7 +14,7 @@ import io.sarl.core.Initialize
 behavior ManagerTrackerObserverRole extends ManagerObserverRole {
 
 	on Initialize {
-		SENSORS.put("SORT", new Metadata(0, "VEHICLE", 50))
+		SENSORS.put("SORT", new Metadata("SORT",0, "VEHICLE", 50))
 		//AVAILABLE_INPUT.put("DeepSORT", new Metadata(1, "VEHICLE",200)) //@TODO Set realistic budget
 	}
 }

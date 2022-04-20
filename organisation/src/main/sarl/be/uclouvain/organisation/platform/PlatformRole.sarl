@@ -55,7 +55,7 @@ behavior PlatformRole extends OrganizationalRole {
 		// if (true) {
 		
 		val observerID = occurrence.source.ID
-		info("received request to add a mission from " + observerID.toString.substring(0, 5))
+		info("Request to authorise mission from " + observerID.toString.substring(0, 5))
 		//@FIXME MEDIUM Implement an IF itstatement
 		val missionSpaceInPlatformID = UUID.randomUUID // @FIXME MEDIUM MAKE SURE THIS DOES NOT CAUSE A PROBLEM
 		missionSpace.put(occurrence.missionData.missionID,
@@ -67,7 +67,7 @@ behavior PlatformRole extends OrganizationalRole {
 
 	
 	on RequestToJoin {
-		info("receives a request to welcome a new agent")
+		info("Request to welcome a new agent")
 		emit(occurrence.emitterSpace, 
 			new AuthorizationToJoinContext(this.ID, innerContext.defaultSpace.spaceID.ID)) [
 				it.ID == occurrence.source.ID

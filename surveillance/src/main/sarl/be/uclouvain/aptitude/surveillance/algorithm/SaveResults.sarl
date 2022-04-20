@@ -1,0 +1,10 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.algorithm
+
+/** 
+ * @author manjah
+ * 
+ */
+event SaveResults

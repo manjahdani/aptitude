@@ -9,15 +9,19 @@ package be.uclouvain.organisation.platform.util
  */
 class Metadata {
 	
+	val name : String
 	val performance : int
 	val fit_for : String
 	val cost : int
-	new(p:int, t:String, c : int){
+	new(n:String,p:int, t:String, c : int){
+		this.name = n
 		this.performance =p
 		this.fit_for = t
 		this.cost = c
 	}
-	
+	def getName{
+		return this.name
+	}
 	def getCost {
 		return this.cost
 	}

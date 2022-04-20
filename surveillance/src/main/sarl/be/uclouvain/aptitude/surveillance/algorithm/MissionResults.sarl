@@ -25,12 +25,15 @@ event MissionResults {
 	val total_time_tracking : double
 	val observerID : UUID
 	val processingParameters : HyperParameters
-	
-	new (mID : UUID, f : int, p : String, tt_detection : double, tt_tracking : double, id : UUID, hp : HyperParameters)
+	val detector : String
+	val tracker : String
+	new (mID : UUID, f : int, p : String, det:String, track :String, tt_detection : double, tt_tracking : double, id : UUID, hp : HyperParameters)
 	{
 		this.missionID=mID
 		this.frameNumber = f
 		this.pred_file_Path = p
+		this.detector=det
+		this.tracker=track
 		this.total_time_detection = tt_detection
 		this.total_time_tracking = tt_tracking
 		this.observerID = id

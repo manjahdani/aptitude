@@ -65,7 +65,7 @@ agent TOLDAgent extends Paraddis {
 		wake(new JoinOrganisation(contextID, defSid))[it.ID == occurrence.source.ID]
 	}
 	on JoinOrganisation{
-		info("Joining organisation " + occurrence.contextID)
+		debug("Joining organisation " + occurrence.contextID)
 		join(occurrence.contextID, occurrence.defaultSpaceID)
 	}
 }

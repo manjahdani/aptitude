@@ -6,7 +6,7 @@ import be.uclouvain.organisation.platform.events.AddMission
 import be.uclouvain.organisation.platform.events.HyperParametersRequest
 import be.uclouvain.organisation.platform.events.LeavePlatform
 import be.uclouvain.organisation.platform.events.ProcessingHyperParameters
-import be.uclouvain.organisation.platform.events.ResumeMission
+import be.uclouvain.organisation.platform.events.StopMission
 import be.uclouvain.organisation.platform.util.SurveillanceMissionData
 import io.sarl.core.Behaviors
 import io.sarl.core.ExternalContextAccess
@@ -17,7 +17,6 @@ import io.sarl.core.Schedules
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
-import be.uclouvain.organisation.platform.events.StopMission
 
 /** 
  * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 
@@ -88,7 +87,7 @@ abstract behavior ObserverRole extends ScenarioRole {
 		}
 		else{
 			info("Known signal = " + signalID)
-			emit(providers.get(signalID),new ResumeMission(mID, true))[it.ID == signalID]
+			emit(providers.get(signalID),new AddMission(occurrence.missionID, providers.get(signalID).spaceID.ID))[it.ID == signalID]
 		}
 	}
 
@@ -116,12 +115,9 @@ abstract behavior ObserverRole extends ScenarioRole {
 	on StopMission {
 		
 		orderedMissionList.remove(occurrence.missionID)
-		
-		info("Stop mission, removing listener" + occurrence.source.ID)
 		val providersID = providers.keySet.clone
 		for (p : providersID) {
 			emit(providers.get(p), new StopMission(occurrence.missionID))[!me]
-			info("Removing provider " + p)
 			providers.remove(p)
 		}
 	}
@@ -145,7 +141,7 @@ abstract behavior ObserverRole extends ScenarioRole {
 					emit(privateOrganizationSpace.get, new AddAlgorithm(mID, algoTask))
 					task("recuitSignal".concat(mID.toString)).cancel
 				} else {
-					info("trying to recruit but no platform")
+					//info("trying to recruit but no platform")
 				}
 			]
 		}

@@ -31,9 +31,9 @@ skill AlgorithmSelectionSkill implements AlgorithmSelection {
 			compResults.get(testID).setValues(e)
 			compResults.get(testID).updateMetrics
 			
-			info("HOTA : " + compResults.get(testID).HOTA + 
-				'\n detection time' + compResults.get(testID).detectionTime 
-				 + '\n tracking time ' + compResults.get(testID).trackingTime)
+			info("\n HOTA - { " + compResults.get(testID).HOTA +" }"+
+				'\n Detection time - { ' + compResults.get(testID).detectionTime +" }" 
+				 + '\n Tracking time - { ' + compResults.get(testID).trackingTime +" }")
 			wake(new RegisterEvaluationMessage(compResults.get(testID)))[it.ID == this.ID]
 			return true
 		}

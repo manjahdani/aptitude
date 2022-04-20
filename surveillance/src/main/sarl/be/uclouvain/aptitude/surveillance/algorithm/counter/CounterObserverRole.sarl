@@ -17,6 +17,14 @@ import be.uclouvain.aptitude.surveillance.algorithm.MissionResults
 import be.uclouvain.organisation.platform.events.Request2PerformMission
 import be.uclouvain.organisation.platform.util.SurveillanceMissionData
 import be.uclouvain.organisation.events.AuthorizationToPerformMission
+import be.uclouvain.organisation.platform.events.StopMission
+import java.util.concurrent.atomic.AtomicInteger
+import be.uclouvain.aptitude.surveillance.evaluation.EvaluationImpl
+import be.uclouvain.python_access.PythonTwinAccessCapacity
+import be.uclouvain.aptitude.surveillance.evaluation.AlgorithmSelectorRole
+import io.sarl.core.Behaviors
+import be.uclouvain.aptitude.surveillance.evaluation.Evaluation
+import be.uclouvain.aptitude.surveillance.algorithm.util.Metric
 
 /** 
  * The CounterRole is a behaviour that an agent Algorithm endorses upon a mission to count vehicles
@@ -32,23 +40,40 @@ import be.uclouvain.organisation.events.AuthorizationToPerformMission
 
 behavior CounterObserverRole extends ObserverRole { 
 	
-	uses Logging, CounterObserverCapacity, DisplayCapacity, ExternalContextAccess
+	uses Logging, CounterObserverCapacity, DisplayCapacity, ExternalContextAccess, Behaviors
 	
 	val objectPresentInframe = new HashMap<Integer, BBoxe2D>
 	val objectToBeAnalyzed = new ArrayList<BBoxe2D>;
 	var lineCoords = #[1235, 700, 309, 664, 1477, 324, 1676, 310] //@FIXME MEDIUM MANUAL
 	// end
-	val numberOfSimulations = 0
-	on Initialize {
-		info("The counting starts from now !")
-		
-		setSkill(new CountingSkill, CounterObserverCapacity)
-		//setSkill(new DisplaySkill)
-	}
- 
-	on TrackingPerception {
+	val numberOfSimulations = new AtomicInteger(0)
+	val MAXIMUM_EVALUATIONS = 5
+	val CONFIG_PATH = "F:/aptitude/surveillance/src/main/resources/config/evalconfig.json" // @FIXME HIGH Manual
 
-		
+on Initialize {
+		info("Counting starts from now !")
+		setSkill(new CountingSkill, CounterObserverCapacity)
+		// setSkill(new DisplaySkill)
+		warning("Let the evaluation start")
+
+
+	}
+
+	override processingMissionWithID(mID : UUID) {
+		orderedMissionList.put(mID, missionList.get(mID))
+		warning("Counter observer processing mid {" +mID +"}")
+		setSkill(new EvaluationImpl(CONFIG_PATH, ADN.get.name, computation_location.get), Evaluation,
+			PythonTwinAccessCapacity)
+		registerBehavior(new AlgorithmSelectorRole(this.owner), 
+							 CONFIG_PATH, 
+							 ADN.get.name, 
+							 computation_location,
+							 new Metric("APTITUDE",
+					    				"F:/pythonToolbox/pytb-agent/videos/".concat(ADN.get.platformName).concat("/gt/gt.txt")),
+					         MAXIMUM_EVALUATIONS) 	// @FIXME HIGH Manual
+	}
+
+	on TrackingPerception {
 		if (occurrence.frameNumber % 100 == 0 || occurrence.frameNumber<5) {
 			info("Already processed " + occurrence.frameNumber + " frame. Current counting is")
 			DisplayPerception(1)
@@ -93,15 +118,23 @@ behavior CounterObserverRole extends ObserverRole {
 //			//counts, occurrence.observerName, this.ID.toString, occurrence.sensitivity)
 //	}
 	
+	 
 	on MissionResults {
-		emit(providers.get(occurrence.observerID),new StopMission(
-		val newMissionID = UUID.randomUUID
-		val newMissionData = new SurveillanceMissionData(newMissionID, 
-															this.ID,
-															organizationContext.get.ID,
-															occurrence.processingParameters)
-		orderedMissionList.put(newMissionID, newMissionData)
-		emit(privateOrganizationSpace.get, new Request2PerformMission(newMissionData))
+		emit(providers.get(occurrence.source.ID), new StopMission(occurrence.missionID))[!me]
+		
+		if(numberOfSimulations.incrementAndGet<=MAXIMUM_EVALUATIONS){
+			warning("Received mission results # " 
+				+ numberOfSimulations.get + 
+				" from {" + occurrence.source.ID + 
+				"}\n mid {" + occurrence.missionID +"}")
+			
+			val newMissionID = UUID.randomUUID
+			val newMissionData = new SurveillanceMissionData(newMissionID, 
+																this.ID,
+																organizationContext.get.ID,
+																occurrence.processingParameters)
+			orderedMissionList.put(newMissionID, newMissionData)
+			emit(privateOrganizationSpace.get, new Request2PerformMission(newMissionData))}
 	}
 
 	on AuthorizationToPerformMission {

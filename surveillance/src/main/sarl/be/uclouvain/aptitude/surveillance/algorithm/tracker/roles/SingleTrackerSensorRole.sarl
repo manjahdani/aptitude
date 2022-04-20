@@ -1,25 +1,25 @@
 package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
 
+import be.uclouvain.aptitude.surveillance.algorithm.MissionResults
+import be.uclouvain.aptitude.surveillance.algorithm.SaveResults
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinCapacity
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.TrackerPythonTwinSkill
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ResumeTrackingMission
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingPerception
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
+import be.uclouvain.aptitude.surveillance.platform.events.SensorInfo
+import be.uclouvain.aptitude.surveillance.platform.util.Camera
 import be.uclouvain.organisation.platform.SensorRole
 import be.uclouvain.organisation.platform.events.ScenarioInfo
 import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
+import be.uclouvain.organisation.platform.events.SensorInfoRequest
 import be.uclouvain.python_access.BBoxes2DTrackResult
 import io.sarl.core.Behaviors
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.UUID
-import be.uclouvain.organisation.platform.util.HyperParameters
-import be.uclouvain.aptitude.surveillance.platform.events.SensorInfo
 import java.util.concurrent.atomic.AtomicReference
-import be.uclouvain.aptitude.surveillance.platform.util.Camera
-import be.uclouvain.organisation.platform.events.SensorInfoRequest
-import be.uclouvain.aptitude.surveillance.algorithm.MissionResults
+import be.uclouvain.aptitude.surveillance.algorithm.events.StrategyMethod
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -44,7 +44,11 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 	var totalTrackerTime : double = 0
 	var totalDetectorTime : double = 0
 	val cameraSettings = new AtomicReference<Camera>
-	
+	val Detector = new AtomicReference<String>
+	on StrategyMethod {
+		info("Received Strategy Method")
+		Detector.set(occurrence.techniqueName)
+	}
 	
 	on BBoxes2DTrackResult {
 
@@ -59,23 +63,26 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 				it.ID == l
 			]		
 		}
-		
-		info("Processed frame #" + occurrence.bboxes2DTrack.frameNumber)
+		if (occurrence.bboxes2DTrack.frameNumber%100==0){
+		info("Processed frame #" + occurrence.bboxes2DTrack.frameNumber)}
 		
 		if (occurrence.bboxes2DTrack.lastFrame || occurrence.bboxes2DTrack.frameNumber >= cameraSettings.get.frame_limit) {
-		
-			info("Tracking job done... " + "sending the information to " + listeners.keySet)
-			
-			for (l : listeners.values) {
-				emit(l,
+			emit(selfSpace, new SaveResults)
+	
+			for (l : listeners.keySet) {
+				val mission = missionList.values.findFirst[clientID == l]
+				info("Results transfered to - {" + l + "}" + " for the mID = {"+ mission.missionID)
+				emit(listeners.get(l),
 					new MissionResults(
+						mission.missionID,
 						occurrence.bboxes2DTrack.frameNumber,
 						("F:\\Database\\".concat(this.ID.toString) + ".txt"),
+							Detector.get,
+							ADN.get.name,
 						 this.totalDetectorTime, 
 					     this.totalTrackerTime,
 					     ADN.get.ID,
-						(new HyperParameters(1,false))// @FIXME VERY VERY VERY HIGH MANUAL
-					))[it.ID == l]
+						 mission.hyperParameters))[it.ID == l]
 			}
 		}
 	
@@ -94,6 +101,7 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 			computation_location.get
 		))
 	}
+	
 	on SensorInfo {
 		this.cameraSettings.set(occurrence.cameraSettings)
 	}

@@ -16,7 +16,7 @@ import io.sarl.core.Initialize
 behavior CounterManagerObserverRole extends ManagerObserverRole {
 
 	on Initialize {
-		SENSORS.put("APTITUDE", new Metadata(0, "VEHICLE", 50)) // @FIXME HIGH MANUAL
+		SENSORS.put("APTITUDE", new Metadata("APTITUDE",0, "VEHICLE", 50)) // @FIXME HIGH MANUAL
 		isDynamicAdaptionEnabled.set(true) 		// @FIXME MEDIUM // @FIXME MEDIUM not a proper way as it depends on the allocated resources. Maybe introducing a budget is better representative.
 	}
 }

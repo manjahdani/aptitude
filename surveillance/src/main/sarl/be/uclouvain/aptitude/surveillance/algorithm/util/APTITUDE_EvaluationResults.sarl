@@ -13,6 +13,9 @@ import be.uclouvain.organisation.platform.util.HyperParameters
  */
 class APTITUDE_EvaluationResults extends EvaluationResults implements Comparable<APTITUDE_EvaluationResults> {
 	
+	public val detector : String
+	public val tracker : String
+	public val multi : boolean
 	public val cautionLevel : int
 	public val total_time  : double
 	public val fps_detection : double
@@ -21,8 +24,11 @@ class APTITUDE_EvaluationResults extends EvaluationResults implements Comparable
 	public var efficiency : double 
 	public var APTITUDE_score : double
 	
-	new (pid : UUID, id : UUID, s : String, dt : double, tt : double, f : int, hp :HyperParameters){
+	new (pid : UUID, id : UUID, s : String, det : String, track:String, dt : double, tt : double, f : int, hp :HyperParameters){
 		super(pid,id,s,dt,tt,f)
+		this.detector= det
+		this.tracker=track
+		this.multi=hp.dynamicAdaptationEnabled.get
 		this.cautionLevel = hp.cautionLevel.get
 		this.total_time = dt+tt
 		this.fps_detection=f/dt

@@ -1,11 +1,6 @@
 package be.uclouvain.aptitude.surveillance.algorithm.counter
 
-import be.uclouvain.aptitude.surveillance.algorithm.util.Metric
-import be.uclouvain.aptitude.surveillance.evaluation.AlgorithmSelectorRole
-import be.uclouvain.aptitude.surveillance.evaluation.Evaluation
-import be.uclouvain.aptitude.surveillance.evaluation.EvaluationImpl
 import be.uclouvain.organisation.platform.SensorRole
-import be.uclouvain.python_access.PythonTwinAccessCapacity
 import io.sarl.core.Behaviors
 import io.sarl.core.Logging
 import java.util.UUID
@@ -23,30 +18,13 @@ import java.util.UUID
 behavior CounterSensorRole extends SensorRole {
 	
 	uses Logging, Behaviors
-
-	
-	val CONFIG_PATH = "F:/aptitude/surveillance/src/main/resources/config/evalconfig.json" // @FIXME HIGH Manual
 	
 	override processingMissionWithID (mID : UUID) {
 
 		if (missionList.get(mID).dynamicAdaptationEnabled) {
 			warning("Let the competition start !")
 		}
-		else{
-			warning("Let the evaluation start")}
-		
-		setSkill(new EvaluationImpl(CONFIG_PATH, 
-									ADN.get.name, 
-								    computation_location.get), 
-					Evaluation,
-				    PythonTwinAccessCapacity)
-				    
-		registerBehavior(new AlgorithmSelectorRole(this.owner),
-						 CONFIG_PATH, ADN.get.name, 
-						 computation_location,
-						 	new Metric(
-								"APTITUDE",
-					             "F:/pythonToolbox/pytb-agent/videos/".concat(ADN.get.platformName).concat("/gt/gt.txt"))) //@FIXME HIGH Manual
-		enableDataAcquisition(mID,"TRACKER")
-	}
+	
+		enableDataAcquisition(mID,"TRACKER")}
+	
 }

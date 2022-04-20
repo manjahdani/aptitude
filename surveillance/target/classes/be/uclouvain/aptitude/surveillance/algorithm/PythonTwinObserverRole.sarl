@@ -11,6 +11,7 @@ import be.uclouvain.organisation.platform.events.ResumeMission
 import be.uclouvain.organisation.platform.events.StartMission
 import java.util.concurrent.atomic.AtomicInteger
 import be.uclouvain.organisation.platform.events.StopMission
+import io.sarl.core.Destroy
 
 /** 
  * @author manjah
@@ -20,7 +21,7 @@ import be.uclouvain.organisation.platform.events.StopMission
  * RESUME = 3 // No frame
  * STOP = 4  // Le sort de sa boucle pour qu'il puisse accueillir d'autres requêtes  
  * RESTART = 5 // Seek avec la frame 0
- * SEEK = 6   //  
+ * SEEK = 6   //  Seek
  * KILL = 7 // Kill the agent ?
  * 
  */
@@ -34,6 +35,10 @@ abstract behavior PythonTwinObserverRole extends ObserverRole {
 		pauseMission
 	}
 	
+	on Destroy{
+		warning("Killing python twin")
+		updateStreamAccess(7)
+	}
 	on StartMission {
 		if (occurrence.frameNumber > 0) {
 			info("UpdatingStreamAccess - Seeking frame " + occurrence.frameNumber)

@@ -22,13 +22,15 @@ import java.util.concurrent.atomic.AtomicReference
 import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsActivityDetector
 import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsDetector
 import be.uclouvain.aptitude.surveillance.CommitSuicide
+import be.uclouvain.aptitude.surveillance.algorithm.events.StrategyMethod
+import io.sarl.core.ExternalContextAccess
 
 /** 
  * @author manjah
  * 
  */
 behavior CooperativeLowDensityDetectorObserverRole extends ManagerObserverRole {
-	uses Logging, Behaviors, DefaultContextInteractions
+	uses Logging, Behaviors, DefaultContextInteractions,ExternalContextAccess
 	
 	val studentID = new AtomicReference<UUID>
 	val masterID = new AtomicReference<UUID>
@@ -36,14 +38,14 @@ behavior CooperativeLowDensityDetectorObserverRole extends ManagerObserverRole {
 
 	
 	on Initialize {
-		SENSORS.put("BACKGROUND", new Metadata(0, "VEHICLE", 200))
-		SENSORS.put("YOLO", new Metadata(1, "VEHICLE", 500))
+		SENSORS.put("BACKGROUND", new Metadata("BACKGROUND",0, "VEHICLE", 200))
+		SENSORS.put("YOLO", new Metadata("YOLO",1, "VEHICLE", 500))
 		emitToParent(new Ready2Process)
 	}
 	on PartnerDetectionFound { //@FIXME HIGH not robust
 		
 		if (occurrence.source.ID.equals(studentID.get)) {
-			warning("EnableStreamAccess at frame " + 0)
+			debug("EnableStreamAccess at frame " + 0)
 			wake(new StartMission(occurrence.source.ID,0))[it.ID == occurrence.source.ID]
 		}
 	}
@@ -71,6 +73,7 @@ behavior CooperativeLowDensityDetectorObserverRole extends ManagerObserverRole {
 			if (position == 0) {
 				warning("Activity detector Role of " + mbID)
 				studentID.set(mbID)
+				emit(selfSpace,new StrategyMethod("multi", "multi")) //@FIXME HIGH not general at all
 				return new AddMissionAsActivityDetector
 			} else {
 				warning("Detector role " + mbID)
@@ -81,6 +84,7 @@ behavior CooperativeLowDensityDetectorObserverRole extends ManagerObserverRole {
 		else{
 			if (position == mission.cautionLevel) {
 				studentID.set(mbID)
+				emit(selfSpace,new StrategyMethod("mono",SENSORS.values.get(position).name))
 				return new AddMissionAsDetector
 			}
 			else{

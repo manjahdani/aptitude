@@ -33,7 +33,7 @@ agent Detector extends Algorithm {
 	}
 
 	on AddMissionAsDetector {
-		warning("Normal Detector Role")
+		debug("Normal Detector Role")
 		registerBehavior(new DetectorSensorRole(this), ADN.get)
 		registerBehavior(new DetectorObserverRole(this), ADN.get)
 		emitToParent(new RoleRegistered)

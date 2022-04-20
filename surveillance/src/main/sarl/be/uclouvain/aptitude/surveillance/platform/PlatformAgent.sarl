@@ -62,7 +62,7 @@ agent PlatformAgent extends Paraddis {
 	
 	on QueryAnswer {
 		if(platformConfig.get.level==0){
-		info("Query received")		
+		debug("Query received")		
 		var registeredAlgorithms = occurrence.answerObject as HashMap<UUID, AlgorithmInfo>
 		for (t : platformConfig.get.tasks.keySet) {
 		 spawnInContext(Algorithm, innerContext, platformConfig.get.tasks, new AlgorithmInfo(t, "none", t),

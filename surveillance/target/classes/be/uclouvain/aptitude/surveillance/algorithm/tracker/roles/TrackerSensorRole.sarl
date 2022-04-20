@@ -37,6 +37,8 @@ behavior TrackerSensorRole extends SensorRole {
 				new MissionResults(occurrence.missionID,
 					occurrence.frameNumber, 
 					occurrence.pred_file_Path, 
+					occurrence.detector,
+					occurrence.tracker,
 					occurrence.total_time_detection,
 					occurrence.total_time_tracking, 
 					occurrence.observerID, 

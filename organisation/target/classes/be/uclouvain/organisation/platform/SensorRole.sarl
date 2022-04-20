@@ -53,7 +53,6 @@ abstract behavior SensorRole extends ScenarioRole {
 
 	on StopMission {
 		assert listeners.containsKey(occurrence.source.ID),"Listener unknown, possible hack"
-		info("Stop mission, removing listener" + occurrence.source.ID)
 		listeners.remove(occurrence.source.ID)
 	}
 	

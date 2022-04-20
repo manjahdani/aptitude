@@ -7,6 +7,7 @@ import be.uclouvain.python_access.BBoxes2DSignal
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
 import be.uclouvain.organisation.platform.events.MissionOver
+import be.uclouvain.aptitude.surveillance.algorithm.events.StrategyMethod
 
 /** 
  * @author manjah
@@ -22,7 +23,12 @@ behavior ManagerDetectorSensorRole extends DetectorSensorRole {
 			emit(listenersSpace, new MissionOver(occurrence.missionID,occurrence.terminusStatus))[it.ID !== this.ID]
 		}
 	}
-
+	
+	on StrategyMethod {
+		for (listenersSpace : listeners.values) {
+			emit(listenersSpace, new StrategyMethod(occurrence.strategy,occurrence.techniqueName))[!me]
+		}
+	}
 	on BBoxes2DSignal {
 		val signal = Signal2Transmit(occurrence.bboxes2D)
 		debug("Received detection" + occurrence.bboxes2D.frameNumber + "listeners" + listeners.keySet)

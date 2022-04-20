@@ -17,6 +17,7 @@ import java.nio.file.Paths
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
 import be.uclouvain.aptitude.surveillance.algorithm.MissionResults
+import java.util.concurrent.atomic.AtomicInteger
 
 /** 
  * @TODO : To complete
@@ -34,16 +35,16 @@ behavior AlgorithmSelectorRole extends Role {
 	
 	protected var compDuration : long
 	protected var numberTests = 0 
-	protected val numberOfSimulations = 2
+	protected val numberOfSimulationsMax = new AtomicInteger()
 	protected val score = new AtomicReference<Metric> 
-	protected var gts : String
+	protected var gts = new AtomicReference<String>
 	
 	on Initialize {
 		
 		wake(new CreateEvaluatorEntity)[it.ID == this.ID]
 		score.set(occurrence.parameters.get(3) as Metric)
-		
-		gts = new String(Files.readAllBytes(Paths.get(score.get.gtFilePatch)))
+		numberOfSimulationsMax.set(occurrence.parameters.get(4) as Integer)
+		gts.set(new String(Files.readAllBytes(Paths.get(score.get.gtFilePatch))))
 		setSkill(new AlgorithmSelectionSkill, AlgorithmSelection)
 		selfSpace.registerStrongParticipant(asEventListener)
 		
@@ -60,31 +61,31 @@ behavior AlgorithmSelectorRole extends Role {
 	on MissionResults {
 		var predictions = new String(Files.readAllBytes(Paths.get(occurrence.pred_file_Path)));
 		var testID = UUID.randomUUID
-		info("Sending to evaluation - " + testID)
+		//("Sending to evaluation  testID - {" + testID+"} + predFile is " +occurrence.pred_file_Path)
 		addEvalutionResults(testID,
 			new APTITUDE_EvaluationResults(
 				occurrence.source.ID, 
 				occurrence.observerID, 
 				occurrence.pred_file_Path, 
+				occurrence.detector,
+				occurrence.tracker,
 				occurrence.total_time_detection,
 				occurrence.total_time_tracking, 
 				occurrence.frameNumber, 
 				occurrence.processingParameters))
-		sendEvaluationRequest(testID.toString, predictions, gts)
+		sendEvaluationRequest(testID.toString, predictions, gts.get)
 	}
 
 	/* 
 	 * @FIXME HIGH Not general
 	 */
 	on EvaluationResult {
-
+		numberTests += 1
+		warning("Test #" + numberTests + ". Records result : " + occurrence.result.requestID)
 		synchronized (this) {
-			 info("Message Evaluation Received")
+			 //warning("Message Evaluation Received")
 			if (processEvaluationMessage(occurrence.result.requestID, occurrence.result)) {
-				numberTests += 1
-				info("Recording the result : " +"numberTests of Competitor " + occurrence.result.requestID)
-			
-				if (numberTests == numberOfSimulations) {
+				if (numberTests == numberOfSimulationsMax.get) {
 					var selected = selectAlgorithm()
 					selfSpace.emit(this.ID,new CompetitionOver(selected.providerID,selected.competitorID))
 				}

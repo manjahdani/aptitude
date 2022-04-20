@@ -64,7 +64,7 @@ behavior TOLDRole extends OrganizationalRole {
 	}
 	
 	on ContextJoined{
-		info("Joining context " + occurrence.holonContextID)
+		debug("Joining context " + occurrence.holonContextID)
 		if(occurrence.holonContextID!= this.ID){
 			
 			emit(getContext(occurrence.holonContextID).defaultSpace,new JoinOrganisation(this.ID,innerContext.defaultSpace.spaceID.ID))

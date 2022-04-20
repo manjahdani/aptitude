@@ -18,9 +18,9 @@ agent Counter extends Algorithm {
 	uses Behaviors, DefaultContextInteractions
 	
 	on RegisterUnitaryRole {
-		//info("Registering behaviours as atomic Counter")
-		registerBehavior(new CounterSensorRole(this), ADN.get)
+		// info("Registering behaviours as atomic Counter")
 		registerBehavior(new CounterObserverRole(this), ADN.get)
+		registerBehavior(new CounterSensorRole(this), ADN.get)
 		emitToParent(new RoleRegistered)
 	}
 

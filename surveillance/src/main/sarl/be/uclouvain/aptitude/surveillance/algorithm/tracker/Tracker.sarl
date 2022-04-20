@@ -22,7 +22,7 @@ agent Tracker extends Algorithm {
 	uses Behaviors, Logging, DefaultContextInteractions
 
 	on RegisterUnitaryRole {
-		warning("Becoming atomic tracker")
+		
 		registerBehavior(new SingleTrackerSensorRole(this), ADN.get)
 		emitToParent(new RoleRegistered)
 	}

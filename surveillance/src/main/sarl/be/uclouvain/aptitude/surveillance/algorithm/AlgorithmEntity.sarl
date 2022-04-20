@@ -53,9 +53,12 @@ behavior AlgorithmEntity extends EntityRole {
 		emit(privateOrganizationSpace.get, new DataEntry(this.ID, a))
 		}
 	}
+	
+	on SaveResults {
+		info("Entity role asking closing entry")
+		emit(privateOrganizationSpace.get, new DeleteEntry(this.ID))
+	}
 	on StopMission {
-		info("Entity role asking to close the entry")
-		emit(privateOrganizationSpace.get,new DeleteEntry(this.ID))
 		killMe
 	}
 	on QueryAnswer{

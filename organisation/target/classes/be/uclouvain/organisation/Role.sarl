@@ -25,7 +25,7 @@ abstract behavior Role {
 	protected var privateOrganizationSpace = new AtomicReference<OpenEventSpace> // private space between the algorithm and the organisation Platform
 	
 	protected val selfSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, 
-		this.ID
+		this.ID //@FIXME HIGH HIGH should we do that instead of wake ? 
 	) // An internal space to communicate with other agent roles.
 	
 	on Initialize {
