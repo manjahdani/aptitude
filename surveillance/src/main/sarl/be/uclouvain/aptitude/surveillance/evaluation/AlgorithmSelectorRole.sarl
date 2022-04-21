@@ -67,11 +67,12 @@ behavior AlgorithmSelectorRole extends Role {
 				occurrence.source.ID, 
 				occurrence.observerID, 
 				occurrence.pred_file_Path, 
-				occurrence.detector,
-				occurrence.tracker,
 				occurrence.total_time_detection,
 				occurrence.total_time_tracking, 
 				occurrence.frameNumber, 
+				occurrence.platformName,
+				occurrence.detector, 
+				occurrence.tracker,
 				occurrence.processingParameters))
 		sendEvaluationRequest(testID.toString, predictions, gts.get)
 	}

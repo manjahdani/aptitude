@@ -35,7 +35,8 @@ behavior TrackerSensorRole extends SensorRole {
 		for (l : listeners.keySet) {
 			emit(listeners.get(l),
 				new MissionResults(occurrence.missionID,
-					occurrence.frameNumber, 
+					occurrence.platformName,
+					occurrence.frameNumber,
 					occurrence.pred_file_Path, 
 					occurrence.detector,
 					occurrence.tracker,

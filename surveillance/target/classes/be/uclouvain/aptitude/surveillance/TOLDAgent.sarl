@@ -55,9 +55,9 @@ agent TOLDAgent extends Paraddis {
 	on LocalDatabaseRequest {
 		info("LocalDBRequest from - " + occurrence.contextID)
 		val randomID = UUID.randomUUID
-		var holonConfig = config.get.addSubTOLD(new TOLDConfig(config.get.level + 1),randomID)
-		spawnInContextWithID(TOLDAgent, randomID, innerContext, holonConfig)
+		var holonConfig = config.get.addSubTOLD(new TOLDConfig(config.get.level + 1), randomID)
 		distributionMap.put(randomID, new OrganisationID(occurrence.contextID, occurrence.defaultSpaceID))
+		spawnInContextWithID(TOLDAgent, randomID, innerContext, holonConfig)
 	}
 	on Ready {
 		val contextID = distributionMap.get(occurrence.source.ID).contextID

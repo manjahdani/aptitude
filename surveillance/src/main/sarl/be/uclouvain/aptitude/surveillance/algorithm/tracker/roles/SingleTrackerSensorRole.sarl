@@ -43,8 +43,10 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 
 	var totalTrackerTime : double = 0
 	var totalDetectorTime : double = 0
+	
 	val cameraSettings = new AtomicReference<Camera>
 	val Detector = new AtomicReference<String>
+	
 	on StrategyMethod {
 		info("Received Strategy Method")
 		Detector.set(occurrence.techniqueName)
@@ -75,6 +77,7 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 				emit(listeners.get(l),
 					new MissionResults(
 						mission.missionID,
+						ADN.get.platformName,
 						occurrence.bboxes2DTrack.frameNumber,
 						("F:\\Database\\".concat(this.ID.toString) + ".txt"),
 							Detector.get,

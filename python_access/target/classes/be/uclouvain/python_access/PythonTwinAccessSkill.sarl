@@ -115,9 +115,6 @@ abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
 			//info("Python partner not found, send discovery message")
 			var requestMessage = new RequestMessage()
 			requestMessage.requestID = this.pendingRequestID
-			// var a = owner.ID.toString.getBytes()
-			// var b : String = a.toString // @TODO: The hack is to avoid an error cannot convert from String to String.
-			
 			requestMessage.agentID = owner.ID.toString
 			requestMessage.jsonConfig = jsonConfig.toString
 			CommunicationManager.instance.publishMessage(topicRequestSub.toString, requestMessage)
