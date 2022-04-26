@@ -50,7 +50,7 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 		database.put(UUID.randomUUID,"a")
 	}
 	override update(key : UUID, data : Object) {
-		debug("updating for " + key)
+		//info("updating " + key)
 
 		assert database.keySet.contains(key), "The key is not present"
 		
@@ -61,7 +61,7 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 			updateTest(database.get(key) as CSVWriter, data)
 		}
 		else {
-			debug("I do not recognize the class" + data.class)
+			debug("Unkown " + data.class + "from" + key)
 		}
 	}
 	// synchronized def updateTest(writer : CSVWriter, data : APTITUDE_EvaluationResults){
@@ -89,7 +89,7 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 
 
 	synchronized def delete(key : UUID) {
-		info("Deleting..." + key)
+		//info("Deleting..." + key)
 		assert database.keySet.contains(key),"Cannot remove a key not present in database"
 		
 		if (database.get(key) instanceof FileWriter) {
@@ -124,8 +124,7 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 	}
 
 	def create(key : UUID, data : Object) {
-		
-		debug("creating for " + key.toString.substring(0, 5) + " an object " + data)
+		debug("creating entry for " + key + " an object " + data)
 		database.put(key, data)
 	}
 }

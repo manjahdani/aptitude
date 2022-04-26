@@ -14,6 +14,7 @@ import java.util.Arrays
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBox
 import be.uclouvain.python_access.ObserverPythonAccess
 import io.sarl.core.Schedules
+import be.uclouvain.organisation.AgentPerformance
 
 /** 
  * @TODO: write a description
@@ -31,10 +32,9 @@ skill TrackerPythonTwinSkill extends ObserverPythonAccess implements TrackerPyth
 	
 	uses Behaviors, Schedules
 
-	var totalTrackerTime : double = 0
-	var totalDetectorTime : double = 0
 	val FRAME_WIDTH:double
 	val FRAME_HEIGHT:double
+	
 	new (config : String, platformName : String, computation_resources_location : String, w : double, h:double){
 		super(config,platformName,computation_resources_location)
 		assert w>0, "width of the frame must be greater than 0"
@@ -43,7 +43,7 @@ skill TrackerPythonTwinSkill extends ObserverPythonAccess implements TrackerPyth
 		this.FRAME_HEIGHT=h
 	}
 	
-	def update(m : BaseMessage) {
+	def update(m : BaseMessage) { //@FIXME MEDIUM HIGH actually it is not agent cost but rather Python TWIN cost
 		if (m instanceof BBoxes2DTrackMessage) {
 			wake(new BBoxes2DTrackResult(m))[it.ID == owner.ID] 
 		} else if (m instanceof RequestMessage) {
@@ -63,9 +63,6 @@ skill TrackerPythonTwinSkill extends ObserverPythonAccess implements TrackerPyth
 	}
 	
 	@Pure def formatConversion(track : BBoxes2DTrackMessage) : ArrayList<BBoxe2D> {
-
-		totalDetectorTime += track.detectionTime
-		totalTrackerTime += track.trackingTime
 		
 		var ratio_width = FRAME_WIDTH / track.dimWidth
 		var ratio_height = FRAME_HEIGHT / track.dimHeight
@@ -82,7 +79,9 @@ skill TrackerPythonTwinSkill extends ObserverPythonAccess implements TrackerPyth
 			var conf = track.detConfs.get(i)
 			tmp.add(new BBoxe2D(new BBox(X, Y, W, H), conf, globalID, classID, track.frameNumber))
 		}
+		
 		return tmp
+		
 	}
 	
 	@SuppressWarnings("discouraged_reference")
@@ -98,8 +97,6 @@ skill TrackerPythonTwinSkill extends ObserverPythonAccess implements TrackerPyth
 		 println("*  " + track.lastFrame)
 		 println("***********************")
 	}
-//	def getTrack(detectionMessage : BBoxes2DMessage) {
-//		CommunicationManager.instance.publishMessage(topicSignalAcquisition, detectionMessage)
-//	}	
+
 }
 

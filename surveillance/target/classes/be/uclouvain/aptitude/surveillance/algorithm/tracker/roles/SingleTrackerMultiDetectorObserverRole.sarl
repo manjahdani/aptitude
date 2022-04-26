@@ -40,7 +40,7 @@ behavior SingleTrackerMultiDetectorObserverRole extends ObserverRole {
 
 	on Initialize {
 		info("Multi-tracker role started.")
-		emit(selfSpace, new ScenarioInfoRequest)
+		wake(new ScenarioInfoRequest)[me]
 		hyperParametersToBeTested.addAll(occurrence.parameters.get(1) as LinkedList<HyperParameters>)
 	}
 

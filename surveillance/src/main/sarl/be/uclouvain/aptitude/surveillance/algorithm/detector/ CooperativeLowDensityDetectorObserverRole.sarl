@@ -3,10 +3,12 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm.detector
 
+import be.uclouvain.aptitude.surveillance.CommitSuicide
 import be.uclouvain.aptitude.surveillance.algorithm.ManagerObserverRole
-import be.uclouvain.aptitude.surveillance.algorithm.detector.events.Activity
-import be.uclouvain.aptitude.surveillance.algorithm.detector.events.NoActivity
-import be.uclouvain.organisation.platform.events.PauseMission
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsActivityDetector
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsDetector
+import be.uclouvain.aptitude.surveillance.algorithm.events.StrategyMethod
+import be.uclouvain.organisation.platform.events.Ready2Process
 import be.uclouvain.organisation.platform.events.StartMission
 import be.uclouvain.organisation.platform.util.Metadata
 import be.uclouvain.python_access.PartnerDetectionFound
@@ -16,32 +18,25 @@ import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import io.sarl.lang.core.Event
 import java.util.UUID
-import java.util.concurrent.atomic.AtomicBoolean
-import be.uclouvain.organisation.platform.events.Ready2Process
 import java.util.concurrent.atomic.AtomicReference
-import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsActivityDetector
-import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsDetector
-import be.uclouvain.aptitude.surveillance.CommitSuicide
-import be.uclouvain.aptitude.surveillance.algorithm.events.StrategyMethod
-import io.sarl.core.ExternalContextAccess
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsCooperativeDetector
 
 /** 
  * @author manjah
  * 
  */
 behavior CooperativeLowDensityDetectorObserverRole extends ManagerObserverRole {
-	uses Logging, Behaviors, DefaultContextInteractions,ExternalContextAccess
+	uses Logging, Behaviors, DefaultContextInteractions
 	
 	val studentID = new AtomicReference<UUID>
 	val masterID = new AtomicReference<UUID>
-	val listeningTOTeacher = new AtomicBoolean(false)
-
 	
 	on Initialize {
 		SENSORS.put("BACKGROUND", new Metadata("BACKGROUND",0, "VEHICLE", 200))
 		SENSORS.put("YOLO", new Metadata("YOLO",1, "VEHICLE", 500))
 		emitToParent(new Ready2Process)
 	}
+	
 	on PartnerDetectionFound { //@FIXME HIGH not robust
 		
 		if (occurrence.source.ID.equals(studentID.get)) {
@@ -49,20 +44,7 @@ behavior CooperativeLowDensityDetectorObserverRole extends ManagerObserverRole {
 			wake(new StartMission(occurrence.source.ID,0))[it.ID == occurrence.source.ID]
 		}
 	}
-	on Activity {
-		if (!listeningTOTeacher.get) {
-			warning("Activity noticed starting object classification")
-		wake(new StartMission(occurrence.source.ID, occurrence.frameNumber))[it.ID == masterID.get]
-		listeningTOTeacher.set(true)
-		}
-	}
-	on NoActivity {
-		if(listeningTOTeacher.get){
-			debug("pausing detector")
-		wake(new PauseMission(masterID.get))[it.ID == masterID]
-		listeningTOTeacher.set(false)
-		}
-	}
+
 	override provideRoleMessage(mbID : UUID) : Event { //@FIXME VERY HIGH
 		val position = innerProcess_ParametersMap.values.toList.indexOf(mbID)
 		//info("member Joined " + mbID + "performance is" + position)
@@ -73,18 +55,18 @@ behavior CooperativeLowDensityDetectorObserverRole extends ManagerObserverRole {
 			if (position == 0) {
 				warning("Activity detector Role of " + mbID)
 				studentID.set(mbID)
-				emit(selfSpace,new StrategyMethod("multi", "multi")) //@FIXME HIGH not general at all
+				wake(new StrategyMethod("multi", "multi"))[me] //@FIXME HIGH not general at all
 				return new AddMissionAsActivityDetector
 			} else {
 				warning("Detector role " + mbID)
 				masterID.set(mbID)
-				return new AddMissionAsDetector
+				return new AddMissionAsCooperativeDetector
 			}
 		}
 		else{
 			if (position == mission.cautionLevel) {
 				studentID.set(mbID)
-				emit(selfSpace,new StrategyMethod("mono",SENSORS.values.get(position).name))
+				wake(new StrategyMethod("mono",SENSORS.values.get(position).name))[me]
 				return new AddMissionAsDetector
 			}
 			else{

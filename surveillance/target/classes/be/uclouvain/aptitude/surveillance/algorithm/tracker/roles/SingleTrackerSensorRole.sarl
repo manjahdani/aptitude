@@ -20,6 +20,9 @@ import java.util.ArrayList
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
 import be.uclouvain.aptitude.surveillance.algorithm.events.StrategyMethod
+import be.uclouvain.organisation.platform.events.MissionOver
+import be.uclouvain.organisation.AgentPerformance
+import com.google.common.util.concurrent.AtomicDouble
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -39,58 +42,70 @@ import be.uclouvain.aptitude.surveillance.algorithm.events.StrategyMethod
  */
 behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY HIGH ITS ACTUALLY A SUB-AGENT TRACKER WE ARE BYPASSING THAT.... 
 	
-	uses Logging, TrackerPythonTwinCapacity, Behaviors, ExternalContextAccess
+	uses Logging, TrackerPythonTwinCapacity, Behaviors, ExternalContextAccess, AgentPerformance
 
-	var totalTrackerTime : double = 0
-	var totalDetectorTime : double = 0
+	val total_tracker_time =new AtomicDouble(0)
+	
 	
 	val cameraSettings = new AtomicReference<Camera>
 	val Detector = new AtomicReference<String>
 	
 	on StrategyMethod {
-		info("Received Strategy Method")
+		val start = System.nanoTime
 		Detector.set(occurrence.techniqueName)
+		accumulateTime(System.nanoTime - start)
 	}
 	
 	on BBoxes2DTrackResult {
-
-		totalDetectorTime += occurrence.bboxes2DTrack.detectionTime
-		totalTrackerTime += occurrence.bboxes2DTrack.trackingTime
 		
+		total_tracker_time.addAndGet(occurrence.bboxes2DTrack.trackingTime)
+		val start = System.nanoTime // Measure of the performance
 		var tmp : ArrayList<BBoxe2D> = formatConversion(occurrence.bboxes2DTrack)
 
-		wake(new TrackingPerception(tmp, occurrence.bboxes2DTrack.frameNumber))[it.ID == this.ID] 
+		wake(new TrackingPerception(tmp, occurrence.bboxes2DTrack.frameNumber))[me] 
+		
 		for (l : listeners.keySet) {
 			emit(listeners.get(l), new TrackingPerception(tmp, occurrence.bboxes2DTrack.frameNumber)) [
 				it.ID == l
 			]		
 		}
-		if (occurrence.bboxes2DTrack.frameNumber%100==0){
-		info("Processed frame #" + occurrence.bboxes2DTrack.frameNumber)}
 		
-		if (occurrence.bboxes2DTrack.lastFrame || occurrence.bboxes2DTrack.frameNumber >= cameraSettings.get.frame_limit) {
-			emit(selfSpace, new SaveResults)
-	
-			for (l : listeners.keySet) {
-				val mission = missionList.values.findFirst[clientID == l]
-				info("Results transfered to - {" + l + "}" + " for the mID = {"+ mission.missionID)
-				emit(listeners.get(l),
-					new MissionResults(
-						mission.missionID,
-						ADN.get.platformName,
-						occurrence.bboxes2DTrack.frameNumber,
-						("F:\\Database\\".concat(this.ID.toString) + ".txt"),
-							Detector.get,
-							ADN.get.name,
-						 this.totalDetectorTime, 
-					     this.totalTrackerTime,
-					     ADN.get.ID,
-						 mission.hyperParameters))[it.ID == l]
-			}
+		//info("Tracking frame #" + occurrence.bboxes2DTrack.frameNumber)
+		
+		
+		if (occurrence.bboxes2DTrack.frameNumber >= cameraSettings.get.frame_limit) {
+					warning("Bad behavior, not programmed")
+					//wake(new MissionOver(this.ID,occurrence.bboxes2DTrack.frameNumber))[me]
 		}
-	
+		total_tracker_time.addAndGet((System.nanoTime - start)/1E9) // Measure of the performance
 	}
 	
+	
+	
+	on MissionOver {
+		
+		wake(new SaveResults)[me]
+		info("agent_det_cost=" + occurrence.agentCost + "\n agent_track_cost = " + processingTime)
+		for (l : listeners.keySet) {
+			val mission = missionList.values.findFirst[clientID == l]
+			//info("Results transfered to - {" + l + "}" + " for the mID = {" + mission.missionID)
+			emit(listeners.get(l),
+				new MissionResults(
+					mission.missionID, 
+					ADN.get.platformName, 
+					occurrence.terminusStatus,
+					("F:\\Database\\".concat(this.ID.toString) + ".txt"), //@FIXME VERY HIGH MANUAL
+					Detector.get,
+					ADN.get.name, 
+					occurrence.signalCost, 
+					this.total_tracker_time.get, 
+					ADN.get.ID,
+					mission.hyperParameters,
+					occurrence.agentCost,
+					processingTime))[it.ID == l]
+		}
+	}
+
 	on ResumeTrackingMission {
 		info("Resuming mission" + occurrence.missionID + " with " + occurrence.detector)
 		warning("To program")
@@ -98,17 +113,22 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 		//enableDataAcquisition(occurrence.missionID, "DETECTOR")
 	}
 
-	on ScenarioInfoRequest{
-		emit(selfSpace,new ScenarioInfo(organizationContext.get,
+	on ScenarioInfoRequest {
+		val start = System.nanoTime // Measure of the performance
+		wake(new ScenarioInfo(organizationContext.get,
 			privateOrganizationSpace.get.spaceID.ID,
 			computation_location.get
-		))
+		))[me]
+		accumulateTime(System.nanoTime - start) 	// Measure of the performance
 	}
 	
 	on SensorInfo {
+		val start = System.nanoTime // Measure of the performance
 		this.cameraSettings.set(occurrence.cameraSettings)
+		accumulateTime(System.nanoTime - start) 	// Measure of the performance
 	}
 	override processingMissionWithID(mID : UUID) {
+		val start = System.nanoTime // Measure of the performance
 		emit(privateOrganizationSpace.get, new SensorInfoRequest)
 		//if (missionList.get(mID).isDynamicAdaptationEnabled) {
 		//	registerBehavior(new SingleTrackerMultiDetectorObserverRole(owner),this.ADN.get)
@@ -117,7 +137,8 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 		warning("Single Tracker processing mID - " + mID)	
 		registerBehavior(new TrackerObserverRole(this.owner),ADN.get)
 		enableDataAcquisition(mID,"DETECTOR") 
-			//}
+			// }
+		accumulateTime(System.nanoTime - start) 		// Measure of the performance
 		}
 
 }

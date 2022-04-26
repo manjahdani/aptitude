@@ -6,19 +6,19 @@ package be.uclouvain.aptitude.surveillance.algorithm.detector
 import be.uclouvain.aptitude.surveillance.algorithm.PythonTwinObserverRole
 import be.uclouvain.python_access.PartnerDetectionFound
 import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Logging
 import io.sarl.core.Schedules
 import java.util.UUID
+import be.uclouvain.organisation.AgentPerformance
 
 /** 
  * @author manjah
  * 
  */
 behavior DetectorObserverRole extends PythonTwinObserverRole {
-	uses Logging, Schedules, DefaultContextInteractions
+	uses Schedules, DefaultContextInteractions, AgentPerformance
 
 	on PartnerDetectionFound {
-		info("Detection partner found: " + occurrence.partnerName)
+		//info("Detection partner found: " + occurrence.partnerName)
 		task("wait").in(2000) [
 			emitToParent(new PartnerDetectionFound(occurrence.partnerName))
 			task("wait").cancel // PLAY
@@ -26,7 +26,9 @@ behavior DetectorObserverRole extends PythonTwinObserverRole {
 	}
 	
 	override processingMissionWithID(mID : UUID) {
+		var start : long = System.nanoTime(); // Measure performance
+		orderedMissionList.put(mID, missionList.get(mID))
 		setSkillIfAbsent(new DetectorPythonTwin(ADN.get.belief, ADN.get.platformName, computation_location.get))
+		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}
-	
 }

@@ -18,13 +18,14 @@ import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 import be.uclouvain.organisation.platform.util.SurveillanceMissionData
+import be.uclouvain.organisation.AgentPerformance
 
 /** 
  * @author manjah
  * 
  */
 abstract behavior ScenarioRole extends Role {
-	uses Logging, Schedules
+	uses Logging, Schedules, AgentPerformance
 
 	protected val ADN = new AtomicReference<AlgorithmInfo>
 	protected val computation_location = new AtomicReference<String>
@@ -33,14 +34,16 @@ abstract behavior ScenarioRole extends Role {
 	protected val missionList = Collections.synchronizedMap(new HashMap<UUID, SurveillanceMissionData>) // A map between mission ID that it needs to answer to and their data
 	
 	on Initialize {
-
+		var start : long = System.nanoTime(); // Measure performance
 		checkList.put("context", false)
 		checkList.put("computation_location", false)
 		ADN.set(occurrence.parameters.get(0) as AlgorithmInfo)
 		setup()
+		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}
 	
 	def setup() {
+		
 		
 		debug("Setup of the role "+ this.class.toString)
 		task(this.class.toString).every(1000) [
@@ -62,20 +65,28 @@ abstract behavior ScenarioRole extends Role {
 	}
 
 	on ComputationalRessources {
+		var start : long = System.nanoTime(); // Measure performance
 		//info("received computation_location: " + occurrence.client_id)
 		computation_location.set(occurrence.client_id)
 		checkList.replace("computation_location", true)
+		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}
 	on PlatformOrganizationInfo {
-
+		var start : long = System.nanoTime(); // Measure performance
+		debug("received PlatformOrganisation")
+		
 		updateContextInfo(occurrence.contextID, occurrence.privateCommunicationChannelID)
 		ADN.get.platformName = occurrence.platformName
 		checkList.replace("context", true)
+		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}
 
 	on StopMission {
+		var start : long = System.nanoTime(); // Measure performance
+		info("Stop Mission " + occurrence.missionID  + " current mission" +missionList.keySet)
 		assert missionList.containsKey(occurrence.missionID),"Mission unknown, possible breach"
 		missionList.remove(occurrence.missionID)
+		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}
 
 	on LeavePlatform { // @TODO HIGH program a behavior on LeavePlatform
@@ -87,6 +98,7 @@ abstract behavior ScenarioRole extends Role {
 	abstract def processingMissionWithID(mID : UUID)
 	
 	def areAllTrue(array : boolean[]) {
+		
 		for (b : array)
 			if(!b) return false;
 		return true;

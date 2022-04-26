@@ -3,24 +3,36 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm.detector
 
+import be.uclouvain.aptitude.surveillance.algorithm.events.StrategyMethod
+import be.uclouvain.organisation.AgentPerformance
+import be.uclouvain.organisation.platform.events.MissionOver
 import be.uclouvain.python_access.BBoxes2DSignal
 import io.sarl.core.ExternalContextAccess
+import io.sarl.core.InnerContextAccess
 import io.sarl.core.Logging
-import be.uclouvain.organisation.platform.events.MissionOver
-import be.uclouvain.aptitude.surveillance.algorithm.events.StrategyMethod
+import java.util.Collections
+import java.util.HashSet
+import java.util.UUID
+import com.google.common.util.concurrent.AtomicDouble
 
 /** 
  * @author manjah
  * 
  */
 behavior ManagerDetectorSensorRole extends DetectorSensorRole {
-	uses Logging, ExternalContextAccess
-
+	uses Logging, ExternalContextAccess, AgentPerformance,InnerContextAccess
+	
+	var inner_agents = Collections.synchronizedSet(new HashSet<UUID>);
+	val tt = new AtomicDouble(0)
+	val at = new AtomicDouble(0)
+	var frameNumber:int 
 	on MissionOver {
 		for (listenersSpace : listeners.values) {
-			info("LastFrame")
+			frameNumber=occurrence.terminusStatus
+			inner_agents.addAll(memberAgents)
+				//info("Expecting answers from " + inner_agents + "  as #" + inner_agents.size)
+				innerDefaultSpace.emit(new RequestDetectionTime)[!me]
 			
-			emit(listenersSpace, new MissionOver(occurrence.missionID,occurrence.terminusStatus))[it.ID !== this.ID]
 		}
 	}
 	
@@ -29,11 +41,40 @@ behavior ManagerDetectorSensorRole extends DetectorSensorRole {
 			emit(listenersSpace, new StrategyMethod(occurrence.strategy,occurrence.techniqueName))[!me]
 		}
 	}
-	on BBoxes2DSignal {
-		val signal = Signal2Transmit(occurrence.bboxes2D)
-		debug("Received detection" + occurrence.bboxes2D.frameNumber + "listeners" + listeners.keySet)
-		for (listenersSpace : listeners.values) {
-			emit(listenersSpace, signal)[!me]
+	on DetectionTime{
+		//info("Received det time from " + occurrence.source.ID)
+		
+		tt.addAndGet(occurrence.detTime)
+		at.addAndGet(occurrence.aTime)
+		inner_agents.remove(occurrence.source.ID)
+		if(inner_agents.isEmpty){
+			
+			for (listenersSpace : listeners.values) {
+				emit(listenersSpace, new MissionOver(this.ID, 
+													frameNumber, 
+													tt.get,
+													at.get))[!me]
+			}
 		}
 	}
+	
+	on DetectionTime {
+		
+	}
+	
+	on BBoxes2DSignal {
+		
+		debug("Received detection" + occurrence.bboxes2D.frameNumber + "listeners" + listeners.keySet)
+		val signal = Signal2Transmit(occurrence.bboxes2D)
+		
+		for (listenersSpace : listeners.values) {
+			emit(listenersSpace, signal)[!me]
+			if (occurrence.bboxes2D.lastFrame) {
+				frameNumber=occurrence.bboxes2D.frameNumber
+				inner_agents.addAll(memberAgents)
+				//info("Expecting answers from " + inner_agents + "  as #" + inner_agents.size)
+				innerDefaultSpace.emit(new RequestDetectionTime)[!me]
+				}
+		}
+	}	
 }

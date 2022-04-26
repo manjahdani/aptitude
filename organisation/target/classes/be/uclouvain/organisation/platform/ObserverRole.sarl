@@ -17,6 +17,7 @@ import io.sarl.core.Schedules
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
+import be.uclouvain.organisation.AgentPerformance
 
 /** 
  * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 
@@ -46,15 +47,15 @@ import java.util.UUID
  
 abstract behavior ObserverRole extends ScenarioRole {
 	
-	uses Logging, Behaviors, ExternalContextAccess, Schedules
+	uses Logging, Behaviors, ExternalContextAccess, Schedules, AgentPerformance
 
 	protected val providers = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the role and data providers
 	//protected var processingParameters = Collections.synchronizedMap(new HashMap<UUID, HyperParameters>) // 
 	protected val orderedMissionList = Collections.synchronizedMap(new HashMap<UUID, SurveillanceMissionData>) // A map between mission ID that it ordered to another observer and their data
-	
+	protected val external_internal_Map = Collections.synchronizedMap(new HashMap<UUID, UUID>) // {key := uid} of an external mission, {value:= uid of the ordered mission}
 	
 	on HyperParametersRequest {
-
+		var start : long = System.nanoTime(); // Measure performance
 		// We decide that derived role handles the parameters request of inner-agents.
 		// Removing the flag results in nullException as the role
 		// receives a request from a innerAgent but did not include it in its providers.
@@ -66,13 +67,14 @@ abstract behavior ObserverRole extends ScenarioRole {
 				"}|mID = " +MD.missionID.toString.substring(0,5) + " to " + providerID.toString.substring(0, 5))
 		emit(providers.get(providerID), new ProcessingHyperParameters(
 			occurrence.missionID, orderedMissionList.get(occurrence.missionID).hyperParameters))[it.ID == providerID]
+		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}
 	on SignalID {
-		
+		var start : long = System.nanoTime(); // Measure performance
 		val signalID = occurrence.signalID
 		val mID= occurrence.missionID
 		
-		if(!providers.containsKey(signalID)){
+		//if(!providers.containsKey(signalID)){
 			orderedMissionList.get(mID).providerID = signalID
 			// create a new private communication space between the signal and observer and listen to it
 			val sID = UUID.randomUUID
@@ -80,15 +82,16 @@ abstract behavior ObserverRole extends ScenarioRole {
 				sID)
 			comSpace.registerStrongParticipant(asEventListener)
 			providers.put(signalID, comSpace)
-			//info("Received provider ID sending sid " + comSpace.spaceID.ID)
+			info("Received provider ID sending space id -" + comSpace.spaceID.ID)
 			emit(organizationContext.get.defaultSpace, new AddMission(occurrence.missionID, sID)) [
 				it.ID == signalID
 			]
-		}
-		else{
-			info("Known signal = " + signalID)
-			emit(providers.get(signalID),new AddMission(occurrence.missionID, providers.get(signalID).spaceID.ID))[it.ID == signalID]
-		}
+		
+		//else{
+			//info("Known signal = " + signalID)
+			//emit(providers.get(signalID),new AddMission(occurrence.missionID, providers.get(signalID).spaceID.ID))[it.ID == signalID]
+		//}
+		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}
 
 	on LeavePlatform {
@@ -101,32 +104,40 @@ abstract behavior ObserverRole extends ScenarioRole {
 
 	
 	on RecruitSignal {
-		
+		var start : long = System.nanoTime(); // Measure performance
 		missionList.put(occurrence.missionData.missionID, occurrence.missionData)
 		requestAlgorithm(occurrence.missionData.missionID, occurrence.task)
 		processingMissionWithID(occurrence.missionData.missionID)
+		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}
 	
 	def processingMissionWithID(mID : UUID) {
+		var start : long = System.nanoTime(); // Measure performance
+		external_internal_Map.put(mID,this.ID)
 		orderedMissionList.put(mID, missionList.get(mID))
+		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}
 
 	
 	on StopMission {
+		var start : long = System.nanoTime(); // Measure performance
 		
-		orderedMissionList.remove(occurrence.missionID)
+
 		val providersID = providers.keySet.clone
 		for (p : providersID) {
-			emit(providers.get(p), new StopMission(occurrence.missionID))[!me]
+			emit(providers.get(p), new StopMission(external_internal_Map.get(occurrence.missionID)))[!me]
 			providers.remove(p)
 		}
+		orderedMissionList.remove(occurrence.missionID)
+		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}
 
 	
-	on ProcessMission{
-
+	on ProcessMission {
+		var start : long = System.nanoTime(); // Measure performance
 		missionList.put(occurrence.missionData.missionID, occurrence.missionData)
 		processingMissionWithID(occurrence.missionData.missionID)
+		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}
 
 	def requestAlgorithm(mID : UUID, algoTask : String) {

@@ -24,8 +24,12 @@ class APTITUDE_EvaluationResults extends EvaluationResults implements Comparable
 	public val fps_total : double
 	public var efficiency : double 
 	public var APTITUDE_score : double
+	public val agent_detector_time : double
+	public val agent_tracker_time : double
+	public val agent_total_time : double
 	
-	new (pid : UUID, id : UUID, s : String, dt : double, tt : double, f : int, platform:String, det : String, track:String, hp :HyperParameters){
+	new (pid : UUID, id : UUID, s : String, dt : double, tt : double, f : int, platform : String, det : String,
+		track : String, hp : HyperParameters, adt : double, att : double) {
 		super(pid,id,s,dt,tt,f)
 		this.platformName = platform
 		this.detector= det
@@ -35,7 +39,10 @@ class APTITUDE_EvaluationResults extends EvaluationResults implements Comparable
 		this.total_time = dt+tt
 		this.fps_detection=f/dt
 		this.fps_tracking= f/tt
-		this.fps_total = f/this.total_time
+		this.fps_total = f / this.total_time
+		this.agent_detector_time = adt
+		this.agent_tracker_time = att
+		this.agent_total_time = att+adt
 		
 	}
 	

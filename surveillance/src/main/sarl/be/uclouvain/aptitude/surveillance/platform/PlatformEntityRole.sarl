@@ -8,16 +8,17 @@ import be.uclouvain.organisation.platform.events.Ready
 import be.uclouvain.organisation.told.entity.EntityRole
 import be.uclouvain.organisation.told.events.Query
 import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Behaviors
 
 /** 
  * @author manjah
  * 
  */
 behavior PlatformEntityRole extends EntityRole {
-	uses ExternalContextAccess
+	uses ExternalContextAccess, Behaviors
 	
 	override Ready2Work{
-		emit(selfSpace, new Ready)
+		wake(new Ready)[me]
 		emit(privateOrganizationSpace.get, new Query("AlgorithmInfo"))
 	}
 	on JoinOrganisation{

@@ -6,36 +6,53 @@ package be.uclouvain.aptitude.surveillance.algorithm.detector
 import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
 import be.uclouvain.aptitude.surveillance.algorithm.BecomeManager
 import be.uclouvain.aptitude.surveillance.algorithm.RoleRegistered
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsActivityDetector
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsCooperativeDetector
+import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsDetector
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Logging
-import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsDetector
-import be.uclouvain.aptitude.surveillance.algorithm.detector.events.AddMissionAsActivityDetector
+import be.uclouvain.organisation.AgentPerformance
 
 /** 
  * @author manjah
  * 
  */
 agent Detector extends Algorithm {
-	uses Behaviors, DefaultContextInteractions,Logging
+	uses Behaviors, DefaultContextInteractions,Logging, AgentPerformance
 	
 	on BecomeManager {
+		var start : long = System.nanoTime(); // Measure performance
 		debug("Becoming Manager")
 		registerBehavior(new CooperativeLowDensityDetectorObserverRole(this), ADN.get)
 		registerBehavior(new ManagerDetectorSensorRole(this), ADN.get)
 		emitToParent(new RoleRegistered)
+		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}
 	on AddMissionAsActivityDetector {
+		var start : long = System.nanoTime(); // Measure performance
 		debug("Becoming Student Atomic")
 		registerBehavior(new ActivityDetectorSensorRole(this), ADN.get)
 		registerBehavior(new DetectorObserverRole(this), ADN.get)
 		emitToParent(new RoleRegistered)
+		accumulateTime(System.nanoTime - start) 		// Measure performance
+	}
+
+	on AddMissionAsCooperativeDetector {
+		var start : long = System.nanoTime(); // Measure performance
+		debug("Cooperative Detector Role")
+		registerBehavior(new CooperativeSensorRole(this), ADN.get)
+		registerBehavior(new DetectorObserverRole(this), ADN.get)
+		emitToParent(new RoleRegistered)
+		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}
 
 	on AddMissionAsDetector {
+		var start : long = System.nanoTime(); // Measure performance
 		debug("Normal Detector Role")
 		registerBehavior(new DetectorSensorRole(this), ADN.get)
 		registerBehavior(new DetectorObserverRole(this), ADN.get)
 		emitToParent(new RoleRegistered)
+		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}	
 }

@@ -55,7 +55,7 @@ behavior AlgorithmEntity extends EntityRole {
 	}
 	
 	on SaveResults {
-		info("Entity role asking closing entry")
+		//info("Entity role asking closing entry")
 		emit(privateOrganizationSpace.get, new DeleteEntry(this.ID))
 	}
 	on StopMission {

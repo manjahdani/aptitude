@@ -5,7 +5,6 @@ package be.uclouvain.aptitude.surveillance.algorithm.counter
 
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBox
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
-import be.uclouvain.organisation.platform.CounterObserverCapacity
 import be.uclouvain.organisation.platform.util.OrientedCountingLine
 import io.sarl.core.Logging
 import java.util.ArrayList

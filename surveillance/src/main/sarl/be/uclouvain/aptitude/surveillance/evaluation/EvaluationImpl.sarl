@@ -13,6 +13,7 @@ import be.uclouvain.python_access.messages.RequestMessage
 import io.sarl.core.Behaviors
 import io.sarl.core.Schedules
 import java.util.UUID
+import io.sarl.core.Logging
 
 /** 
  * @TODO: write a description
@@ -26,7 +27,7 @@ import java.util.UUID
  */
 skill EvaluationImpl extends PythonTwinAccess implements Evaluation {
 
-	uses Behaviors, Schedules
+	uses Behaviors, Schedules,Logging
 
 	def update(m : BaseMessage) {
 		if (m instanceof EvaluationMessage) {
@@ -45,7 +46,6 @@ skill EvaluationImpl extends PythonTwinAccess implements Evaluation {
 			topicRequestSub = null
 			val topicName = "evaluation_" + owner.ID.toString + "_" + message.clientName
 			topicSignalAcquisition = CommunicationManager.instance.subscribeTopic(topicName, this)
-			//info("EvalPartnerFound")
 			wake(new PartnerEvaluationFound(message.clientName))
 		}
 	}

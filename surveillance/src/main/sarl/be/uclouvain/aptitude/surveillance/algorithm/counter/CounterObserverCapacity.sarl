@@ -1,7 +1,7 @@
 /** 
  * 
  */
-package be.uclouvain.organisation.platform
+package be.uclouvain.aptitude.surveillance.algorithm.counter
 
 import be.uclouvain.organisation.platform.ObserverCapacity
 import be.uclouvain.organisation.platform.util.OrientedCountingLine

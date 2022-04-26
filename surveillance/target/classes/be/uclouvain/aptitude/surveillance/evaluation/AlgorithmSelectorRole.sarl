@@ -33,7 +33,7 @@ behavior AlgorithmSelectorRole extends Role {
 	
 	uses AlgorithmSelection, Logging, Evaluation, Behaviors
 	
-	protected var compDuration : long
+
 	protected var numberTests = 0 
 	protected val numberOfSimulationsMax = new AtomicInteger()
 	protected val score = new AtomicReference<Metric> 
@@ -46,15 +46,13 @@ behavior AlgorithmSelectorRole extends Role {
 		numberOfSimulationsMax.set(occurrence.parameters.get(4) as Integer)
 		gts.set(new String(Files.readAllBytes(Paths.get(score.get.gtFilePatch))))
 		setSkill(new AlgorithmSelectionSkill, AlgorithmSelection)
-		selfSpace.registerStrongParticipant(asEventListener)
-		
 	}
 
 	
 	on PartnerEvaluationFound {
 		//partnerName = occurrence.partnerName
-		//info("Eval found partner " + occurrence.partnerName)
-		this.compDuration = System.currentTimeMillis()
+		info("Eval found partner " + occurrence.partnerName)
+		
 	}
 
 	
@@ -73,7 +71,9 @@ behavior AlgorithmSelectorRole extends Role {
 				occurrence.platformName,
 				occurrence.detector, 
 				occurrence.tracker,
-				occurrence.processingParameters))
+				occurrence.processingParameters, 
+				occurrence.agent_detector_time,
+				occurrence.agent_tracker_time))
 		sendEvaluationRequest(testID.toString, predictions, gts.get)
 	}
 
@@ -88,7 +88,7 @@ behavior AlgorithmSelectorRole extends Role {
 			if (processEvaluationMessage(occurrence.result.requestID, occurrence.result)) {
 				if (numberTests == numberOfSimulationsMax.get) {
 					var selected = selectAlgorithm()
-					selfSpace.emit(this.ID,new CompetitionOver(selected.providerID,selected.competitorID))
+					wake(new CompetitionOver(selected.providerID,selected.competitorID))[me]
 				}
 			}
 			else{

@@ -30,6 +30,13 @@ class MissionData {
 		this.platformID = platformID
 		
 	}
+
+	new (missionID : UUID, clientID : UUID, platformID : UUID,providerID:UUID) {
+		this.missionID = missionID
+		this.clientID = clientID
+		this.platformID = platformID
+		this.providerID=providerID
+	}
 	def isMissionActive {
 		return this.isActive
 	}

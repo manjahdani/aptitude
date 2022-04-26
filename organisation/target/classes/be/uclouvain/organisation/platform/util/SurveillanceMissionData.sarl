@@ -26,6 +26,10 @@ class SurveillanceMissionData extends MissionData{
 		this.hyperParameters = new HyperParameters(cl,o)
 	}
 
+	new (missionID : UUID, clientID : UUID, platformID : UUID, providerID:UUID, cl : int, o : boolean) {
+		super(missionID, clientID, platformID,providerID)
+		this.hyperParameters = new HyperParameters(cl, o)
+	}
 	new (missionID : UUID, clientID : UUID, platformID : UUID, hp : HyperParameters) {
 		super(missionID, clientID, platformID)
 		this.hyperParameters = hp

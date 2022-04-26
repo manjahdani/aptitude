@@ -69,7 +69,7 @@ behavior CameraPlatformRole extends PlatformRole {
 		
 		
 		val toRecruit = occurrence.algorithmTask
-		debug("adding algorithm " + toRecruit +" current participants" + participants.keySet)
+		//info("adding algorithm " + toRecruit +" current participants" + participants.keySet)
 		
 		if (!participants.containsKey(toRecruit)) {
 			debug("-" + toRecruit + "-" + "Algorithm not available" + participants.keySet)

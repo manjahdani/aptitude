@@ -5,7 +5,6 @@ import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingReque
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.aptitude.surveillance.evaluation.CompetitionOver
 import be.uclouvain.aptitude.surveillance.ui.DisplayCapacity
-import be.uclouvain.organisation.platform.CounterObserverCapacity
 import be.uclouvain.organisation.platform.ObserverRole
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
@@ -70,7 +69,7 @@ on Initialize {
 							 computation_location,
 							 new Metric("APTITUDE",
 					    				"F:/pythonToolbox/pytb-agent/videos/".concat(ADN.get.platformName).concat("/gt/gt.txt")),
-					         MAXIMUM_EVALUATIONS) 	// @FIXME HIGH Manual
+					        			 MAXIMUM_EVALUATIONS) 	// @FIXME HIGH Manual
 	}
 
 	on TrackingPerception {
@@ -120,6 +119,8 @@ on Initialize {
 	
 	 
 	on MissionResults {
+		
+		
 		emit(providers.get(occurrence.source.ID), new StopMission(occurrence.missionID))[!me]
 		
 		if(numberOfSimulations.incrementAndGet<=MAXIMUM_EVALUATIONS){

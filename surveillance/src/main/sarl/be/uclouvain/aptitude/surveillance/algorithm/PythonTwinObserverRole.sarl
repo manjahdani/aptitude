@@ -12,6 +12,7 @@ import be.uclouvain.organisation.platform.events.StartMission
 import java.util.concurrent.atomic.AtomicInteger
 import be.uclouvain.organisation.platform.events.StopMission
 import io.sarl.core.Destroy
+import be.uclouvain.organisation.AgentPerformance
 
 /** 
  * @author manjah
@@ -26,13 +27,17 @@ import io.sarl.core.Destroy
  * 
  */
 abstract behavior PythonTwinObserverRole extends ObserverRole {
-	uses Logging, PythonTwinAccessCapacity
+	uses Logging, PythonTwinAccessCapacity, AgentPerformance
 	
 	val counter = new AtomicInteger(0)
 	on PauseMission {
-		warning("Pause Mission from " + occurrence.source.ID)
+		var start : long = System.nanoTime(); // Measure performance
+		
+		debug("Pausing mission")// +occurrence.missionID)
 		orderedMissionList.get(occurrence.missionID).setMissionInative
 		pauseMission
+		
+		accumulateTime(System.nanoTime - start) 	// Measure of the performance
 	}
 	
 	on Destroy{
@@ -40,43 +45,54 @@ abstract behavior PythonTwinObserverRole extends ObserverRole {
 		updateStreamAccess(7)
 	}
 	on StartMission {
+		var start : long = System.nanoTime(); // Measure performance
 		if (occurrence.frameNumber > 0) {
-			info("UpdatingStreamAccess - Seeking frame " + occurrence.frameNumber)
-			
+			//info("UpdatingStreamAccess - Action 6 Seeking frame " + occurrence.frameNumber)
 			updateStreamAccess(6, occurrence.frameNumber)
 			}
 		
 		if (counter.get > 0) {
-			info("UpdatingStreamAccess - Action 3 Starting at frame " + occurrence.frameNumber)
+			//info("UpdatingStreamAccess - Action 3 Starting at frame " + occurrence.frameNumber)
 			updateStreamAccess(3)
 		}
 		else {
-			info("UpdatingStreamAccess - Action 1 Starting at frame " + occurrence.frameNumber)
+			//info("UpdatingStreamAccess - Action 1 Starting at frame " + occurrence.frameNumber)
 			counter.set(1)
 			updateStreamAccess(1)
 		}
-		
+		accumulateTime(System.nanoTime - start) 		// Measure of the performance
 	}
 
 	on StopMission {
+		var start : long = System.nanoTime(); // Measure performance
 		warning("Pausing Python TWIN")
 		updateStreamAccess(4)
+		accumulateTime(System.nanoTime - start) 		// Measure of the performance
 	}
 
 	on ResumeMission {
+		var start : long = System.nanoTime(); // Measure performance
+		
 		orderedMissionList.get(occurrence.missionID).setMissionActive
 		resumeMission(occurrence.reInitialization)
+		
+		accumulateTime(System.nanoTime - start) 	// Measure of the performance
 	}
 	
 	def pauseMission {
+		var start : long = System.nanoTime(); // Measure performance
 		for (o : orderedMissionList.values) {
 			if (!o.isMissionActive) {
 				isRoleActive.set(false)
 				updateStreamAccess(2)
-			}
-	}}
+			}}
+			
+		accumulateTime(System.nanoTime - start) 
+	}
 	
 	def resumeMission(reInit : boolean) {
+		var start : long = System.nanoTime(); // Measure performance
+		
 		if (reInit) {
 			info("Resume Mission request")
 			updateStreamAccess(5)
@@ -85,5 +101,6 @@ abstract behavior PythonTwinObserverRole extends ObserverRole {
 			info("ReStartingStream")
 			updateStreamAccess(3)
 		}
+		accumulateTime(System.nanoTime - start) 
 	}
 }

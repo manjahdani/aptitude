@@ -66,7 +66,7 @@ agent Algorithm extends Paraddis{
 	
 	protected val ADN  = new AtomicReference<AlgorithmInfo>
 
-	val agentPlatformSpaces = new HashMap<String, OpenEventSpace>
+	protected val agentPlatformSpaces = new HashMap<String, OpenEventSpace>
 	var subHolons = new HashMap<AgentContext, UUID>
 	var openChannel = new AtomicReference<OpenEventSpace>
 	val INIT_TASKS = new HashMap<String, Class<? extends Agent>>
@@ -75,7 +75,9 @@ agent Algorithm extends Paraddis{
 		INIT_TASKS.putAll(occurrence.parameters.get(0) as HashMap<String, Class<? extends Agent>>)
 		ADN.set(occurrence.parameters.get(1) as AlgorithmInfo) 
 		loggingName = this.ID + "-" + ADN.get.task+"-" + ADN.get.name + "-" + ADN.get.level 
-		openChannel.set(innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID))
+		val channelID = UUID.randomUUID
+		debug("Creating and registering at channel" + channelID)
+		openChannel.set(innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, channelID))
 		openChannel.get.registerStrongParticipant(asEventListener)
 		debug("atomic agent with task: " + ADN.get.task + " & belief : " +
 			ADN.get.belief.replace("F:/aptitude/surveillance/src/main/resources/", ""))
@@ -90,10 +92,12 @@ agent Algorithm extends Paraddis{
 			}
 		}
 	}
+	
 
 	on AgentPlatform {
 		debug("encounters : " + occurrence.name + " agent")
 		agentPlatformSpaces.put(occurrence.name, occurrence.topic)
+		debug("registering at space ID" + occurrence.topic.spaceID.ID)
 		occurrence.topic.registerStrongParticipant(asEventListener)
 		emit(occurrence.topic, new AgentAlgorithm(ADN.get.name, openChannel.get))
 		wake(new AgentPlatform(occurrence.name, occurrence.id, occurrence.topic))[it.ID !== this.ID]
@@ -120,7 +124,7 @@ agent Algorithm extends Paraddis{
 		}
 				
 			else{
-				debug("Received a request but transmit to the lowerLevel")
+				debug("Request forwarded to inner level")
 				wake(new AlgorithmNeeded(occurrence.contextID,occurrence.name,occurrence.agentID))[it.ID !== this.ID]
 			}
 	}

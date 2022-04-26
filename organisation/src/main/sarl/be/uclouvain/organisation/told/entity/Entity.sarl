@@ -6,7 +6,6 @@ import be.uclouvain.organisation.Role
 import be.uclouvain.organisation.events.AuthorizationToJoinContext
 import be.uclouvain.organisation.told.TOLDOrganizationInfo
 import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Logging
 
 /** 
  * The concept-generic role of Entity seeks knowledge to update : 

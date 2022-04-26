@@ -3,17 +3,20 @@
  */
 package be.uclouvain.aptitude.surveillance
 
-
+import be.uclouvain.organisation.OrganizationInfo
+import io.sarl.core.Behaviors
 import io.sarl.core.Destroy
+import io.sarl.core.ExternalContextAccess
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
-import io.sarl.core.Schedules
 import io.sarl.core.MemberJoined
-import io.sarl.core.ParticipantJoined
-import io.sarl.core.Behaviors
+import io.sarl.core.OpenEventSpaceSpecification
+import io.sarl.core.Schedules
 import java.util.UUID
-import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Initialize
+import be.uclouvain.organisation.AgentPerformance
+import io.sarl.lang.core.Event
 
 /** 
  * The agent gives global trait to agents. 
@@ -33,49 +36,28 @@ agent Paraddis {
 
 	protected var AgentType : String = 'Unknown'
 	
-//on Initialize {
-	//	// Event trigger before the agent begin to live or to be used.
-	//
-	//				/* 
-	//	 * The goal in the statements below is to help us setting the AgentType in 
-	//	 * order to have an idea of which agents is producing which <<log
-	//	 */
-	//	val Classa = this.class.toString // to get the class of the agent
-	//	 synchronized (AgentType)
-	//	 switch (Classa) {
-	//	 case "class be.uclouvain.launcher.bootAgent": {
-	//	  AgentType = "Boot"}
-	//	  case "class be.uclouvain.aptitudeAgents.PlatformAgent":{
-	//	  	AgentType="Platform"
-	//	  }
-	//	  default:{
-	//	  	AgentType ='AgentNotKnown' 
-	//	  	info(Classa)
-	//	  	}}
-	//
-	//	loggingName = AgentType + "-" + this.ID
-	//	 synchronized (AgentType)
-	//info(" agent was started.")
-	//}
-	on Destroy {
-		// synchronized (AgentType)
-			info("Stopped.")
+	on Initialize {
+		
+		setSkill(new MeasureAgentPerformance, AgentPerformance)
+		
 	}
-
+	on Destroy {
+		info("Stopped.")
+	}
 	on MemberJoined {
 		debug(" noticed " + occurrence.agentType.replaceAll("be.uclouvain.aptitude.surveillance.", " - ") +
-				" - &ID : " + occurrence.agentID.toString.substring(0, 5))
+				" - &ID : " + occurrence.agentID.toString.substring(0, 5) + "message sent from" + occurrence.source.ID)
+	}
+	on OrganizationInfo {
+		debug("Registering in the private space of organisation " + occurrence.contextID)
+		val context = getContext(occurrence.contextID) // Update the organization
+		context.getOrCreateSpaceWithID(OpenEventSpaceSpecification, occurrence.privateCommunicationChannelID).registerStrongParticipant(asEventListener)
 	}
 
-	on ParticipantJoined {
-		//@DEBUG
-		//info("Participant  - " + occurrence.source.ID.toString.substring(0, 5) + " - Joined space -" +
-			//occurrence.spaceID)
-	}
 
 	on CommitSuicide {
 		
-		//info("received commitSuicide : " + occurrence.fromMe + " : " + occurrence.source.ID) 
+		//debug("received commitSuicide : " + occurrence.fromMe + " : " + occurrence.source.ID) 
 		terminateAgent
 	}
 
@@ -112,6 +94,7 @@ agent Paraddis {
 		
 		
 		for (h : memberAgents) {
+			
 			wake(new CommitSuicide)[it.ID == h]
 		}
 		val waitTask = task("wait-member-killed-task")
@@ -130,8 +113,6 @@ agent Paraddis {
 			tasksInProgress.remove(t)
 			// @DEBUG info("done cancelling : " + getActiveTasks)
 	}
-	
-	
 	val waitTask = task("final-task")
 	waitTask.every(1000)[
 		if(tasksInProgress.isEmpty){
@@ -140,5 +121,11 @@ agent Paraddis {
 		}
 	]
 }
+}
 
+behavior PerformanceCounter{
+	uses AgentPerformance
+	on Event {
+		incrementMessage
+	}
 }

@@ -9,6 +9,7 @@ import be.uclouvain.organisation.events.AuthorizationToPerformMission
 import be.uclouvain.organisation.events.RequestToJoin
 import be.uclouvain.organisation.platform.events.Request2PerformMission
 import be.uclouvain.organisation.platform.events.StopMission
+import be.uclouvain.organisation.platform.util.PlatformConfig
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
@@ -18,7 +19,6 @@ import io.sarl.core.OpenEventSpaceSpecification
 import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
-import be.uclouvain.organisation.platform.util.PlatformConfig
 
 /** 
  * The Platform manages the storage and/or computing of resources. A Platform could include sub-Platforms (holonic). 

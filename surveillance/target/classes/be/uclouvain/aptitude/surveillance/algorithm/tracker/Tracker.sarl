@@ -13,23 +13,28 @@ import be.uclouvain.aptitude.surveillance.algorithm.tracker.roles.TrackerSensorR
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Logging
+import be.uclouvain.organisation.AgentPerformance
 
 /** 
  * @author manjah
  * 
  */
 agent Tracker extends Algorithm {
-	uses Behaviors, Logging, DefaultContextInteractions
+	uses Behaviors, Logging, DefaultContextInteractions, AgentPerformance
 
 	on RegisterUnitaryRole {
-		
+		var start : long = System.nanoTime(); // Measure performance
+		debug("Becoming a tracker")
 		registerBehavior(new SingleTrackerSensorRole(this), ADN.get)
 		emitToParent(new RoleRegistered)
+		accumulateTime(System.nanoTime - start) // Measure performance
 	}
 	on BecomeManager {
+		var start : long = System.nanoTime(); // Measure performance
 		debug("Becoming a tracker manager")
 		registerBehavior(new ManagerTrackerObserverRole(this), ADN.get)
 		registerBehavior(new TrackerSensorRole(this), ADN.get)
 		emitToParent(new RoleRegistered)
+		accumulateTime(System.nanoTime - start) 	// Measure performance
 	}
 }

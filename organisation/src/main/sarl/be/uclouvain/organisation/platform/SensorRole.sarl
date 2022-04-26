@@ -18,28 +18,32 @@ import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
 import be.uclouvain.organisation.platform.events.StopMission
+import be.uclouvain.organisation.AgentPerformance
 
 /** 
  * @author manjah
  * 
  */
 abstract behavior SensorRole extends ScenarioRole {
-	uses Logging, Schedules, ExternalContextAccess, Behaviors, DefaultContextInteractions
+	uses Logging, Schedules, ExternalContextAccess, Behaviors, DefaultContextInteractions,AgentPerformance
 
 	protected val listeners = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>) // Private spaces between the client and the role
 	
 	
 	on ProcessingHyperParameters {
+		var start = System.nanoTime // Measure of the performance
 		debug("param received " + "MID = " + occurrence.missionID + " hp " + occurrence.param.hyperParametersAsAString)
 		missionList.get(occurrence.missionID).update(occurrence.param)
+		accumulateTime(System.nanoTime - start) 		// Measure of the performance
 	}
 
 	on AddMission {
-
+		var start = System.nanoTime // Measure of the performance
+		
 		val missionSpace = retrieveOrCreateOpenSpaceWithID(occurrence.communicationChannelID)
 		val clientID = occurrence.source.ID
 		val missionID = occurrence.missionID
-		//info("received mission request from "  + clientID + "\n sid = " + missionSpace.spaceID.ID + "\n mID = " + missionID )
+		info("Mission request from "  + clientID + "\n sid = " + missionSpace.spaceID.ID + "\n mID = " + missionID )
 		var accepted = true // @TODO LOW develop criteria for the admission of the mission
 		if (accepted) {
 			val newMission = new SurveillanceMissionData(missionID, clientID, organizationContext.get.ID)
@@ -49,15 +53,22 @@ abstract behavior SensorRole extends ScenarioRole {
 			waitMissionParam(occurrence.missionID)
 			emit(missionSpace, new HyperParametersRequest(occurrence.missionID))[it.ID == clientID]
 		}
+		
+		accumulateTime(System.nanoTime - start) 	// Measure of the performance
 	}
 
 	on StopMission {
+		var start = System.nanoTime // Measure of the performance
 		assert listeners.containsKey(occurrence.source.ID),"Listener unknown, possible hack"
+		listeners.get(occurrence.source.ID).unregister(asEventListener)
 		listeners.remove(occurrence.source.ID)
+		accumulateTime(System.nanoTime - start) 	// Measure of the performance
 	}
 	
 	override Ready2Process {
-		emitToParent( new Ready2Process)
+		var start = System.nanoTime // Measure of the performance
+		emitToParent(new Ready2Process)
+		accumulateTime(System.nanoTime - start) 	// Measure of the performance
 	}
 	def waitMissionParam(mID : UUID) {
 
@@ -77,12 +88,14 @@ abstract behavior SensorRole extends ScenarioRole {
 	}
 
 	def processingMissionWithID(mID : UUID) {
-		emit(selfSpace, new ProcessMission(missionList.get(mID)))
+		var start = System.nanoTime // Measure of the performance
+		wake(new ProcessMission(missionList.get(mID)))[me]
+		accumulateTime(System.nanoTime - start) 		// Measure of the performance
 	}
 
 	def enableDataAcquisition(mID : UUID, signalType : String) {
-			emit(selfSpace, new RecruitSignal(missionList.get(mID), signalType))
+		var start = System.nanoTime // Measure of the performance
+		wake(new RecruitSignal(missionList.get(mID), signalType))[me]
+		accumulateTime(System.nanoTime - start) 		// Measure of the performance
 	}
-	
-	
 }

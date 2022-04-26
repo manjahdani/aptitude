@@ -1,0 +1,15 @@
+/** 
+ * 
+ */
+package be.uclouvain.organisation
+
+/** 
+ * @author manjah
+ * 
+ */
+capacity  AgentPerformance{
+	def accumulateTime (t: double):void
+	def incrementMessage:void
+	def getProcessingTime : double
+	def getMessages : int 
+}

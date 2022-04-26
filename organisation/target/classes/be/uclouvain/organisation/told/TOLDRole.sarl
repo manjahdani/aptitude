@@ -37,8 +37,9 @@ behavior TOLDRole extends OrganizationalRole {
 	
 	uses AccessDatabaseCapacity, InnerContextAccess,Logging, ExternalContextAccess
 	
-	on AddEntry{
-		debug("creating entry for " + occurrence.key)
+	on AddEntry {
+		
+		debug("Creating key : " + occurrence.key + " - " + occurrence.class)
 		create(occurrence.key, occurrence.data)
 	}
 	on DeleteEntry{
@@ -46,7 +47,6 @@ behavior TOLDRole extends OrganizationalRole {
 	}
 
 	on DataEntry {
-		//info("Updating key : " + occurrence.key  +" - " + occurrence.class)
 		update(occurrence.key, occurrence.data)
 	}
 	

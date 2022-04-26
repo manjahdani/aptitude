@@ -13,7 +13,7 @@ import java.util.UUID
 class RequestMessage extends BaseMessage {
 
 	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var requestID : UUID
-	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var agentID : String
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var agentID : UUID
 	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var clientName : String
 	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var jsonConfig : String
 	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var update : boolean
@@ -33,7 +33,7 @@ class RequestMessage extends BaseMessage {
 		super.readData(odi)
 
 		this.requestID = UUID.fromString(odi.readUTF())
-		this.agentID = odi.readUTF()
+		this.agentID = UUID.fromString(odi.readUTF())
 		this.clientName = odi.readUTF()
 		this.jsonConfig = odi.readUTF()
 		this.update = odi.readBoolean()
@@ -43,7 +43,7 @@ class RequestMessage extends BaseMessage {
 		super.writeData(odo)
 
 		odo.writeUTF(requestID.toString)
-		odo.writeUTF(agentID)
+		odo.writeUTF(agentID.toString)
 		odo.writeUTF(clientName)
 		odo.writeUTF(jsonConfig)
 		odo.writeBoolean(update)

@@ -9,11 +9,19 @@ import java.util.UUID
  * @author manjah
  * 
  */
-event MissionEnded{
+event MissionOver{
 	val missionID  : UUID
 	val terminusStatus : int
+	var signalCost : double
+	var agentCost : double
 	new(mID:UUID, state : int){
 		this.missionID=mID
 		this.terminusStatus=state
+	}
+	new(mID : UUID, state : int, cost : double, acost:double) {
+		this.missionID = mID
+		this.terminusStatus = state
+		this.signalCost=cost
+		this.agentCost=acost
 	}
 }

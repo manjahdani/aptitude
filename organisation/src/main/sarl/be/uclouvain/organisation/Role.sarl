@@ -3,45 +3,32 @@
  */
 package be.uclouvain.organisation
 
-import io.sarl.core.Behaviors
-import io.sarl.core.Initialize
-import io.sarl.core.InnerContextAccess
+import io.sarl.core.ExternalContextAccess
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.AgentContext
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
-import io.sarl.core.ExternalContextAccess
 
 /** 
  * @author manjah
  * 
  */
-abstract behavior Role {
+abstract behavior Role{
 	
-	uses Behaviors, InnerContextAccess, ExternalContextAccess
+	uses ExternalContextAccess
 	
 	protected val organizationContext = new AtomicReference<AgentContext> // context of the organisation Platform
 	protected var privateOrganizationSpace = new AtomicReference<OpenEventSpace> // private space between the algorithm and the organisation Platform
 	
-	protected val selfSpace : OpenEventSpace = innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, 
-		this.ID //@FIXME HIGH HIGH should we do that instead of wake ? 
-	) // An internal space to communicate with other agent roles.
-	
-	on Initialize {
-		selfSpace.registerStrongParticipant(asEventListener) 	// listen to a self-internal space
-	}
-	
 	def updateContextInfo(ctxt : UUID, sid : UUID) {
-	
 		organizationContext.set(getContext(ctxt)) // Update the organization
 		privateOrganizationSpace.set(retrieveOrCreateOpenSpaceWithID(sid))
-		privateOrganizationSpace.get.registerStrongParticipant(asEventListener)
+		
 		//info("obtained organization info : " + ctxt.ID + 
 		//" \n with private Space [ \n id = " + privateOrganizationSpace.get.spaceID.ID + "\n contextID = " +
 			//privateOrganizationSpace.get.spaceID.contextID + "]\n")
 	}
-	
 	def retrieveOrCreateOpenSpaceWithID(sid:UUID) {
 		assert organizationContext.get !== null, "Organization is not known"
 		return organizationContext.get.getOrCreateSpaceWithID(OpenEventSpaceSpecification,

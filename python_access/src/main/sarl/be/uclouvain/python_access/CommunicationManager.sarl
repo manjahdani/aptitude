@@ -19,13 +19,15 @@ import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
 import be.uclouvain.python_access.messages.EvaluationMessage
 import be.uclouvain.python_access.messages.DisplayMessage
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 
 class CommunicationManager {
+	
 	static var instance : CommunicationManager
 
 	var hzInstance : HazelcastInstance
 
-	var subscribtionTopic = <String, ITopic<BaseMessage>>newHashMap
+	var subscribtionTopic = new ConcurrentHashMap< String, ITopic<BaseMessage>>
 
 	static def getInstance() : CommunicationManager {
 		synchronized (typeof(CommunicationManager)) {
@@ -67,14 +69,24 @@ class CommunicationManager {
 	}
 
 	def subscribeTopic(topicName : String, observer : PythonTwinAccess) {
-		val topic = this.hzInstance.getTopic(topicName)
-		val subscribtionID : UUID= topic.addMessageListener(new MessageListener<BaseMessage>() {
-			def onMessage(m : Message<BaseMessage>) {
-				observer.update(m.messageObject)
+		
+			val topic = this.hzInstance.getTopic(topicName)
+			if (topic === null) {
+				println("********** ERROR Observer ID Topic\n " + observer.ID + "\n topic "+ topic+"************")
 			}
-		})
-		subscribtionTopic.put(subscribtionID.toString, topic)
-		return subscribtionID
+			//println("********** Subscription to Topic\n "+ observer.ID + "\n topic Name" + topicName +"************")
+			val subscribtionID : UUID= topic.addMessageListener(new MessageListener<BaseMessage>() {
+				def onMessage(m : Message<BaseMessage>) {
+				//println("********** Observer ID \n " + observer.ID + "\n send request to " + m.messageObject.factoryId + "************")
+					observer.update(m.messageObject)
+				}
+			})
+		if (subscribtionID === null) {
+			println("********** ERROR Observer ID Topic\n " + observer.ID + "\n subscribtion " + topic + "************")
+		}
+			//println("********** Subscription ID of \n " + observer.ID + "\n ID" + subscribtionID + "************")
+			subscribtionTopic.put(subscribtionID.toString, topic)
+			return subscribtionID
 	}
 
 	def unsubscribeTopic(subscribtionID : String) {
@@ -84,10 +96,12 @@ class CommunicationManager {
 	}
 
 	def publishMessage(topicSub : String, message : BaseMessage) {
+		try{assert topicSub !== null, "topicSub is null"
+		assert message !== null, "Message is null"
 		val topic = subscribtionTopic.get(topicSub)
-		assert topic !== null, "topic is null"
-		assert message!== null, "Message is null"
-		topic.publish(message)
+		topic.publish(message)}
+		catch(e:NullPointerException){
+			println(subscribtionTopic.keySet)
+		}
 	}
-
 }

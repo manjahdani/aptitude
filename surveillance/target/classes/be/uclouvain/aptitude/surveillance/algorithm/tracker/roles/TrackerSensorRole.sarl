@@ -7,6 +7,7 @@ import be.uclouvain.organisation.platform.SensorRole
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Logging
 import be.uclouvain.aptitude.surveillance.algorithm.MissionResults
+import be.uclouvain.organisation.AgentPerformance
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -28,13 +29,20 @@ import be.uclouvain.aptitude.surveillance.algorithm.MissionResults
  */
 
 behavior TrackerSensorRole extends SensorRole {
-	uses Logging, ExternalContextAccess
+	uses Logging, ExternalContextAccess, AgentPerformance
 
 	on MissionResults {
-		info("Transmitting to my listeners" + listeners.keySet)
+		var start : long = System.nanoTime(); // Measure performance
+		
+		//info("Transmitting to my listeners" + listeners.keySet)
 		for (l : listeners.keySet) {
-			emit(listeners.get(l),
-				new MissionResults(occurrence.missionID,
+			
+			val mission = missionList.values.findFirst[clientID == l]
+			//info("Results transfered to - {" + l + "}" + " for the mID = {" + mission.missionID)
+			emit(listeners.get(l), //@FIXME VERY VERY VERY HIGH there is only one space where everyone is connected to listen to results
+								   // @FIXME Our approach suppose a continuous stream... 
+				new MissionResults(
+					mission.missionID,
 					occurrence.platformName,
 					occurrence.frameNumber,
 					occurrence.pred_file_Path, 
@@ -43,8 +51,11 @@ behavior TrackerSensorRole extends SensorRole {
 					occurrence.total_time_detection,
 					occurrence.total_time_tracking, 
 					occurrence.observerID, 
-					occurrence.processingParameters))[it.ID == l]
-			// listeners.get(l).emit(this.ID,)[it.ID == l]}
+					occurrence.processingParameters,
+					occurrence.agent_detector_time,
+					occurrence.agent_tracker_time
+					))[it.ID == l]
 		}
+		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}
 }

@@ -29,8 +29,11 @@ event MissionResults {
 	val processingParameters : HyperParameters
 	val detector : String
 	val tracker : String
+	val agent_detector_time : double
+	val agent_tracker_time : double
 	
-	new (mID : UUID, platform:String, f : int, p : String, det:String, track :String, tt_detection : double, tt_tracking : double, id : UUID, hp : HyperParameters)
+	new (mID : UUID, platform : String, f : int, p : String, det : String, track : String, tt_detection : double,
+		tt_tracking : double, id : UUID, hp : HyperParameters, adt : double, att : double)
 	{
 		this.platformName=platform
 		this.missionID=mID
@@ -42,5 +45,7 @@ event MissionResults {
 		this.total_time_tracking = tt_tracking
 		this.observerID = id
 		this.processingParameters=hp
+		this.agent_detector_time = adt
+		this.agent_tracker_time = att
 	}	
 }

@@ -4,9 +4,9 @@
 package be.uclouvain.organisation
 
 import io.sarl.core.Behaviors
-import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.InnerContextAccess
+import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
 import io.sarl.core.OpenEventSpace
@@ -25,24 +25,23 @@ import java.util.UUID
  * @mavenartifactid $organisation$
  */
 abstract behavior OrganizationalRole {
-	uses InnerContextAccess,Behaviors, DefaultContextInteractions, ExternalContextAccess
+	uses InnerContextAccess,Behaviors, ExternalContextAccess,Logging
 
 	protected val privateSpacesListeners = Collections.synchronizedMap(new HashMap<UUID, OpenEventSpace>)
 	
 	// Create a private channel between the recruited holon and the super-holon. 
 	on MemberJoined {
-
-		val memberID = occurrence.agentID
-		val sid = UUID.randomUUID
-		privateSpacesListeners.put(memberID,
-			innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, sid ))
-		privateSpacesListeners.get(memberID).registerStrongParticipant(asEventListener)
-
+		
 		//info("sending organisation info to " + memberID.toString.substring(0, 5) + 
 		//" with private Space [\n id = " + privateSpacesListeners.get(memberID).spaceID.ID + "\n contextID = " +
 		//	privateSpacesListeners.get(memberID).spaceID.contextID + "]\n")
-		
-		if (!occurrence.inDefaultSpace) {
+		if (occurrence.source.ID==this.ID) {
+			
+			val memberID = occurrence.agentID
+			val sid = UUID.randomUUID
+			debug("Sending orga info to" + memberID)
+			privateSpacesListeners.put(memberID, innerContext.getOrCreateSpaceWithID(OpenEventSpaceSpecification, sid))
+			privateSpacesListeners.get(memberID).registerStrongParticipant(asEventListener)
 			wake(getOrganizationInfo(memberID))[it.ID==memberID]
 		}
 	}
