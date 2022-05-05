@@ -44,10 +44,10 @@ agent Boot extends Paraddis {
 	// @Parameters
 	
 	val INITIAL_CAMERAS = newArrayList(
-						//new Camera("S03C010", 1920, 1080, 3000)//,
+						// new Camera("S03C010", 1920, 1080, 3000)//,
 						//new Camera("S03C013", 2560, 1920, 3000),
-						//new Camera("S03C012", 2560, 1920, 3000)
-							new Camera("S02C006",1920,1080,3000)
+						// new Camera("S03C012", 2560, 1920, 3000)
+						new Camera("S02C006",1920,1080,3000)
 						//new Camera("S04C035", 1920, 1080, 3000)
 						)
 	val AVAILABLE_RESSOURCES = newArrayList("1000")//, "1000")

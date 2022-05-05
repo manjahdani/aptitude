@@ -13,6 +13,8 @@ import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Logging
 import java.util.concurrent.atomic.AtomicInteger
 import be.uclouvain.organisation.AgentPerformance
+import com.google.common.util.concurrent.AtomicDouble
+import io.sarl.core.Schedules
 
 /** 
  * @author manjah
@@ -20,11 +22,15 @@ import be.uclouvain.organisation.AgentPerformance
  */
 behavior CooperativeSensorRole extends DetectorSensorRole {
 
-	uses Logging, DefaultContextInteractions,Behaviors, AgentPerformance
+	uses Logging, DefaultContextInteractions,Behaviors, AgentPerformance, Schedules
 
 	val noActivityFrames = new AtomicInteger(0)
 
+	val total_detection_time = new AtomicDouble(0)
+	val frameProcesses = newArrayList()
 	on BBoxes2DResult {
+		this.total_detection_time.addAndGet(occurrence.bboxes2D.detectionTime)
+		this.frameProcesses.add(occurrence.bboxes2D.frameNumber)
 		var start : long = System.nanoTime(); // Measure performance
 		//info("Received detection frame - " + occurrence.bboxes2D.frameNumber)
 		if (occurrence.bboxes2D.bboxes.isEmpty) {
@@ -42,8 +48,11 @@ behavior CooperativeSensorRole extends DetectorSensorRole {
 
 	on Activity {
 		var start : long = System.nanoTime(); // Measure performance
-		info("Classification on - " + occurrence.frameNumber)
+		//info("Classification on - " + occurrence.frameNumber)
+		task("in").in(1000)[
 		wake(new StartMission(occurrence.source.ID, occurrence.frameNumber))[me]
+		task("in").cancel
+		]
 		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}
 }

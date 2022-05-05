@@ -43,7 +43,7 @@ abstract behavior SensorRole extends ScenarioRole {
 		val missionSpace = retrieveOrCreateOpenSpaceWithID(occurrence.communicationChannelID)
 		val clientID = occurrence.source.ID
 		val missionID = occurrence.missionID
-		info("Mission request from "  + clientID + "\n sid = " + missionSpace.spaceID.ID + "\n mID = " + missionID )
+		//info("Mission request from "  + clientID + "\n sid = " + missionSpace.spaceID.ID + "\n mID = " + missionID )
 		var accepted = true // @TODO LOW develop criteria for the admission of the mission
 		if (accepted) {
 			val newMission = new SurveillanceMissionData(missionID, clientID, organizationContext.get.ID)

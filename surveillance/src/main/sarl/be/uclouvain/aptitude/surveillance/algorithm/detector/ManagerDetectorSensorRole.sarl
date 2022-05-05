@@ -55,6 +55,8 @@ behavior ManagerDetectorSensorRole extends DetectorSensorRole {
 													tt.get,
 													at.get))[!me]
 			}
+			tt.set(0)
+			at.set(0)
 		}
 	}
 	

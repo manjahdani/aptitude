@@ -81,7 +81,7 @@ abstract behavior ManagerObserverRole extends ObserverRole {
 	}
 
 	on Ready2Process {
-		info("Agent - " + occurrence.source.ID +" is ready to operate")
+		//info("Agent - " + occurrence.source.ID +" is ready to operate")
 		val mbID = occurrence.source.ID
 		wake(new AddMission(mbID, providers.get(mbID).spaceID.ID)) [
 			it.ID == mbID

@@ -84,6 +84,7 @@ behavior SingleTrackerSensorRole extends SensorRole { // @FIXME VERY VERY VERY H
 	
 	on MissionOver {
 		
+		
 		wake(new SaveResults)[me]
 		info("agent_det_cost=" + occurrence.agentCost + "\n agent_track_cost = " + processingTime)
 		for (l : listeners.keySet) {
