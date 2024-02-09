@@ -43,32 +43,27 @@ agent Boot extends Paraddis {
 
 	// val junctionList = "MacqWoolridge"
 	// @Parameters
-	
-	val INITIAL_CAMERAS = newArrayList(
-						// new Camera("S03C010", 1920, 1080, 3000)//,
-						//new Camera("S03C013", 2560, 1920, 3000),
-						// new Camera("S03C012", 2560, 1920, 3000)
-						new Camera("S02C006",1920,1080,3000)
-						//new Camera("S04C035", 1920, 1080, 3000)
-						)
-	val AVAILABLE_RESSOURCES = newArrayList("1000")//, "1000")
+	val initialCameraConfigs = newArrayList(
+		new Camera("S02C006", 1920.0, 1080.0, 3000)
+	)
+
+	val availableResources = newArrayList("1000")
 
 	val client : DatagramSocket = new DatagramSocket(65000) // A client to listen requests
 	// val clientSender = new UDPSender() // homeMade client to send UDP message
-	val INIT_TASKS = new HashMap<String, Class<? extends Agent>>
+	val initialTaskTypes = new HashMap<String, Class<? extends Agent>>
 	
 	on Initialize {
 		loggingName = this.ID + "-Boot"
 		// info("System started")
 	 
 	 	//a.accumulateTime(5)
-		//info(getSkill(AgentPerformance).processingTime)
-	
-		INIT_TASKS.put("DETECTOR", Detector)
-		INIT_TASKS.put("TRACKER", Tracker)
-		INIT_TASKS.put("COUNTER", Counter)
+		// info(getSkill(AgentPerformance).processingTime)
+		initialTaskTypes.put("DETECTOR", Detector)
+		initialTaskTypes.put("TRACKER", Tracker)
+		initialTaskTypes.put("COUNTER", Counter)
 		setAgentsReady()
-		enableInputStream()
+		startUDPListener()
 		task("Application-Launcher").execute[Application::launch(GUI, " ")]
 	}
 	
@@ -78,19 +73,19 @@ agent Boot extends Paraddis {
 		// WorldHolon.addSubWorld(wc)
 		// }
 		// info("Setting the agents")
-		var PlatformHolonConfig = new PlatformConfig(0, 5, INIT_TASKS, "LLN")
+		var PlatformHolonConfig = new PlatformConfig(0, 5, initialTaskTypes, "LLN")
 		var AVAILABLE_CAMERAS = new ArrayList<String>
-		for (c : INITIAL_CAMERAS) {
-			PlatformHolonConfig.addSubPlatform(new CameraPlatformConfig(1, 10, INIT_TASKS, c))
-			AVAILABLE_CAMERAS.add(c.camera_id)
+		for (c : initialCameraConfigs) {
+			PlatformHolonConfig.addSubPlatform(new CameraPlatformConfig(1, 10, initialTaskTypes, c))
+			AVAILABLE_CAMERAS.add(c.cameraId)
 		}
 		spawn(TOLDAgent, new TOLDConfig(0))
-		spawn(PlatformAgent, PlatformHolonConfig, AVAILABLE_RESSOURCES)
+		spawn(PlatformAgent, PlatformHolonConfig, availableResources)
 		spawn(User, new HolonicUserConfig(0, "UserAccessManager", AVAILABLE_CAMERAS))
 		// StartSimulation
 	}
 
-	def MessageAnalysis(msg : UDP_Message_Base, adrss : String) {
+	def analyzeMessage(msg : UDP_Message_Base, adrss : String) {
 
 		switch (msg.method) {
 			case "stopSimulation": {
@@ -103,29 +98,34 @@ agent Boot extends Paraddis {
 		}
 	}
 
-	def synchronized enableInputStream {
+	private def startUDPListener {
 		var parser = new MessageDeserializer();
-		val Enable_Server = task("Enable_Server")
-		Enable_Server.execute([
-			while (!isCanceled(Enable_Server) && !client.isClosed) {
-				var buffer = newByteArrayOfSize(8192);
-				var packet = new DatagramPacket(buffer, buffer.length);
-				client.receive(packet);
-				var message = new String(packet.getData(), packet.getOffset(), packet.getLength());
-				var data : UDP_Message_Base = parser.Deserialize(message);
-				if (data !== null) {
-					MessageAnalysis(data, (packet.getAddress()).getHostAddress)
-				} else {
-					info("received NULL" + data)
-				}
-				packet.setLength(buffer.length);
+		val serverTask = task("UDPListener");
+		serverTask.execute [
+			{
+				try {
+					while (!isCanceled(serverTask) && !client.isClosed) {
+						var buffer = newByteArrayOfSize(8192);
+						var packet = new DatagramPacket(buffer, buffer.length);
+						client.receive(packet);
+						var message = new String(packet.getData(), packet.getOffset(), packet.getLength());
+						var data : UDP_Message_Base = parser.Deserialize(message);
+						if (data !== null) {
+							analyzeMessage(data, packet.getAddress().getHostAddress());
+						} else {
+							info("Received NULL message.");
+                    }
+                }
+            } catch (e : Exception) {
+                error("Error while listening for UDP messages: " + e.message);
+            }
 			}
-		])
+		];
 	}
 
 	def synchronized disable() {
 		this.client.close()
-		task("Enable_Server").cancel
+		task("UDPListener").cancel
 		task("Application-Launcher").cancel
 	}
 }

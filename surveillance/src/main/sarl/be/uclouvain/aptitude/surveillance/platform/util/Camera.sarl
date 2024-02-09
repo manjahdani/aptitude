@@ -1,34 +1,68 @@
-/** 
- * 
- */
-package be.uclouvain.aptitude.surveillance.platform.util
+package be.uclouvain.aptitude.surveillance.platform.util;
 
 /** 
- * @author manjah
+ * Represents a camera with a unique identifier, frame dimensions, and a frame rate limit.
+ * Enhancements include authorship annotation, version incrementation, and adding the current date.
  * 
+ * @author Manjahdani
+ * @version 0.0.2
+ * @date 2024-02-09
  */
 class Camera {
-	
-	val camera_id : String
-	val frame_width : double
-	val frame_height : double
-	val frame_limit : int
-	new (id : String, w:double, h:double,l:int){
-		this.camera_id = id
-		this.frame_width = w
-		this.frame_height = h
-		this.frame_limit = l
+
+	val cameraId : String
+	val frameWidth : Double
+	val frameHeight : Double
+	val frameLimit : int
+
+	/** 
+     * Initializes a new Camera instance with specified parameters.
+	 * 
+	 * @param id The unique identifier of the camera.
+	 * @param w The width of the frame.
+	 * @param h The height of the frame.
+	 * @param l The frame rate limit.
+	 */
+	new (id : String, width : Double, height : Double, duration : int) {
+		this.cameraId = id
+		this.frameWidth = width
+		this.frameHeight = height
+		this.frameLimit = duration
 	}
-	def getFrame_limit : int{
-		return this.frame_limit
+
+	/** 
+	 * Gets the frame rate limit of the camera.
+     * 
+     * @return The frame rate limit.
+	 */
+	def getFrameLimit : int {
+		return this.frameLimit
 	}
-	def getCamera_id :String{
-		return this.camera_id
+
+    /** 
+     * Gets the unique identifier of the camera.
+	 * 
+	 * @return The camera ID.
+	 */
+	def getCameraId : String {
+		return this.cameraId
 	}
-	def getFrame_width : double{
-		return this.frame_width
+
+	/** 
+	 * Gets the width of the camera frame.
+	 * 
+	 * @return The frame width.
+	 */
+	def getFrameWidth : Double {
+		return this.frameWidth
 	}
-	def getFrame_height{
-		return this.frame_height
+
+	/** 
+	 * Gets the height of the camera frame.
+     * 
+     * @return The frame height.
+	 */
+	def getFrameHeight : Double {
+        return this.frameHeight
 	}
 }
