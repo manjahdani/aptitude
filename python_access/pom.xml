@@ -1,24 +1,47 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
 	<groupId>be.uclouvain</groupId>
 	<artifactId>python_access</artifactId>
 	<version>0.0.2</version>
-
-	<properties>
-		<sarl.version>0.12.0</sarl.version>
-		<target.jdk.version>11</target.jdk.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-
-	<dependencies>
-		<dependency>
-			<groupId>io.sarl.maven</groupId>
-			<artifactId>io.sarl.maven.sdk</artifactId>
-			<version>${sarl.version}</version>
-		</dependency>
+	
+    <properties>
+       <sarl.version>0.13.0</sarl.version>
+	   <jdk.version>17</jdk.version>
+	   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    
+    <build>
+       <plugins>
+		  <plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.11.0</version>
+			<configuration>
+				<source>${jdk.version}</source>
+				<target>${jdk.version}</target>
+				<encoding>${project.build.sourceEncoding}</encoding>
+			</configuration>
+		  </plugin>
+          <plugin>
+             <groupId>io.sarl.lang</groupId>
+             <artifactId>sarl-maven-plugin</artifactId>
+             <version>${sarl.version}</version>
+             <extensions>true</extensions>
+             <configuration>
+                <source>${jdk.version}</source>
+                <encoding>${project.build.sourceEncoding}</encoding>
+             </configuration>
+          </plugin>
+       </plugins>
+    </build>
+    
+    <dependencies>
+       <dependency>
+          <groupId>io.sarl.sdk</groupId>
+          <artifactId>sdk</artifactId>
+          <version>${sarl.version}</version>
+       </dependency>
 		<dependency>
 		    <groupId>com.googlecode.json-simple</groupId>
 		    <artifactId>json-simple</artifactId>
@@ -34,32 +57,5 @@
 			<artifactId>organisation</artifactId>
 			<version>0.0.2</version>
 		</dependency>
-	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
-				<configuration>
-					<source>${target.jdk.version}</source>
-					<target>${target.jdk.version}</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>io.sarl.maven</groupId>
-				<artifactId>sarl-maven-plugin</artifactId>
-				<version>${sarl.version}</version>
-				<extensions>true</extensions>
-				<configuration>
-					<source>${target.jdk.version}</source>
-					<target>${target.jdk.version}</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
-</project>
+    </dependencies>
+ </project>

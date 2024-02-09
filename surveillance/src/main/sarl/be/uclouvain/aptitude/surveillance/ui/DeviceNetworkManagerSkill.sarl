@@ -14,10 +14,10 @@ import UDPMessages.UDP_Message_RequestStats
 import UDPMessages.UDP_Message_RequestWithdraw
 import be.uclouvain.organisation.interactivity.element.ElementInformation
 import be.uclouvain.organisation.interactivity.inputDevice.InputSkill
-import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Logging
 import java.util.HashMap
 import java.util.UUID
+import io.sarl.api.core.DefaultContextInteractions
+import io.sarl.api.core.Logging
 
 /** 
  * @TODO: write a description

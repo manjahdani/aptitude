@@ -5,7 +5,7 @@ package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
 
 import be.uclouvain.aptitude.surveillance.algorithm.ManagerObserverRole
 import be.uclouvain.organisation.platform.util.Metadata
-import io.sarl.core.Initialize
+import io.sarl.api.core.Initialize
 
 /** 
  * @author manjah

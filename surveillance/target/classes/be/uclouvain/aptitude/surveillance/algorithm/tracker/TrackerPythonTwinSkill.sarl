@@ -1,20 +1,18 @@
 package be.uclouvain.aptitude.surveillance.algorithm.tracker
 
-
+import be.uclouvain.aptitude.surveillance.algorithm.util.BBox
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.python_access.BBoxes2DTrackResult
 import be.uclouvain.python_access.CommunicationManager
+import be.uclouvain.python_access.ObserverPythonAccess
 import be.uclouvain.python_access.PartnerTrackingFound
 import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
 import be.uclouvain.python_access.messages.BaseMessage
 import be.uclouvain.python_access.messages.RequestMessage
-import io.sarl.core.Behaviors
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.Schedules
 import java.util.ArrayList
 import java.util.Arrays
-import be.uclouvain.aptitude.surveillance.algorithm.util.BBox
-import be.uclouvain.python_access.ObserverPythonAccess
-import io.sarl.core.Schedules
-import be.uclouvain.organisation.AgentPerformance
 
 /** 
  * @TODO: write a description

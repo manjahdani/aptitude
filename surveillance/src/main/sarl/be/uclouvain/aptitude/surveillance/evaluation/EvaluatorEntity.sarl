@@ -12,13 +12,13 @@ import be.uclouvain.organisation.told.events.DataEntry
 import be.uclouvain.organisation.told.events.DeleteEntry
 import be.uclouvain.organisation.told.events.QueryAnswer
 import com.opencsv.CSVWriter
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Initialize
-import io.sarl.core.Logging
 import java.io.File
 import java.io.FileWriter
 import java.util.ArrayList
 import java.util.UUID
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.Logging
+import io.sarl.api.core.Initialize
 
 /** 
  * @author manjah

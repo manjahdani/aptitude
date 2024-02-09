@@ -5,7 +5,7 @@ package be.uclouvain.organisation.told.entity
 import be.uclouvain.organisation.Role
 import be.uclouvain.organisation.events.AuthorizationToJoinContext
 import be.uclouvain.organisation.told.TOLDOrganizationInfo
-import io.sarl.core.ExternalContextAccess
+import io.sarl.api.core.ExternalContextAccess
 
 /** 
  * The concept-generic role of Entity seeks knowledge to update : 

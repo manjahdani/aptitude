@@ -3,17 +3,17 @@
  */
 package be.uclouvain.organisation
 
-import io.sarl.core.Behaviors
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.InnerContextAccess
-import io.sarl.core.Logging
-import io.sarl.core.MemberJoined
-import io.sarl.core.MemberLeft
-import io.sarl.core.OpenEventSpace
-import io.sarl.core.OpenEventSpaceSpecification
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
+import io.sarl.api.core.InnerContextAccess
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.Logging
+import io.sarl.api.core.OpenEventSpace
+import io.sarl.api.core.OpenEventSpaceSpecification
+import io.sarl.api.core.MemberJoined
+import io.sarl.api.core.MemberLeft
 
 /** 
  * Global behaviour that derived organisational roles must follow. 

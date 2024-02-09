@@ -5,10 +5,11 @@ package be.uclouvain.aptitude.surveillance.algorithm.detector
 
 import be.uclouvain.aptitude.surveillance.algorithm.PythonTwinObserverRole
 import be.uclouvain.python_access.PartnerDetectionFound
-import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Schedules
+
 import java.util.UUID
 import be.uclouvain.organisation.AgentPerformance
+import io.sarl.api.core.Schedules
+import io.sarl.api.core.DefaultContextInteractions
 
 /** 
  * @author manjah

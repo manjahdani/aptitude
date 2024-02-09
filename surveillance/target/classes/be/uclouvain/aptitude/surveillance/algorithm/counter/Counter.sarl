@@ -7,8 +7,9 @@ import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
 import be.uclouvain.aptitude.surveillance.algorithm.BecomeManager
 import be.uclouvain.aptitude.surveillance.algorithm.RegisterUnitaryRole
 import be.uclouvain.aptitude.surveillance.algorithm.RoleRegistered
-import io.sarl.core.Behaviors
-import io.sarl.core.DefaultContextInteractions
+
+import io.sarl.api.core.DefaultContextInteractions
+import io.sarl.api.core.Behaviors
 
 /** 
  * @author manjah

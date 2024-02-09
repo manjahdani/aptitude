@@ -7,15 +7,15 @@ import be.uclouvain.organisation.OrganizationalRole
 import be.uclouvain.organisation.interactivity.InteractivityOrganizationInfo
 import be.uclouvain.organisation.told.events.AuthorizedMission
 import be.uclouvain.organisation.told.events.NewMission
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.InnerContextAccess
-import io.sarl.core.Lifecycle
-import io.sarl.core.Logging
-import io.sarl.core.OpenEventSpace
 import java.util.Collections
 import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
+import io.sarl.api.core.Lifecycle
+import io.sarl.api.core.InnerContextAccess
+import io.sarl.api.core.Logging
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.OpenEventSpace
 
 /** 
  * @TODO to comment

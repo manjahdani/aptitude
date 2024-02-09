@@ -1,15 +1,16 @@
 package be.uclouvain.aptitude.surveillance
 
-import be.uclouvain.organisation.events.AuthorizationToPerformMission
-import be.uclouvain.organisation.platform.ObserverRole
-import be.uclouvain.organisation.platform.events.Request2PerformMission
-import be.uclouvain.organisation.platform.util.SurveillanceMissionData
-import io.sarl.core.Behaviors
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Initialize
-import io.sarl.core.Logging
+
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedQueue
+import io.sarl.api.core.Logging
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.Initialize
+import be.uclouvain.organisation.platform.ObserverRole
+import be.uclouvain.organisation.events.AuthorizationToPerformMission
+import be.uclouvain.organisation.platform.util.SurveillanceMissionData
+import be.uclouvain.organisation.platform.events.Request2PerformMission
 
 /** 
  * 

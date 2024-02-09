@@ -1,9 +1,10 @@
 package be.uclouvain.aptitude.surveillance.algorithm.counter
 
-import be.uclouvain.organisation.platform.SensorRole
-import io.sarl.core.Behaviors
-import io.sarl.core.Logging
+
 import java.util.UUID
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.Logging
+import be.uclouvain.organisation.platform.SensorRole
 
 /** 
  * @TODO : To complete

@@ -5,19 +5,21 @@ package be.uclouvain.aptitude.surveillance.evaluation
 
 import be.uclouvain.aptitude.surveillance.algorithm.util.APTITUDE_EvaluationResults
 import be.uclouvain.aptitude.surveillance.algorithm.util.Metric
-import be.uclouvain.organisation.Role
+
 import be.uclouvain.python_access.EvaluationResult
 import be.uclouvain.python_access.PartnerEvaluationFound
 import be.uclouvain.python_access.messages.EvaluationMessage
-import io.sarl.core.Behaviors
-import io.sarl.core.Initialize
-import io.sarl.core.Logging
+
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
 import be.uclouvain.aptitude.surveillance.algorithm.MissionResults
 import java.util.concurrent.atomic.AtomicInteger
+import io.sarl.api.core.Logging
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.Initialize
+import be.uclouvain.organisation.Role
 
 /** 
  * @TODO : To complete

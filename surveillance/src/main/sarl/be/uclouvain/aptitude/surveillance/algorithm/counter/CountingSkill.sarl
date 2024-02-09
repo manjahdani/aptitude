@@ -6,10 +6,11 @@ package be.uclouvain.aptitude.surveillance.algorithm.counter
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBox
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.organisation.platform.util.OrientedCountingLine
-import io.sarl.core.Logging
+
 import java.util.ArrayList
 import java.util.HashMap
 import org.arakhne.afc.math.geometry.d2.d.Point2d
+import io.sarl.api.core.Logging
 
 /** 
  * @TODO: write a description

@@ -4,18 +4,18 @@ import be.uclouvain.organisation.events.RequestToJoin
 import be.uclouvain.organisation.told.entity.EntityRole
 import be.uclouvain.organisation.told.events.NewMission
 import be.uclouvain.organisation.told.util.AlgorithmInfo
-import io.sarl.core.Behaviors
-import io.sarl.core.ContextJoined
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Initialize
-import io.sarl.core.InnerContextAccess
-import io.sarl.core.Logging
-import io.sarl.core.OpenEventSpace
-import io.sarl.core.OpenEventSpaceSpecification
 import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
 import be.uclouvain.organisation.events.Identification
+import io.sarl.api.core.Logging
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.InnerContextAccess
+import io.sarl.api.core.OpenEventSpace
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.ContextJoined
+import io.sarl.api.core.OpenEventSpaceSpecification
 
 /** 
  * The expert receives the requirements of the client and translates them into a mission.

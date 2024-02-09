@@ -12,16 +12,18 @@ import be.uclouvain.organisation.told.events.AddEntry
 import be.uclouvain.organisation.told.events.DataEntry
 import be.uclouvain.organisation.told.events.DeleteEntry
 import be.uclouvain.organisation.told.events.QueryAnswer
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Initialize
-import io.sarl.core.Lifecycle
-import io.sarl.core.Logging
+
 import java.io.File
 import java.io.FileWriter
-import io.sarl.core.Behaviors
+
 import be.uclouvain.aptitude.surveillance.evaluation.EvaluatorEntityRole
 import be.uclouvain.aptitude.surveillance.evaluation.CreateEvaluatorEntity
 import be.uclouvain.organisation.platform.events.StopMission
+import io.sarl.api.core.Logging
+import io.sarl.api.core.Lifecycle
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.Initialize
 
 /** 
  * @author manjah

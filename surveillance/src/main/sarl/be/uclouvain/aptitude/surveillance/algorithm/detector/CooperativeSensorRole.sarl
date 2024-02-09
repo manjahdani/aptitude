@@ -5,16 +5,19 @@ package be.uclouvain.aptitude.surveillance.algorithm.detector
 
 import be.uclouvain.aptitude.surveillance.algorithm.detector.events.Activity
 import be.uclouvain.aptitude.surveillance.algorithm.detector.events.NoActivity
-import be.uclouvain.organisation.platform.events.PauseMission
-import be.uclouvain.organisation.platform.events.StartMission
-import be.uclouvain.python_access.BBoxes2DResult
-import io.sarl.core.Behaviors
-import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Logging
+
 import java.util.concurrent.atomic.AtomicInteger
-import be.uclouvain.organisation.AgentPerformance
+
 import com.google.common.util.concurrent.AtomicDouble
-import io.sarl.core.Schedules
+
+import io.sarl.api.core.Logging
+import io.sarl.api.core.DefaultContextInteractions
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.Schedules
+import be.uclouvain.python_access.BBoxes2DResult
+import be.uclouvain.organisation.platform.events.PauseMission
+import be.uclouvain.organisation.AgentPerformance
+import be.uclouvain.organisation.platform.events.StartMission
 
 /** 
  * @author manjah
@@ -55,4 +58,5 @@ behavior CooperativeSensorRole extends DetectorSensorRole {
 		]
 		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}
-}
+	uses AgentPerformance
+	}

@@ -13,14 +13,16 @@ import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
 import be.uclouvain.organisation.platform.events.SensorInfoRequest
 import be.uclouvain.python_access.BBoxes2DSignal
 import be.uclouvain.python_access.PartnerTrackingFound
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Initialize
-import io.sarl.core.Logging
+
 import java.util.ArrayList
 import java.util.concurrent.atomic.AtomicReference
 import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.ResumeTrackingMission
-import io.sarl.core.Behaviors
 import be.uclouvain.organisation.AgentPerformance
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.Logging
+import io.sarl.api.core.Initialize
+import be.uclouvain.organisation.platform.ObserverCapacity
 
 /** 
  * @author manjah
@@ -99,4 +101,4 @@ behavior TrackerObserverRole extends PythonTwinObserverRole {
 		))
 		accumulateTime(System.nanoTime - start) 	// Measure of the performance
 	}
-}
+	}

@@ -7,10 +7,10 @@ import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.organisation.told.AccessDatabaseCapacity
 import be.uclouvain.organisation.told.util.AlgorithmInfo
 import com.opencsv.CSVWriter
-import io.sarl.core.Logging
 import java.io.FileWriter
 import java.util.HashMap
 import java.util.UUID
+import io.sarl.api.core.Logging
 
 /** 
  * @author manjah

@@ -7,20 +7,20 @@ import be.uclouvain.aptitude.surveillance.algorithm.events.StrategyMethod
 import be.uclouvain.organisation.AgentPerformance
 import be.uclouvain.organisation.platform.events.MissionOver
 import be.uclouvain.python_access.BBoxes2DSignal
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.InnerContextAccess
-import io.sarl.core.Logging
 import java.util.Collections
 import java.util.HashSet
 import java.util.UUID
 import com.google.common.util.concurrent.AtomicDouble
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.InnerContextAccess
+import io.sarl.api.core.Logging
 
 /** 
  * @author manjah
  * 
  */
 behavior ManagerDetectorSensorRole extends DetectorSensorRole {
-	uses Logging, ExternalContextAccess, AgentPerformance,InnerContextAccess
+	uses Logging, ExternalContextAccess,InnerContextAccess
 	
 	var inner_agents = Collections.synchronizedSet(new HashSet<UUID>);
 	val tt = new AtomicDouble(0)

@@ -1,7 +1,6 @@
 package be.uclouvain.launcher
 
-import UDPMessages.MessageDeserializer
-import UDPMessages.UDP_Message_Base
+
 import be.uclouvain.aptitude.surveillance.CommitSuicide
 import be.uclouvain.aptitude.surveillance.Paraddis
 import be.uclouvain.aptitude.surveillance.TOLDAgent
@@ -15,17 +14,19 @@ import be.uclouvain.aptitude.surveillance.platform.util.CameraPlatformConfig
 import be.uclouvain.aptitude.surveillance.user.HolonicUserConfig
 import be.uclouvain.aptitude.surveillance.user.User
 import be.uclouvain.organisation.platform.util.PlatformConfig
-import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Initialize
-import io.sarl.core.Lifecycle
-import io.sarl.core.Logging
-import io.sarl.core.Schedules
 import io.sarl.lang.core.Agent
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.util.ArrayList
 import java.util.HashMap
 import javafx.application.Application
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.Schedules
+import io.sarl.api.core.Lifecycle
+import io.sarl.api.core.DefaultContextInteractions
+import io.sarl.api.core.Logging
+import UDPMessages.UDP_Message_Base
+import UDPMessages.MessageDeserializer
 
 /** 
  * 

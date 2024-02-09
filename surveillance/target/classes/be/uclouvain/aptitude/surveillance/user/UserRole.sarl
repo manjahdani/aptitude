@@ -7,8 +7,8 @@ import be.uclouvain.organisation.interactivity.element.ElementRole
 import be.uclouvain.organisation.platform.util.SurveillanceMissionData
 import be.uclouvain.organisation.told.events.AuthorizedMission
 import be.uclouvain.organisation.told.events.NewMission
-import io.sarl.core.Behaviors
-import io.sarl.core.Logging
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.Logging
 
 /** 
  * UserRole, derived from Element, is tailored to human users communicating with the system

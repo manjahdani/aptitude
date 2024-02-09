@@ -13,9 +13,6 @@ import be.uclouvain.organisation.platform.events.ScenarioInfo
 import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
 import be.uclouvain.organisation.platform.events.SensorInfoRequest
 import be.uclouvain.python_access.BBoxes2DTrackResult
-import io.sarl.core.Behaviors
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Logging
 import java.util.ArrayList
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
@@ -23,6 +20,9 @@ import be.uclouvain.aptitude.surveillance.algorithm.events.StrategyMethod
 import be.uclouvain.organisation.platform.events.MissionOver
 import be.uclouvain.organisation.AgentPerformance
 import com.google.common.util.concurrent.AtomicDouble
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.Logging
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 

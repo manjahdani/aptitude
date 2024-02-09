@@ -3,12 +3,12 @@
  */
 package be.uclouvain.organisation
 
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.OpenEventSpace
-import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.AgentContext
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.OpenEventSpaceSpecification
+import io.sarl.api.core.OpenEventSpace
 
 /** 
  * @author manjah

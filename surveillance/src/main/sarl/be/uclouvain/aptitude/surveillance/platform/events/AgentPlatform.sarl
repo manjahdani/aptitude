@@ -3,8 +3,9 @@
  */
 package be.uclouvain.aptitude.surveillance.platform.events
 
-import io.sarl.core.OpenEventSpace
+
 import java.util.UUID
+import io.sarl.api.core.OpenEventSpace
 
 event AgentPlatform{
 	

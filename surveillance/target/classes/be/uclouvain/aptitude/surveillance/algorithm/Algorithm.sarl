@@ -9,20 +9,20 @@ import be.uclouvain.aptitude.surveillance.platform.events.AgentPlatform
 import be.uclouvain.organisation.events.Identification
 import be.uclouvain.organisation.events.JoinOrganisation
 import be.uclouvain.organisation.told.util.AlgorithmInfo
-import io.sarl.core.Behaviors
-import io.sarl.core.ContextJoined
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Initialize
-import io.sarl.core.InnerContextAccess
-import io.sarl.core.Lifecycle
-import io.sarl.core.Logging
-import io.sarl.core.OpenEventSpace
-import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
 import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.Logging
+import io.sarl.api.core.Lifecycle
+import io.sarl.api.core.InnerContextAccess
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.ContextJoined
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.OpenEventSpaceSpecification
+import io.sarl.api.core.OpenEventSpace
 
 /** 
  * Agent with a set of tasks (Goals) and a model (Belief). 

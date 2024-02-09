@@ -3,14 +3,15 @@
  */
 package be.uclouvain.organisation.interactivity.inputDevice
 
-import UDPMessages.MessageDeserializer
-import UDPMessages.UDP_Message_Base
-import io.sarl.core.Logging
-import io.sarl.core.Schedules
+
 import java.io.IOException
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.SocketException
+import io.sarl.api.core.Schedules
+import io.sarl.api.core.Logging
+import UDPMessages.MessageDeserializer
+import UDPMessages.UDP_Message_Base
 
 /** 
  * @TODO : comment

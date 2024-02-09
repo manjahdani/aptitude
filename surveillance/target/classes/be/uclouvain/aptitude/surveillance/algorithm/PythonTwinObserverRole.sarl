@@ -5,14 +5,14 @@ package be.uclouvain.aptitude.surveillance.algorithm
 
 import be.uclouvain.organisation.platform.ObserverRole
 import be.uclouvain.python_access.PythonTwinAccessCapacity
-import io.sarl.core.Logging
 import be.uclouvain.organisation.platform.events.PauseMission
 import be.uclouvain.organisation.platform.events.ResumeMission
 import be.uclouvain.organisation.platform.events.StartMission
 import java.util.concurrent.atomic.AtomicInteger
 import be.uclouvain.organisation.platform.events.StopMission
-import io.sarl.core.Destroy
 import be.uclouvain.organisation.AgentPerformance
+import io.sarl.api.core.Destroy
+import io.sarl.api.core.Logging
 
 /** 
  * @author manjah
@@ -27,7 +27,7 @@ import be.uclouvain.organisation.AgentPerformance
  * 
  */
 abstract behavior PythonTwinObserverRole extends ObserverRole {
-	uses Logging, PythonTwinAccessCapacity, AgentPerformance
+	uses PythonTwinAccessCapacity, AgentPerformance, Logging
 	
 	val counter = new AtomicInteger(0)
 	on PauseMission {

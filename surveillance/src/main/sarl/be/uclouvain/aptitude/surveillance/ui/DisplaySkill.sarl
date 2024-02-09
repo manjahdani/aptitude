@@ -7,9 +7,10 @@ import be.uclouvain.python_access.CommunicationManager
 import be.uclouvain.python_access.messages.BBoxes2DTrackMessage
 import be.uclouvain.python_access.messages.BaseMessage
 import be.uclouvain.python_access.messages.DisplayMessage
-import io.sarl.core.AgentTask
+
 import be.uclouvain.python_access.PythonTwinAccess
 import java.util.UUID
+import io.sarl.api.core.AgentTask
 
 /** 
  * @author manjah

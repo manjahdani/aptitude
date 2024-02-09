@@ -3,11 +3,10 @@
  */
 package be.uclouvain.aptitude.surveillance.algorithm.tracker.roles
 
-import be.uclouvain.organisation.platform.SensorRole
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Logging
 import be.uclouvain.aptitude.surveillance.algorithm.MissionResults
 import be.uclouvain.organisation.AgentPerformance
+import be.uclouvain.organisation.platform.SensorRole
+import io.sarl.api.core.ExternalContextAccess
 
 /** 
  * @FIXME LOW IMPROVEMENT : the Hazelcast only need to send the frame number and the ids.  Will it make sens ? 
@@ -29,7 +28,7 @@ import be.uclouvain.organisation.AgentPerformance
  */
 
 behavior TrackerSensorRole extends SensorRole {
-	uses Logging, ExternalContextAccess, AgentPerformance
+	uses ExternalContextAccess, AgentPerformance
 
 	on MissionResults {
 		var start : long = System.nanoTime(); // Measure performance

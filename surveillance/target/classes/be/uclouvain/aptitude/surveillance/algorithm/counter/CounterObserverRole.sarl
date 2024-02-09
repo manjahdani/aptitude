@@ -5,25 +5,28 @@ import be.uclouvain.aptitude.surveillance.algorithm.tracker.events.TrackingReque
 import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
 import be.uclouvain.aptitude.surveillance.evaluation.CompetitionOver
 import be.uclouvain.aptitude.surveillance.ui.DisplayCapacity
-import be.uclouvain.organisation.platform.ObserverRole
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Initialize
-import io.sarl.core.Logging
+
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.UUID
 import be.uclouvain.aptitude.surveillance.algorithm.MissionResults
-import be.uclouvain.organisation.platform.events.Request2PerformMission
-import be.uclouvain.organisation.platform.util.SurveillanceMissionData
-import be.uclouvain.organisation.events.AuthorizationToPerformMission
-import be.uclouvain.organisation.platform.events.StopMission
+
 import java.util.concurrent.atomic.AtomicInteger
 import be.uclouvain.aptitude.surveillance.evaluation.EvaluationImpl
-import be.uclouvain.python_access.PythonTwinAccessCapacity
 import be.uclouvain.aptitude.surveillance.evaluation.AlgorithmSelectorRole
-import io.sarl.core.Behaviors
 import be.uclouvain.aptitude.surveillance.evaluation.Evaluation
 import be.uclouvain.aptitude.surveillance.algorithm.util.Metric
+import io.sarl.api.core.Logging
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.Behaviors
+import be.uclouvain.organisation.platform.ObserverRole
+import io.sarl.api.core.Initialize
+import be.uclouvain.python_access.PythonTwinAccessCapacity
+import be.uclouvain.organisation.platform.ObserverCapacity
+import be.uclouvain.organisation.platform.events.StopMission
+import be.uclouvain.organisation.platform.util.SurveillanceMissionData
+import be.uclouvain.organisation.platform.events.Request2PerformMission
+import be.uclouvain.organisation.events.AuthorizationToPerformMission
 
 /** 
  * The CounterRole is a behaviour that an agent Algorithm endorses upon a mission to count vehicles
@@ -49,7 +52,7 @@ behavior CounterObserverRole extends ObserverRole {
 	val MAXIMUM_EVALUATIONS = 5
 	val CONFIG_PATH = "F:/aptitude/surveillance/src/main/resources/config/evalconfig.json" // @FIXME HIGH Manual
 
-on Initialize {
+	on Initialize {
 		info("Counting starts from now !")
 		setSkill(new CountingSkill, CounterObserverCapacity)
 		// setSkill(new DisplaySkill)
@@ -149,5 +152,5 @@ on Initialize {
 		var mData = orderedMissionList.values.findFirst[providerID == sID]
 		providers.get(sID).emit(new TrackingRequest(mData.missionID,occurrence.selectedAlgorithmID))
 	}
-	
-}
+	uses ObserverCapacity
+	}

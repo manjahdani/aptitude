@@ -5,14 +5,13 @@ package be.uclouvain.python_access
 
 import be.uclouvain.python_access.messages.ActionMessage
 import be.uclouvain.python_access.messages.RequestMessage
-import io.sarl.core.AgentTask
-import io.sarl.core.Schedules
-import java.util.UUID
-import org.json.simple.JSONObject
-import io.sarl.core.Logging
-import org.json.simple.parser.JSONParser
+import io.sarl.api.core.AgentTask
+import io.sarl.api.core.Schedules
 import java.io.FileReader
 import java.util.HashMap
+import java.util.UUID
+import org.json.simple.JSONObject
+import org.json.simple.parser.JSONParser
 
 /** 
  * @TODO: write a description
@@ -25,7 +24,7 @@ import java.util.HashMap
  * 
  */
 abstract skill PythonTwinAccess implements PythonTwinAccessCapacity {
-	uses Schedules, Logging
+	uses Schedules
 
 	protected var topicRequestSub : UUID
 	protected var topicSignalAcquisition : UUID

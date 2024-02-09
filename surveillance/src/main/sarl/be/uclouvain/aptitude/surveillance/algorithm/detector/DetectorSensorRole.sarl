@@ -7,11 +7,13 @@ import be.uclouvain.organisation.platform.SensorRole
 import be.uclouvain.python_access.BBoxes2DResult
 import be.uclouvain.python_access.BBoxes2DSignal
 import be.uclouvain.python_access.messages.BBoxes2DMessage
-import io.sarl.core.ExternalContextAccess
+
 import be.uclouvain.organisation.AgentPerformance
 import com.google.common.util.concurrent.AtomicDouble
-import io.sarl.core.Logging
-import io.sarl.core.DefaultContextInteractions
+
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.Logging
+import io.sarl.api.core.DefaultContextInteractions
 
 behavior DetectorSensorRole extends SensorRole {
 	

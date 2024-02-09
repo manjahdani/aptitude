@@ -4,8 +4,9 @@
 package be.uclouvain.aptitude.surveillance.algorithm.counter
 
 import be.uclouvain.aptitude.surveillance.algorithm.ManagerObserverRole
+
+import io.sarl.api.core.Initialize
 import be.uclouvain.organisation.platform.util.Metadata
-import io.sarl.core.Initialize
 
 /** 
  * @author manjah

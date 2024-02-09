@@ -11,11 +11,13 @@ import be.uclouvain.python_access.messages.ActionMessage
 import be.uclouvain.python_access.messages.BBoxes2DMessage
 import be.uclouvain.python_access.messages.BaseMessage
 import be.uclouvain.python_access.messages.RequestMessage
-import io.sarl.core.Behaviors
-import io.sarl.core.Logging
+
 import java.util.Arrays
-import io.sarl.core.Schedules
+
 import be.uclouvain.organisation.AgentPerformance
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.Logging
+import io.sarl.api.core.Schedules
 
 /** 
  * @TODO: write a description
@@ -73,7 +75,8 @@ skill DetectorPythonTwin extends ObserverPythonAccess{
 		//info("It took " + totalTime.toString + " seconds")
 		//info("Average FPS : " + (bboxes2D.frameNumber / totalTime).toString)
 	}}
-//	if (bboxes2D.frameNumber != this.expectedFrame) {
+	uses Schedules
+	//	if (bboxes2D.frameNumber != this.expectedFrame) {
 //		println("UNEXPECTED")
 //	}
 //	this.expectedFrame = occurrence.bboxes2D.frameNumber + 1

@@ -7,7 +7,7 @@ import be.uclouvain.organisation.platform.util.PlatformConfig
 import java.util.LinkedList
 import be.uclouvain.organisation.platform.util.MembershipRule
 import be.uclouvain.organisation.told.util.AlgorithmInfo
-import io.sarl.core.Logging
+import io.sarl.api.core.Logging
 
 /** 
  * @author manjah

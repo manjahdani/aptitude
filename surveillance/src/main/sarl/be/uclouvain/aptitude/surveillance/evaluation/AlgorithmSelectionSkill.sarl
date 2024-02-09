@@ -6,11 +6,11 @@ package be.uclouvain.aptitude.surveillance.evaluation
 import be.uclouvain.aptitude.surveillance.algorithm.util.APTITUDE_EvaluationResults
 import be.uclouvain.aptitude.surveillance.algorithm.util.EvaluationResults
 import be.uclouvain.python_access.messages.EvaluationMessage
-import io.sarl.core.Behaviors
-import io.sarl.core.Logging
 import java.util.HashMap
 import java.util.TreeSet
 import java.util.UUID
+import io.sarl.api.core.Logging
+import io.sarl.api.core.Behaviors
 
 /** 
  * @author manjah

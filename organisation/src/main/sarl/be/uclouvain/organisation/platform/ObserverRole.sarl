@@ -8,16 +8,16 @@ import be.uclouvain.organisation.platform.events.LeavePlatform
 import be.uclouvain.organisation.platform.events.ProcessingHyperParameters
 import be.uclouvain.organisation.platform.events.StopMission
 import be.uclouvain.organisation.platform.util.SurveillanceMissionData
-import io.sarl.core.Behaviors
-import io.sarl.core.ExternalContextAccess
-import io.sarl.core.Logging
-import io.sarl.core.OpenEventSpace
-import io.sarl.core.OpenEventSpaceSpecification
-import io.sarl.core.Schedules
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
 import be.uclouvain.organisation.AgentPerformance
+import io.sarl.api.core.Logging
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.Schedules
+import io.sarl.api.core.OpenEventSpaceSpecification
+import io.sarl.api.core.OpenEventSpace
 
 /** 
  * Receives data at a certain stage (Raw, Information, Knowledge, Insight) and process it. 

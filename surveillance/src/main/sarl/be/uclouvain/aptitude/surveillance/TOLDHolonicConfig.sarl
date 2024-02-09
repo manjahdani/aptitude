@@ -3,9 +3,9 @@
  */
 package be.uclouvain.aptitude.surveillance
 
-import be.uclouvain.organisation.util.HolonicConfig
 import java.util.HashMap
 import java.util.UUID
+import be.uclouvain.organisation.util.HolonicConfig
 
 /** 
  * @author manjah

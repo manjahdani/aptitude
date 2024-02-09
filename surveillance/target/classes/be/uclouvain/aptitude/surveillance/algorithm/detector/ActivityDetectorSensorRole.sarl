@@ -5,17 +5,19 @@ package be.uclouvain.aptitude.surveillance.algorithm.detector
 
 import be.uclouvain.aptitude.surveillance.algorithm.detector.events.Activity
 import be.uclouvain.aptitude.surveillance.algorithm.detector.events.NoActivity
-import be.uclouvain.organisation.AgentPerformance
-import be.uclouvain.organisation.platform.SensorRole
-import be.uclouvain.organisation.platform.events.MissionOver
-import be.uclouvain.organisation.platform.events.PauseMission
-import be.uclouvain.organisation.platform.events.StartMission
-import be.uclouvain.python_access.BBoxes2DResult
+
 import com.google.common.util.concurrent.AtomicDouble
-import io.sarl.core.Behaviors
-import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Logging
+
 import java.util.concurrent.atomic.AtomicBoolean
+import io.sarl.api.core.Logging
+import io.sarl.api.core.DefaultContextInteractions
+import io.sarl.api.core.Behaviors
+import be.uclouvain.organisation.platform.SensorRole
+import be.uclouvain.python_access.BBoxes2DResult
+import be.uclouvain.organisation.platform.events.PauseMission
+import be.uclouvain.organisation.platform.events.MissionOver
+import be.uclouvain.organisation.AgentPerformance
+import be.uclouvain.organisation.platform.events.StartMission
 
 /** 
  * @author manjah
@@ -66,4 +68,5 @@ behavior ActivityDetectorSensorRole extends SensorRole {
 			  +"\n Frames Processed " + frameProcesses.size + "\n" +frameProcesses)
 		emitToParent(new DetectionTime(total_detection_time.get, processingTime))
 	}
-}
+	uses AgentPerformance
+	}

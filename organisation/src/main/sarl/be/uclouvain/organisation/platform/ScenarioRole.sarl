@@ -8,10 +8,6 @@ import be.uclouvain.organisation.platform.events.ComputationalRessources
 import be.uclouvain.organisation.platform.events.LeavePlatform
 import be.uclouvain.organisation.platform.events.StopMission
 import be.uclouvain.organisation.told.util.AlgorithmInfo
-import io.sarl.core.Destroy
-import io.sarl.core.Initialize
-import io.sarl.core.Logging
-import io.sarl.core.Schedules
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
@@ -19,6 +15,10 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 import be.uclouvain.organisation.platform.util.SurveillanceMissionData
 import be.uclouvain.organisation.AgentPerformance
+import io.sarl.api.core.Logging
+import io.sarl.api.core.Schedules
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.Destroy
 
 /** 
  * @author manjah

@@ -10,10 +10,12 @@ import be.uclouvain.python_access.PythonTwinAccess
 import be.uclouvain.python_access.messages.BaseMessage
 import be.uclouvain.python_access.messages.EvaluationMessage
 import be.uclouvain.python_access.messages.RequestMessage
-import io.sarl.core.Behaviors
-import io.sarl.core.Schedules
+
 import java.util.UUID
-import io.sarl.core.Logging
+
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.Schedules
+import io.sarl.api.core.Logging
 
 /** 
  * @TODO: write a description
