@@ -1,0 +1,14 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet.counter
+
+import be.uclouvain.organisation.platform.SensorRole
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior CounterManagerSensorRole extends SensorRole {
+
+}

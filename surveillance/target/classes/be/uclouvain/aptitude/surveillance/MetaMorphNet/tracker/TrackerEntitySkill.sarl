@@ -1,0 +1,17 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet.tracker
+
+import be.uclouvain.organisation.told.InternalUpdate
+
+/** 
+ * @author manjah
+ * 
+ */
+skill TrackerEntitySkill implements InternalUpdate {
+	
+	def internalUpdate(info : Object) {
+		
+	}
+}

@@ -1,0 +1,25 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet.tracker.events
+
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.util.BBoxe2D
+import java.util.ArrayList
+
+/** 
+ * 
+ * @TODO: Comment 
+ * 
+ * @author manjah
+ * 
+ */
+event TrackingPerception{
+	
+	val perceptions : ArrayList<BBoxe2D>
+	val frameNumber : int
+	new (p : ArrayList<BBoxe2D>, f: int)
+	{
+		this.perceptions =p
+		this.frameNumber=f
+	}
+}

@@ -1,0 +1,27 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet.util
+
+/** 
+ * @author manjah
+ * 
+ */
+class Metric {
+	
+	var scoreName : String
+	var gtFilePath:String
+
+	new (score : String, gtPatch : String)
+	{
+		this.gtFilePath = gtPatch
+		this.scoreName = score
+		
+	}
+	def getScoreName{
+		return this.scoreName
+	}
+	def getGtFilePatch{
+		return this.gtFilePath
+	}
+}

@@ -1,0 +1,20 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet.tracker.roles
+
+import be.uclouvain.organisation.platform.util.Metadata
+import io.sarl.api.core.Initialize
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.ManagerObserverRole
+
+/** 
+ * @author manjah
+ * @TODO to comment
+ */
+behavior ManagerTrackerObserverRole extends ManagerObserverRole {
+
+	on Initialize {
+		SENSORS.put("SORT", new Metadata("SORT",0, "VEHICLE", 50))
+		//AVAILABLE_INPUT.put("DeepSORT", new Metadata(1, "VEHICLE",200)) //@TODO Set realistic budget
+	}
+}

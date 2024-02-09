@@ -3,8 +3,8 @@
  */
 package be.uclouvain.aptitude.surveillance.evaluation
 
-import be.uclouvain.aptitude.surveillance.algorithm.util.APTITUDE_EvaluationResults
-import be.uclouvain.aptitude.surveillance.algorithm.util.Metric
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.util.APTITUDE_EvaluationResults
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.util.Metric
 
 import be.uclouvain.python_access.EvaluationResult
 import be.uclouvain.python_access.PartnerEvaluationFound
@@ -14,7 +14,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
-import be.uclouvain.aptitude.surveillance.algorithm.MissionResults
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.MissionResults
 import java.util.concurrent.atomic.AtomicInteger
 import io.sarl.api.core.Logging
 import io.sarl.api.core.Behaviors

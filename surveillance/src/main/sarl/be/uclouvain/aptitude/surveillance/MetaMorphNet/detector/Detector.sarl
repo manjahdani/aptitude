@@ -1,0 +1,59 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet.detector
+
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.MetaMorphNetAgent
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.BecomeManager
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.RoleRegistered
+import be.uclouvain.organisation.AgentPerformance
+import io.sarl.api.core.DefaultContextInteractions
+import io.sarl.api.core.Logging
+import io.sarl.api.core.Behaviors
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.detector.ManagerDetectorSensorRole
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.detector.events.AddMissionAsCooperativeDetector
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.detector.events.AddMissionAsActivityDetector
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.detector.events.AddMissionAsDetector
+
+/** 
+ * @author manjah
+ * 
+ */
+agent Detector extends MetaMorphNetAgent {
+	uses Behaviors, DefaultContextInteractions,Logging, AgentPerformance
+	
+	on BecomeManager {
+		var start : long = System.nanoTime(); // Measure performance
+		debug("Becoming Manager")
+		registerBehavior(new CooperativeLowDensityDetectorObserverRole(this), DNA.get)
+		registerBehavior(new ManagerDetectorSensorRole(this), DNA.get)
+		emitToParent(new RoleRegistered)
+		accumulateTime(System.nanoTime - start) 		// Measure performance
+	}
+	on AddMissionAsActivityDetector {
+		var start : long = System.nanoTime(); // Measure performance
+		debug("Becoming Student Atomic")
+		registerBehavior(new ActivityDetectorSensorRole(this), DNA.get)
+		registerBehavior(new DetectorObserverRole(this), DNA.get)
+		emitToParent(new RoleRegistered)
+		accumulateTime(System.nanoTime - start) 		// Measure performance
+	}
+
+	on AddMissionAsCooperativeDetector {
+		var start : long = System.nanoTime(); // Measure performance
+		debug("Cooperative Detector Role")
+		registerBehavior(new CooperativeSensorRole(this), DNA.get)
+		registerBehavior(new DetectorObserverRole(this), DNA.get)
+		emitToParent(new RoleRegistered)
+		accumulateTime(System.nanoTime - start) 		// Measure performance
+	}
+
+	on AddMissionAsDetector {
+		var start : long = System.nanoTime(); // Measure performance
+		debug("Normal Detector Role")
+		registerBehavior(new DetectorSensorRole(this), DNA.get)
+		registerBehavior(new DetectorObserverRole(this), DNA.get)
+		emitToParent(new RoleRegistered)
+		accumulateTime(System.nanoTime - start) 		// Measure performance
+	}	
+}

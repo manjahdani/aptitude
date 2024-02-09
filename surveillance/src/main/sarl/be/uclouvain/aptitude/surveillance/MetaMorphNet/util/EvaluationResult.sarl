@@ -1,0 +1,202 @@
+
+package be.uclouvain.aptitude.surveillance.MetaMorphNet.util
+
+import java.util.Locale
+
+import java.util.UUID
+import be.uclouvain.python_access.messages.EvaluationMessage
+import org.eclipse.xtend.lib.annotations.Accessors
+
+/** 
+ * @TODO : To complete
+ * 
+ * @author  $ manjahdani$
+ * @version $0.0.2$
+ * @date $17/06/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
+ * 
+ */
+class EvaluationResults {
+
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) val providerID : UUID
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) val competitorID : UUID
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) val competitorBelief : String
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) public var frame : int
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) public var detectionTime : double
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) public var trackingTime : double
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) public var HOTA : double
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) public var DetA : double
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) public var AssA : double
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) public var DetRe : double
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) public var DetPr : double
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) public var AssRe : double
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) public var AssPr : double
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) public var LocA : double
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) var HOTA_Array : double[]
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) public var MOTA : double
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER]) public var MOTP : double
+
+	new (pid:UUID,id : UUID, s : String, dt : double, tt : double, f : int) {
+		this.providerID = pid
+		this.competitorID = id
+		this.competitorBelief = s
+		this.detectionTime = dt
+		this.trackingTime = tt
+		this.frame = f
+	}
+	
+	new (pid:UUID,id : UUID, s : String, ts : double, tt : double) {
+		this.providerID=pid
+		this.competitorID = id
+		this.competitorBelief = s
+		this.detectionTime = ts
+		this.trackingTime = tt
+	}
+
+	def setValues(e : EvaluationMessage) {
+		this.HOTA = e.getHOTA
+		this.DetA = e.getDetA
+		this.AssA = e.getAssA
+		this.DetRe = e.getDetRe
+		this.DetPr = e.getDetPr
+		this.AssRe = e.getAssRe
+		this.AssPr = e.getAssPr
+		this.LocA = e.getLocA
+		this.HOTA_Array = e.getHOTA_Array
+		this.MOTA = e.getMOTA
+		this.MOTP = e.getMOTP
+	}
+	def getProviderID {
+		return this.providerID
+	}
+
+	def getCompetitorID {
+		return this.competitorID
+	}
+
+	def getBelief {
+		return this.competitorBelief
+	}
+
+	def getFrame {
+		return this.frame
+	}
+
+	def getHOTA_Array(l : double[]) {
+		return HOTA_Array
+	}
+
+	def getMOTA {
+		return this.MOTA
+	}
+
+	def getMOTP {
+		return this.MOTP
+	}
+
+	def getLocA {
+		return this.LocA
+	}
+
+	def getDetA {
+		return this.DetA
+	}
+
+	def getAssA {
+		return this.AssA
+	}
+
+	def getDetRe {
+		return this.DetRe
+	}
+
+	def getPr {
+		return this.DetPr
+	}
+
+	def getAssRe {
+		return this.AssRe
+	}
+
+	def getAssPr {
+		return this.AssPr
+	}
+
+	def setHOTA_Array(l : double[]) {
+		this.HOTA_Array = l
+	}
+
+	def setMOTA(l : double) {
+		this.MOTA = l
+	}
+
+	def setMOTP(l : double) {
+		this.MOTP = l
+	}
+
+	def setLocA(l : double) : void {
+		this.LocA = l
+	}
+
+	def setDetA(l : double) : void {
+		this.DetA = l
+	}
+
+	def setAssA(l : double) : void {
+		this.AssA = l
+	}
+
+	def setDetRe(l : double) : void {
+		this.DetRe = l
+	}
+
+	def DetPr(l : double) : void {
+		this.DetPr = l
+	}
+
+	def setAssRe(l : double) : void {
+		this.AssRe = l
+	}
+
+	def DetAssPr(l : double) : void {
+		this.AssPr = l
+	}
+
+	def setDetectionTime(l : double) {
+		this.detectionTime = l
+	}
+
+	def setTrackingTime(l : double) {
+		this.trackingTime = l
+	}
+
+	def setHOTA(h : double) {
+		this.HOTA = h
+	}
+
+	def getDetectionTime : double {
+		return this.detectionTime
+	}
+
+	def getTrackingTime : double {
+		return this.trackingTime
+	}
+
+	def getHOTA : double {
+		return this.HOTA
+	}
+
+	
+	@SuppressWarnings("discouraged_reference")
+	def EvaluationPrint() : void {
+		// println(CompetitorID.toString)
+		println(competitorBelief)
+		System.out.printf(Locale.FRANCE, "%-10.4f%n", HOTA)
+		System.out.printf(Locale.FRANCE, "%-10.4f%n", detectionTime)
+		System.out.printf(Locale.FRANCE, "%-10.4f%n", trackingTime)
+		// println("HOTA_ARRAY" + HOTA_Array.toString)
+		System.out.format("***********************")
+	}
+	
+}

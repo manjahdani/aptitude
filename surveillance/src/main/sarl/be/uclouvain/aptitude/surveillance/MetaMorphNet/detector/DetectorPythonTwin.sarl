@@ -1,0 +1,84 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet.detector
+
+import be.uclouvain.python_access.BBoxes2DResult
+import be.uclouvain.python_access.CommunicationManager
+import be.uclouvain.python_access.ObserverPythonAccess
+import be.uclouvain.python_access.PartnerDetectionFound
+import be.uclouvain.python_access.messages.ActionMessage
+import be.uclouvain.python_access.messages.BBoxes2DMessage
+import be.uclouvain.python_access.messages.BaseMessage
+import be.uclouvain.python_access.messages.RequestMessage
+
+import java.util.Arrays
+
+import be.uclouvain.organisation.AgentPerformance
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.Logging
+import io.sarl.api.core.Schedules
+
+/** 
+ * @TODO: write a description
+ * 
+ * @author $Author: manjahdani$
+ * @version $0.0.1$
+ * @date $31/03/2021$
+ * @mavengroupid $be.uclouvain.aptitude$
+ * @mavenartifactid $surveillance$
+ * 
+ */
+skill DetectorPythonTwin extends ObserverPythonAccess{
+	
+	uses Behaviors, Logging, Schedules, AgentPerformance
+
+	def update(m : BaseMessage) {
+		var start : long = System.nanoTime(); // Measure performance
+		if (m instanceof BBoxes2DMessage) {
+			wake(new BBoxes2DResult(m))
+		} else if (m instanceof RequestMessage) {
+			onRequestMessage(m)
+		} else if (m instanceof ActionMessage) {
+			if (m.ack){
+				//info("Ack action " + m.actionID.toString)
+			}
+		}
+		accumulateTime(System.nanoTime - start) 		// Measure performance
+	}
+
+	private def onRequestMessage(message : RequestMessage) {
+			
+		if (message.ack && message.requestID == this.pendingRequestID) {
+			requestTask.cancel
+			CommunicationManager.instance.unsubscribeTopic(topicRequestSub.toString)
+			topicRequestSub=null
+			val topicName = "detection_" + owner.ID.toString + "_" + message.clientName
+			topicSignalAcquisition=CommunicationManager.instance.subscribeTopic(topicName, this)
+			wake(new PartnerDetectionFound(message.clientName))
+		}
+		
+	}
+	
+	def print(bboxes2D : BBoxes2DMessage) {
+	//emit(new BBoxes2DResult(occurrence.bboxes2D))[it.ID == observerID]
+	info("***********************")
+	info("---- Detection " + bboxes2D.frameNumber)
+	info("*  " + Arrays.toString(bboxes2D.bboxes))
+	info("*  " + Arrays.toString(bboxes2D.classIDs))
+	info("*  " + Arrays.toString(bboxes2D.detConfs))
+	info("*  " + bboxes2D.lastFrame)
+	info("***********************")
+	if (bboxes2D.lastFrame) {
+		info("That was it!")
+		//val totalTime = (((System.currentTimeMillis() - this.start) / 1000))
+		//info("It took " + totalTime.toString + " seconds")
+		//info("Average FPS : " + (bboxes2D.frameNumber / totalTime).toString)
+	}}
+	uses Schedules
+	//	if (bboxes2D.frameNumber != this.expectedFrame) {
+//		println("UNEXPECTED")
+//	}
+//	this.expectedFrame = occurrence.bboxes2D.frameNumber + 1
+//	}	
+}

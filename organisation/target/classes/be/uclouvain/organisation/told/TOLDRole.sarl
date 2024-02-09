@@ -10,7 +10,7 @@ import be.uclouvain.organisation.told.events.DeleteEntry
 import be.uclouvain.organisation.told.events.Query
 import be.uclouvain.organisation.told.events.QueryAnswer
 import be.uclouvain.organisation.told.events.ReadEntry
-import be.uclouvain.organisation.told.util.AlgorithmInfo
+import be.uclouvain.organisation.told.util.MetaMorphNetInfo
 
 import java.util.HashMap
 import java.util.UUID
@@ -82,7 +82,7 @@ behavior TOLDRole extends OrganizationalRole {
 		switch (occurrence.message) {
 		case "AlgorithmInfo" :{
 			emit(privateSpacesListeners.get(occurrence.source.ID),new QueryAnswer(
-										new HashMap(database.filter[p1, p2|p2 instanceof AlgorithmInfo])))
+										new HashMap(database.filter[p1, p2|p2 instanceof MetaMorphNetInfo])))
 			}
 		default:{
 			warning("Unknwon message type" + occurrence.message)

@@ -1,0 +1,22 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet.events
+
+
+import io.sarl.api.core.OpenEventSpace
+
+/** 
+ * @author manjah
+ * 
+ */
+event AgentAlgorithm {
+
+	val name : String
+	val topic : OpenEventSpace
+
+	new(n : String, o : OpenEventSpace) {
+		this.name = n
+		this.topic = o
+	}
+}

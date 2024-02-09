@@ -6,7 +6,7 @@ package be.uclouvain.organisation.platform
 import be.uclouvain.organisation.platform.util.PlatformConfig
 import java.util.LinkedList
 import be.uclouvain.organisation.platform.util.MembershipRule
-import be.uclouvain.organisation.told.util.AlgorithmInfo
+import be.uclouvain.organisation.told.util.MetaMorphNetInfo
 import io.sarl.api.core.Logging
 
 /** 
@@ -41,7 +41,7 @@ skill PlatformSkill implements PlatformCapacity {
 		return this.WC
 	}
 	
-	def noDoubleMembership(m1 : AlgorithmInfo, m2:AlgorithmInfo ){
+	def noDoubleMembership(m1 : MetaMorphNetInfo, m2 : MetaMorphNetInfo) {
 		debug("\n Checking the membership of " + m1.fullName + " and " + m2.fullName)
 		return !ObserversList.contains(m1.fullName.concat(m2.fullName))
 	}

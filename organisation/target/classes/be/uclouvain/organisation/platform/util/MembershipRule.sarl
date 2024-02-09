@@ -3,7 +3,7 @@
  */
 package be.uclouvain.organisation.platform.util
 
-import be.uclouvain.organisation.told.util.AlgorithmInfo
+import be.uclouvain.organisation.told.util.MetaMorphNetInfo
 
 /** 
  * @author manjah
@@ -11,10 +11,10 @@ import be.uclouvain.organisation.told.util.AlgorithmInfo
  */
 class MembershipRule {
 
-	var member1 : AlgorithmInfo
-	var member2 : AlgorithmInfo
+	var member1 : MetaMorphNetInfo
+	var member2 : MetaMorphNetInfo
 
-	new (m1 : AlgorithmInfo, m2 : AlgorithmInfo) {
+	new (m1 : MetaMorphNetInfo, m2 : MetaMorphNetInfo) {
 		this.member1 = m1
 		this.member2 = m2
 	}

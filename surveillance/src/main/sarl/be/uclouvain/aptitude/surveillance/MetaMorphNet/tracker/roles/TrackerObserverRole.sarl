@@ -1,0 +1,104 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet.tracker.roles
+
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.PythonTwinObserverRole
+import be.uclouvain.aptitude.surveillance.platform.events.SensorInfo
+import be.uclouvain.aptitude.surveillance.platform.util.Camera
+import be.uclouvain.organisation.AgentPerformance
+import be.uclouvain.organisation.platform.events.ScenarioInfo
+import be.uclouvain.organisation.platform.events.ScenarioInfoRequest
+import be.uclouvain.organisation.platform.events.SensorInfoRequest
+import be.uclouvain.python_access.BBoxes2DSignal
+import be.uclouvain.python_access.PartnerTrackingFound
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.Initialize
+import io.sarl.api.core.Logging
+import java.util.ArrayList
+import java.util.concurrent.atomic.AtomicReference
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.tracker.events.ResumeTrackingMission
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.tracker.TrackerPythonTwinSkill
+import be.uclouvain.organisation.platform.ObserverCapacity
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.tracker.TrackerPythonTwinCapacity
+
+/** 
+ * @author manjah
+ * 
+ */
+//val dynamicTrackingMemory = Collections.synchronizedList(new LinkedList<ArrayList<BBoxes2D>>)
+
+
+behavior TrackerObserverRole extends PythonTwinObserverRole {
+	
+	uses TrackerPythonTwinCapacity,Logging, ExternalContextAccess,Behaviors, AgentPerformance
+
+	val processedImages = new ArrayList<Integer>
+	val cameraSettings = new AtomicReference<Camera>
+	on PartnerTrackingFound {
+		//info("Tracking Partner found: " +  occurrence.partnerName)
+	}
+	
+	
+	on Initialize {
+		var start = System.nanoTime // Measure of the performance
+		wake(new ScenarioInfoRequest)[me]
+		accumulateTime(System.nanoTime - start)
+		
+	}
+
+	on ScenarioInfo {
+		var start = System.nanoTime // Measure of the performance
+		assert occurrence.client_id !== null, "Received computatation_location null"
+		computation_location.set(occurrence.client_id)
+		updateContextInfo(occurrence.organizationContext.ID, occurrence.privateCommunicationChannelID)
+		checkList.replace("context", true)
+		checkList.replace("computation_location", true)
+		emit(privateOrganizationSpace.get, new SensorInfoRequest)
+		accumulateTime(System.nanoTime - start) 	// Measure of the performance
+	}
+
+	on BBoxes2DSignal {
+		var start = System.nanoTime // Measure of the performance
+		if(!processedImages.contains(occurrence.bboxes2D.frameNumber)){ //@FIXME VERY HIGH it may be slowering.. 
+			Signal2Perception(occurrence.bboxes2D)
+			processedImages.add(occurrence.bboxes2D.frameNumber)
+		}
+		
+		accumulateTime(System.nanoTime - start) 	// Measure of the performance
+	}
+
+	on ResumeTrackingMission {
+		var start = System.nanoTime // Measure of the performance
+		warning("To program !! ")
+		info("Resuming mission" + occurrence.missionID + " with " + occurrence.detector)
+		setSkillIfAbsent(new TrackerPythonTwinSkill(
+			ADN.get.model,
+			ADN.get.platformName,
+			computation_location.get,
+			cameraSettings.get.frameWidth,
+			cameraSettings.get.frameHeight
+		))
+		
+		info("Come here " + occurrence.detector)
+		missionList.get(occurrence.missionID).dynamicAdaptation = false
+		// enableDataAcquisition(occurrence.missionID, "DETECTOR")
+		accumulateTime(System.nanoTime - start) 		// Measure of the performance
+	}
+
+	on SensorInfo {
+		var start = System.nanoTime // Measure of the performance
+		this.cameraSettings.set(occurrence.cameraSettings)
+		warning("Cam width = " + cameraSettings.get.frameWidth + "; height = " + cameraSettings.get.frameHeight)
+		setSkillIfAbsent(new TrackerPythonTwinSkill(
+			ADN.get.model,
+			ADN.get.platformName,
+			computation_location.get,
+			cameraSettings.get.frameWidth,
+			cameraSettings.get.frameHeight
+		))
+		accumulateTime(System.nanoTime - start) 	// Measure of the performance
+	}
+	uses ObserverCapacity
+	}

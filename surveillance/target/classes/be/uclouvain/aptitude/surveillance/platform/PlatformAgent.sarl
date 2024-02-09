@@ -12,9 +12,7 @@ import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
 import be.uclouvain.aptitude.surveillance.platform.events.AgentPlatform
 import be.uclouvain.organisation.platform.events.Ready
-import be.uclouvain.aptitude.surveillance.algorithm.Algorithm
 import java.util.HashMap
-import be.uclouvain.organisation.told.util.AlgorithmInfo
 import be.uclouvain.organisation.told.events.QueryAnswer
 import io.sarl.api.core.Logging
 import io.sarl.api.core.InnerContextAccess
@@ -23,6 +21,8 @@ import io.sarl.api.core.Lifecycle
 import io.sarl.api.core.DefaultContextInteractions
 import io.sarl.api.core.Initialize
 import io.sarl.api.core.OpenEventSpaceSpecification
+import be.uclouvain.organisation.told.util.MetaMorphNetInfo
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.MetaMorphNetAgent
 
 /**
  * 
@@ -63,9 +63,9 @@ agent PlatformAgent extends Paraddis {
 	on QueryAnswer {
 		if(platformConfig.get.level==0){
 		debug("Query received")		
-		var registeredAlgorithms = occurrence.answerObject as HashMap<UUID, AlgorithmInfo>
+		var registeredAlgorithms = occurrence.answerObject as HashMap<UUID, MetaMorphNetInfo>
 		for (t : platformConfig.get.tasks.keySet) {
-		 spawnInContext(Algorithm, innerContext, platformConfig.get.tasks, new AlgorithmInfo(t, "none", t),
+		 spawnInContext(MetaMorphNetAgent, innerContext, platformConfig.get.tasks, new MetaMorphNetInfo(t, "none", t),
 		 new HashMap(registeredAlgorithms.filter[p1, p2|p2.task == t])) 
 		 }}
 	}

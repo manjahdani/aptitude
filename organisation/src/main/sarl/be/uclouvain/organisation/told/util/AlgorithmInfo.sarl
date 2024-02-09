@@ -1,109 +1,107 @@
-/** 
- * 
- */
-package be.uclouvain.organisation.told.util
+package be.uclouvain.organisation.told.util;
 
-import java.util.UUID
+import java.util.UUID;
 
 /** 
+ * MetaMorphNetInfo holds the essential details of a MetaMorphNetAgent, including its name, model, task,
+ * level within the MetaMorphNet hierarchy, and associated platform name. This class supports cloning to facilitate
+ * the dynamic evolution and replication of agents across different contexts and tasks within the network, allowing them
+ * to adapt and refine their operational models dynamically.
  * 
- * @TODO : comment  
- * 
- * @author $Author: manjahdani$
- * @version $0.0.2$
- * @date $16/04/2021$
- * @mavengroupid $be.uclouvain.aptitude$
- * @mavenartifactid $organisation$
- * 
+ * @author Manjahdani
+ * @version 0.0.3
+ * @date 2024-02-09
+ * @mavengroupid be.uclouvain.aptitude
+ * @mavenartifactid organisation
  */
- 
-class AlgorithmInfo implements Cloneable {
+class MetaMorphNetInfo implements Cloneable {
 
-	var ID : UUID
-	val name : String
-	var belief : String
-	val task : String
-	var level: int
-	var platformName : String 
-	
-	new (n : String, b : String, t : String, l : int, pName : String, id:UUID) {
-		this.name = n
-		this.belief = b
-		this.task = t
-		this.level = l
-		this.platformName=pName
-		this.ID = ID
-	}
+	var ID : UUID;
+	val name : String;
+	var model : String; // Updated to 'model'
+	val task : String;
+	var level : int;
+	var platformName : String;
 
-	new (n : String, b : String, t : String, l : int, id:UUID) {
-		this.name = n
-		this.belief = b
-		this.task = t
-		this.level = l
-		this.ID =id 
+	new (name : String, model : String, task : String, level : int, platformName : String, id : UUID) {
+		this.name = name;
+		this.model = model; // Updated to 'model'
+        this.task = task;
+        this.level = level;
+		this.platformName = platformName;
+		this.ID = id;
 	}
 
-	new (n : String, t : String) {
-		this.name = n
-		this.belief = null
-		this.task = t
-		this.level = -1
+	new (name : String, model : String, task : String, level : int, id : UUID) {
+		this.name = name;
+		this.model = model; // Updated to 'model'
+		this.task = task;
+        this.level = level;
+		this.ID = id;
 	}
 
-	new (n : String, b : String, t : String, l : int) {
-		this.name = n
-		this.belief = b
-		this.task = t
-		this.level = l
-	}
-	
-	new (n : String, b : String, t : String) {
-		this.name = n
-		this.belief = b
-		this.task = t
-		this.level = 0
+	new (name : String, task : String) {
+		this.name = name;
+		this.model = null; // Updated to 'model'
+		this.task = task;
+		this.level = -1;
+    }
+
+    new (name : String, model : String, task : String, level : int) {
+		this.name = name;
+		this.model = model; // Updated to 'model'
+		this.task = task;
+		this.level = level;
 	}
 
-	new (n : String, t : String, l: int) {
-		this.name = n
-		this.belief = null
-		this.task = t
-		this.level = l 
-	}
-	
-	def setLevel(a : int) : void{
-		this.level=a
-	}
-	
-	def getID{
-		return this.ID
-	}
-	def setID(ID : UUID)
-	{
-		this.ID = ID
+	new (name : String, model : String, task : String) {
+		this.name = name;
+		this.model = model; // Updated to 'model'
+		this.task = task;
+		this.level = 0;
 	}
 
-	
-	def getLevel{
-		return this.level
+	new (name : String, task : String, level : int) {
+		this.name = name;
+        this.model = null; // Updated to 'model'
+		this.task = task;
+		this.level = level;
 	}
-	
-	def getFullName{
-		return this.name.concat("_").concat(level.toString)
+
+	def setLevel(level : int) : void {
+		this.level = level;
 	}
-	def setPlatformName (pName : String){
-		this.platformName = pName
+
+	def getID {
+        return this.ID;
+    }
+
+	def setID(id : UUID) {
+		this.ID = id;
 	}
-	def getPlatformName{
-		return this.platformName
+
+	def getLevel {
+		return this.level;
 	}
-	
+
+	def getFullName {
+		return this.name.concat("_").concat(level.toString());
+	}
+
+	def setPlatformName(platformName : String) {
+		this.platformName = platformName;
+	}
+
+	def getPlatformName {
+		return this.platformName;
+	}
+
 	def getName {
-		return this.name
-	}
+        return this.name;
+    }
 
-	def getBelief {
-		return this.belief;
+    def getModel {
+        return this.model;
 	}
 
 	def getTask {
@@ -111,25 +109,24 @@ class AlgorithmInfo implements Cloneable {
 	}
 
 	def incrementLevel {
-		this.level = level + 1
-	}
-	
-	/** 
-	 * Cloning process 
-	 * 
-	 * 
-	 */
-	def cloneChildWithID() {
-		return this.clone
-	}
-	
-	def cloneChildWithID(childID : UUID) {
-		return this.clone.newClone(childID)
+		this.level += 1;
 	}
 
-	def newClone(id : UUID) {
-		incrementLevel
-		setID(id)
-		return this
+	/** 
+	 * Supports cloning for agent replication with adaptation to new contexts or tasks,
+	 * allowing the dynamic evolution of models.
+	 */
+	def cloneChildWithID() {
+		return this.clone();
+	}
+
+	def cloneChildWithID(childID : UUID) {
+		return this.clone().newClone(childID);
+    }
+
+    def newClone(id : UUID) {
+        incrementLevel();
+		setID(id);
+		return this;
 	}
 }

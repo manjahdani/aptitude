@@ -1,0 +1,17 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet.events
+
+/** 
+ * @author manjah
+ * 
+ */
+event StrategyMethod {
+	val strategy : String
+	val techniqueName : String
+	new (s:String,tN: String){
+		this.strategy=s
+		this.techniqueName=tN
+	}
+}

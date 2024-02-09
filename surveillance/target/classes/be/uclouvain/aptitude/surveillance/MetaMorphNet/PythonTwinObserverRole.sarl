@@ -1,0 +1,106 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet
+
+import be.uclouvain.organisation.platform.ObserverRole
+import be.uclouvain.python_access.PythonTwinAccessCapacity
+import be.uclouvain.organisation.platform.events.PauseMission
+import be.uclouvain.organisation.platform.events.ResumeMission
+import be.uclouvain.organisation.platform.events.StartMission
+import java.util.concurrent.atomic.AtomicInteger
+import be.uclouvain.organisation.platform.events.StopMission
+import be.uclouvain.organisation.AgentPerformance
+import io.sarl.api.core.Destroy
+import io.sarl.api.core.Logging
+
+/** 
+ * @author manjah
+ *      
+ * PLAY = 1 // No frame 
+ * PAUSE = 2 // No frame pause le thread
+ * RESUME = 3 // No frame
+ * STOP = 4  // Le sort de sa boucle pour qu'il puisse accueillir d'autres requêtes  
+ * RESTART = 5 // Seek avec la frame 0
+ * SEEK = 6   //  Seek
+ * KILL = 7 // Kill the agent ?
+ * 
+ */
+abstract behavior PythonTwinObserverRole extends ObserverRole {
+	uses PythonTwinAccessCapacity, AgentPerformance, Logging
+	
+	val counter = new AtomicInteger(0)
+	on PauseMission {
+		var start : long = System.nanoTime(); // Measure performance
+		
+		debug("Pausing mission")// +occurrence.missionID)
+		orderedMissionList.get(occurrence.missionID).setMissionInative
+		pauseMission
+		
+		accumulateTime(System.nanoTime - start) 	// Measure of the performance
+	}
+	
+	on Destroy{
+		warning("Killing python twin")
+		updateStreamAccess(7)
+	}
+	on StartMission {
+		var start : long = System.nanoTime(); // Measure performance
+		if (occurrence.frameNumber > 0) {
+			//info("UpdatingStreamAccess - Action 6 Seeking frame " + occurrence.frameNumber)
+			updateStreamAccess(6, occurrence.frameNumber)
+			}
+		
+		if (counter.get > 0) {
+			//info("UpdatingStreamAccess - Action 3 Starting at frame " + occurrence.frameNumber)
+			updateStreamAccess(3)
+		}
+		else {
+			//info("UpdatingStreamAccess - Action 1 Starting at frame " + occurrence.frameNumber)
+			counter.set(1)
+			updateStreamAccess(1)
+		}
+		accumulateTime(System.nanoTime - start) 		// Measure of the performance
+	}
+
+	on StopMission {
+		var start : long = System.nanoTime(); // Measure performance
+		warning("Pausing Python TWIN")
+		updateStreamAccess(4)
+		accumulateTime(System.nanoTime - start) 		// Measure of the performance
+	}
+
+	on ResumeMission {
+		var start : long = System.nanoTime(); // Measure performance
+		
+		orderedMissionList.get(occurrence.missionID).setMissionActive
+		resumeMission(occurrence.reInitialization)
+		
+		accumulateTime(System.nanoTime - start) 	// Measure of the performance
+	}
+	
+	def pauseMission {
+		var start : long = System.nanoTime(); // Measure performance
+		for (o : orderedMissionList.values) {
+			if (!o.isMissionActive) {
+				isRoleActive.set(false)
+				updateStreamAccess(2)
+			}}
+			
+		accumulateTime(System.nanoTime - start) 
+	}
+	
+	def resumeMission(reInit : boolean) {
+		var start : long = System.nanoTime(); // Measure performance
+		
+		if (reInit) {
+			info("Resume Mission request")
+			updateStreamAccess(5)
+		}
+		if (!isRoleActive.get) {
+			info("ReStartingStream")
+			updateStreamAccess(3)
+		}
+		accumulateTime(System.nanoTime - start) 
+	}
+}

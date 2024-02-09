@@ -1,0 +1,22 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet.counter
+
+import be.uclouvain.organisation.platform.ObserverCapacity
+import be.uclouvain.organisation.platform.util.OrientedCountingLine
+import java.util.HashMap
+
+/** 
+ * @author manjah
+ * 
+ */
+capacity CounterObserverCapacity extends ObserverCapacity {
+
+			/** 
+		 * The capacity is able to display  
+		 * 
+		 * 
+		 */
+	def DisplayPerception(actionID : int) : HashMap<String, OrientedCountingLine> 		// @FIXME MEDIUM It is not an ObserverCapacity
+}

@@ -1,6 +1,6 @@
 package be.uclouvain.aptitude.surveillance.platform
 
-import be.uclouvain.aptitude.surveillance.algorithm.events.AgentAlgorithm
+
 import be.uclouvain.organisation.events.Identification
 import be.uclouvain.organisation.events.SignalID
 import be.uclouvain.organisation.platform.PlatformRole
@@ -24,6 +24,7 @@ import io.sarl.api.core.Behaviors
 import io.sarl.api.core.DefaultContextInteractions
 import io.sarl.api.core.OpenEventSpace
 import io.sarl.api.core.Initialize
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.events.AgentAlgorithm
 
 /** 
  * 

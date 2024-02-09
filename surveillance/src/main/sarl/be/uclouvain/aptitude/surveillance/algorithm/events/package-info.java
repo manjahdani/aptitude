@@ -1,1 +1,0 @@
-package be.uclouvain.aptitude.surveillance.algorithm.events;

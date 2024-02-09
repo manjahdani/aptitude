@@ -1,0 +1,38 @@
+package be.uclouvain.aptitude.surveillance.MetaMorphNet.tracker
+
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.tracker.roles.ManagerTrackerObserverRole
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.tracker.roles.SingleTrackerSensorRole
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.tracker.roles.TrackerSensorRole
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.DefaultContextInteractions
+import io.sarl.api.core.Logging
+import be.uclouvain.organisation.AgentPerformance
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.RegisterUnitaryRole
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.BecomeManager
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.RoleRegistered
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.MetaMorphNetAgent
+
+/** 
+ * @author manjah
+ * 
+ */
+agent Tracker extends MetaMorphNetAgent {
+	uses Logging, Behaviors, DefaultContextInteractions, AgentPerformance
+
+	on RegisterUnitaryRole {
+		var start : long = System.nanoTime(); // Measure performance
+		debug("Becoming a tracker")
+		registerBehavior(new SingleTrackerSensorRole(this), DNA.get)
+		emitToParent(new RoleRegistered)
+		accumulateTime(System.nanoTime - start) // Measure performance
+	}
+	on BecomeManager {
+		var start : long = System.nanoTime(); // Measure performance
+		debug("Becoming a tracker manager")
+		registerBehavior(new ManagerTrackerObserverRole(this), DNA.get)
+		registerBehavior(new TrackerSensorRole(this), DNA.get)
+		emitToParent(new RoleRegistered)
+		accumulateTime(System.nanoTime - start) 	// Measure performance
+	}
+
+	}

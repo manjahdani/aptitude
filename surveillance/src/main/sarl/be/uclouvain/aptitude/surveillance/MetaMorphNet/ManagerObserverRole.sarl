@@ -1,0 +1,92 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet
+
+import be.uclouvain.organisation.events.JoinOrganisation
+import be.uclouvain.organisation.platform.ObserverRole
+import be.uclouvain.organisation.platform.events.AddMission
+import be.uclouvain.organisation.platform.events.Ready2Process
+import be.uclouvain.organisation.platform.util.HyperParameters
+import be.uclouvain.organisation.platform.util.Metadata
+import be.uclouvain.organisation.platform.util.SurveillanceMissionData
+
+import io.sarl.lang.core.Event
+import java.util.Collections
+import java.util.TreeMap
+import java.util.UUID
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.HashMap
+import io.sarl.api.core.Logging
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.InnerContextAccess
+import io.sarl.api.core.DefaultContextInteractions
+import io.sarl.api.core.AgentSpawned
+import io.sarl.api.core.OpenEventSpaceSpecification
+
+/** 
+ * @author manjah
+ * 
+ */
+abstract behavior ManagerObserverRole extends ObserverRole {
+	uses Logging, Behaviors,InnerContextAccess, DefaultContextInteractions
+
+	protected val SENSORS = Collections.synchronizedMap(new TreeMap<String, Metadata>) // Possible Sensors @FIXME HIGH should be given by the Analyst which makes it configurable ?
+	
+	
+	protected val innerProcess_ParametersMap = Collections.synchronizedMap(new TreeMap<HyperParameters,UUID>)
+	protected val isDynamicAdaptionEnabled = new AtomicBoolean(false) // @FIXME MEDIUM not a proper way as it depends on the allocated resources. Maybe introducing a budget is better representative.
+	protected val internal_externalMap = Collections.synchronizedMap(new HashMap<UUID, UUID>)
+	//	//protected val detector_innerTrackerMap = Collections.synchronizedMap(new HashMap<String, UUID>)
+	// protected val innerTracker_detectorsMap = Collections.synchronizedMap(new HashMap<UUID, String>)
+	on RoleRegistered {
+		debug("Received role Registered from " + occurrence.source.ID)
+		wake(new JoinOrganisation(organizationContext.get.ID, organizationContext.get.defaultSpace.spaceID.ID)) [
+			it.ID == occurrence.source.ID
+		]
+	}
+
+	on AgentSpawned {		
+		val mbID = occurrence.agentID
+		if (memberAgents.contains(mbID)) {
+		    wake(provideRoleMessage(mbID))[it.ID == mbID]
+		}
+	}
+	
+	def provideRoleMessage(mbID:UUID) : Event{
+		return new RegisterUnitaryRole
+	}
+
+	def processingMissionWithID(mID : UUID){
+		for (s : SENSORS.keySet) {
+			val internalMissionID = UUID.randomUUID // create a random uid for a sub-mission aimed at answering the mission with uid = mID
+			external_internal_Map.put(mID, internalMissionID) // table {key := uid} of the an internal mission, {value:= uid of the ordered mission}
+			internal_externalMap.put(internalMissionID,mID)
+			val newInternalMission = new SurveillanceMissionData(mID, //missionID
+																 this.ID, // client ID 
+																 organizationContext.get.ID,//platformID
+																 internalMissionID,
+																 missionList.get(mID).cautionLevel.get, // param
+																 missionList.get(mID).dynamicAdaptationEnabled)//param
+																	
+			orderedMissionList.put(internalMissionID, newInternalMission)
+			
+			innerProcess_ParametersMap.put(new HyperParameters(SENSORS.get(s).performance, 
+																isDynamicAdaptionEnabled.get), 
+																internalMissionID)
+			var comSpace = organizationContext.get.getOrCreateSpaceWithID(OpenEventSpaceSpecification, UUID.randomUUID) // An internal space to communicate with other roles.
+			comSpace.registerStrongParticipant(asEventListener)
+			providers.put(internalMissionID, comSpace)
+			emitToParent(new AlgorithmNeeded(innerContext, s, internalMissionID))
+		}
+	}
+
+	on Ready2Process {
+		//info("Agent - " + occurrence.source.ID +" is ready to operate")
+		val mbID = occurrence.source.ID
+		wake(new AddMission(mbID, providers.get(mbID).spaceID.ID)) [
+			it.ID == mbID
+		]
+	}
+
+}

@@ -3,7 +3,7 @@
  */
 package be.uclouvain.aptitude.surveillance.evaluation
 
-import be.uclouvain.aptitude.surveillance.algorithm.util.APTITUDE_EvaluationResults
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.util.APTITUDE_EvaluationResults
 
 /** 
  * @author manjah

@@ -3,7 +3,7 @@
  */
 package be.uclouvain.aptitude.surveillance.evaluation
 
-import be.uclouvain.aptitude.surveillance.algorithm.util.APTITUDE_EvaluationResults
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.util.APTITUDE_EvaluationResults
 import be.uclouvain.organisation.events.AddMember
 import be.uclouvain.organisation.platform.PlatformOrganizationInfo
 import be.uclouvain.organisation.told.entity.EntityRole

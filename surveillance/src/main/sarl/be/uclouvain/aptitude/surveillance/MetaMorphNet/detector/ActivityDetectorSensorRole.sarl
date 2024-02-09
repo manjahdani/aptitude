@@ -1,0 +1,73 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet.detector
+
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.detector.events.Activity
+
+
+import com.google.common.util.concurrent.AtomicDouble
+
+import java.util.concurrent.atomic.AtomicBoolean
+import io.sarl.api.core.Logging
+import io.sarl.api.core.DefaultContextInteractions
+import io.sarl.api.core.Behaviors
+import be.uclouvain.organisation.platform.SensorRole
+import be.uclouvain.python_access.BBoxes2DResult
+import be.uclouvain.organisation.platform.events.PauseMission
+import be.uclouvain.organisation.platform.events.MissionOver
+import be.uclouvain.organisation.AgentPerformance
+import be.uclouvain.organisation.platform.events.StartMission
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.detector.events.NoActivity
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior ActivityDetectorSensorRole extends SensorRole {
+	uses Logging, DefaultContextInteractions,Behaviors, AgentPerformance
+
+	
+	val total_detection_time = new AtomicDouble(0)
+	val frameProcesses = newArrayList()
+	val AlreadyNotified = new AtomicBoolean(false)
+	 on BBoxes2DResult {
+		// Compute the detection time
+		var start : long = System.nanoTime(); // Measure performance
+		//info("Frame # " + occurrence.bboxes2D.frameNumber)
+		if (!occurrence.bboxes2D.bboxes.isEmpty) {
+			synchronized(this){
+			wake(new PauseMission(this.ID))[me]
+			if (!AlreadyNotified.get) {
+				emit(new Activity(occurrence.bboxes2D.frameNumber))
+				AlreadyNotified.set(true)
+			}}
+			//noActivityFrames.set(0)
+		} else {
+			this.total_detection_time.addAndGet(occurrence.bboxes2D.detectionTime)
+			this.frameProcesses.add(occurrence.bboxes2D.frameNumber)
+		}
+		 
+		if (occurrence.bboxes2D.lastFrame) {
+			warning("Background Reached LastFrame : " + total_detection_time)
+			wake(new PauseMission(this.ID))[me]
+			emitToParent(new MissionOver(this.ID,occurrence.bboxes2D.frameNumber))
+		}
+		accumulateTime(System.nanoTime - start) 		// Measure performance
+	}
+	on NoActivity {
+		var start : long = System.nanoTime(); // Measure performance
+		//info("Activity mode on at frame - " + occurrence.frameNumber)
+		AlreadyNotified.set(false)
+		wake(new StartMission(this.ID, occurrence.frameNumber))[me]
+		accumulateTime(System.nanoTime - start) 	// Measure performance
+	}
+
+	on RequestDetectionTime {
+		info("Mission Over \n Detection_time = {" + total_detection_time + "} 
+			  \n agentification_cost = {" + processingTime+"}" 
+			  +"\n Frames Processed " + frameProcesses.size + "\n" +frameProcesses)
+		emitToParent(new DetectionTime(total_detection_time.get, processingTime))
+	}
+
+	}

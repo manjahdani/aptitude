@@ -1,0 +1,10 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet
+
+/** 
+ * @author manjah
+ * 
+ */
+event RegisterUnitaryRole

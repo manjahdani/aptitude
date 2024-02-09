@@ -1,0 +1,82 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet.detector
+
+import be.uclouvain.aptitude.surveillance.CommitSuicide
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.ManagerObserverRole
+
+
+
+import io.sarl.lang.core.Event
+import java.util.UUID
+import java.util.concurrent.atomic.AtomicReference
+
+import io.sarl.api.core.Logging
+import io.sarl.api.core.Behaviors
+import io.sarl.api.core.DefaultContextInteractions
+import io.sarl.api.core.Initialize
+import be.uclouvain.organisation.platform.util.Metadata
+import be.uclouvain.organisation.platform.events.Ready2Process
+import be.uclouvain.python_access.PartnerDetectionFound
+import be.uclouvain.organisation.platform.events.StartMission
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.detector.events.AddMissionAsActivityDetector
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.detector.events.AddMissionAsCooperativeDetector
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.detector.events.AddMissionAsDetector
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.events.StrategyMethod
+
+/** 
+ * @author manjah
+ * 
+ */
+behavior CooperativeLowDensityDetectorObserverRole extends ManagerObserverRole {
+	uses Logging, Behaviors, DefaultContextInteractions
+	
+	val studentID = new AtomicReference<UUID>
+	val masterID = new AtomicReference<UUID>
+	
+	on Initialize {
+		SENSORS.put("BACKGROUND", new Metadata("BACKGROUND",0, "VEHICLE", 200))
+		SENSORS.put("YOLO", new Metadata("YOLO",1, "VEHICLE", 500))
+		emitToParent(new Ready2Process)
+	}
+	
+	on PartnerDetectionFound { //@FIXME HIGH not robust
+		
+		if (occurrence.source.ID.equals(studentID.get)) {
+			debug("EnableStreamAccess at frame " + 0)
+			wake(new StartMission(occurrence.source.ID,0))[it.ID == occurrence.source.ID]
+		}
+	}
+
+	override provideRoleMessage(mbID : UUID) : Event { //@FIXME VERY HIGH
+		val position = innerProcess_ParametersMap.values.toList.indexOf(mbID)
+		//info("member Joined " + mbID + "performance is" + position)
+		
+		val mID = internal_externalMap.get(mbID)
+		val mission = missionList.get(mID)
+		if (mission.dynamicAdaptationEnabled) {
+			if (position == 0) {
+				warning("Activity detector Role of " + mbID)
+				studentID.set(mbID)
+				wake(new StrategyMethod("multi", "multi"))[me] //@FIXME HIGH not general at all
+				return new AddMissionAsActivityDetector
+			} else {
+				warning("Detector role " + mbID)
+				masterID.set(mbID)
+				return new AddMissionAsCooperativeDetector
+			}
+		}
+		else{
+			if (position == mission.cautionLevel) {
+				studentID.set(mbID)
+				wake(new StrategyMethod("mono",SENSORS.values.get(position).name))[me]
+				return new AddMissionAsDetector
+			}
+			else{
+				return new CommitSuicide
+			}
+		}
+			
+	}
+}

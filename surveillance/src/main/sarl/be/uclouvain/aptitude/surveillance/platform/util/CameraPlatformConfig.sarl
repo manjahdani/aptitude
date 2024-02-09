@@ -16,14 +16,14 @@ class CameraPlatformConfig extends PlatformConfig {
 	val camera : Camera
 
 	new (lvl : int, entity_max : int, init_tasks : HashMap<String, Class<? extends Agent>>, c : Camera){
-		super(lvl,entity_max,init_tasks,c.camera_id)
+		super(lvl,entity_max,init_tasks,c.cameraId)
 		this.camera=c
 	}
 	def getWidth:double{
-		return this.camera.frame_width
+		return this.camera.frameWidth
 	}
 	def getHeight:double{
-		return this.camera.frame_height
+		return this.camera.frameHeight
 	}
 	def getCamera : Camera{
 		return this.camera

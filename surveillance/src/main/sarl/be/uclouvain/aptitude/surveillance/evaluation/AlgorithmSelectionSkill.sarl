@@ -3,8 +3,8 @@
  */
 package be.uclouvain.aptitude.surveillance.evaluation
 
-import be.uclouvain.aptitude.surveillance.algorithm.util.APTITUDE_EvaluationResults
-import be.uclouvain.aptitude.surveillance.algorithm.util.EvaluationResults
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.util.APTITUDE_EvaluationResults
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.util.EvaluationResults
 import be.uclouvain.python_access.messages.EvaluationMessage
 import java.util.HashMap
 import java.util.TreeSet

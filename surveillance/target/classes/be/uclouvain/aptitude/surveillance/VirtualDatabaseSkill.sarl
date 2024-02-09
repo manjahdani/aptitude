@@ -3,14 +3,14 @@
  */
 package be.uclouvain.aptitude.surveillance
 
-import be.uclouvain.aptitude.surveillance.algorithm.util.BBoxe2D
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.util.BBoxe2D
 import be.uclouvain.organisation.told.AccessDatabaseCapacity
-import be.uclouvain.organisation.told.util.AlgorithmInfo
+import be.uclouvain.organisation.told.util.MetaMorphNetInfo
 import com.opencsv.CSVWriter
+import io.sarl.api.core.Logging
 import java.io.FileWriter
 import java.util.HashMap
 import java.util.UUID
-import io.sarl.api.core.Logging
 
 /** 
  * @author manjah
@@ -25,26 +25,30 @@ skill VirtualDatabaseSkill implements AccessDatabaseCapacity {
 
 	def install {
 		database.put(UUID.randomUUID,
-			new AlgorithmInfo("YOLO", "F:/aptitude/surveillance/src/main/resources/config/test-YOLO.json", "DETECTOR",1))
+			new MetaMorphNetInfo("YOLO", "F:/aptitude/surveillance/src/main/resources/config/test-YOLO.json",
+			"DETECTOR", 1))
 		database.put(UUID.randomUUID,
-			new AlgorithmInfo("TinyYOLO", "F:/aptitude/surveillance/src/main/resources/config/test-TinyYOLO.json",
+			new MetaMorphNetInfo("TinyYOLO", "F:/aptitude/surveillance/src/main/resources/config/test-TinyYOLO.json",
 			"DETECTOR",1))
 
 		database.put(UUID.randomUUID,
-			new AlgorithmInfo("YOLO-COCO", 
+			new MetaMorphNetInfo("YOLO-COCO", 
 							   "F:/aptitude/surveillance/src/main/resources/config/test-YOLO-COCO.json",
 							   "DETECTOR",
 							   1))
 			
 		database.put(UUID.randomUUID,
-			new AlgorithmInfo("SORT", "F:/aptitude/surveillance/src/main/resources/config/test-SORT.json", "TRACKER",
+			new MetaMorphNetInfo("SORT", "F:/aptitude/surveillance/src/main/resources/config/test-SORT.json", "TRACKER",
 			1))
 
-		database.put(UUID.randomUUID,new AlgorithmInfo("DeepSORT", "F:/aptitude/surveillance/src/main/resources/config/test-DeepSORT.json","TRACKER",1))
-		database.put(UUID.randomUUID, new AlgorithmInfo("APTITUDE", "NoneForTheMoment", "COUNTER", 1))
+		database.put(UUID.randomUUID,
+			new MetaMorphNetInfo("DeepSORT", "F:/aptitude/surveillance/src/main/resources/config/test-DeepSORT.json",
+			"TRACKER",1))
+		database.put(UUID.randomUUID, new MetaMorphNetInfo("APTITUDE", "NoneForTheMoment", "COUNTER", 1))
 		
 		database.put(UUID.randomUUID,
-			new AlgorithmInfo("BACKGROUND", "F:/aptitude/surveillance/src/main/resources/config/BACKGROUND.json", "DETECTOR",
+			new MetaMorphNetInfo("BACKGROUND", "F:/aptitude/surveillance/src/main/resources/config/BACKGROUND.json",
+			"DETECTOR",
 			1))
 		
 		database.put(UUID.randomUUID,"a")

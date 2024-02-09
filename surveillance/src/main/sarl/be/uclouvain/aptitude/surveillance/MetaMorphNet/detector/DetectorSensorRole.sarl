@@ -1,0 +1,56 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet.detector
+
+import be.uclouvain.organisation.platform.SensorRole
+import be.uclouvain.python_access.BBoxes2DResult
+import be.uclouvain.python_access.BBoxes2DSignal
+import be.uclouvain.python_access.messages.BBoxes2DMessage
+
+import be.uclouvain.organisation.AgentPerformance
+import com.google.common.util.concurrent.AtomicDouble
+
+import io.sarl.api.core.ExternalContextAccess
+import io.sarl.api.core.Logging
+import io.sarl.api.core.DefaultContextInteractions
+
+behavior DetectorSensorRole extends SensorRole {
+	
+	uses ExternalContextAccess, AgentPerformance, Logging, DefaultContextInteractions
+
+	protected val total_detection_time = new AtomicDouble(0)
+	//val frameProcesses = newArrayList()
+	on BBoxes2DResult {
+		var start : long = System.nanoTime(); // Measure performance
+		val signal = Signal2Transmit(occurrence.bboxes2D)
+		for (listenersSpace : listeners.values) {
+				emit(listenersSpace, signal)[!me]
+			}
+		accumulateTime(System.nanoTime - start) 	// Measure performance
+	}
+	
+	def Signal2Transmit(signal : BBoxes2DMessage) {
+		total_detection_time.addAndGet(signal.detectionTime)
+		//frameProcesses.add(signal.frameNumber)
+		return new BBoxes2DSignal(signal, ADN.get.name)
+	}
+	on RequestDetectionTime {
+		info("Mission Over \n Detection_time = {" + total_detection_time + "} 
+			  \n agentification_cost = {" + processingTime + "}")// + 
+			  //"\n Frames Processed " + frameProcesses.size + "\n" + frameProcesses)
+		emitToParent(new DetectionTime(total_detection_time.get,processingTime))
+	}
+}
+
+event RequestDetectionTime
+
+
+event DetectionTime{
+	val detTime : double
+	val aTime : double
+	new(dT:double, adT : double){
+		this.detTime=dT
+		this.aTime=adT
+	}
+}

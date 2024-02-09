@@ -5,9 +5,9 @@ import be.uclouvain.aptitude.surveillance.CommitSuicide
 import be.uclouvain.aptitude.surveillance.Paraddis
 import be.uclouvain.aptitude.surveillance.TOLDAgent
 import be.uclouvain.aptitude.surveillance.TOLDConfig
-import be.uclouvain.aptitude.surveillance.algorithm.counter.Counter
-import be.uclouvain.aptitude.surveillance.algorithm.detector.Detector
-import be.uclouvain.aptitude.surveillance.algorithm.tracker.Tracker
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.counter.Counter
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.detector.Detector
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.tracker.Tracker
 import be.uclouvain.aptitude.surveillance.platform.PlatformAgent
 import be.uclouvain.aptitude.surveillance.platform.util.Camera
 import be.uclouvain.aptitude.surveillance.platform.util.CameraPlatformConfig

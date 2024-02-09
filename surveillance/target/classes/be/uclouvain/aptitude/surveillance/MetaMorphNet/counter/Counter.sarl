@@ -1,0 +1,34 @@
+/** 
+ * 
+ */
+package be.uclouvain.aptitude.surveillance.MetaMorphNet.counter
+
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.MetaMorphNetAgent
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.BecomeManager
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.RegisterUnitaryRole
+import be.uclouvain.aptitude.surveillance.MetaMorphNet.RoleRegistered
+
+import io.sarl.api.core.DefaultContextInteractions
+import io.sarl.api.core.Behaviors
+
+/** 
+ * @author manjah
+ * 
+ */
+agent Counter extends MetaMorphNetAgent {
+	uses Behaviors, DefaultContextInteractions
+	
+	on RegisterUnitaryRole {
+		// info("Registering behaviours as atomic Counter")
+		registerBehavior(new CounterObserverRole(this), DNA.get)
+		registerBehavior(new CounterSensorRole(this), DNA.get)
+		emitToParent(new RoleRegistered)
+	}
+
+	on BecomeManager {
+		//info("Registering behaviours as manager Counter")
+		registerBehavior(new CounterManagerObserverRole(this), DNA.get)
+		registerBehavior(new CounterManagerSensorRole(this), DNA.get)
+		emitToParent(new RoleRegistered)
+	}
+}

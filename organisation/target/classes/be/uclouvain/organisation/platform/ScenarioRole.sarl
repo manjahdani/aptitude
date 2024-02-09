@@ -7,7 +7,7 @@ import be.uclouvain.organisation.Role
 import be.uclouvain.organisation.platform.events.ComputationalRessources
 import be.uclouvain.organisation.platform.events.LeavePlatform
 import be.uclouvain.organisation.platform.events.StopMission
-import be.uclouvain.organisation.told.util.AlgorithmInfo
+import be.uclouvain.organisation.told.util.MetaMorphNetInfo
 import java.util.Collections
 import java.util.HashMap
 import java.util.UUID
@@ -27,7 +27,7 @@ import io.sarl.api.core.Destroy
 abstract behavior ScenarioRole extends Role {
 	uses Logging, Schedules, AgentPerformance
 
-	protected val ADN = new AtomicReference<AlgorithmInfo>
+	protected val ADN = new AtomicReference<MetaMorphNetInfo>
 	protected val computation_location = new AtomicReference<String>
 	protected val checkList = Collections.synchronizedMap(new HashMap<String, Boolean>)
 	protected val isRoleActive = new AtomicBoolean(true)
@@ -37,7 +37,7 @@ abstract behavior ScenarioRole extends Role {
 		var start : long = System.nanoTime(); // Measure performance
 		checkList.put("context", false)
 		checkList.put("computation_location", false)
-		ADN.set(occurrence.parameters.get(0) as AlgorithmInfo)
+		ADN.set(occurrence.parameters.get(0) as MetaMorphNetInfo)
 		setup()
 		accumulateTime(System.nanoTime - start) 		// Measure performance
 	}

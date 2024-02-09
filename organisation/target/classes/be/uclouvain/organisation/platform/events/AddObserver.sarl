@@ -3,7 +3,7 @@
  */
 package be.uclouvain.organisation.platform.events
 
-import be.uclouvain.organisation.told.util.AlgorithmInfo
+import be.uclouvain.organisation.told.util.MetaMorphNetInfo
 import java.util.UUID
 
 /** 
@@ -33,10 +33,10 @@ import java.util.UUID
 final event AddObserver {
 	
 	val missionID : UUID
-	val signalProvider : AlgorithmInfo // @FIXME LOW not general
-	val signalReceiver : AlgorithmInfo
+	val signalProvider : MetaMorphNetInfo // @FIXME LOW not general
+	val signalReceiver : MetaMorphNetInfo
 	
-	new (mID:UUID,s : AlgorithmInfo, r : AlgorithmInfo) {
+	new (mID : UUID, s : MetaMorphNetInfo, r : MetaMorphNetInfo) {
 		this.missionID = mID
 		this.signalProvider = s
 		this.signalReceiver = r 
