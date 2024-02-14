@@ -339,6 +339,14 @@ class Coalition(): #TODO: code remove and retrain !!!
         self.size += 1
         self.agents_list= np.append(self.agents_list,agent)
         self.combined_stream.append(agent.stream)
+        self.train()
+
+    def remove_agent(self, agent):
+        self.size-=1
+        self.agents_list = self.agents_list[self.agents_list!=agent]
+        self.combined_stream.remove(agent.stream)
+        self.train()
+
 
 
 class Network():
@@ -396,10 +404,15 @@ class Network():
         #print(segregation)
 
         self.all_coalitions[np.argmax(proximity_score)].add_agent(agent)
+        self.free_agents = self.free_agents[self.free_agents!=agent]
 
         sns.heatmap(np.array([agent_chal_mAP, coal_chal_mAP, proximity_score]), annot=True, cmap="coolwarm")
         plt.savefig('test_{}.jpg'.format(id))
         plt.clf()
+
+    def remove_agent(self, coalition, agent):
+        coalition.remove_agent(agent)
+        self.free_agents.append(agent)
 
     def main(self):
         for ag, agent in enumerate(self.free_agents):
