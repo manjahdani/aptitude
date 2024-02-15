@@ -11,6 +11,7 @@ from multiprocessing import Pool
 from ultralytics import YOLO
 
 PATH = "/home/dani/aptitude/extension"
+PATH_TO_DATA = "/home/dani/data/WALT-challenge"
 DEFAULT_SUB_SAMPLE = 300
 
 class SamplingException(Exception):
@@ -47,17 +48,6 @@ def build_yaml_file(my_path, base_file, dataset):
     with open(f'{my_path}/TMP_YAML.yaml', 'w') as f:
         f.writelines(lines_to_write)
 
-def extract_buffer_imgs(holon, my_path):
-    os.makedirs(my_path, exist_ok=True)
-    os.makedirs(os.path.join(my_path,'val'), exist_ok=True)
-    os.makedirs(os.path.join(my_path,'val', 'images'), exist_ok=True)
-    os.makedirs(os.path.join(my_path,'val', 'labels'), exist_ok=True)
-    results = holon.buffer[:holon.buf_ptr]
-    for r, res in enumerate(results):
-        Image.fromarray(res.orig_img).save(f'{my_path}/val/images/{r}.jpg')
-        res.save_txt(f'{my_path}/val/labels/{r}.txt')
-    build_yaml_file(my_path, 'templates/base.yaml', my_path)
-
 def naive_buffer_n_first(holon, prediction):
     if holon.buf_ptr < len(holon.buffer):
         holon.buffer[holon.buf_ptr]=prediction
@@ -78,6 +68,20 @@ def buffer_most_confident(holon, prediction):
             pos = np.argmin(confidences)
             holon.buffer[pos]=prediction
 
+
+def get_test_path_from_train_path(train_path):
+    cam_index = train_path.find("cam")  # Find the index of "cam" in the path
+    if cam_index != -1:  # If "cam" is found in the path
+        cam_number = ""
+        for char in train_path[cam_index + 3:]:  # Iterate over characters after "cam"
+            if char.isdigit():
+                cam_number += char
+            else:
+                break
+        new_path = train_path[:cam_index + 3] + cam_number + "/test"  # Construct the new path
+        return new_path
+    else:
+        return None  # Return None if no cam number is found in the path
 
 def thresholding_top_confidence(
     image_labels_path: str,
@@ -197,6 +201,12 @@ def delete_files_in_directory(directory):
             # Recursively call the function on the subdirectory
             delete_files_in_directory(item_path)
 
+def build_tmp_tree():
+    os.makedirs(os.path.join(PATH,"tmp/agent/val"), exist_ok=True)
+    os.makedirs(os.path.join(PATH,"tmp/agent/train"), exist_ok=True)
+    os.makedirs(os.path.join(PATH,"tmp/coal/val"), exist_ok=True)
+    os.makedirs(os.path.join(PATH,"tmp/coal/train"), exist_ok=True)
+
 def copy_file(args):
     src, dst = args
     shutil.copy(src, dst)
@@ -267,12 +277,10 @@ class Agent():
         self.buffer = buffer_policy(os.path.join(stream,'labels_yolov8n_w_conf'), n=buffer_size)
 
     def train(self):
-        os.makedirs('tmp', exist_ok=True)
-        os.makedirs('tmp/agent', exist_ok=True)
-        os.makedirs('tmp/agent/train', exist_ok=True)
-        os.makedirs('tmp/agent/val', exist_ok=True)
-        parallel_copy(self.buffer, self.stream, os.path.join('tmp','agent','train'),'.jpg','labels_yolov8x6')
-        parallel_copy(list_files_without_extensions(os.path.join(self.stream,'test','labels'), extension='txt'), os.path.join(self.stream,'test'), os.path.join('tmp','agent','val'),'.jpg','labels')
+        build_tmp_tree()
+        parallel_copy(self.buffer, self.stream, 'tmp/agent/train','.jpg','labels_yolov8x6')
+        test_path = get_test_path_from_train_path(self.stream)
+        parallel_copy(list_files_without_extensions(os.path.join(test_path,'labels'), extension='txt'), test_path, os.path.join('tmp','agent','val'),'.jpg','labels')
         build_yaml_file(os.path.join(PATH,'tmp','agent'),os.path.join('templates','base.yaml'),os.path.join(PATH,'tmp','agent'))
         self.model.train(data="tmp/agent/TMP_YAML.yaml",
                             epochs=100,
@@ -281,20 +289,12 @@ class Agent():
                             patience=1000)
         delete_files_in_directory(os.path.join(PATH,'tmp/agent'))
 
-    def annotate_batch(self, size=1, ext_observations=None):
-        observations = list(ext_observations) if ext_observations is not None else list(self.stream[self.clock.time:self.clock.time+size])
-        predictions = self.model.predict(observations, verbose=False)
-        if ext_observations is None:
-            for prediction in predictions:
-                self.add_to_buffer(self, prediction)
-        return predictions
-
     def __repr__(self):
         return("Agent #{}".format(self._ID))
 
 
 
-class Coalition(): #TODO: code remove and retrain !!!
+class Coalition():
     def __init__(self, coal_model, agents_list):
         self.size = len(agents_list)
         self.agents_list = agents_list
@@ -305,47 +305,30 @@ class Coalition(): #TODO: code remove and retrain !!!
         self.combined_buffers = [agent.buffer for agent in agents_list]
 
     def train(self):
-        os.makedirs('tmp', exist_ok=True)
-        os.makedirs('tmp/coal', exist_ok=True)
-        os.makedirs('tmp/coal/train', exist_ok=True)
-        os.makedirs('tmp/coal/val', exist_ok=True)
+        build_tmp_tree()
         for buffer,stream in zip(self.combined_buffers, self.combined_stream):
             parallel_copy(buffer, stream, os.path.join('tmp','coal','train'),'.jpg','labels_yolov8x6')
-            parallel_copy(list_files_without_extensions(os.path.join(stream,'test','labels'), extension='txt'), os.path.join(stream,'test'), os.path.join('tmp','coal','val'),'.jpg','labels')
+            test_path = get_test_path_from_train_path(stream)
+            parallel_copy(list_files_without_extensions(os.path.join(test_path,'labels'), extension='txt'), test_path, os.path.join('tmp','coal','val'),'.jpg','labels')
         build_yaml_file(os.path.join(PATH,'tmp','coal'),os.path.join('templates','base.yaml'),os.path.join(PATH,'tmp','coal'))
         self.coal_model.train(data="tmp/coal/TMP_YAML.yaml",
-                                epochs=20,
+                                epochs=2,
                                 batch=16,
                                 device="cuda:0",
                                 patience=1000)
         delete_files_in_directory(os.path.join(PATH,'tmp/coal'))
-    
-    def annotate_batch(self, size=1, ext_observations=None, query_coal_model=False):
-        if ext_observations is not None:
-            return self.coal_model.predict(list(ext_observations), verbose=False)
-
-        if query_coal_model:
-            observations = list(self.combined_stream[..., self.clock.time:self.clock.time+size].flatten())
-            predictions = self.coal_model.predict(observations, verbose=False)
-        else:
-            predictions = np.array([agent.annotate_batch(size=size) for agent in self.agents_list], dtype=object).flatten()
-
-        for prediction in predictions:
-            self.add_to_buffer(self, prediction)
-
-        return predictions
 
     def add_agent(self, agent):
         self.size += 1
         self.agents_list= np.append(self.agents_list,agent)
         self.combined_stream.append(agent.stream)
-        self.train()
+        #self.train()
 
     def remove_agent(self, agent):
         self.size-=1
         self.agents_list = self.agents_list[self.agents_list!=agent]
         self.combined_stream.remove(agent.stream)
-        self.train()
+        #self.train()
 
 
 
@@ -375,11 +358,7 @@ class Network():
         print("free: ", self.free_agents)
 
     def add_agent(self, agent, id):
-        os.makedirs('tmp', exist_ok=True)
-        os.makedirs('tmp/coal', exist_ok=True)
-        os.makedirs('tmp/coal/val', exist_ok=True)
-        os.makedirs('tmp/agent', exist_ok=True)
-        os.makedirs('tmp/agent/val', exist_ok=True)
+        build_tmp_tree()
         parallel_copy(agent.buffer, agent.stream, os.path.join('tmp','agent','val'),'.jpg','labels_yolov8x6')
         build_yaml_file(os.path.join(PATH,'tmp','agent'), 'templates/base.yaml', os.path.join(PATH,'tmp','agent'))
         agent_chal_mAP = np.zeros(len(self.all_coalitions))
@@ -424,13 +403,14 @@ def get_n_to_m_jpg_filenames(folder_path, n, m):
     jpg_files = [f"{folder_path}/{file}" for file in os.listdir(folder_path) if file.endswith('.jpg')]
     return jpg_files[n:m]
 
-paths_to_data = ['data/cam1/week1/bank',
-                 'data/cam2/week1/bank',
-                 'data/cam3/week5/bank',
-                 'data/cam9/week1/bank']
+paths_to_data = [os.path.join(PATH_TO_DATA,'cam1/week1/bank'),
+                 os.path.join(PATH_TO_DATA,'cam2/week1/bank'),
+                 os.path.join(PATH_TO_DATA,'cam3/week5/bank'),
+                 os.path.join(PATH_TO_DATA,'cam9/week1/bank'),]
 
-trained_models= ['cam1.pt','cam2.pt','cam3.pt','cam9.pt']
+trained_models= ['weights/cam1-week1.pt','weights/cam2-week1.pt','weights/cam3-week5.pt','weights/cam9-week1.pt']
 
 test = Network(paths_to_data,128, thresholding_top_confidence, trained_models = trained_models)
-test.clusterize(np.array([0,0,-1,-1]), trained_models=["runs/detect/train25/weights/last.pt"])
+test.clusterize(np.array([0,0,-1,-1]), trained_models=None)#["runs/detect/train25/weights/last.pt"])
 test.main()
+shutil.rmtree('tmp')
