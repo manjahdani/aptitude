@@ -19,14 +19,49 @@ PATH_TO_DATA = "/home/dani/data/WALT-challenge"
 DEFAULT_SUB_SAMPLE = 256
 N_EPOCH_BASE = 20
 MAX_PROCESSES = cpu_count()
-TRAIN = False
-VALIDATE = False
-EVALUATE = False
-N_WORKERS = 4
-NAME = "GD_n_"
 
-pid = os.getpid()
-print(f"The current process ID is: {pid}")
+TRAIN = True
+VALIDATE = False
+EVALUATE = True
+
+CAM_IDS = [1,2,3,4,5,6,7,8,9,16,17,18,19,20,22,24]
+CAM_TO_AGENT = dict(zip(CAM_IDS, range(16)))
+AGENT_TO_CAM = dict(zip(range(16), CAM_IDS))
+
+N_WORKERS = 4
+NAME = "GD_m"
+
+print(f"The current process ID is: {os.getpid()}")
+
+def check_train(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        global TRAIN
+        if TRAIN:
+            return func(*args, **kwargs)
+        else:
+            print("Skipping model training (TRAIN set to False).")
+    return wrapper
+
+def check_validate(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        global VALIDATE
+        if VALIDATE:
+            return func(*args, **kwargs)
+        else:
+            print("Skipping proximity computation (VALIDATE set to False).")
+    return wrapper
+
+def check_evaluate(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        global EVALUATE
+        if EVALUATE:
+            return func(*args, **kwargs)
+        else:
+            print("Skipping model evaluation (EVALUATE set to False).")
+    return wrapper
 
 def with_temp_dir(func):
     @functools.wraps(func)
@@ -69,6 +104,31 @@ def get_test_path_from_train_path(train_path:str)->str:
         return new_path
     else:
         return None  # Return None if no cam number is found in the path
+    
+def plot_proximity_heatmap(data, agent):
+    # Create a larger figure to improve readability
+    plt.figure(figsize=(10, 8))
+
+    row_labels = ['Coalitional model\non agent data\n($mAP_{50-95}$)', 'Agent model\non coalition data\n($mAP_{50-95}$)', 'Proximity Score']
+    column_labels = [f"Coalition {i+1}" for i in range(data.shape[1])]
+
+    # Create the heatmap with row and column labels
+    ax = sns.heatmap(data, annot=True, cmap="coolwarm", fmt=".2f",
+                    linewidths=.5, cbar_kws={'label': 'Score'},
+                    xticklabels=column_labels, yticklabels=row_labels)
+
+    # Improve the appearance of the labels
+    plt.xticks(rotation=45, ha="right")  # Rotate column labels for better readability
+    plt.yticks(rotation=90, ha="center", va='center', position=(0,1))  # Keep row labels horizontal
+
+    # Add labels and title
+    ax.set_title(f'Proximity score of {agent} with every cluster')
+    plt.tight_layout()
+    # Save the plot
+    plt.savefig(f'results/{agent}.jpg', bbox_inches='tight')
+
+    # Clear the figure
+    plt.clf()
 
 def thresholding_top_confidence(image_labels_path:str, n:int=DEFAULT_SUB_SAMPLE, warmup_length:int=720, sampling_rate:float=0.10) -> list:
     """
@@ -166,7 +226,7 @@ def parallel_copy(index, in_folder, out_folder, labelsFolder):
         pool.map(copy_file, copy_args)
 
 class Agent():
-    def __init__(self, id, model, stream, buffer_policy, weights=None):
+    def __init__(self, id, model, stream, buffer_policy, weights):
         self._ID = id
         self.model = model
         self.weights = weights
@@ -179,50 +239,7 @@ class Agent():
         gc.collect() 
         self.model = YOLO(os.path.join(PATH, self.weights))
 
-    """
-    def train(self):
-        if not TRAIN:
-            return
-        parallel_copy(self.buffer, self.stream, 'tmp/agent/train','labels_yolov8x6')
-        test_path = get_test_path_from_train_path(self.stream)
-        parallel_copy("all", test_path, os.path.join('tmp','agent','val'),'labels')
-        build_yaml_file(os.path.join(PATH,'tmp','agent'),os.path.join('templates','base.yaml'))
-        self.model.train(data="tmp/agent/TMP_YAML.yaml",
-                        epochs=N_EPOCH_BASE,
-                        batch=16,
-                        device="cuda:0",
-                        patience=1000)
-        delete_files_in_directory(os.path.join(PATH,'tmp/agent'))
-    """
-    def __repr__(self):
-        return("Agent #{}".format(self._ID))
-
-def check_presence(agent, coalition):
-    if agent in coalition.agents_list:
-        return 1
-    elif agent in coalition.encountered_agents:
-        return 2
-    return 0
-
-class Coalition():
-    def __init__(self, id, coal_model, agents_list):
-        self._ID=id
-        self.size = len(agents_list)
-        self.agents_list = agents_list
-        self.encountered_agents = agents_list
-        self.coal_model = coal_model
-
-        self.combined_stream = [agent.stream for agent in agents_list]
-        
-        self.combined_buffers = [agent.buffer for agent in agents_list]
-
-    def flush_model(self):
-        if not TRAIN:
-            return
-        del self.coal_model
-        gc.collect() 
-        self.coal_model = YOLO(os.path.join(PATH, f'runs/detect/Coalition_{self._ID}/weights/best.pt'))
-
+    @check_train
     @with_temp_dir
     def train(self, temp_dir):
         train_dir = os.path.join(temp_dir, 'train')
@@ -231,7 +248,57 @@ class Coalition():
         os.makedirs(train_dir)
         os.makedirs(val_dir)
 
-        
+        device = "cuda:0" if torch.cuda.is_available() else None
+
+        parallel_copy(self.buffer, self.stream, train_dir,'labels_yolov8x6')
+        test_path = get_test_path_from_train_path(self.stream)
+        parallel_copy("all", test_path, val_dir,'labels')
+        build_yaml_file(temp_dir,os.path.join('templates','base.yaml'))
+
+        self.coal_model.train(data=os.path.join(temp_dir,'TMP_YAML.yaml'),
+                            name = f"Agent_{self._ID}",
+                            exist_ok=True,
+                            deterministic=False,
+                            epochs=N_EPOCH_BASE,
+                            batch=16,
+                            device=device,
+                            optimizer='SGD',
+                            lr0 = 0.02,
+                            lrf=0.005,
+                            patience=1000, 
+                            plots=False,
+                            workers=N_WORKERS,
+                            verbose=True)
+        self.weights = f"Agent_{self._ID}"
+        self.flush_model()
+
+    def __repr__(self):
+        return("Agent #{}".format(self._ID))
+
+class Coalition():
+    def __init__(self, id, coal_model, agents_list, weights):
+        self._ID=id
+        self.agents_list = agents_list
+        self.coal_model = coal_model
+        self.weights=weights
+
+        self.combined_stream = [agent.stream for agent in agents_list]
+        self.combined_buffers = [agent.buffer for agent in agents_list]
+
+    def flush_model(self):
+        del self.coal_model
+        gc.collect() 
+        self.coal_model = YOLO(os.path.join(PATH, self.weights))
+
+    @check_train
+    @with_temp_dir
+    def train(self, temp_dir):
+        train_dir = os.path.join(temp_dir, 'train')
+        val_dir   = os.path.join(temp_dir, 'val')
+
+        os.makedirs(train_dir)
+        os.makedirs(val_dir)
+
         device = "cuda:0" if torch.cuda.is_available() else None
 
         for buffer,stream in zip(self.combined_buffers, self.combined_stream):
@@ -240,8 +307,6 @@ class Coalition():
             parallel_copy("all", test_path, val_dir,'labels')
         build_yaml_file(temp_dir,os.path.join('templates','base.yaml'))
 
-        if not TRAIN:
-            return
         self.coal_model.train(data=os.path.join(temp_dir,'TMP_YAML.yaml'),
                             name = f"Coalition_{self._ID}",
                             exist_ok=True,
@@ -256,18 +321,17 @@ class Coalition():
                             plots=False,
                             workers=N_WORKERS,
                             verbose=True)
+        
+        self.weights=f'runs/detect/Coalition_{self._ID}/weights/best.pt'
         self.flush_model()
         
     def add_agent(self, agent):
-        self.size += 1
         self.agents_list= np.append(self.agents_list,agent)
-        self.encountered_agents = np.append(self.encountered_agents,agent)
         self.combined_stream.append(agent.stream)
         self.combined_buffers.append(agent.buffer)
         self.train()
 
     def remove_agent(self, agent):
-        self.size-=1
         self.agents_list = self.agents_list[self.agents_list!=agent]
         self.combined_stream.remove(agent.stream)
         self.combined_buffers.remove(agent.buffer)
@@ -276,29 +340,36 @@ class Coalition():
     def __repr__(self):
         return f"Coalition {self._ID}: {self.agents_list}"
 
-
 class Network():
-    def __init__(self, paths_to_data, buffer_policy, trained_models = None, global_model_size='x'):
+    def __init__(self, paths_to_data, buffer_policy, trained_models = None, global_model = True, global_model_size='x'):
         n_agents = len(paths_to_data)
         self.all_agents = np.empty(n_agents, dtype=Agent)
-        self.net_model = YOLO(f'ultralytics/yolov8{global_model_size}.pt')
+        if global_model:
+            self.weights = f'ultralytics/yolov8{global_model_size}.pt'
+            self.net_model = YOLO(self.weights)
+        else:
+            self.weights = None
+
         for i in range(n_agents):
-            model = YOLO('ultralytics/yolov8n.pt') if trained_models is None else YOLO(trained_models[i])
-            agent = Agent(i, model, paths_to_data[i], buffer_policy, weights=trained_models[i])
+            cam_id = AGENT_TO_CAM[i]
+            agent_weights = 'ultralytics/yolov8n.pt' if trained_models is None else trained_models[i]
+            model = YOLO(agent_weights)
+            agent = Agent(cam_id, model, paths_to_data[i], buffer_policy, agent_weights)
             print(f"{agent} initialized.")
             if trained_models is None:
                 agent.train()
             self.all_agents[i] = agent
 
     def flush_model(self):
-        if not TRAIN:
-            return
         del self.net_model
         gc.collect()
-        self.net_model = YOLO(os.path.join(PATH, f'runs/detect/Network/weights/best.pt'))
+        self.net_model = YOLO(os.path.join(PATH, self.weights))
 
+    @check_train
     @with_temp_dir
     def train(self, temp_dir):
+        if self.weights is None:
+            return
         train_dir = os.path.join(temp_dir, 'train')
         val_dir   = os.path.join(temp_dir, 'val')
 
@@ -316,8 +387,6 @@ class Network():
             parallel_copy("all", test_path, val_dir,'labels')
         build_yaml_file(temp_dir,os.path.join('templates','base.yaml'))
 
-        if not TRAIN:
-            return
         self.net_model.train(data=os.path.join(temp_dir,'TMP_YAML.yaml'),
                             name = "Network",
                             exist_ok=True,
@@ -332,6 +401,7 @@ class Network():
                             plots=False,
                             workers=N_WORKERS,
                             verbose=True)
+        self.weights = f'runs/detect/Network/weights/best.pt'
         self.flush_model()
 
     def clusterize(self, clusters, trained_models=None, coal_model_size='m'):
@@ -340,18 +410,19 @@ class Network():
         self.free_agents = self.all_agents[clusters==-1]
         for coal in range(n_coals):
             agents_list = self.all_agents[clusters==coal]
-            model = YOLO(f'ultralytics/yolov8{coal_model_size}.pt') if trained_models is None else YOLO(trained_models[coal])
-            coalition = Coalition(coal, model, agents_list)
+            coal_weights = f'ultralytics/yolov8{coal_model_size}.pt' if trained_models is None else trained_models[coal]
+            model = YOLO(coal_weights)
+            coalition = Coalition(coal, model, agents_list, coal_weights)
             if trained_models is None:
                 coalition.train()
-            self.all_coalitions[coal]=coalition
-            print(coalition)     
+            self.all_coalitions[coal]=coalition    
         self.integrated_agents = self.all_agents[clusters!=-1]
         self.train()
-        #for coal_id in range(n_coals):
-        #    self.evaluate(0, coal_id, name=NAME+"_init_", eval_net=coal_id==0)
-        print("free: ", self.free_agents)
-
+        for coal_id in range(n_coals):
+            self.evaluate(0, coal_id, name=NAME, eval_net=coal_id==0)
+        self.print_state("Initialization")
+        
+    @check_validate
     @with_temp_dir
     def compute_proximity(self, agent, temp_dir):
         agent_dir     = os.path.join(temp_dir,'agent')
@@ -370,33 +441,35 @@ class Network():
             for buffer, stream in zip(coalition.combined_buffers, coalition.combined_stream):
                 parallel_copy(buffer, stream, coal_val_dir,'labels_yolov8x6')
             build_yaml_file(coal_dir, 'templates/base.yaml')
-            if VALIDATE:
-                coal_chal_mAP[coal] = agent.model.val(data=os.path.join(coal_dir,'TMP_YAML.yaml'), device=device, verbose=False, plots=False, name='val').box.map
-                agent_chal_mAP[coal] = coalition.coal_model.val(data=os.path.join(agent_dir, 'TMP_YAML.yaml'), device=device, verbose=False, plots=False, name='val').box.map
-                agent.flush_model()
-                coalition.flush_model()
+
+            coal_chal_mAP[coal] = agent.model.val(data=os.path.join(coal_dir,'TMP_YAML.yaml'), device=device, verbose=False, plots=False, name='val').box.map
+            agent_chal_mAP[coal] = coalition.coal_model.val(data=os.path.join(agent_dir, 'TMP_YAML.yaml'), device=device, verbose=False, plots=False, name='val').box.map
+            agent.flush_model()
+            coalition.flush_model()
+
             shutil.rmtree(coal_dir)
             os.makedirs(coal_val_dir)
-        return agent_chal_mAP, coal_chal_mAP
-
-    def add_agent(self, agent, id):
-        agent_chal_mAP, coal_chal_mAP = self.compute_proximity(agent)
 
         proximity_score = np.sqrt(agent_chal_mAP*coal_chal_mAP)
 
-        self.all_coalitions[np.argmax(proximity_score)].add_agent(agent)
+        plot_proximity_heatmap(np.array(agent_chal_mAP, coal_chal_mAP, proximity_score))
+
+        return proximity_score
+
+    def add_agent(self, agent):
+        proximity_score = self.compute_proximity(agent)
+        if proximity_score is None:
+            best_fit_coal = 0
+        else:
+            best_fit_coal = np.argmax(proximity_score)
+            
+        self.all_coalitions[best_fit_coal].add_agent(agent)
         self.free_agents = self.free_agents[self.free_agents!=agent]
         self.integrated_agents = np.append(self.integrated_agents, agent)
 
         self.train()
 
-        sns.heatmap(np.array([agent_chal_mAP, coal_chal_mAP, proximity_score]), annot=True, cmap="coolwarm")
-        plt.savefig(f'results/{agent}.jpg')
-        plt.clf()
-        print(f"{agent} added to Coalition {np.argmax(proximity_score)}!")
-
-        return agent_chal_mAP, coal_chal_mAP, proximity_score
-
+        return best_fit_coal
 
     def remove_agent(self, coalition, agent):
         coalition.remove_agent(agent)
@@ -407,43 +480,31 @@ class Network():
     def routine_add_agents(self, order):
         agents_to_add = self.free_agents[order]
         for ag, agent in enumerate(agents_to_add):
-            _, __, proximity_score = self.add_agent(agent,ag)
-            self.evaluate(ag+1, np.argmax(proximity_score), name=NAME)
+            best_fit_coal = self.add_agent(agent)
+            self.evaluate(ag+1, best_fit_coal, name=NAME)
+            self.print_state(f"Agent addition #{ag+1}")
+        return agents_to_add
+
+    def routine_remove_agents(self, order, agents_to_rmv=None):
+        name = NAME + '_rmv'
+        if agents_to_rmv is None:
+            agents_to_rmv = self.integrated_agents[order]
+        for ag, agent in enumerate(agents_to_rmv):
+            for coal,coalition in enumerate(self.all_coalitions):
+                if agent in coalition.agents_list:
+                    coal_to_trim = coalition
+                    coal_id = coal
+            self.remove_agent(coal_to_trim, agent)
+            self.evaluate(ag+1, coal_id, name=name)
+            self.print_state(f"Agent deleteion #{ag+1}")
     
     def routine_add_and_remove_agents(self, order):
-        agents_to_add = self.free_agents[order]
-        for ag, agent in enumerate(agents_to_add):
-            print(f"Agent addition {ag}")
-            _, __, proximity_score = self.add_agent(agent,ag)
-            print(f"Evaluation {ag}")
-            self.evaluate(ag+1, np.argmax(proximity_score), name=NAME)
+        agents_to_rmv = self.routine_add_agents(order)
+        self.routine_remove_agents(order, agents_to_rmv)
 
-        name = NAME + 'rmv_'
-        for ag, agent in enumerate(agents_to_add):
-            print(f"Agent removal {ag}")
-            for coal,coalition in enumerate(self.all_coalitions):
-                if agent in coalition.agents_list:
-                    coal_to_trim =coalition
-                    coal_id = coal
-            self.remove_agent(coal_to_trim, agent)
-            print(f"Evaluation {ag}")
-            self.evaluate(ag+1, coal_id, name=name)
-
-    def routine_remove_agents(self, order):
-        name = NAME + 'rmv_'
-        agents_to_rmv = self.all_agents[order]
-        for ag, agent in enumerate(agents_to_rmv):
-            print(f"Agent removal {ag}")
-            for coal,coalition in enumerate(self.all_coalitions):
-                if agent in coalition.agents_list:
-                    coal_to_trim =coalition
-                    coal_id = coal
-            self.remove_agent(coal_to_trim, agent)
-            print(f"Evaluation {ag}")
-            self.evaluate(ag+1, coal_id, name=name)
-
+    @check_evaluate
     @with_temp_dir
-    def evaluate(self,id, coalition_id, temp_dir, name="", eval_net=True):
+    def evaluate(self,id, coalition_id, temp_dir, name, eval_net=True):
         agent_dir     = os.path.join(temp_dir, "agent")
         agent_val_dir = os.path.join(agent_dir, "val")
         os.makedirs(agent_val_dir)
@@ -453,58 +514,60 @@ class Network():
         presence = np.empty(len(self.all_agents), dtype=int)
         if coalition_id is not None:
             coalition = self.all_coalitions[coalition_id]
-            filename = f"results/{name}mAPs_eval_{id}_coal_{coalition_id}.txt"
+            filename = f"results/{name}_mAPs_eval_{id}_coal_{coalition_id}.txt"
             for ag,agent in enumerate(self.all_agents):
                 test_path = get_test_path_from_train_path(agent.stream)
                 parallel_copy("all", test_path, agent_val_dir,'labels')
                 build_yaml_file(agent_dir, 'templates/base.yaml')    
-                if EVALUATE:
-                    mAPs[ag] = coalition.coal_model.val(data=os.path.join(agent_dir,'TMP_YAML.yaml'), device=device, verbose=False, plots=False, name='val').box.map
+                
+                mAPs[ag] = coalition.coal_model.val(data=os.path.join(agent_dir,'TMP_YAML.yaml'), device=device, verbose=False, plots=False, name='val').box.map
                 coalition.flush_model()
-                presence[ag] = check_presence(agent, coalition)
+                presence[ag] = 1 if agent in coalition.agents_list else 0
                 shutil.rmtree(agent_dir)
                 os.makedirs(agent_val_dir)
             np.savetxt(filename, (mAPs, presence))
 
-        if eval_net:
+        if eval_net and self.weights is not None:
             filename = f"results/{name}mAPs_eval_{id}_net.txt"
             for ag,agent in enumerate(self.all_agents):
                 test_path = get_test_path_from_train_path(agent.stream)
                 parallel_copy("all", test_path, agent_val_dir,'labels')
                 build_yaml_file(agent_dir, 'templates/base.yaml')    
-                if EVALUATE:
-                    mAPs[ag] = self.net_model.val(data=os.path.join(agent_dir,'TMP_YAML.yaml'), device=device, verbose=False, plots=False, name='val').box.map
+                
+                mAPs[ag] = self.net_model.val(data=os.path.join(agent_dir,'TMP_YAML.yaml'), device=device, verbose=False, plots=False, name='val').box.map
                 self.flush_model()
                 presence[ag] = 0 if agent in self.free_agents else 1
                 shutil.rmtree(agent_dir)
                 os.makedirs(agent_val_dir)
             np.savetxt(filename, (mAPs, presence))
 
-def get_n_to_m_jpg_filenames(folder_path, n, m):
-    jpg_files = [f"{folder_path}/{file}" for file in os.listdir(folder_path) if file.endswith('.jpg')]
-    return jpg_files[n:m]
+    def print_state(self, step_name):
+        print("="*30," Information about the network ", "="*30)
+        print(f"Step: {step_name}")
+        print(f"Number of clusters: {len(self.all_coalitions)}")
+        print('')
+        for coal, coalition in enumerate(self.all_coalitions):
+            print(f"Agents in cluster #{coal}:", coalition.agents_list)
+        print("Agents no assigned to any cluster:", self.free_agents)
+        print("="*93)
 
-def check_insertions(network_settings, default_disposition, cam_to_agent, paths_to_data, trained_models):
-    assert not TRAIN, ("Set TRAIN to False")
-    assert not EVALUATE, ("Set EVALUATE to False")
+def check_final_insertion(network_settings, default_disposition, cam_to_agent, paths_to_data, trained_models):
+    global TRAIN
+    global EVALUATE
+    TRAIN = EVALUATE = False
+
     agent_cams = list(network_settings.keys())
-    n_iter = len(agent_cams)
-    n_coals = len(list(network_settings[agent_cams[0]].values())) - 1
-    logging = np.empty((n_iter, 3, n_coals))
-    results = np.empty((n_iter, 2), dtype=int)
-    for free_agent_cam in agent_cams:
-        network = Network(paths_to_data, thresholding_top_confidence, trained_models = trained_models)
+
+    network = Network(paths_to_data, thresholding_top_confidence, trained_models = trained_models)
+    for free_agent_cam in agent_cams:  
         free_agent_nb = cam_to_agent[free_agent_cam]
+
         clusters = default_disposition.copy()
         clusters[free_agent_nb] = -1
         trained_clust_models =[f"weights/{weights_name}.pt" for weights_name in list(network_settings[free_agent_cam].values())[:-1]]
         network.clusterize(clusters, trained_models=trained_clust_models)
-        logging[free_agent_nb] = network.add_agent(network.free_agents[0], 0)
-        results[free_agent_nb,0] = np.argmax(logging[free_agent_nb, 2,...])
-        target = network_settings[free_agent_cam]['Cluster'] - 1
-        results[free_agent_nb,1] = results[free_agent_nb,0] == target
-        print(results[free_agent_nb])
-    return results, logging
+        
+        network.add_agent(network.free_agents[0], 0)
 
 paths_to_data = [os.path.join(PATH_TO_DATA,'cam1/week1/bank'),
                  os.path.join(PATH_TO_DATA,'cam2/week1/bank'),
@@ -540,19 +603,47 @@ trained_models= ['weights/cam1-week1.pt',
                  'weights/cam22-week1.pt',
                  'weights/cam24-week1.pt',]
 
-cam_ids = [1,2,3,4,5,6,7,8,9,16,17,18,19,20,22,24]
-cam_to_agent = dict(zip(cam_ids, range(16)))
-agent_to_cam = dict(zip(range(16), cam_ids))
+def select_random_starting_points(arr):
+    indices_dict = {}
+    for index, value in enumerate(arr):
+        if value not in indices_dict:
+            indices_dict[value] = []
+        indices_dict[value].append(index)
+    
+    # Randomly select one index for each integer and store only the indices in a list
+    random_indices = [np.random.choice(indices) for indices in indices_dict.values()]
+    
+    return random_indices
+
+def test_agent_inclusion(n_seeds, cluster_model_sizes, net_model_sizes):
+    global EVALUATE
+    global NAME
+    EVALUATE = False
+    prefix = NAME
+
+    network = Network(paths_to_data, thresholding_top_confidence, trained_models, global_model=False)
+
+    for seed in range(n_seeds):
+        for csize in cluster_model_sizes:
+            NAME = prefix + f"_seed_{seed}_csize_{csize}"
+
+            clusters = -np.ones(len(default_disposition))
+            starting_points = select_random_starting_points(clusters)
+            clusters[starting_points] = default_disposition[starting_points]
+            network.clusterize(clusters, coal_model_size=csize)
+
+            n_clusts = max(default_disposition)
+            order = np.random.permutation(len(default_disposition-n_clusts))
+            network.routine_add_agents(order)
+            shutil.rmtree(os.path.join(PATH, 'runs/detect'))
 
 
-test = Network(paths_to_data[:4], thresholding_top_confidence, trained_models = trained_models[:4], global_model_size='n')
-test.clusterize(np.array([ 0, 1,-1,-1]), trained_models=None, coal_model_size='n')
-agent_order = np.arange(0,2)
-test.routine_add_and_remove_agents(agent_order)
-"""
+def test_gracefully_degrade(n_seeds, cluster_model_sizes, net_model_sizes):
+    pass
 
-test = Network(paths_to_data, thresholding_top_confidence, trained_models = trained_models, global_model_size='x')
-test.clusterize(np.zeros(16, dtype=int), trained_models=["weights/yolov8n_all_streams_100.pt"], coal_model_size='n')
+
+test = Network(paths_to_data, thresholding_top_confidence, trained_models = trained_models, global_model=False)
+test.clusterize(np.zeros(16, dtype=int), trained_models=["weights/yolov8m_all_streams_100.pt"], coal_model_size='m')
 test.routine_remove_agents(np.array([3, 15, 0, 6, 12, 9, 2, 10, 5, 11, 13, 14, 8, 7, 4, 1]))
 
 default_disposition = np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, 2, 2, 2])
@@ -574,4 +665,3 @@ network_settings = {
     22: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o20o24", "Cluster": 3},
     24: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o20o22", "Cluster": 3}
 }
-check_insertions(network_settings, default_disposition, cam_to_agent, paths_to_data, trained_models)"""
