@@ -21,7 +21,7 @@ N_EPOCH_BASE = 20
 MAX_PROCESSES = cpu_count()
 
 TRAIN = True
-VALIDATE = False
+VALIDATE = True
 EVALUATE = True
 
 CAM_IDS = [1,2,3,4,5,6,7,8,9,16,17,18,19,20,22,24]
@@ -146,7 +146,7 @@ def plot_proximity_heatmap(data, agent):
     ax.set_title(f'Proximity score of {agent} with every cluster')
     plt.tight_layout()
     # Save the plot
-    plt.savefig(f'results/{agent}.jpg', bbox_inches='tight')
+    plt.savefig(f'results/{NAME}_{agent}.jpg', bbox_inches='tight')
 
     # Clear the figure
     plt.clf()
@@ -624,42 +624,49 @@ trained_models= ['weights/cam1-week1.pt',
                  'weights/cam22-week1.pt',
                  'weights/cam24-week1.pt',]
 
-def select_random_starting_points(arr):
-    indices_dict = {}
-    for index, value in enumerate(arr):
-        if value not in indices_dict:
-            indices_dict[value] = []
-        indices_dict[value].append(index)
-    
-    # Randomly select one index for each integer and store only the indices in a list
-    random_indices = [np.random.choice(indices) for indices in indices_dict.values()]
-    
+def select_random_starting_points(n_in, default_disposition):
+    condition = True
+    while condition:
+        random_indices = np.random.randint(0, len(default_disposition), n_in)    
+        if np.all(np.in1d(np.arange(np.max(default_disposition)+1), np.unique(default_disposition[random_indices]))):
+            condition = False
     return random_indices
+test = -np.ones(len(default_disposition))
+indices = select_random_starting_points(3, default_disposition)
+test[indices] = default_disposition[indices]
+print(indices, test)
+raise ValueError
 
-def test_agent_inclusion(n_seeds, cluster_model_sizes, net_model_sizes):
+def test_agent_inclusion(n_seeds, n_clusts, base_n_ins, cluster_model_sizes):
     global EVALUATE
     global NAME
     EVALUATE = False
-    prefix = NAME
+
+    all_dispositions = {2:np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1]),
+                        3:np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, 2, 2, 2])}
 
     network = Network(paths_to_data, thresholding_top_confidence, trained_models, global_model=False)
 
     for seed in range(n_seeds):
-        for csize in cluster_model_sizes:
-            NAME = prefix + f"_seed_{seed}_csize_{csize}"
+        for n_clust in n_clusts:
+            default_disposition = all_dispositions[n_clust]
+            all_n_ins = base_n_ins.copy()
+            all_n_ins[all_n_ins<n_clust] = n_clust
+            for n_in in all_n_ins:
+                order = np.random.permutation(len(default_disposition)-n_in)
+                clusters = -np.ones(len(default_disposition))
+                starting_points = select_random_starting_points(default_disposition, n_in)
+                clusters[starting_points] = default_disposition[starting_points]
+                for csize in cluster_model_sizes:
+                    NAME = f"inclusion_seed_{seed}_n_clusts_{n_clust}_n_in_{n_in}_csize_{csize}"
 
-            clusters = -np.ones(len(default_disposition))
-            starting_points = select_random_starting_points(clusters)
-            clusters[starting_points] = default_disposition[starting_points]
-            network.clusterize(clusters, coal_model_size=csize)
-
-            n_clusts = max(default_disposition)
-            order = np.random.permutation(len(default_disposition-n_clusts))
-            network.routine_add_agents(order)
-            shutil.rmtree(os.path.join(PATH, 'runs/detect'))
+                    network.clusterize(clusters, coal_model_size=csize)
+                    network.routine_add_agents(order)
+                    shutil.rmtree(os.path.join(PATH, 'runs/detect'))
 
 
 def test_integration(n_seeds, cluster_model_sizes, learning_rates):
+    default_disposition = np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, 2, 2, 2])
     global VALIDATE
     VALIDATE = False
     global LEARNING_RATE
