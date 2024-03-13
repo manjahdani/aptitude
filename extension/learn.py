@@ -29,7 +29,28 @@ CAM_TO_AGENT = dict(zip(CAM_IDS, range(16)))
 AGENT_TO_CAM = dict(zip(range(16), CAM_IDS))
 
 N_WORKERS = 4
+LEARNING_RATE = 1e-2
 NAME = "GD_m"
+
+default_disposition = np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, 2, 2, 2])
+network_settings = {
+    1: {"Cluster Models 1": "2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 1},
+    2: {"Cluster Models 1": "1o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 1},
+    3: {"Cluster Models 1": "1o2o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 1},
+    4: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "5o6o7o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 2},
+    5: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o6o7o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 2},
+    6: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o7o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 2},
+    7: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 2},
+    8: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 2},
+    9: {"Cluster Models 1": "1o2o3", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 1},
+    16: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "17o18o19o20o22o24", "Cluster": 3},
+    17: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o18o19o20o22o24", "Cluster": 3},
+    18: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o19o20o22o24", "Cluster": 3},
+    19: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o20o22o24", "Cluster": 3},
+    20: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o22o24", "Cluster": 3},
+    22: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o20o24", "Cluster": 3},
+    24: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o20o22", "Cluster": 3}
+}
 
 print(f"The current process ID is: {os.getpid()}")
 
@@ -263,8 +284,8 @@ class Agent():
                             batch=16,
                             device=device,
                             optimizer='SGD',
-                            lr0 = 0.02,
-                            lrf=0.005,
+                            lr0 = LEARNING_RATE,
+                            lrf = LEARNING_RATE,
                             patience=1000, 
                             plots=False,
                             workers=N_WORKERS,
@@ -315,8 +336,8 @@ class Coalition():
                             batch=16,
                             device=device,
                             optimizer='SGD',
-                            lr0 = 0.02,
-                            lrf=0.005,
+                            lr0 = LEARNING_RATE,
+                            lrf = LEARNING_RATE,
                             patience=1000, 
                             plots=False,
                             workers=N_WORKERS,
@@ -395,8 +416,8 @@ class Network():
                             batch=16,
                             device=device,
                             optimizer='SGD',
-                            lr0 = 0.0075,
-                            lrf=0.0075,
+                            lr0 = LEARNING_RATE,
+                            lrf = LEARNING_RATE,
                             patience=1000, 
                             plots=False,
                             workers=N_WORKERS,
@@ -638,30 +659,25 @@ def test_agent_inclusion(n_seeds, cluster_model_sizes, net_model_sizes):
             shutil.rmtree(os.path.join(PATH, 'runs/detect'))
 
 
-def test_gracefully_degrade(n_seeds, cluster_model_sizes, net_model_sizes):
-    pass
+def test_integration(n_seeds, cluster_model_sizes, learning_rates):
+    global VALIDATE
+    VALIDATE = False
+    global LEARNING_RATE
+    global NAME
 
+    shutil.rmtree(os.path.join(PATH, 'runs/detect'))
+    network = Network(paths_to_data, thresholding_top_confidence, trained_models, global_model=False)
 
-test = Network(paths_to_data, thresholding_top_confidence, trained_models = trained_models, global_model=False)
-test.clusterize(np.zeros(16, dtype=int), trained_models=["weights/yolov8m_all_streams_100.pt"], coal_model_size='m')
-test.routine_remove_agents(np.array([3, 15, 0, 6, 12, 9, 2, 10, 5, 11, 13, 14, 8, 7, 4, 1]))
+    for seed in range(n_seeds):
+        order = np.random.permutation(len(default_disposition))
+        for lr in learning_rates:
+            LEARNING_RATE = lr
+            for csize in cluster_model_sizes:
+                NAME = f"integration_{seed}_complexity_{csize}_lr_{lr}"
+                clusters = -np.ones(len(default_disposition), dtype=int)
+                clusters[order[0]] = 0
+                network.clusterize(clusters, coal_model_size=csize)
+                network.routine_add_agents(order[1:])
+                shutil.rmtree(os.path.join(PATH, 'runs/detect'))
 
-default_disposition = np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, 2, 2, 2])
-network_settings = {
-    1: {"Cluster Models 1": "2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 1},
-    2: {"Cluster Models 1": "1o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 1},
-    3: {"Cluster Models 1": "1o2o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 1},
-    4: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "5o6o7o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 2},
-    5: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o6o7o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 2},
-    6: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o7o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 2},
-    7: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 2},
-    8: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 2},
-    9: {"Cluster Models 1": "1o2o3", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 1},
-    16: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "17o18o19o20o22o24", "Cluster": 3},
-    17: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o18o19o20o22o24", "Cluster": 3},
-    18: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o19o20o22o24", "Cluster": 3},
-    19: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o20o22o24", "Cluster": 3},
-    20: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o22o24", "Cluster": 3},
-    22: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o20o24", "Cluster": 3},
-    24: {"Cluster Models 1": "1o2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o20o22", "Cluster": 3}
-}
+test_integration(1, ['n','m','x'], [0.1, 0.02, 0.005, 0.0001])
