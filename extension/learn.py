@@ -669,13 +669,13 @@ def test_integration(n_seeds, cluster_model_sizes, learning_rates):
     network = Network(paths_to_data, thresholding_top_confidence, trained_models, global_model=False)
 
     for seed in range(n_seeds):
-        order = np.random.permutation(len(default_disposition))
+        order = np.random.permutation(len(default_disposition)-1)
         for lr in learning_rates:
             LEARNING_RATE = lr
             for csize in cluster_model_sizes:
                 NAME = f"integration_{seed}_complexity_{csize}_lr_{lr}"
                 clusters = -np.ones(len(default_disposition), dtype=int)
-                clusters[order[0]] = 0
+                clusters[np.random.randint(0, high=16)] = 0
                 network.clusterize(clusters, coal_model_size=csize)
                 network.routine_add_agents(order[1:])
                 shutil.rmtree(os.path.join(PATH, 'runs/detect'))
