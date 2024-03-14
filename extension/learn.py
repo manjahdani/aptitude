@@ -32,7 +32,6 @@ N_WORKERS = 4
 LEARNING_RATE = 1e-2
 NAME = "GD_m"
 
-default_disposition = np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, 2, 2, 2])
 network_settings = {
     1: {"Cluster Models 1": "2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 1},
     2: {"Cluster Models 1": "1o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 1},
@@ -631,11 +630,6 @@ def select_random_starting_points(n_in, default_disposition):
         if np.all(np.in1d(np.arange(np.max(default_disposition)+1), np.unique(default_disposition[random_indices]))):
             condition = False
     return random_indices
-test = -np.ones(len(default_disposition))
-indices = select_random_starting_points(3, default_disposition)
-test[indices] = default_disposition[indices]
-print(indices, test)
-raise ValueError
 
 def test_agent_inclusion(n_seeds, n_clusts, base_n_ins, cluster_model_sizes):
     global EVALUATE
@@ -677,14 +671,14 @@ def test_integration(n_seeds, cluster_model_sizes, learning_rates):
 
     for seed in range(n_seeds):
         order = np.random.permutation(len(default_disposition)-1)
+        clusters = -np.ones(len(default_disposition), dtype=int)
+        clusters[np.random.randint(0, high=16)] = 0
         for lr in learning_rates:
             LEARNING_RATE = lr
             for csize in cluster_model_sizes:
                 NAME = f"integration_{seed}_complexity_{csize}_lr_{lr}"
-                clusters = -np.ones(len(default_disposition), dtype=int)
-                clusters[np.random.randint(0, high=16)] = 0
                 network.clusterize(clusters, coal_model_size=csize)
-                network.routine_add_agents(order[1:])
+                network.routine_add_agents(order)
                 shutil.rmtree(os.path.join(PATH, 'runs/detect'))
 
 test_integration(1, ['n','m','x'], [0.1, 0.02, 0.005, 0.0001])
