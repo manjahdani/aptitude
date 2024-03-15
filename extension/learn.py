@@ -516,7 +516,7 @@ class Network():
                     coal_id = coal
             self.remove_agent(coal_to_trim, agent)
             self.evaluate(ag+1, coal_id, name=name)
-            self.print_state(f"Agent deleteion #{ag+1}")
+            self.print_state(f"Agent deletion #{ag+1}")
     
     def routine_add_and_remove_agents(self, order):
         agents_to_rmv = self.routine_add_agents(order)
@@ -681,4 +681,25 @@ def test_integration(n_seeds, cluster_model_sizes, learning_rates):
                 network.routine_add_agents(order)
                 shutil.rmtree(os.path.join(PATH, 'runs/detect'))
 
-test_integration(1, ['n','m','x'], [0.1, 0.02, 0.005, 0.0001])
+def test_removal(n_seeds, cluster_model_sizes, learning_rates):
+    global VALIDATE
+    VALIDATE = False
+    global LEARNING_RATE
+    global NAME
+
+    shutil.rmtree(os.path.join(PATH, 'runs/detect'))
+    network = Network(paths_to_data, thresholding_top_confidence, trained_models, global_model=False)
+
+    for seed in range(n_seeds):
+        order = np.random.permutation(16)[:-1]
+        clusters = np.zeros(16, dtype=int)
+
+        for lr in learning_rates:
+            LEARNING_RATE = lr
+            for csize in cluster_model_sizes:
+                NAME = f"gracefully_degrade_{seed}_complexity_{csize}_lr_{lr}"
+                network.clusterize(clusters, trained_models=[f"yolov8{csize}_all_streams_100.pt"])
+                network.routine_remove_agents(order)
+                shutil.rmtree(os.path.join(PATH, 'runs/detect'))
+
+test_removal(1, ['n','m','x'], [0.1, 0.02, 0.005, 0.0001])

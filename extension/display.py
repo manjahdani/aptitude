@@ -3,7 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import re
 
-PATH = "/home/dani/aptitude/extension"
+PATH = "."
+COMPLEXITY_IDX = {'n':0, 'm':1, 'x':2}
+LR_IDX = {0.1:0, 0.02:1, 0.005:2, 0.0001:3}
 
 def load_arrays_from_file(file_path: str):
     perf, pres  = np.loadtxt(file_path)
@@ -44,6 +46,25 @@ def decode_files(directory: str, prefix: str, n_agents):
             all_mAPs[coal_id, eval_num] = perf
             presence_matrix[coal_id, eval_num] = pres
     
+    return all_mAPs, presence_matrix 
+
+def decode_files_integration(directory: str, n_lr=4, n_complexities=3, n_evals=15, n_agents=16):
+    files = os.listdir(directory)
+    pattern = re.compile(fr"integration_(\d+)_complexity_([nmx])_lr_(\d+(\.\d+)?)_mAPs_eval_(\d+)_coal_0\.txt")
+
+    all_mAPs = np.full((n_lr, n_complexities, n_evals, n_agents), np.nan)
+    presence_matrix = np.full((n_lr, n_complexities, n_evals, n_agents), np.nan)
+    for file in files:
+        match = pattern.match(file)
+        if match:
+            complexity = COMPLEXITY_IDX[str(match.group(2))]
+            lr = LR_IDX[float(match.group(3))]
+            eval_num = int(match.group(5))
+
+            perf, pres = load_arrays_from_file(os.path.join(directory,file))
+            all_mAPs[lr, complexity, eval_num] = perf
+            presence_matrix[lr, complexity, eval_num] = pres
+    
     return all_mAPs, presence_matrix  
 
 def decode_files_net(directory: str, prefix: str, n_agents):
@@ -61,7 +82,23 @@ def decode_files_net(directory: str, prefix: str, n_agents):
             presence_matrix[0, eval_num] = pres
     
     return all_mAPs, presence_matrix
-            
+
+def plot_integration(all_mAPs, presence_matrix, ref_mAPs):
+    all_norm_mAPs = all_mAPs - ref_mAPs
+    all_norm_mAPs_in = all_norm_mAPs.copy()
+    all_norm_mAPs_in[presence_matrix==0]=np.nan
+
+    all_lrs = [0.1, 0.02, 0.005, 0.0001]
+    all_complexities = ['n', 'm', 'x']
+
+    fig, axs = plt.subplots(ncols=all_mAPs.shape[1], sharey=True)
+    for comp in range(all_mAPs.shape[1]):
+        for lr in range(all_mAPs.shape[0]):
+            axs[comp].plot(np.nanmean(all_norm_mAPs_in[lr,comp,...], axis=-1), color = f'C{lr}', marker='.', label = f"$l_r = {all_lrs[lr]}$")
+            axs[comp].set_title(f"Model complexity: {all_complexities[comp]}")
+    plt.legend()
+    plt.show()
+
 def plot_detailed_coal(all_mAPs, presence_matrix, coal_idx, ax=None, ref_mAPs = None):
     format_id = 0
     agent_mAPs = all_mAPs[coal_idx,...].T
@@ -245,7 +282,11 @@ def plot_detailed_net(all_mAPs, presence_matrix, ax=None, ref_mAPs=None):
 agent_to_cam = {0:1, 1:2, 2:3, 3:4, 4:5, 5:6, 6:7, 7:8, 8:9, 9:16, 10:17, 11:18, 12:19, 13:20, 14:22, 15:24}
 cam_model_mAPS = np.array([0.42, 0.61, 0.60, 0.63, 0.42, 0.65, 0.37, 0.63, .43, 0.836, 0.854, 0.854, 0.656, 0.755, 0.889, 0.516])
 
-all_mAPs_addition_clus, presence_matrix_addition_clus = decode_files(os.path.join(PATH,"results/Sim_3"), "sim_3_mAPs", 16)
+all_mAPs_integration, presence_matrix_integration = decode_files_integration(os.path.join(PATH,"results"))
+print(all_mAPs_integration.shape)
+plot_integration(all_mAPs_integration, presence_matrix_integration, cam_model_mAPS)
+
+"""all_mAPs_addition_clus, presence_matrix_addition_clus = decode_files(os.path.join(PATH,"results/Sim_3"), "sim_3_mAPs", 16)
 all_mAPs_removal_clus, presence_matrix_removal_clus = decode_files(os.path.join(PATH,"results/Sim_3"), "sim_3_rmv_mAPs", 16)
 
 all_mAPs_addition_net, presence_matrix_addition_net = decode_files_net(os.path.join(PATH,"results/Sim_3"), "sim_3_mAPs", 16)
@@ -254,13 +295,13 @@ all_mAPs_removal_net, presence_matrix_removal_net = decode_files_net(os.path.joi
 
 coal_status=get_agent_coal(presence_matrix_addition_clus)
 
-"""ax=plot_cross_perf(all_mAPs_addition_clus, coal_status, ref_mAPs=cam_model_mAPS)
+ax=plot_cross_perf(all_mAPs_addition_clus, coal_status, ref_mAPs=cam_model_mAPS)
 ax=plot_cross_perf_net(all_mAPs_addition_net, coal_status, ref_mAPs=cam_model_mAPS, ax=ax)
 ax.legend()
 plt.show()
 ax = plot_detailed_coal(all_mAPs_addition_clus, presence_matrix_addition_clus, 0, ref_mAPs=cam_model_mAPS)
 ax.legend()
-plt.show()"""
+plt.show()
 
 #ax = plot_detailed_coal(all_mAPs_removal_clus, presence_matrix_removal_clus, 2, ref_mAPs=cam_model_mAPS)
 #ax.legend()
@@ -287,7 +328,7 @@ ax.set_xticks(range(1, all_mAPs_removal_net.shape[1]+1))
 ax.legend()
 #plt.show()
 
-"""
+
 ax = plot_detailed_coal(all_mAPs_removal_clus, presence_matrix_removal_clus, 0)
 ax.set_xticks(range(1, all_mAPs_removal_clus.shape[1]+1))
 ax.legend()
