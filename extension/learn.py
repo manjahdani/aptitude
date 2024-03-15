@@ -698,7 +698,7 @@ def test_removal(n_seeds, cluster_model_sizes, learning_rates):
             LEARNING_RATE = lr
             for csize in cluster_model_sizes:
                 NAME = f"gracefully_degrade_{seed}_complexity_{csize}_lr_{lr}"
-                network.clusterize(clusters, trained_models=[f"yolov8{csize}_all_streams_100.pt"])
+                network.clusterize(clusters, trained_models=[f"weights/yolov8{csize}_all_streams_100.pt"])
                 network.routine_remove_agents(order)
                 shutil.rmtree(os.path.join(PATH, 'runs/detect'))
 
