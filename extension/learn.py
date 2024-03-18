@@ -825,4 +825,4 @@ def test_gracefully_degrade(n_seeds, cluster_model_sizes, learning_rates, n_epoc
                 network.run_experiment(clusters, n_epochs)
                 shutil.rmtree(os.path.join(PATH, 'runs/detect'), ignore_errors=True)
 
-test_gracefully_degrade(1, ['n'], [0.005, 0.1, 0.02, 0.0001], 100, 8)
+test_gracefully_degrade(1, ['m'], [0.005, 0.1, 0.02, 0.0001], 100, 8)
