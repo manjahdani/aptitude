@@ -97,6 +97,7 @@ def plot_integration(all_mAPs, presence_matrix, ref_mAPs):
             axs[comp].plot(np.nanmean(all_norm_mAPs_in[lr,comp,...], axis=-1), color = f'C{lr}', marker='.', label = f"$l_r = {all_lrs[lr]}$")
             axs[comp].set_title(f"Model complexity: {all_complexities[comp]}")
     plt.legend()
+    plt.tight_layout()
     plt.show()
 
 def plot_detailed_coal(all_mAPs, presence_matrix, coal_idx, ax=None, ref_mAPs = None):
