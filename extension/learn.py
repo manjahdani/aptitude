@@ -566,7 +566,7 @@ class GDNetwork:
         n_agents = len(paths_to_data)
         self.all_agents = np.empty(n_agents, dtype=Agent)
 
-        self.weights = f"yolov8{global_model_size}_all_streams_100.pt"
+        self.weights = f"weights/yolov8{global_model_size}_all_streams_100.pt"
         self.net_model = YOLO(self.weights)
 
         for i in range(n_agents):
@@ -741,6 +741,7 @@ def test_agent_inclusion(n_seeds, n_clusts, base_n_ins, cluster_model_sizes):
     all_dispositions = {2:np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1]),
                         3:np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, 2, 2, 2])}
 
+    shutil.rmtree(os.path.join(PATH, 'runs/detect'), ignore_errors=True)
     network = Network(paths_to_data, thresholding_top_confidence, trained_models, global_model=False)
 
     for seed in range(n_seeds):
@@ -758,7 +759,7 @@ def test_agent_inclusion(n_seeds, n_clusts, base_n_ins, cluster_model_sizes):
 
                     network.clusterize(clusters, coal_model_size=csize)
                     network.routine_add_agents(order)
-                    shutil.rmtree(os.path.join(PATH, 'runs/detect'))
+                    shutil.rmtree(os.path.join(PATH, 'runs/detect'), ignore_errors=True)
 
 
 def test_integration(n_seeds, cluster_model_sizes, learning_rates):
@@ -768,7 +769,7 @@ def test_integration(n_seeds, cluster_model_sizes, learning_rates):
     global LEARNING_RATE
     global NAME
 
-    shutil.rmtree(os.path.join(PATH, 'runs/detect'))
+    shutil.rmtree(os.path.join(PATH, 'runs/detect'), ignore_errors=True)
     network = Network(paths_to_data, thresholding_top_confidence, trained_models, global_model=False)
 
     for seed in range(n_seeds):
@@ -781,7 +782,7 @@ def test_integration(n_seeds, cluster_model_sizes, learning_rates):
                 NAME = f"integration_{seed}_complexity_{csize}_lr_{lr}"
                 network.clusterize(clusters, coal_model_size=csize)
                 network.routine_add_agents(order)
-                shutil.rmtree(os.path.join(PATH, 'runs/detect'))
+                shutil.rmtree(os.path.join(PATH, 'runs/detect'), ignore_errors=True)
 
 def test_removal(n_seeds, cluster_model_sizes, learning_rates):
     global VALIDATE
@@ -789,7 +790,7 @@ def test_removal(n_seeds, cluster_model_sizes, learning_rates):
     global LEARNING_RATE
     global NAME
 
-    shutil.rmtree(os.path.join(PATH, 'runs/detect'))
+    shutil.rmtree(os.path.join(PATH, 'runs/detect'), ignore_errors=True)
     network = Network(paths_to_data, thresholding_top_confidence, trained_models, global_model=False)
 
     for seed in range(n_seeds):
@@ -802,7 +803,7 @@ def test_removal(n_seeds, cluster_model_sizes, learning_rates):
                 NAME = f"gracefully_degrade_{seed}_complexity_{csize}_lr_{lr}"
                 network.clusterize(clusters, trained_models=[f"weights/yolov8{csize}_all_streams_100.pt"])
                 network.routine_remove_agents(order)
-                shutil.rmtree(os.path.join(PATH, 'runs/detect'))
+                shutil.rmtree(os.path.join(PATH, 'runs/detect'), ignore_errors=True)
 
 def test_gracefully_degrade(n_seeds, cluster_model_sizes, learning_rates, n_epochs, n_out):
     global VALIDATE
@@ -810,7 +811,7 @@ def test_gracefully_degrade(n_seeds, cluster_model_sizes, learning_rates, n_epoc
     global LEARNING_RATE
     global NAME
 
-    shutil.rmtree(os.path.join(PATH, 'runs/detect'))
+    shutil.rmtree(os.path.join(PATH, 'runs/detect'), ignore_errors=True)
 
     for seed in range(n_seeds):
         np.random.seed(seed)
@@ -822,6 +823,6 @@ def test_gracefully_degrade(n_seeds, cluster_model_sizes, learning_rates, n_epoc
                 network = GDNetwork(paths_to_data, thresholding_top_confidence, trained_models, csize)
                 NAME = f"gracefully_degrade_{seed}_complexity_{csize}_lr_{lr}_n_ep_{n_epochs}_n_out_{n_out}"
                 network.run_experiment(clusters, n_epochs)
-                shutil.rmtree(os.path.join(PATH, 'runs/detect'))
+                shutil.rmtree(os.path.join(PATH, 'runs/detect'), ignore_errors=True)
 
 test_gracefully_degrade(1, ['n'], [0.005, 0.1, 0.02, 0.0001], 100, 8)
