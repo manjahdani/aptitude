@@ -65,6 +65,25 @@ def decode_files_integration(directory: str, n_lr=4, n_complexities=3, n_evals=1
             all_mAPs[lr, complexity, eval_num] = perf
             presence_matrix[lr, complexity, eval_num] = pres
     
+    return all_mAPs, presence_matrix 
+
+def decode_files_gracefully_degrade(directory: str, n_lr=4, n_complexities=3, n_evals=11, n_groups=2):
+    files = os.listdir(directory)
+    pattern = re.compile(fr"gracefully_degrade_(\d+)_complexity_([nmx])_lr_(\d+(\.\d+)?)_n_ep_(\d+)_n_out_(\d+)mAPs_eval_(\d+)\.txt")
+
+    all_mAPs = np.full((n_lr, n_complexities, n_evals, n_groups), np.nan)
+    presence_matrix = np.full((n_lr, n_complexities, n_evals, n_groups), np.nan)
+    for file in files:
+        match = pattern.match(file)
+        if match:
+            complexity = COMPLEXITY_IDX[str(match.group(2))]
+            lr = LR_IDX[float(match.group(3))]
+            eval_num = int(match.group(7))
+
+            perf, pres = load_arrays_from_file(os.path.join(directory,file))
+            all_mAPs[lr, complexity, eval_num] = perf
+            presence_matrix[lr, complexity, eval_num] = pres
+    
     return all_mAPs, presence_matrix  
 
 def decode_files_net(directory: str, prefix: str, n_agents):
@@ -96,6 +115,33 @@ def plot_integration(all_mAPs, presence_matrix, ref_mAPs):
         for lr in range(all_mAPs.shape[0]):
             axs[comp].plot(np.nanmean(all_norm_mAPs_in[lr,comp,...], axis=-1), color = f'C{lr}', marker='.', label = f"$l_r = {all_lrs[lr]}$")
             axs[comp].set_title(f"Model complexity: {all_complexities[comp]}")
+    plt.tight_layout()
+    plt.legend()
+    plt.show()
+
+def plot_gracefully_degrade(all_mAPs, presence_matrix):
+    all_norm_mAPs_in = all_mAPs.copy()
+    all_norm_mAPs_in[presence_matrix==0]=np.nan
+
+    all_norm_mAPs_out = all_mAPs.copy()
+    all_norm_mAPs_out[presence_matrix==1]=np.nan
+
+    all_lrs = [0.1, 0.02, 0.005, 0.0001]
+    all_complexities = ['n', 'm', 'x']
+
+    fig, axs = plt.subplots(ncols=all_mAPs.shape[1], sharey=True)
+    for comp in range(all_mAPs.shape[1]):
+        for lr in range(all_mAPs.shape[0]):
+            in_values = np.nanmean(all_norm_mAPs_in[lr,comp,...], axis=-1)
+            in_values-=in_values[0]
+
+            out_values = np.nanmean(all_norm_mAPs_out[lr,comp,...], axis=-1)
+            out_values-=out_values[0]
+            
+            axs[comp].plot(in_values, color = f'C{lr}', marker='.', label = f"$l_r = {all_lrs[lr]}$")
+            axs[comp].plot(out_values, color = f'C{lr}', marker='.', linestyle='dashed')
+            axs[comp].set_title(f"Model complexity: {all_complexities[comp]}")
+    plt.tight_layout()
     plt.legend()
     plt.tight_layout()
     plt.show()
@@ -280,12 +326,21 @@ def plot_detailed_net(all_mAPs, presence_matrix, ax=None, ref_mAPs=None):
     ax.set_xticks(range(1, agent_mAPs.shape[1]))
     return ax
 
+def get_base_mAPs(groups, cam_model_mAPS):
+    weights = np.array([300,300,300,50,300,100,100,100,300,300,300,300,300,300,300,300])
+    base_mAPs = np.empty(len(groups))
+
+    for idx,group in enumerate(groups):
+        base_mAPs[idx] = (cam_model_mAPS[group]@weights[group])/np.sum(weights[group])
+    return base_mAPs
+
 agent_to_cam = {0:1, 1:2, 2:3, 3:4, 4:5, 5:6, 6:7, 7:8, 8:9, 9:16, 10:17, 11:18, 12:19, 13:20, 14:22, 15:24}
 cam_model_mAPS = np.array([0.42, 0.61, 0.60, 0.63, 0.42, 0.65, 0.37, 0.63, .43, 0.836, 0.854, 0.854, 0.656, 0.755, 0.889, 0.516])
 
-all_mAPs_integration, presence_matrix_integration = decode_files_integration(os.path.join(PATH,"results"))
-print(all_mAPs_integration.shape)
-plot_integration(all_mAPs_integration, presence_matrix_integration, cam_model_mAPS)
+groups = [[0, 3, 5, 7, 10, 11, 12, 15], [1,2,4,6,8,9,13,14]]
+
+all_mAPs_gracefully_degrade, presence_matrix_gracefully_degrade = decode_files_gracefully_degrade(os.path.join(PATH,"results"))
+plot_gracefully_degrade(all_mAPs_gracefully_degrade, presence_matrix_gracefully_degrade)
 
 """all_mAPs_addition_clus, presence_matrix_addition_clus = decode_files(os.path.join(PATH,"results/Sim_3"), "sim_3_mAPs", 16)
 all_mAPs_removal_clus, presence_matrix_removal_clus = decode_files(os.path.join(PATH,"results/Sim_3"), "sim_3_rmv_mAPs", 16)
