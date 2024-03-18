@@ -17,7 +17,7 @@ from ultralytics import YOLO
 PATH = "/home/dani/aptitude/extension"
 PATH_TO_DATA = "/home/dani/data/WALT-challenge"
 DEFAULT_SUB_SAMPLE = 256
-N_EPOCH_BASE = 20
+N_EPOCH_BASE = 10
 MAX_PROCESSES = cpu_count()
 
 TRAIN = True
@@ -561,15 +561,117 @@ class Network():
                 os.makedirs(agent_val_dir)
             np.savetxt(filename, (mAPs, presence))
 
+class GDNetwork:
+    def __init__(self, paths_to_data, buffer_policy, trained_models, global_model_size):
+        n_agents = len(paths_to_data)
+        self.all_agents = np.empty(n_agents, dtype=Agent)
+
+        self.weights = f"yolov8{global_model_size}_all_streams_100.pt"
+        self.net_model = YOLO(self.weights)
+
+        for i in range(n_agents):
+            cam_id = AGENT_TO_CAM[i]
+            agent_weights = trained_models[i]
+            model = YOLO(agent_weights)
+            agent = Agent(cam_id, model, paths_to_data[i], buffer_policy, agent_weights)
+            print(f"{agent} initialized.")
+            self.all_agents[i] = agent
+
+    def clusterize(self, clusters):
+        self.in_agents = self.all_agents[clusters==0]
+        self.out_agents = self.all_agents[clusters==-1]
+        self.print_state("Initialization")
+
+    def flush_model(self):
+        del self.net_model
+        gc.collect()
+        self.net_model = YOLO(os.path.join(PATH, self.weights))
+
+    @check_train
+    @with_temp_dir
+    def train(self, temp_dir):
+        train_dir = os.path.join(temp_dir, 'train')
+        val_dir   = os.path.join(temp_dir, 'val')
+
+        os.makedirs(train_dir)
+        os.makedirs(val_dir)
+
+        device = "cuda:0" if torch.cuda.is_available() else None
+
+        combined_stream = [agent.stream for agent in self.in_agents]
+        combined_buffers = [agent.buffer for agent in self.in_agents]
+
+        for buffer,stream in zip(combined_buffers, combined_stream):
+            parallel_copy(buffer, stream, train_dir,'labels_yolov8x6')
+            test_path = get_test_path_from_train_path(stream)
+            parallel_copy("all", test_path, val_dir,'labels')
+        build_yaml_file(temp_dir,os.path.join('templates','base.yaml'))
+
+        self.net_model.train(data=os.path.join(temp_dir,'TMP_YAML.yaml'),
+                            name = "Network",
+                            exist_ok=True,
+                            deterministic=False,
+                            epochs=N_EPOCH_BASE,
+                            batch=16,
+                            device=device,
+                            optimizer='SGD',
+                            lr0 = LEARNING_RATE,
+                            lrf = LEARNING_RATE,
+                            patience=1000, 
+                            plots=False,
+                            workers=N_WORKERS,
+                            verbose=True)
+        
+        self.weights = f'runs/detect/Network/weights/last.pt'
+        self.flush_model()
+
+    @check_evaluate
+    @with_temp_dir
+    def evaluate(self,id, temp_dir, name):
+        agent_dir     = os.path.join(temp_dir, "agent")
+        agent_val_dir = os.path.join(agent_dir, "val")
+        os.makedirs(agent_val_dir)
+
+        device = "cuda:0" if torch.cuda.is_available() else None
+        mAPs = np.empty(2)
+        filename = f"results/{name}mAPs_eval_{id}.txt"
+        for agent in self.in_agents:
+            test_path = get_test_path_from_train_path(agent.stream)
+            parallel_copy("all", test_path, agent_val_dir,'labels')
+        
+        build_yaml_file(agent_dir, 'templates/base.yaml')    
+        mAPs[0] = self.net_model.val(data=os.path.join(agent_dir,'TMP_YAML.yaml'), device=device, verbose=False, plots=False, name='val').box.map
+
+        shutil.rmtree(agent_dir)
+        os.makedirs(agent_val_dir)
+    
+        for agent in self.out_agents:
+            test_path = get_test_path_from_train_path(agent.stream)
+            parallel_copy("all", test_path, agent_val_dir,'labels')
+        
+        build_yaml_file(agent_dir, 'templates/base.yaml')    
+        mAPs[1] = self.net_model.val(data=os.path.join(agent_dir,'TMP_YAML.yaml'), device=device, verbose=False, plots=False, name='val').box.map
+        self.flush_model()
+
+        presence = np.array([1,0])
+        np.savetxt(filename, (mAPs, presence))
+
     def print_state(self, step_name):
         print("="*30," Information about the network ", "="*30)
         print(f"Step: {step_name}")
-        print(f"Number of clusters: {len(self.all_coalitions)}")
         print('')
-        for coal, coalition in enumerate(self.all_coalitions):
-            print(f"Agents in cluster #{coal}:", coalition.agents_list)
-        print("Agents no assigned to any cluster:", self.free_agents)
+        print("Agents in network:", self.in_agents)
+        print("Agents out of network:", self.out_agents)
         print("="*93)
+
+    def run_experiment(self, clusters, n_epochs):
+        n_reps = n_epochs//N_EPOCH_BASE
+
+        self.clusterize(clusters)
+        self.evaluate(0, name=NAME)
+        for rep in range(n_reps):
+            self.train()
+            self.evaluate(rep+1, name=NAME)
 
 def check_final_insertion(network_settings, default_disposition, cam_to_agent, paths_to_data, trained_models):
     global TRAIN
@@ -702,4 +804,24 @@ def test_removal(n_seeds, cluster_model_sizes, learning_rates):
                 network.routine_remove_agents(order)
                 shutil.rmtree(os.path.join(PATH, 'runs/detect'))
 
-test_removal(1, ['n','m','x'], [0.1, 0.02, 0.005, 0.0001])
+def test_gracefully_degrade(n_seeds, cluster_model_sizes, learning_rates, n_epochs, n_out):
+    global VALIDATE
+    VALIDATE = False
+    global LEARNING_RATE
+    global NAME
+
+    shutil.rmtree(os.path.join(PATH, 'runs/detect'))
+
+    for seed in range(n_seeds):
+        np.random.seed(seed)
+        clusters = np.zeros(16, dtype=int)
+        clusters[np.random.choice(len(clusters), n_out, replace=False)] = -1
+        for lr in learning_rates:
+            LEARNING_RATE = lr
+            for csize in cluster_model_sizes:
+                network = GDNetwork(paths_to_data, thresholding_top_confidence, trained_models, csize)
+                NAME = f"gracefully_degrade_{seed}_complexity_{csize}_lr_{lr}_n_ep_{n_epochs}_n_out_{n_out}"
+                network.run_experiment(clusters, n_epochs)
+                shutil.rmtree(os.path.join(PATH, 'runs/detect'))
+
+test_gracefully_degrade(1, ['n'], [0.005, 0.1, 0.02, 0.0001], 100, 8)
