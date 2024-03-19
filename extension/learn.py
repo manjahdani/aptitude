@@ -548,7 +548,7 @@ class Network():
             np.savetxt(filename, (mAPs, presence))
 
         if eval_net and self.weights is not None:
-            filename = f"results/{name}mAPs_eval_{id}_net.txt"
+            filename = f"results/{name}_mAPs_eval_{id}_net.txt"
             for ag,agent in enumerate(self.all_agents):
                 test_path = get_test_path_from_train_path(agent.stream)
                 parallel_copy("all", test_path, agent_val_dir,'labels')
@@ -560,6 +560,34 @@ class Network():
                 shutil.rmtree(agent_dir)
                 os.makedirs(agent_val_dir)
             np.savetxt(filename, (mAPs, presence))
+
+    @with_temp_dir
+    def final_evaluation(self, temp_dir, name):
+        agent_dir     = os.path.join(temp_dir, "agent")
+        agent_val_dir = os.path.join(agent_dir, "val")
+        os.makedirs(agent_val_dir)
+
+        device = "cuda:0" if torch.cuda.is_available() else None
+        mAPs = np.empty(len(self.all_coalitions))
+        presence = np.empty(len(self.all_coalitions), dtype=int)
+        for idx, coalition in enumerate(self.all_coalitions):
+            
+            for agent in coalition.agents_list:
+                test_path = get_test_path_from_train_path(agent.stream)
+                parallel_copy("all", test_path, agent_val_dir,'labels')
+            
+            build_yaml_file(agent_dir, 'templates/base.yaml')    
+            mAPs[idx] = self.net_model.val(data=os.path.join(agent_dir,'TMP_YAML.yaml'), device=device, verbose=False, plots=False, name='val').box.map
+
+            shutil.rmtree(agent_dir)
+            os.makedirs(agent_val_dir)
+        self.flush_model()
+
+        filename = f"results/{name}_mAPs_final_eval.txt"
+        presence = np.arange(len(self.all_coalitions))
+        np.savetxt(filename, (mAPs, presence))
+
+
 
 class GDNetwork:
     def __init__(self, paths_to_data, buffer_policy, trained_models, global_model_size):
@@ -745,6 +773,7 @@ def test_agent_inclusion(n_seeds, n_clusts, base_n_ins, cluster_model_sizes):
     network = Network(paths_to_data, thresholding_top_confidence, trained_models, global_model=False)
 
     for seed in range(n_seeds):
+        np.random.seed(seed)
         for n_clust in n_clusts:
             default_disposition = all_dispositions[n_clust]
             all_n_ins = base_n_ins.copy()
@@ -760,6 +789,7 @@ def test_agent_inclusion(n_seeds, n_clusts, base_n_ins, cluster_model_sizes):
                     network.clusterize(clusters, coal_model_size=csize)
                     network.routine_add_agents(order)
                     shutil.rmtree(os.path.join(PATH, 'runs/detect'), ignore_errors=True)
+                    network.final_evaluation(name=NAME)
 
 
 def test_integration(n_seeds, cluster_model_sizes, learning_rates):
@@ -773,6 +803,7 @@ def test_integration(n_seeds, cluster_model_sizes, learning_rates):
     network = Network(paths_to_data, thresholding_top_confidence, trained_models, global_model=False)
 
     for seed in range(n_seeds):
+        np.random.seed(seed)
         order = np.random.permutation(len(default_disposition)-1)
         clusters = -np.ones(len(default_disposition), dtype=int)
         clusters[np.random.randint(0, high=16)] = 0
@@ -794,6 +825,7 @@ def test_removal(n_seeds, cluster_model_sizes, learning_rates):
     network = Network(paths_to_data, thresholding_top_confidence, trained_models, global_model=False)
 
     for seed in range(n_seeds):
+        np.random.seed(seed)
         order = np.random.permutation(16)[:-1]
         clusters = np.zeros(16, dtype=int)
 
@@ -825,4 +857,4 @@ def test_gracefully_degrade(n_seeds, cluster_model_sizes, learning_rates, n_epoc
                 network.run_experiment(clusters, n_epochs)
                 shutil.rmtree(os.path.join(PATH, 'runs/detect'), ignore_errors=True)
 
-test_gracefully_degrade(1, ['m'], [0.005, 0.1, 0.02, 0.0001], 100, 8)
+test_gracefully_degrade(1, ['n','m','x'], [0.01,0.001], 100, 8)
