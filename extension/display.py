@@ -339,6 +339,28 @@ cam_model_mAPS = np.array([0.42, 0.61, 0.60, 0.63, 0.42, 0.65, 0.37, 0.63, .43, 
 
 groups = [[0, 3, 5, 7, 10, 11, 12, 15], [1,2,4,6,8,9,13,14]]
 
+untrained_perf = {
+    'x': {
+        'cam1': 4.81E-01, 'cam2': 6.09E-01, 'cam3': 6.64E-01, 'cam4': 6.22E-01,
+        'cam5': 3.89E-01, 'cam6': 6.99E-01, 'cam7': 4.70E-01, 'cam8': 6.78E-01,
+        'cam9': 4.30E-01, 'cam16': 0.853, 'cam17': 0.642, 'cam18': 0.703,
+        'cam19': 0.38, 'cam20': 0.745, 'cam22': 0.739, 'cam24': 0.293
+    },
+    'n': {
+        'cam1': 3.91E-01, 'cam2': 5.30E-01, 'cam3': 5.43E-01, 'cam4': 5.84E-01,
+        'cam5': 2.54E-01, 'cam6': 6.17E-01, 'cam7': 4.24E-01, 'cam8': 6.11E-01,
+        'cam9': 4.00E-01, 'cam16': 0.673, 'cam17': 0.48, 'cam18': 0.544,
+        'cam19': 0.395, 'cam20': 0.636, 'cam22': 0.646, 'cam24': 0.246
+    },
+    'm': {
+        'cam1': 4.50E-01, 'cam2': 6.08E-01, 'cam3': 6.47E-01, 'cam4': 6.37E-01,
+        'cam5': 3.50E-01, 'cam6': 7.07E-01, 'cam7': 4.59E-01, 'cam8': 7.15E-01,
+        'cam9': 4.31E-01, 'cam16': 0.785, 'cam17': 0.521, 'cam18': 0.652, cam19: '0.321',
+        'cam20': 0.727, 'cam22': 0.830, 'cam24': 0.367
+    }
+}
+
+
 all_mAPs_gracefully_degrade, presence_matrix_gracefully_degrade = decode_files_gracefully_degrade(os.path.join(PATH,"results"))
 plot_gracefully_degrade(all_mAPs_gracefully_degrade, presence_matrix_gracefully_degrade)
 
