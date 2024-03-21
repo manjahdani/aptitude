@@ -10,6 +10,7 @@ from tqdm import tqdm
 import gc
 import functools
 import tempfile
+import time
 
 sys.path.append(os.path.join(sys.path[0], "yolov8", "ultralytics"))
 from ultralytics import YOLO
@@ -17,7 +18,7 @@ from ultralytics import YOLO
 PATH = "/home/dani/aptitude/extension"
 PATH_TO_DATA = "/home/dani/data/WALT-challenge"
 DEFAULT_SUB_SAMPLE = 256
-N_EPOCH_BASE = 10
+N_EPOCH_BASE = 100
 MAX_PROCESSES = cpu_count()
 
 TRAIN = True
@@ -29,7 +30,7 @@ CAM_TO_AGENT = dict(zip(CAM_IDS, range(16)))
 AGENT_TO_CAM = dict(zip(range(16), CAM_IDS))
 
 N_WORKERS = 4
-LEARNING_RATE = 1e-2
+LEARNING_RATE = 1e-3
 NAME = "GD_m"
 
 network_settings = {
@@ -561,6 +562,15 @@ class Network():
                 os.makedirs(agent_val_dir)
             np.savetxt(filename, (mAPs, presence))
 
+    def print_state(self, step_name):
+        print("="*30," Information about the network ", "="*30)
+        print(f"Step: {step_name}")
+        print('')
+        print("Agents in network:", self.integrated_agents)
+        for coal in self.all_coalitions:
+            print(f"Agents in {coal}:", coal.agents_list)
+        print("="*93)
+
     @with_temp_dir
     def final_evaluation(self, temp_dir, name):
         agent_dir     = os.path.join(temp_dir, "agent")
@@ -701,6 +711,26 @@ class GDNetwork:
             self.train()
             self.evaluate(rep+1, name=NAME)
 
+class EventLogger():
+    def __init__(self, filename, name):
+        self.filename=filename
+        with open(self.filename, 'w') as f:
+            f.writelines(f"Logging experiment {name}\n")
+
+    def log_order(self, order):
+        with open(self.filename, 'a') as f:
+            f.writelines(f"[{time.ctime()}] With order {order}\n")
+
+    def log_params(self, params):
+        with open(self.filename, 'a') as f:
+            f.writelines(f"\t[{time.ctime()}] With parameters {params}\n")
+
+    def end_step(self):
+        with open(self.filename, 'a') as f:
+            f.writelines("="*90+"\n\n")        
+
+
+
 def check_final_insertion(network_settings, default_disposition, cam_to_agent, paths_to_data, trained_models):
     global TRAIN
     global EVALUATE
@@ -753,43 +783,58 @@ trained_models= ['weights/cam1-week1.pt',
                  'weights/cam22-week1.pt',
                  'weights/cam24-week1.pt',]
 
-def select_random_starting_points(n_in, default_disposition):
+def random_starting_point(default_disposition):
     condition = True
+    n_clusts = np.max(default_disposition)+1
+    n_agents = len(default_disposition)
     while condition:
-        random_indices = np.random.randint(0, len(default_disposition), n_in)    
-        if np.all(np.in1d(np.arange(np.max(default_disposition)+1), np.unique(default_disposition[random_indices]))):
+        random_order = np.random.permutation(n_agents)
+        base = random_order[:n_clusts]
+        print(base, default_disposition[base])
+        if np.all(np.in1d(np.arange(n_clusts), default_disposition[base])):
             condition = False
-    return random_indices
+    return random_order
 
-def test_agent_inclusion(n_seeds, n_clusts, base_n_ins, cluster_model_sizes):
+def preset_clusters(order, n_in):
+    set_indices = order[:n_in]
+    set_order = np.argsort(order[n_in:])
+    return set_indices, set_order
+
+def test_agent_inclusion(all_seeds, n_clusts, all_n_ins, cluster_model_sizes):
+    if type(all_seeds) is int:
+        all_seeds = np.arange(all_seeds)
     global EVALUATE
     global NAME
     EVALUATE = False
 
-    all_dispositions = {2:np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1]),
+    log = EventLogger("results/agent_inclusion.txt", "Agent inclusion")
+
+    all_dispositions = {1:np.array([ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+                        2:np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1]),
                         3:np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, 2, 2, 2])}
 
     shutil.rmtree(os.path.join(PATH, 'runs/detect'), ignore_errors=True)
     network = Network(paths_to_data, thresholding_top_confidence, trained_models, global_model=False)
 
-    for seed in range(n_seeds):
+    for seed in all_seeds:
         np.random.seed(seed)
+        default_order = random_starting_point(all_dispositions[np.max(n_clusts)-1])
+        log.log_order(default_order)
         for n_clust in n_clusts:
             default_disposition = all_dispositions[n_clust]
-            all_n_ins = base_n_ins.copy()
-            all_n_ins[all_n_ins<n_clust] = n_clust
             for n_in in all_n_ins:
-                order = np.random.permutation(len(default_disposition)-n_in)
-                clusters = -np.ones(len(default_disposition))
-                starting_points = select_random_starting_points(default_disposition, n_in)
+                starting_points, order = preset_clusters(default_order, n_in)
+                clusters = -np.ones(len(default_disposition), dtype=int)
                 clusters[starting_points] = default_disposition[starting_points]
                 for csize in cluster_model_sizes:
+                    log.log_params([n_clust, n_in, csize])
                     NAME = f"inclusion_seed_{seed}_n_clusts_{n_clust}_n_in_{n_in}_csize_{csize}"
 
                     network.clusterize(clusters, coal_model_size=csize)
                     network.routine_add_agents(order)
                     shutil.rmtree(os.path.join(PATH, 'runs/detect'), ignore_errors=True)
                     network.final_evaluation(name=NAME)
+        log.end_step()
 
 
 def test_integration(n_seeds, cluster_model_sizes, learning_rates):
@@ -857,4 +902,6 @@ def test_gracefully_degrade(n_seeds, cluster_model_sizes, learning_rates, n_epoc
                 network.run_experiment(clusters, n_epochs)
                 shutil.rmtree(os.path.join(PATH, 'runs/detect'), ignore_errors=True)
 
-test_gracefully_degrade(1, ['n','m','x'], [0.01,0.001], 100, 8)
+#test_gracefully_degrade(1, ['n','m','x'], [0.01,0.001], 100, 8)
+test_agent_inclusion([0,1,2], [1,2,3], [3,8,15], ['n','m','x'])
+test_agent_inclusion([3,4,5], [1,2,3], [3,8,15], ['n','m','x'])

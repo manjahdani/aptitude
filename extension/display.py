@@ -5,7 +5,7 @@ import re
 
 PATH = "."
 COMPLEXITY_IDX = {'n':0, 'm':1, 'x':2}
-LR_IDX = {0.1:0, 0.02:1, 0.005:2, 0.0001:3}
+LR_IDX = {0.1:0, 0.02:1, 0.01:2, 0.005:3, 0.001:4, 0.0001:5}
 
 def load_arrays_from_file(file_path: str):
     perf, pres  = np.loadtxt(file_path)
@@ -67,7 +67,7 @@ def decode_files_integration(directory: str, n_lr=4, n_complexities=3, n_evals=1
     
     return all_mAPs, presence_matrix 
 
-def decode_files_gracefully_degrade(directory: str, n_lr=4, n_complexities=3, n_evals=11, n_groups=2):
+def decode_files_gracefully_degrade(directory: str, n_lr=6, n_complexities=3, n_evals=11, n_groups=2):
     files = os.listdir(directory)
     pattern = re.compile(fr"gracefully_degrade_(\d+)_complexity_([nmx])_lr_(\d+(\.\d+)?)_n_ep_(\d+)_n_out_(\d+)mAPs_eval_(\d+)\.txt")
 
@@ -126,12 +126,13 @@ def plot_gracefully_degrade(all_mAPs, presence_matrix):
     all_norm_mAPs_out = all_mAPs.copy()
     all_norm_mAPs_out[presence_matrix==1]=np.nan
 
-    all_lrs = [0.1, 0.02, 0.005, 0.0001]
+    all_lrs = [0.1, 0.02, 0.01, 0.005, 0.001, 0.0001]
     all_complexities = ['n', 'm', 'x']
 
     fig, axs = plt.subplots(ncols=all_mAPs.shape[1], sharey=True)
     for comp in range(all_mAPs.shape[1]):
-        for lr in range(all_mAPs.shape[0]):
+        for lr in range(2,all_mAPs.shape[0]):
+
             in_values = np.nanmean(all_norm_mAPs_in[lr,comp,...], axis=-1)
             in_values-=in_values[0]
 
