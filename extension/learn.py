@@ -18,7 +18,8 @@ from ultralytics import YOLO
 PATH = "/home/dani/aptitude/extension"
 PATH_TO_DATA = "/home/dani/data/WALT-challenge"
 DEFAULT_SUB_SAMPLE = 256
-N_EPOCH_BASE = 100
+N_OPERATIONS_PER_NEW_AGENT = 10_000
+BATCH_SIZE = 16
 MAX_PROCESSES = cpu_count()
 
 TRAIN = True
@@ -99,6 +100,10 @@ def with_temp_dir(func):
 class SamplingException(Exception):
     pass
 
+def convert_operations_to_epochs(n_data):
+    n_epochs = int(np.round(N_OPERATIONS_PER_NEW_AGENT*BATCH_SIZE/n_data))
+    return n_epochs
+
 def build_yaml_file(path:str, base_file:str):
     lines_to_write = []
     with open(base_file, 'r') as f:
@@ -127,7 +132,7 @@ def get_test_path_from_train_path(train_path:str)->str:
         return None  # Return None if no cam number is found in the path
     
 def plot_proximity_heatmap(data, agent):
-    # Create a larger figure to improve readability
+    # Create a larger figure to improve readabilC'est marrant  en fonctione de ity
     plt.figure(figsize=(10, 8))
 
     row_labels = ['Coalitional model\non agent data\n($mAP_{50-95}$)', 'Agent model\non coalition data\n($mAP_{50-95}$)', 'Proximity Score']
@@ -276,12 +281,14 @@ class Agent():
         parallel_copy("all", test_path, val_dir,'labels')
         build_yaml_file(temp_dir,os.path.join('templates','base.yaml'))
 
+        n_data = len(self.buffer)
+
         self.coal_model.train(data=os.path.join(temp_dir,'TMP_YAML.yaml'),
                             name = f"Agent_{self._ID}",
                             exist_ok=True,
                             deterministic=False,
-                            epochs=N_EPOCH_BASE,
-                            batch=16,
+                            epochs=convert_operations_to_epochs(n_data),
+                            batch=BATCH_SIZE,
                             device=device,
                             optimizer='SGD',
                             lr0 = LEARNING_RATE,
@@ -328,12 +335,13 @@ class Coalition():
             parallel_copy("all", test_path, val_dir,'labels')
         build_yaml_file(temp_dir,os.path.join('templates','base.yaml'))
 
+        n_data = np.sum([len(buffer) for buffer in self.combined_buffers])
         self.coal_model.train(data=os.path.join(temp_dir,'TMP_YAML.yaml'),
                             name = f"Coalition_{self._ID}",
                             exist_ok=True,
                             deterministic=False,
-                            epochs=N_EPOCH_BASE,
-                            batch=16,
+                            epochs=convert_operations_to_epochs(n_data),
+                            batch=BATCH_SIZE,
                             device=device,
                             optimizer='SGD',
                             lr0 = LEARNING_RATE,
@@ -408,12 +416,14 @@ class Network():
             parallel_copy("all", test_path, val_dir,'labels')
         build_yaml_file(temp_dir,os.path.join('templates','base.yaml'))
 
+        n_data = np.sum([len(buffer) for buffer in combined_buffers])
+
         self.net_model.train(data=os.path.join(temp_dir,'TMP_YAML.yaml'),
                             name = "Network",
                             exist_ok=True,
                             deterministic=False,
-                            epochs=4,
-                            batch=16,
+                            epochs=convert_operations_to_epochs(n_data),
+                            batch=BATCH_SIZE,
                             device=device,
                             optimizer='SGD',
                             lr0 = LEARNING_RATE,
@@ -429,6 +439,7 @@ class Network():
         n_coals = np.max(clusters)+1
         self.all_coalitions = np.empty(n_coals, dtype=Coalition)
         self.free_agents = self.all_agents[clusters==-1]
+        self.integrated_agents = self.all_agents[clusters!=-1]
         for coal in range(n_coals):
             agents_list = self.all_agents[clusters==coal]
             coal_weights = f'ultralytics/yolov8{coal_model_size}.pt' if trained_models is None else trained_models[coal]
@@ -601,12 +612,14 @@ class GDNetwork:
             parallel_copy("all", test_path, val_dir,'labels')
         build_yaml_file(temp_dir,os.path.join('templates','base.yaml'))
 
+        n_data = np.sum([len(buffer) for buffer in combined_buffers])
+
         self.net_model.train(data=os.path.join(temp_dir,'TMP_YAML.yaml'),
                             name = "Network",
                             exist_ok=True,
                             deterministic=False,
-                            epochs=N_EPOCH_BASE,
-                            batch=16,
+                            epochs=convert_operations_to_epochs(n_data),
+                            batch=BATCH_SIZE,
                             device=device,
                             optimizer='SGD',
                             lr0 = LEARNING_RATE,
@@ -658,9 +671,7 @@ class GDNetwork:
         print("Agents out of network:", self.out_agents)
         print("="*93)
 
-    def run_experiment(self, clusters, n_epochs):
-        n_reps = n_epochs//N_EPOCH_BASE
-
+    def run_experiment(self, clusters, n_reps):
         self.clusterize(clusters)
         self.evaluate(0, name=NAME)
         for rep in range(n_reps):
@@ -771,7 +782,7 @@ def test_agent_inclusion(all_seeds, n_clusts, all_n_ins, cluster_model_sizes):
 
     for seed in all_seeds:
         np.random.seed(seed)
-        default_order = random_starting_point(all_dispositions[np.max(n_clusts)-1])
+        default_order = random_starting_point(all_dispositions[np.max(n_clusts)])
         log.log_order(default_order)
         for n_clust in n_clusts[:-1]:
             default_disposition = all_dispositions[n_clust]
@@ -855,5 +866,5 @@ def test_gracefully_degrade(n_seeds, cluster_model_sizes, learning_rates, n_epoc
                 shutil.rmtree(os.path.join(PATH, 'runs/detect'), ignore_errors=True)
 
 #test_gracefully_degrade(1, ['n','m','x'], [0.01,0.001], 100, 8)
-test_agent_inclusion([0,1,2], [1,2,3], [3,8,15], ['n','m','x'])
-test_agent_inclusion([3,4,5], [1,2,3], [3,8,15], ['n','m','x'])
+
+test_agent_inclusion([0], [1,3,2,4], [3,8], ['n']) # ideal: [1,2,3], [3,8,15], ['n','m','x']
