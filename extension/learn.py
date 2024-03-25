@@ -484,7 +484,7 @@ class Network():
 
         proximity_score = np.sqrt(agent_chal_mAP*coal_chal_mAP)
 
-        plot_proximity_heatmap(np.array(agent_chal_mAP, coal_chal_mAP, proximity_score))
+        plot_proximity_heatmap(np.array([agent_chal_mAP, coal_chal_mAP, proximity_score]), agent)
 
         return proximity_score
 
@@ -560,9 +560,9 @@ class Network():
         print("="*30," Information about the network ", "="*30)
         print(f"Step: {step_name}")
         print('')
-        print("Agents in network:", self.integrated_agents)
+        print("Agents in network:", self.free_agents)
         for coal in self.all_coalitions:
-            print(f"Agents in {coal}:", coal.agents_list)
+            print(f"Agents in {coal}")
         print("="*93)
 
 
@@ -755,7 +755,6 @@ def random_starting_point(default_disposition):
     while condition:
         random_order = np.random.permutation(n_agents)
         base = random_order[:n_clusts]
-        print(base, default_disposition[base])
         if np.all(np.in1d(np.arange(n_clusts), default_disposition[base])):
             condition = False
     return random_order
@@ -867,4 +866,4 @@ def test_gracefully_degrade(n_seeds, cluster_model_sizes, learning_rates, n_epoc
 
 #test_gracefully_degrade(1, ['n','m','x'], [0.01,0.001], 100, 8)
 
-test_agent_inclusion([0], [1,3,2,4], [3,8], ['n']) # ideal: [1,2,3], [3,8,15], ['n','m','x']
+test_agent_inclusion([0], [3,2,4], [3,8], ['n']) # ideal: [1,2,3], [3,8,15], ['n','m','x']
