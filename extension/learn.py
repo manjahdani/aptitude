@@ -761,7 +761,12 @@ def random_starting_point(default_disposition):
 
 def preset_clusters(order, n_in):
     set_indices = order[:n_in]
-    set_order = np.argsort(order[n_in:])
+    sorted_indices = np.argsort(order[n_in:])
+
+    # Create a new array with positions
+    set_order = np.empty_like(sorted_indices, dtype=int)
+    set_order[sorted_indices] = np.arange(len(sorted_indices))
+
     return set_indices, set_order
 
 def test_agent_inclusion(all_seeds, n_clusts, all_n_ins, cluster_model_sizes):
