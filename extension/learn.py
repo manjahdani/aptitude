@@ -691,6 +691,11 @@ class EventLogger():
     def log_params(self, params):
         with open(self.filename, 'a') as f:
             f.writelines(f"\t[{time.ctime()}] With parameters {params}\n")
+    
+    def log_results(self, network):
+        with open(self.filename, 'a') as f:
+            for coal in network.all_coalitions:
+                f.writelines(f"\t\tAgents in {coal}")
 
     def end_step(self):
         with open(self.filename, 'a') as f:
@@ -769,12 +774,12 @@ def preset_clusters(order, n_in):
 
     return set_indices, set_order
 
-def test_agent_inclusion(all_seeds, n_clusts, all_n_ins, cluster_model_sizes):
+def test_agent_inclusion(all_seeds, n_clusts, all_n_ins, cluster_model_sizes, idx=0):
     global NAME
     if type(all_seeds) is int:
         all_seeds = np.arange(all_seeds)
 
-    log = EventLogger("results/agent_inclusion.txt", "Agent inclusion")
+    log = EventLogger(f"results/agent_inclusion_{idx}.txt", "Agent inclusion")
 
     all_dispositions = {1:np.array([ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
                         2:np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1]),
@@ -788,7 +793,7 @@ def test_agent_inclusion(all_seeds, n_clusts, all_n_ins, cluster_model_sizes):
         np.random.seed(seed)
         default_order = random_starting_point(all_dispositions[np.max(n_clusts)])
         log.log_order(default_order)
-        for n_clust in n_clusts[:-1]:
+        for n_clust in n_clusts:
             default_disposition = all_dispositions[n_clust]
             for n_in in all_n_ins:
                 starting_points, order = preset_clusters(default_order, n_in)
@@ -871,4 +876,5 @@ def test_gracefully_degrade(n_seeds, cluster_model_sizes, learning_rates, n_epoc
 
 #test_gracefully_degrade(1, ['n','m','x'], [0.01,0.001], 100, 8)
 
-test_agent_inclusion([0], [3,2,4], [3,8], ['n']) # ideal: [1,2,3], [3,8,15], ['n','m','x']
+test_agent_inclusion([1], [1, 3, 2, 4], [4,8], ['n']) # ideal: [1,2,3], [3,8,15], ['n','m','x']
+test_agent_inclusion([1], [1, 3, 2, 4], [4,8], ['m'], idx=1)
