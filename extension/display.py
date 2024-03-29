@@ -6,6 +6,7 @@ import re
 PATH = "."
 COMPLEXITY_IDX = {'n':0, 'm':1, 'x':2}
 LR_IDX = {0.1:0, 0.02:1, 0.01:2, 0.005:3, 0.001:4, 0.0001:5}
+TEST_SET_SIZE = {0:300, 1:300, 2:300, 3:50, 4:300, 5:100, 6:100, 7:100, 8:300, 9: 300, 10:300, 11:300, 12:300, 13:300, 14:300, 15:300}
 
 def load_arrays_from_file(file_path: str):
     perf, pres  = np.loadtxt(file_path)
@@ -47,6 +48,57 @@ def decode_files(directory: str, prefix: str, n_agents):
             presence_matrix[coal_id, eval_num] = pres
     
     return all_mAPs, presence_matrix 
+
+def replace_nans_with_closest_preceding(array):
+    last_value = array[0]
+    results = array.copy()
+    for i in range(len(array)):
+        if np.isnan(array[i]):
+            results[i] = last_value
+        else:
+            last_value = array[i]
+    return results
+
+def decode_files_inclusion(directory: str, n_clusts=1, complexity='n', n_ins=3, n_agents=16, initial_repartition = None):
+    files = os.listdir(directory)
+    pattern = re.compile(fr"inclusion_seed_(\d+)_n_clusts_{n_clusts}_n_in_{n_ins}_csize_{complexity}_mAPs_eval_(\d+)_coal_(\d+)\.txt")
+
+    all_mAPs = np.full((n_clusts, n_agents-n_ins+1), np.nan)
+    weight_matrix = np.zeros((n_clusts, n_agents-n_ins+1))
+    weight_matrix[...,0] = initial_repartition if initial_repartition is not None else np.ones(n_clusts)
+    for file in files:
+        match = pattern.match(file)
+        if match:
+            clus_num = int(match.group(3))
+            eval_num = int(match.group(2))
+
+            perf, _ = load_arrays_from_file(os.path.join(directory,file))
+            all_mAPs[clus_num,eval_num] = perf
+            if eval_num>0:
+                weight_matrix[clus_num,eval_num]=1
+    weight_matrix = np.cumsum(weight_matrix,axis=1)
+    weight_matrix/=np.sum(weight_matrix, axis=0)
+    for i in range(all_mAPs.shape[0]):
+        all_mAPs[i]=replace_nans_with_closest_preceding(all_mAPs[i])
+    weighted_mean_mAPs = np.sum(all_mAPs*weight_matrix,axis=0)
+    
+    return weighted_mean_mAPs
+
+def plot_inclusion(directory, clust_range, n_ins_range, initial_repartitions):
+    fig, axs = plt.subplots(ncols=len(n_ins_range), sharey=True)
+    for i, n_clusts in enumerate(clust_range):
+        for j, n_ins in enumerate(n_ins_range):
+            initial_repartition = initial_repartitions[i][j]
+            weighted_mean_mAPs = decode_files_inclusion(directory,n_clusts=n_clusts, n_ins=n_ins, initial_repartition=initial_repartition)
+            axs[j].plot(weighted_mean_mAPs, label = f"{n_clusts} clusters", color=f'C{i}')
+            axs[j].set_title(f"{n_ins} elements initially in network")
+    plt.tight_layout()
+    plt.legend()
+    plt.show()
+
+initial_repartitions = [[None,None], [None,[1,2,5]]]
+
+plot_inclusion("results/inclusion_cst_operations", [1,3], [3,8], initial_repartitions)
 
 def decode_files_integration(directory: str, n_lr=4, n_complexities=3, n_evals=15, n_agents=16):
     files = os.listdir(directory)
@@ -362,8 +414,8 @@ untrained_perf = {
 }
 
 
-all_mAPs_gracefully_degrade, presence_matrix_gracefully_degrade = decode_files_gracefully_degrade(os.path.join(PATH,"results"))
-plot_gracefully_degrade(all_mAPs_gracefully_degrade, presence_matrix_gracefully_degrade)
+#all_mAPs_gracefully_degrade, presence_matrix_gracefully_degrade = decode_files_gracefully_degrade(os.path.join(PATH,"results"))
+#plot_gracefully_degrade(all_mAPs_gracefully_degrade, presence_matrix_gracefully_degrade)
 
 """all_mAPs_addition_clus, presence_matrix_addition_clus = decode_files(os.path.join(PATH,"results/Sim_3"), "sim_3_mAPs", 16)
 all_mAPs_removal_clus, presence_matrix_removal_clus = decode_files(os.path.join(PATH,"results/Sim_3"), "sim_3_rmv_mAPs", 16)
