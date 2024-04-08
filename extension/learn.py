@@ -805,6 +805,7 @@ def test_agent_inclusion(all_seeds, n_clusts, all_n_ins, cluster_model_sizes, id
 
                     network.clusterize(clusters, coal_model_size=csize)
                     network.routine_add_agents(order)
+                    log.log_params(network)
                     shutil.rmtree(os.path.join(PATH, 'runs/detect'), ignore_errors=True)
         log.end_step()
 

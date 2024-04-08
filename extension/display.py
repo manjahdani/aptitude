@@ -3,10 +3,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 import re
 
+float_formatter = "{:.4f}".format
+np.set_printoptions(formatter={'float_kind':float_formatter})
+
 PATH = "."
 COMPLEXITY_IDX = {'n':0, 'm':1, 'x':2}
 LR_IDX = {0.1:0, 0.02:1, 0.01:2, 0.005:3, 0.001:4, 0.0001:5}
 TEST_SET_SIZE = {0:300, 1:300, 2:300, 3:50, 4:300, 5:100, 6:100, 7:100, 8:300, 9: 300, 10:300, 11:300, 12:300, 13:300, 14:300, 15:300}
+DEF_DISPOSITIONS = {1:np.array([ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+                    2:np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1]),
+                    3:np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, 2, 2, 2]),
+                    4:np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 3, 3, 2, 2, 2, 3, 2]),
+                    5:np.array([ 0, 0, 0, 4, 1, 4, 1, 1, 0, 3, 3, 2, 2, 2, 3, 2])}
+#BASELINE_MAPS = np.array([0.42, 0.61, 0.60, 0.63, 0.42, 0.65, 0.37, 0.63, 0.43, 0.836, 0.854, 0.854, 0.656, 0.755, 0.889, 0.516])
+BASELINE_MAPS = np.array([0.476,0.65,.632,.655,.441,.644,.414,.652,.473, 1.065*0.836, 1.065*0.854, 1.065*0.854, 1.065*0.656, 1.065*0.755, 1.065*0.889, 1.065*0.516])
 
 def load_arrays_from_file(file_path: str):
     perf, pres  = np.loadtxt(file_path)
@@ -59,13 +69,16 @@ def replace_nans_with_closest_preceding(array):
             last_value = array[i]
     return results
 
-def decode_files_inclusion(directory: str, n_clusts=1, complexity='n', n_ins=3, n_agents=16, initial_repartition = None):
+def decode_files_inclusion(directory: str, order, n_clusts=1, complexity='n', n_ins=4, n_agents=16):
     files = os.listdir(directory)
     pattern = re.compile(fr"inclusion_seed_(\d+)_n_clusts_{n_clusts}_n_in_{n_ins}_csize_{complexity}_mAPs_eval_(\d+)_coal_(\d+)\.txt")
 
     all_mAPs = np.full((n_clusts, n_agents-n_ins+1), np.nan)
     weight_matrix = np.zeros((n_clusts, n_agents-n_ins+1))
-    weight_matrix[...,0] = initial_repartition if initial_repartition is not None else np.ones(n_clusts)
+    penalty_matrix = np.zeros((n_clusts, n_agents-n_ins+1))
+    for agent in order[:n_ins]:
+        weight_matrix[DEF_DISPOSITIONS[n_clusts][agent], 0] += TEST_SET_SIZE[agent]
+        penalty_matrix[DEF_DISPOSITIONS[n_clusts][agent], 0] += TEST_SET_SIZE[agent]*BASELINE_MAPS[agent]
     for file in files:
         match = pattern.match(file)
         if match:
@@ -75,30 +88,44 @@ def decode_files_inclusion(directory: str, n_clusts=1, complexity='n', n_ins=3, 
             perf, _ = load_arrays_from_file(os.path.join(directory,file))
             all_mAPs[clus_num,eval_num] = perf
             if eval_num>0:
-                weight_matrix[clus_num,eval_num]=1
+                agent = order[eval_num+n_ins-1]
+                weight_matrix[DEF_DISPOSITIONS[n_clusts][agent],eval_num] = TEST_SET_SIZE[agent]
+                penalty_matrix[DEF_DISPOSITIONS[n_clusts][agent],eval_num] = TEST_SET_SIZE[agent]*BASELINE_MAPS[agent]
+
     weight_matrix = np.cumsum(weight_matrix,axis=1)
+    penalty_matrix = np.cumsum(penalty_matrix, axis=1)
+    penalty_matrix/=weight_matrix
+    penalty_matrix[:]=0 # remove to normalize baseline
     weight_matrix/=np.sum(weight_matrix, axis=0)
     for i in range(all_mAPs.shape[0]):
         all_mAPs[i]=replace_nans_with_closest_preceding(all_mAPs[i])
-    weighted_mean_mAPs = np.sum(all_mAPs*weight_matrix,axis=0)
-    
+    weighted_mean_mAPs = np.sum((all_mAPs-penalty_matrix)*weight_matrix,axis=0)
     return weighted_mean_mAPs
 
-def plot_inclusion(directory, clust_range, n_ins_range, initial_repartitions):
+def plot_baseline(axs, order, n_ins):
+    base_mAPs = BASELINE_MAPS[order]
+    weights = np.array(list(TEST_SET_SIZE.values()))[order]
+    baseline = np.cumsum(base_mAPs*weights)/np.cumsum(weights)
+    axs.plot(baseline[n_ins-1:], color='k', linestyle='--', linewidth=0.5, label = "Baseline (16 clusters)")
+
+def plot_inclusion(directory, complexity, clust_range, n_ins_range, order):
     fig, axs = plt.subplots(ncols=len(n_ins_range), sharey=True)
+    if len(n_ins_range) == 1:
+        axs = [axs]
+    for j, n_ins in enumerate(n_ins_range):
+        #axs[j].axhline(y=0, color='r', linestyle='--', alpha=0.5, linewidth=0.5, label = "Baseline (16 clusters)") # add to normalize baseline
+        plot_baseline(axs[j], order, n_ins) # remove to normalize baseline
     for i, n_clusts in enumerate(clust_range):
         for j, n_ins in enumerate(n_ins_range):
-            initial_repartition = initial_repartitions[i][j]
-            weighted_mean_mAPs = decode_files_inclusion(directory,n_clusts=n_clusts, n_ins=n_ins, initial_repartition=initial_repartition)
-            axs[j].plot(weighted_mean_mAPs, label = f"{n_clusts} clusters", color=f'C{i}')
+            weighted_mean_mAPs = decode_files_inclusion(directory, order, complexity=complexity, n_clusts=n_clusts, n_ins=n_ins)
+            axs[j].plot(weighted_mean_mAPs, label = f"{n_clusts} clusters", color=f'C{i}', marker=[".","^","+","x"][i], linewidth=0.5)
             axs[j].set_title(f"{n_ins} elements initially in network")
     plt.tight_layout()
     plt.legend()
     plt.show()
 
-initial_repartitions = [[None,None], [None,[1,2,5]]]
-
-plot_inclusion("results/inclusion_cst_operations", [1,3], [3,8], initial_repartitions)
+plot_inclusion("results/inclusion_seed_1", 'n', [1,2,3,4], [4,8], [ 8,  3, 13,  9,  0,  6,  1,  7, 11, 12, 10, 15,  2,  5, 14,  4])
+#plot_inclusion("results/inclusion_seed_1", 'n', [2], [4], [ 8,  3, 13,  9,  0,  6,  1,  7, 11, 12, 10, 15,  2,  5, 14,  4])
 
 def decode_files_integration(directory: str, n_lr=4, n_complexities=3, n_evals=15, n_agents=16):
     files = os.listdir(directory)
