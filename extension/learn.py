@@ -877,5 +877,4 @@ def test_gracefully_degrade(n_seeds, cluster_model_sizes, learning_rates, n_epoc
 
 #test_gracefully_degrade(1, ['n','m','x'], [0.01,0.001], 100, 8)
 
-test_agent_inclusion([1], [1, 3, 2, 4], [4,8], ['n']) # ideal: [1,2,3], [3,8,15], ['n','m','x']
-test_agent_inclusion([1], [1, 3, 2, 4], [4,8], ['m'], idx=1)
+test_agent_inclusion([2,3,4], [1, 3, 2, 4], [8], ['n'],idx=2) # ideal: [1,2,3], [3,8,15], ['n','m','x']
