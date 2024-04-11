@@ -31,8 +31,9 @@ CAM_TO_AGENT = dict(zip(CAM_IDS, range(16)))
 AGENT_TO_CAM = dict(zip(range(16), CAM_IDS))
 
 N_WORKERS = 4
-LEARNING_RATE = 1e-3
-NAME = "GD_m"
+LEARNING_RATE = 5e-3
+LRF = 1e-2
+NAME = ""
 
 network_settings = {
     1: {"Cluster Models 1": "2o3o9", "Cluster Models 2": "4o5o6o7o8", "Cluster Models 3": "16o17o18o19o20o22o24", "Cluster": 1},
@@ -301,7 +302,7 @@ class Agent():
         self.flush_model()
 
     def __repr__(self):
-        return("Agent #{}".format(self._ID))
+        return("Agent_{}".format(self._ID))
 
 class Coalition():
     def __init__(self, id, coal_model, agents_list, weights):
@@ -460,31 +461,16 @@ class Network():
         agent_dir     = os.path.join(temp_dir,'agent')
         agent_val_dir = os.path.join(agent_dir, 'val')
         os.makedirs(agent_val_dir)
-        coal_dir      = os.path.join(temp_dir,'coal')
-        coal_val_dir  = os.path.join(coal_dir, 'val')
-        os.makedirs(coal_val_dir)
 
         device = "cuda:0" if torch.cuda.is_available() else None
         parallel_copy(agent.buffer, agent.stream, agent_val_dir,'labels_yolov8x6')
         build_yaml_file(agent_dir, 'templates/base.yaml')
-        agent_chal_mAP = np.zeros(len(self.all_coalitions))
-        coal_chal_mAP = np.zeros(len(self.all_coalitions))
+        proximity_score = np.zeros(len(self.all_coalitions))
         for coal, coalition in enumerate(self.all_coalitions):
-            for buffer, stream in zip(coalition.combined_buffers, coalition.combined_stream):
-                parallel_copy(buffer, stream, coal_val_dir,'labels_yolov8x6')
-            build_yaml_file(coal_dir, 'templates/base.yaml')
-
-            coal_chal_mAP[coal] = agent.model.val(data=os.path.join(coal_dir,'TMP_YAML.yaml'), device=device, verbose=False, plots=False, name='val').box.map
-            agent_chal_mAP[coal] = coalition.coal_model.val(data=os.path.join(agent_dir, 'TMP_YAML.yaml'), device=device, verbose=False, plots=False, name='val').box.map
-            agent.flush_model()
+            proximity_score[coal] = coalition.coal_model.val(data=os.path.join(agent_dir, 'TMP_YAML.yaml'), device=device, verbose=False, plots=False, name='val').box.map
             coalition.flush_model()
 
-            shutil.rmtree(coal_dir)
-            os.makedirs(coal_val_dir)
-
-        proximity_score = np.sqrt(agent_chal_mAP*coal_chal_mAP)
-
-        plot_proximity_heatmap(np.array([agent_chal_mAP, coal_chal_mAP, proximity_score]), agent)
+        np.savetxt(f'results/{NAME}_{agent}.txt', proximity_score)
 
         return proximity_score
 
@@ -564,7 +550,6 @@ class Network():
         for coal in self.all_coalitions:
             print(f"Agents in {coal}")
         print("="*93)
-
 
 class GDNetwork:
     def __init__(self, paths_to_data, buffer_policy, trained_models, global_model_size):
@@ -701,16 +686,18 @@ class EventLogger():
         with open(self.filename, 'a') as f:
             f.writelines("="*90+"\n\n")        
 
-def check_final_insertion(network_settings, default_disposition, cam_to_agent, paths_to_data, trained_models):
+def check_final_insertion(network_settings, default_disposition, paths_to_data, trained_models):
     global TRAIN
     global EVALUATE
+    global NAME
     TRAIN = EVALUATE = False
+    NAME = 'final_insertion'
 
     agent_cams = list(network_settings.keys())
 
     network = Network(paths_to_data, thresholding_top_confidence, trained_models = trained_models)
     for free_agent_cam in agent_cams:  
-        free_agent_nb = cam_to_agent[free_agent_cam]
+        free_agent_nb = CAM_TO_AGENT[free_agent_cam]
 
         clusters = default_disposition.copy()
         clusters[free_agent_nb] = -1
@@ -718,6 +705,8 @@ def check_final_insertion(network_settings, default_disposition, cam_to_agent, p
         network.clusterize(clusters, trained_models=trained_clust_models)
         
         network.add_agent(network.free_agents[0], 0)
+
+default_disposition=np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, 2, 2, 2])
 
 paths_to_data = [os.path.join(PATH_TO_DATA,'cam1/week1/bank'),
                  os.path.join(PATH_TO_DATA,'cam2/week1/bank'),
@@ -736,7 +725,7 @@ paths_to_data = [os.path.join(PATH_TO_DATA,'cam1/week1/bank'),
                  os.path.join(PATH_TO_DATA,'cam22/week1/bank'),
                  os.path.join(PATH_TO_DATA,'cam24/week1/bank'),]
 
-trained_models= ['weights/cam1-week1.pt',
+trained_models = ['weights/cam1-week1.pt',
                  'weights/cam2-week1.pt',
                  'weights/cam3-week5.pt',
                  'weights/cam4-week2.pt',
@@ -752,6 +741,8 @@ trained_models= ['weights/cam1-week1.pt',
                  'weights/cam20-week1.pt',
                  'weights/cam22-week1.pt',
                  'weights/cam24-week1.pt',]
+
+check_final_insertion(network_settings, default_disposition, paths_to_data, trained_models)
 
 def random_starting_point(default_disposition):
     condition = True
@@ -874,7 +865,3 @@ def test_gracefully_degrade(n_seeds, cluster_model_sizes, learning_rates, n_epoc
                 NAME = f"gracefully_degrade_{seed}_complexity_{csize}_lr_{lr}_n_ep_{n_epochs}_n_out_{n_out}"
                 network.run_experiment(clusters, n_epochs)
                 shutil.rmtree(os.path.join(PATH, 'runs/detect'), ignore_errors=True)
-
-#test_gracefully_degrade(1, ['n','m','x'], [0.01,0.001], 100, 8)
-
-test_agent_inclusion([2,3,4], [1, 3, 2, 4], [8], ['n'],idx=2) # ideal: [1,2,3], [3,8,15], ['n','m','x']
