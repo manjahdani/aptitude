@@ -302,7 +302,7 @@ class Agent():
         self.flush_model()
 
     def __repr__(self):
-        return("Agent_{}".format(self._ID))
+        return("agent_{}".format(self._ID))
 
 class Coalition():
     def __init__(self, id, coal_model, agents_list, weights):
@@ -704,7 +704,7 @@ def check_final_insertion(network_settings, default_disposition, paths_to_data, 
         trained_clust_models =[f"weights/{weights_name}.pt" for weights_name in list(network_settings[free_agent_cam].values())[:-1]]
         network.clusterize(clusters, trained_models=trained_clust_models)
         
-        network.add_agent(network.free_agents[0], 0)
+        network.add_agent(network.free_agents[0])
 
 default_disposition=np.array([ 0, 0, 0, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, 2, 2, 2])
 
