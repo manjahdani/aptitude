@@ -4,26 +4,33 @@ import os
 import sys
 import torch
 import matplotlib.pyplot as plt
-from multiprocessing import Pool, cpu_count
+from multiprocessing import Pool, cpu_count, freeze_support
 from tqdm import tqdm
 import gc
 import functools
 import tempfile
 import time
 import math
+import csv
 
-from settings import *
-
-sys.path.append(os.path.join(sys.path[0], "yolov8", "ultralytics"))
+sys.path.append(os.path.join(sys.path[0], "yolov10", "ultralytics"))
 from ultralytics import YOLO
 
-TRAIN_PARAMS:{"exist_ok":True,
+BATCH_SIZE = 256
+MAX_PROCESSES = cpu_count()
+PATH = "."
+PATH_TO_DATA = "./data"
+DEFAULT_SUB_SAMPLE = 256
+
+TRAIN = False
+EVALUATE=True
+
+TRAIN_PARAMS={"exist_ok":True,
               "deterministic":False,
-              "epochs":100,
-              "batch":16,
+              "batch":BATCH_SIZE,
               "optimizer":'SGD',
               "lr0":5e-3,
-              "lrf":5e-3
+              "lrf":5e-3,
               "patience":1000, 
               "plots":False,
               "workers":4,
@@ -47,6 +54,7 @@ def check_evaluate(func):
             return func(*args, **kwargs)
         else:
             print("Skipping model evaluation (EVALUATE set to False).")
+            return {1:"NA", 2:"NA", 3:"NA", 4:"NA", 5:"NA"}
     return wrapper
 
 def with_temp_dir(func):
@@ -61,52 +69,9 @@ def with_temp_dir(func):
         return result
     return wrapper
 
-class SamplingException(Exception):
-    pass
-
-def thresholding_top_confidence(image_labels_path:str, n:int=DEFAULT_SUB_SAMPLE, warmup_length:int=720, sampling_rate:float=0.10) -> list:
-    """
-    Performs active learning for object detection using the confidence scores.
-
-    Parameters:
-    - image_labels_path: paths to the .txt files with the object detections (last element of each line = confidence score).
-    - n: number of images to label.
-
-    Returns:
-    - images_to_label: list of strings, paths to the .txt files with the images to be labeled
-    """
-
-    txt_files = np.array(os.listdir(image_labels_path))
-    if n <= 0:
-        raise SamplingException(f"You must select a strictly positive number of frames")
-    if n > len(txt_files):
-        raise SamplingException(f"Image bank contains {len(txt_files)} frames, but {n} frames where required"
-                                )
-    confidences = np.empty(txt_files.shape[0])
-    for i,txt_file in tqdm(enumerate(txt_files), desc='Analysing files...'):
-        if os.path.getsize(os.path.join(image_labels_path, txt_file))!=0: 
-            file_data = np.loadtxt(os.path.join(image_labels_path, txt_file))
-            image_confidence = np.max(file_data[...,-1])
-            confidences[i] = image_confidence
-
-    # Get the warm-up set
-    warmup_set = confidences[:warmup_length]
-
-    # Compute the threshold
-    threshold = np.percentile(warmup_set, 100 * (1 - sampling_rate))
-
-    confidences = confidences[warmup_length:]
-    txt_files = txt_files[warmup_length:]
-
-    top_conf = np.argwhere(confidences > threshold).flatten()
-
-    # Filtering images based on the confidence scores
-    top_confidence_images = txt_files[top_conf]
-
-    # Get N-first images with a confidence lower than the threshold
-    images_to_label = [os.path.splitext(img)[0] for img in top_confidence_images[:n]]
-
-    return images_to_label
+def copy_file(args):
+    src, dst = args
+    shutil.copy(src, dst)
 
 def parallel_copy(index, in_folder, out_folder, labelsFolder):
     """
@@ -116,43 +81,32 @@ def parallel_copy(index, in_folder, out_folder, labelsFolder):
 
     Create a new directory that copies all the images and the labels following the index in a new folder
     """
-    def copy_file(args):
-        src, dst = args
-        shutil.copy(src, dst)
 
-    if index == 'all':
-        index = [os.path.splitext(file)[0] for file in os.listdir(os.path.join(in_folder, "images"))]
+    if isinstance(index,str) and index == 'all':
+        index = os.listdir(os.path.join(in_folder, "images"))
 
 
     images = os.listdir(os.path.join(in_folder, "images")) # Source of the bank images
     labels = os.listdir(os.path.join(in_folder, labelsFolder)) # Source of the bank of labels
-    camwithjpg = ["cam1","cam2","cam3","cam4","cam5","cam6","cam7","cam8","cam9"]
-    camwithpng= ["cam16","cam17","cam18","cam19","cam20","cam22","cam24"]
-
-    imgExtension="jpg"
-    for cam in camwithpng:
-        if cam in in_folder:
-            imgExtension="png"
     
     os.makedirs(os.path.join(out_folder, "images"), exist_ok=True) # Create image directory in out_folder if it doesn't exist in out_folder
     os.makedirs(os.path.join(out_folder, "labels"), exist_ok=True) # Create labels directory in out_folder if it doesn't exist in out_folder
 
-    description = f'Copying {len(index)} images-label pairs from {in_folder} containing {len(images)} pairs.'
+    print(f'Copying {len(index)} images-label pairs from {in_folder} (containing {len(images)} pairs) to {out_folder}.')
 
     copy_args = []
-    for img in tqdm(index, desc=description):
-        img_with_extension = img + str(".") + imgExtension
-        img_with_label = img + ".txt"
-        assert img_with_extension in images, (
+    for img in index:
+        img_with_label = os.path.splitext(img)[0] + ".txt"
+        assert img in images, (
             "Source bank folder does not contain image with name file - "
-            + img_with_extension
+            + img
         )
         assert img_with_label in labels, (
             "Source folder does not contain a file - " + img_with_label
         )
 
-        copy_args.append((os.path.join(in_folder, "images", img_with_extension),
-                          os.path.join(out_folder, "images", img_with_extension)))
+        copy_args.append((os.path.join(in_folder, "images", img),
+                          os.path.join(out_folder, "images", img)))
         copy_args.append((os.path.join(in_folder, labelsFolder, img_with_label),
                           os.path.join(out_folder, "labels", img_with_label)))
 
@@ -178,42 +132,72 @@ def build_yaml_file(path: str, base_file: str):
     with open(f'{path}/TRAIN_YAML.yaml', 'w') as f:
         f.writelines(modified_lines)
 
-class Agent():
-    def __init__(self, id, model, weights, stream, buffer_policy=thresholding_top_confidence):
-    """
-    :param id: The id of the agent, immutable (int).
-    :param model: The DNN architecture used by the agent (e.g. YOLO instance)
-    :param weights: The initial DNN weights (e.g. "path/to/weights.pt", "ultralytics/yolovXX.pt")
-    :param stream: The directory with the data stream of the agent (e.g. "path/to/data/camX/weekX/bank")
-    :param buffer_policy: Function that selects the data from the stream that are used for training (e.g. thresholding_top_confidence)
+def encode_results(results, csv_path, agent_stream, mixed_streams, proportions, name=None):
+    if not os.path.isfile(csv_path):
+        with open(csv_path, 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(['name', 'agent_dataset', 'mixed_datasets', 'proportions', 'n_agents_mixed', 
+                            'precision', 'recall', 'mAP50', 'mAP50-95', 'fitness'])
 
-    Instantiates an agent -> a DNN that is specialized on a correlated stream
-    """
+    # obtain name of directory of agent streams as code name for results
+    agent_dataset = os.path.basename(agent_stream)  
+    mixed_datasets = ', '.join([os.path.basename(stream) for stream in mixed_streams])
+    str_proportions = ':'.join(map(str,proportions))
+
+    name = 'blank' if name is None else name
+
+    with open(csv_path, 'a+') as f:
+        writer = csv.writer(f)
+        writer.writerow([name,agent_dataset, mixed_datasets, str_proportions, len(mixed_streams)+1, *list(results.values())])
+
+def select_random_images(directory, proportion):
+    # List all files in the directory
+    all_files = os.listdir(os.path.join(directory, "images"))
+    
+    # Filter out non-image files (assuming common image extensions)
+    image_files = [file for file in all_files if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff'))]
+
+    # Calculate the number of images to select
+    num_images_to_select = int(len(image_files) * proportion)
+    
+    # Randomly select the specified number of images
+    selected_images = np.random.choice(image_files, num_images_to_select, replace=False)
+    
+    return selected_images
+
+class Agent():
+    def __init__(self, id, model, weights, stream):
+        """
+        :param id: The id of the agent, immutable (int).
+        :param model: The DNN architecture used by the agent (e.g. YOLO instance)
+        :param weights: The initial DNN weights (e.g. "path/to/weights.pt", "ultralytics/yolovXX.pt")
+        :param stream: The directory with the data stream of the agent (e.g. "path/to/data/camX/weekX/bank")
+
+        Instantiates an agent -> a DNN that is specialized on a correlated stream
+        """
         self._ID = id
         self.model = model
         self.weights = weights
         self.stream = stream
 
-        #Buffer: list of files from the stream used for training
-        self.buffer = buffer_policy(os.path.join(stream,'labels_yolov8n_w_conf'))
-
         # id to identify the training weights in case of re-training
         self._train_id = 0
 
     def flush_model(self):
-    """
-    Re-instantiates the agent model to circumvent ultralytics limitations.
-    """
+        """
+        Re-instantiates the agent model to circumvent ultralytics limitations.
+        """
         del self.model
         gc.collect() 
         self.model = YOLO(os.path.join(PATH, self.weights))
 
     @check_train
     @with_temp_dir
-    def train(self, mixed_streams, mixed_buffers, temp_dir, train_name=None):
+    def train(self, mixed_streams, n_iterations, proportions, temp_dir, train_name=None):
         """
         :param mixed_streams: list of streams from other agents used to enrich training (e.g. ["path/to/stream_1", "path/to/stream_2"])
-        :param mixed_buffers: list of list of files from other agents streams used for training
+        :param n_iterations: the number of backpropagations desired for training (as n_iteration = n_batches*n_epochs, and the number of batches is not consistent).
+        :param proportions: list of the proportions of the datasets of the agents in the network. Last element of the list is for the new agent. Total proportions can go above 1.
         :param temp_dir: temporary directory provided by the decorator @with_temp_dir. Do not fill.
         :param train_name: name of the resulting training weights. If None, will use the format "agent_{self._ID}_train_{self._train_id}".
 
@@ -230,48 +214,62 @@ class Agent():
         os.makedirs(train_dir)
         os.makedirs(val_dir)
 
+        train_path = os.path.join(self.stream, "train")
+        val_path = os.path.join(self.stream, "val")
+
         device = "cuda:0" if torch.cuda.is_available() else None
 
         #copy data from agent stream to temp file for training
-        parallel_copy(self.buffer, self.stream, train_dir,'labels_yolov8x6')
+        selected_images = select_random_images(train_path, proportions[-1])
+        parallel_copy(selected_images, train_path, train_dir,'labels')
 
         #copy data from other agents' streams to temp file for training
-        for buffer, stream in zip(mixed_buffers, mixed_streams):
-            parallel_copy(buffer, stream, train_dir,'labels_yolov8x6')
+        for stream_id, stream in enumerate(mixed_streams):
+            train_path = os.path.join(stream, "train")
+            selected_images = select_random_images(train_path, proportions[stream_id])
+            parallel_copy(selected_images, train_path, train_dir,'labels')
 
         #copy data from validation set of agent stream to temp file
-        test_path = get_test_path_from_train_path(self.stream)
-        parallel_copy("all", test_path, val_dir,'labels')
+        parallel_copy("all", val_path, val_dir,'labels')
 
         #make yaml file to give instructions for training
         build_yaml_file(temp_dir,os.path.join('templates','base.yaml'))
 
-        weights_name = f"agent_{self._ID}_train_{self._train_id}" if train_name is None else train_name
+        name = f"agent_{self._ID}_train_{self._train_id}" if train_name is None else train_name
 
-        self.model.train(data=os.path.join(temp_dir,'TRAIN_YAML.yaml'), name=weights_name, device=device, **TRAIN_PARAMS)
+        n_data = len(os.listdir(os.path.join(train_dir, "images")))
+        print(n_data)
 
-        self.weights = weights_name
+        # convert the number of backpropagation to epochs depending on the BATCH_SIZE and size of training set
+        n_epochs = int(np.round(n_iterations*BATCH_SIZE/n_data))
+
+        self.model.train(data=os.path.join(temp_dir,'TRAIN_YAML.yaml'), epochs=n_epochs, name=name, device=device, **TRAIN_PARAMS)
+
+        self.weights = f"runs/detect/{name}/weights/best.pt"
         self.flush_model()
 
-    @check_train
+    @check_evaluate
     @with_temp_dir
-    def evaluate(self, temp_dir):
-        val_dir = os.path.join(temp_dir, 'val')
-        os.makedirs(val_dir)
+    def evaluate(self, temp_dir, test_name=None):
+        test_dir = os.path.join(temp_dir, 'val')
+        test_path = os.path.join(self.stream, "test")
+
+        os.makedirs(test_dir)
 
         device = "cuda:0" if torch.cuda.is_available() else None
 
         #copy data from validation set of agent stream to temp file
-        test_path = get_test_path_from_train_path(self.stream)
-        parallel_copy("all", test_path, val_dir,'labels')
+        parallel_copy("all", test_path, test_dir,'labels')
 
         #make yaml file to give instructions for testing
         build_yaml_file(temp_dir,os.path.join('templates','base.yaml'))
 
-        #how to export results ?
-        self.model.val(data=os.path.join(agent_dir,'TMP_YAML.yaml'), name='val', device=device, verbose=False, plots=False)
+        name = f"agent_{self._ID}_test_{self._train_id}" if test_name is None else test_name
+        results = self.model.val(data=os.path.join(temp_dir,'TRAIN_YAML.yaml'), name=name, device=device, verbose=False, plots=False).results_dict
 
         self.flush_model()
+
+        return results
 
     def __repr__(self):
         return("agent_{}".format(self._ID))
@@ -281,37 +279,22 @@ class Network():
         self.agents_list=agents_list
         self.n_agents=len(agents_list)
 
-    def random_train_new_agent(self, agent, subset_size, n_reps):
+    def train_new_agent(self, agent, n_iterations, proportions, csv_path, name=None):
         """
         :param agent: instance of Agent that is not the the network agent_list
-        :param subset_size: number of agents whose stream is added to the training set
-        :n_reps: number of times the experiment is repeated.
+        :param n_iterations: the number of backpropagations desired for training (as n_iteration = n_batches*n_epochs, and the number of batches is not consistent).
+        :param proportions: list of the proportions of the datasets of the agents in the network. Last element of the list is for the new agent. Total proportions can go above 1.
 
         Trains a new agent by mixing its stream with streams of a random subset of the network.
         """
-        if self.n_agents < subset_size:
-            raise ValueError("subset_size must be less or equal to the number of agents.")
-        
-        # limit the number of subsets to the maximum number of distinct subsets.
-        max_reps = min(n_reps, math.comb(self.n_agents,subset_size))
-        if max_reps<n_reps:
-            print(f"Number of subsets reduced to {max_reps}.")
 
-        # generate max_reps distinct subsets of agents
-        samples_set = set()
-        while len(samples_set) < max_reps:
-            sample = tuple(np.sort(np.random.choice(self.agents_list, subset_size, replace=False)))
-            samples_set.add(sample)
-        subsets_of_mixed_agents = [list(sample) for sample in samples_set]
+        #train and test the new agent
+        mixed_streams = [agent.stream for agent in self.agents_list]
+        agent.train(mixed_streams, n_iterations, proportions, train_name=name)
 
-        #train and test the agent on each sampled subset
-        for mixed_agents in subsets_of_mixed_agents:
-            mixed_streams = [agent.stream for agent in mixed_agents]
-            mixed_buffers = [agent.buffer for agent in mixed_agents]
-            agent.train(mixed_streams, mixed_buffers)
+        results = agent.evaluate(test_name=name)
 
-            # add agent test functionality
-            agent.test()
+        encode_results(results, csv_path, agent.stream, mixed_streams, proportions, name=name)
 
 class Experimental_Environment:
     def __init__(self, n_seeds, all_weights, all_streams, all_ids=None):
@@ -324,7 +307,7 @@ class Experimental_Environment:
         Build an agent for each provided stream, then builds n_seeds distinct networks of agents for experimentation.
         """
 
-        if n_seed > len(all_streams):
+        if n_seeds > len(all_streams):
             raise ValueError("n_seeds limited to the number of evaluated agents")
 
         if all_ids==None:
@@ -336,11 +319,31 @@ class Experimental_Environment:
         all_agents = [Agent(id, model, weights, stream) for id, model, weights, stream in zip(all_ids, all_models, all_weights, all_streams)]
 
         # list of excluded agent in each network
-        self.out_agents = list(np.random.choice(all_agents, n_seeds, replace=False))
+        self.out_agents = all_agents.copy()[:n_seeds]
 
         #generate a list of networks with a distinct excluded agent for each network
         self.networks = [Network([agent for agent in all_agents if agent!=out_agent]) for out_agent in self.out_agents]
 
-    def main(subset_size, n_reps):
-        for network, out_agent in zip(self.networks, self.out_agents):
-            network.random_train_new_agent(out_agent, subset_size, n_reps)
+    def main(self, csv_path, n_iterations=10_000):
+        n_seeds = len(self.networks)
+        all_proportions=np.vstack((np.identity(n_seeds),np.ones(n_seeds),np.array([10.94]*5+[11.33]*4)))
+
+        self.networks[0].train_new_agent(self.out_agents[0], n_iterations, all_proportions[-2], csv_path)
+        self.out_agents[0].weights = "yolov10n"
+        self.out_agents[0].flush_model()
+        self.networks[0].train_new_agent(self.out_agents[0], n_iterations, all_proportions[-1], csv_path)
+        self.out_agents[0].weights = "yolov10n"
+        self.out_agents[0].flush_model()
+        for i in range(n_seeds):
+            self.networks[i].train_new_agent(self.out_agents[i], n_iterations, all_proportions[i], csv_path)
+
+if __name__ == '__main__':
+    freeze_support()  
+
+    all_weights = ["yolov10n"]*9
+    all_streams = [os.path.join(PATH_TO_DATA,f'cam{i}') for i in range(1,10)]
+
+    all_ids = [f"cam{i}" for i in range(1,10)]
+
+    the_env = Experimental_Environment(9, all_weights, all_streams, all_ids)
+    the_env.main('learning_alone_vs_group.csv', n_iterations=10)
