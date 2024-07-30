@@ -3,26 +3,22 @@ import numpy as np
 import os
 import sys
 import torch
-import matplotlib.pyplot as plt
 from multiprocessing import Pool, cpu_count, freeze_support
-from tqdm import tqdm
 import gc
 import functools
 import tempfile
-import time
-import math
 import csv
 
 sys.path.append(os.path.join(sys.path[0], "yolov10", "ultralytics"))
 from ultralytics import YOLO
 
-BATCH_SIZE = 256
+BATCH_SIZE = 16
 MAX_PROCESSES = cpu_count()
 PATH = "."
 PATH_TO_DATA = "./data"
 DEFAULT_SUB_SAMPLE = 256
 
-TRAIN = False
+TRAIN = True
 EVALUATE=True
 
 TRAIN_PARAMS={"exist_ok":True,
@@ -235,10 +231,9 @@ class Agent():
         #make yaml file to give instructions for training
         build_yaml_file(temp_dir,os.path.join('templates','base.yaml'))
 
-        name = f"agent_{self._ID}_train_{self._train_id}" if train_name is None else train_name
+        name = f"agent_{self._ID}_train_{self._train_id}" if train_name is None else train_name + "_train"
 
         n_data = len(os.listdir(os.path.join(train_dir, "images")))
-        print(n_data)
 
         # convert the number of backpropagation to epochs depending on the BATCH_SIZE and size of training set
         n_epochs = int(np.round(n_iterations*BATCH_SIZE/n_data))
@@ -264,7 +259,7 @@ class Agent():
         #make yaml file to give instructions for testing
         build_yaml_file(temp_dir,os.path.join('templates','base.yaml'))
 
-        name = f"agent_{self._ID}_test_{self._train_id}" if test_name is None else test_name
+        name = f"agent_{self._ID}_test_{self._train_id}" if test_name is None else test_name + "_test"
         results = self.model.val(data=os.path.join(temp_dir,'TRAIN_YAML.yaml'), name=name, device=device, verbose=False, plots=False).results_dict
 
         self.flush_model()
@@ -326,19 +321,23 @@ class Experimental_Environment:
 
     def main(self, csv_path, n_iterations=10_000):
         n_seeds = len(self.networks)
-        all_proportions=np.vstack((np.identity(n_seeds),np.ones(n_seeds),np.array([10.94]*5+[11.33]*4)))
+        
+        all_proportions=np.vstack((np.hstack((np.zeros((1, n_seeds-1)), np.ones((1,1)))),np.ones(n_seeds),np.array([0.1094]*5+[0.1133]*4)))
 
-        self.networks[0].train_new_agent(self.out_agents[0], n_iterations, all_proportions[-2], csv_path)
-        self.out_agents[0].weights = "yolov10n"
-        self.out_agents[0].flush_model()
-        self.networks[0].train_new_agent(self.out_agents[0], n_iterations, all_proportions[-1], csv_path)
-        self.out_agents[0].weights = "yolov10n"
-        self.out_agents[0].flush_model()
+
         for i in range(n_seeds):
-            self.networks[i].train_new_agent(self.out_agents[i], n_iterations, all_proportions[i], csv_path)
+            self.networks[i].train_new_agent(self.out_agents[i], n_iterations, all_proportions[0], csv_path, name=f"cam{i+1}_alone_100")        
+            self.out_agents[i].weights = "yolov10n"
+            self.out_agents[i].flush_model()
+            self.networks[i].train_new_agent(self.out_agents[i], n_iterations, all_proportions[1], csv_path, name=f"cam{i+1}_all_agents_100")
+            self.out_agents[i].weights = "yolov10n"
+            self.out_agents[i].flush_model()
+            self.networks[i].train_new_agent(self.out_agents[i], n_iterations, all_proportions[2], csv_path, name=f"cam{i+1}_all_agents_10")
+            self.out_agents[i].weights = "yolov10n"
+            self.out_agents[i].flush_model()
 
 if __name__ == '__main__':
-    freeze_support()  
+    #freeze_support()  
 
     all_weights = ["yolov10n"]*9
     all_streams = [os.path.join(PATH_TO_DATA,f'cam{i}') for i in range(1,10)]
@@ -346,4 +345,4 @@ if __name__ == '__main__':
     all_ids = [f"cam{i}" for i in range(1,10)]
 
     the_env = Experimental_Environment(9, all_weights, all_streams, all_ids)
-    the_env.main('learning_alone_vs_group.csv', n_iterations=10)
+    the_env.main('learning_alone_vs_group.csv', n_iterations=10_000)
