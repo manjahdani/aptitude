@@ -330,7 +330,11 @@ class Experimental_Environment:
 
 
         for i in range(n_seeds):
-            self.networks[i].train_new_agent(self.out_agents[i], n_iterations, all_proportions, csv_path, name=f"cam{i+1}_and_pair_100")        
+            for proportion in all_proportions:
+                self.networks[i].train_new_agent(self.out_agents[i], n_iterations, proportion, csv_path, name=f"cam{i+1}_and_pair_100")
+                self.out_agents[i].weights = "yolov10n"
+                self.out_agents[i].flush_model()
+  
 
 if __name__ == '__main__':
     #freeze_support()  
