@@ -322,19 +322,15 @@ class Experimental_Environment:
     def main(self, csv_path, n_iterations=10_000):
         n_seeds = len(self.networks)
         
-        all_proportions=np.vstack((np.hstack((np.zeros((1, n_seeds-1)), np.ones((1,1)))),np.ones(n_seeds),np.array([0.1094]*5+[0.1133]*4)))
+        #proportions for: all agents alone, all agents together with all data, all agents together with 256 data total
+        #all_proportions=np.vstack((np.hstack((np.zeros((1, n_seeds-1)), np.ones((1,1)))),np.ones(n_seeds),np.array([0.1094]*5+[0.1133]*4)))
+        
+        #proportions for: any pair of two agents
+        all_proportions=np.hstack((np.identity(n_seeds-1), np.ones((n_seeds-1,1))))
 
 
         for i in range(n_seeds):
-            self.networks[i].train_new_agent(self.out_agents[i], n_iterations, all_proportions[0], csv_path, name=f"cam{i+1}_alone_100")        
-            self.out_agents[i].weights = "yolov10n"
-            self.out_agents[i].flush_model()
-            self.networks[i].train_new_agent(self.out_agents[i], n_iterations, all_proportions[1], csv_path, name=f"cam{i+1}_all_agents_100")
-            self.out_agents[i].weights = "yolov10n"
-            self.out_agents[i].flush_model()
-            self.networks[i].train_new_agent(self.out_agents[i], n_iterations, all_proportions[2], csv_path, name=f"cam{i+1}_all_agents_10")
-            self.out_agents[i].weights = "yolov10n"
-            self.out_agents[i].flush_model()
+            self.networks[i].train_new_agent(self.out_agents[i], n_iterations, all_proportions, csv_path, name=f"cam{i+1}_and_pair_100")        
 
 if __name__ == '__main__':
     #freeze_support()  
@@ -345,4 +341,4 @@ if __name__ == '__main__':
     all_ids = [f"cam{i}" for i in range(1,10)]
 
     the_env = Experimental_Environment(9, all_weights, all_streams, all_ids)
-    the_env.main('learning_alone_vs_group.csv', n_iterations=10_000)
+    the_env.main('learning_in_pair.csv', n_iterations=10_000)
