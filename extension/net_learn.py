@@ -1,5 +1,7 @@
 import shutil
 import numpy as np
+import concurrent.futures
+import pandas as pd
 import os
 import sys
 import torch
@@ -161,6 +163,12 @@ def select_random_images(directory, proportion):
     
     return selected_images
 
+def merge_csv_files(temp_csv_paths, final_csv_path):
+    # Merge all temporary CSV files into a final CSV file
+    df_list = [pd.read_csv(file) for file in temp_csv_paths]
+    final_df = pd.concat(df_list, ignore_index=True)
+    final_df.to_csv(final_csv_path, index=False)
+
 class Agent():
     def __init__(self, id, model, weights, stream):
         """
@@ -318,8 +326,14 @@ class Experimental_Environment:
 
         #generate a list of networks with a distinct excluded agent for each network
         self.networks = [Network([agent for agent in all_agents if agent!=out_agent]) for out_agent in self.out_agents]
+    
+    def train_and_reset(self, i, proportion, network, out_agent, n_iterations, temp_csv_path):
+        # Train the agent and write to a temporary CSV file
+        network.train_new_agent(out_agent, n_iterations, proportion, temp_csv_path, name=f"cam{i+1}_and_pair_100")
+        out_agent.weights = "yolov10n"
+        out_agent.flush_model()
 
-    def main(self, csv_path, n_iterations=10_000):
+    def main(self, csv_path, n_iterations=10_000, n_threads=3):
         n_seeds = len(self.networks)
         
         #proportions for: all agents alone, all agents together with all data, all agents together with 256 data total
@@ -327,14 +341,32 @@ class Experimental_Environment:
         
         #proportions for: any pair of two agents
         all_proportions=np.hstack((np.identity(n_seeds-1), np.ones((n_seeds-1,1))))
+        
+        # Create a directory for temporary CSV files
+        temp_dir = "temp_csv_files"
+        os.makedirs(temp_dir, exist_ok=True)
 
+        temp_csv_paths = []
 
-        for i in range(n_seeds):
-            for proportion in all_proportions:
-                self.networks[i].train_new_agent(self.out_agents[i], n_iterations, proportion, csv_path, name=f"cam{i+1}_and_pair_100")
-                self.out_agents[i].weights = "yolov10n"
-                self.out_agents[i].flush_model()
-  
+        # Create thread pool
+        with concurrent.futures.ThreadPoolExecutor(max_workers=n_threads) as executor:
+            futures = []
+            for i in range(n_seeds):
+                for p, proportion in enumerate(all_proportions):
+                    temp_csv_path = os.path.join(temp_dir, f"temp_{i}_{p}.csv")
+                    temp_csv_paths.append(temp_csv_path)
+                    futures.append(executor.submit(self.train_and_reset, i, proportion, self.networks[i], self.out_agents[i], n_iterations, temp_csv_path))
+            
+            # Wait for all futures to complete
+            concurrent.futures.wait(futures)
+        
+        # Merge all temporary CSV files into the final CSV
+        merge_csv_files(temp_csv_paths, csv_path)
+
+        # Clean up temporary files
+        for file in temp_csv_paths:
+            os.remove(file)
+        os.rmdir(temp_dir)
 
 if __name__ == '__main__':
     #freeze_support()  
