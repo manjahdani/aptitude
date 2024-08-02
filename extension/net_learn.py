@@ -18,17 +18,19 @@ BATCH_SIZE = 16
 MAX_PROCESSES = cpu_count()
 PATH = "."
 PATH_TO_DATA = "./data"
-DEFAULT_SUB_SAMPLE = 256
+BASE_MODEL = "yolov10n"
 
-TRAIN = True
-EVALUATE=True
+LR0=LRF=5e-3
+
+TRAIN = False
+EVALUATE=False
 
 TRAIN_PARAMS={"exist_ok":True,
               "deterministic":False,
               "batch":BATCH_SIZE,
               "optimizer":'SGD',
-              "lr0":5e-3,
-              "lrf":5e-3,
+              "lr0":LR0,
+              "lrf":LRF,
               "patience":1000, 
               "plots":False,
               "workers":4,
@@ -52,7 +54,7 @@ def check_evaluate(func):
             return func(*args, **kwargs)
         else:
             print("Skipping model evaluation (EVALUATE set to False).")
-            return {1:"NA", 2:"NA", 3:"NA", 4:"NA", 5:"NA"}
+            return {1:-1, 2:-1, 3:-1, 4:-1, 5:-1}
     return wrapper
 
 def with_temp_dir(func):
@@ -130,23 +132,30 @@ def build_yaml_file(path: str, base_file: str):
     with open(f'{path}/TRAIN_YAML.yaml', 'w') as f:
         f.writelines(modified_lines)
 
-def encode_results(results, csv_path, agent_stream, mixed_streams, proportions, name=None):
+def encode_results(results, csv_path, agent_stream, mixed_streams, proportions, n_iterations, name=None):
     if not os.path.isfile(csv_path):
         with open(csv_path, 'w') as f:
             writer = csv.writer(f)
-            writer.writerow(['name', 'agent_dataset', 'mixed_datasets', 'proportions', 'n_agents_mixed', 
+            writer.writerow(['name', 'agent_dataset', 'mixed_datasets', 'proportions', 'n_agents_mixed',
+                            'lr0', 'lrf', 'batch_size', 'n_iterations', 'train_size', 'val_size', 'test_size', 'model', 
                             'precision', 'recall', 'mAP50', 'mAP50-95', 'fitness'])
 
     # obtain name of directory of agent streams as code name for results
     agent_dataset = os.path.basename(agent_stream)  
+    
     mixed_datasets = ', '.join([os.path.basename(stream) for stream in mixed_streams])
     str_proportions = ':'.join(map(str,proportions))
+    train_size = int(np.array([len(os.listdir(os.path.join(stream,"train/images"))) for stream in mixed_streams+[agent_stream]])@proportions)
+    val_size = len(os.listdir(os.path.join(agent_stream,"val/images")))
+    test_size = len(os.listdir(os.path.join(agent_stream,"test/images")))
 
     name = 'blank' if name is None else name
 
     with open(csv_path, 'a+') as f:
         writer = csv.writer(f)
-        writer.writerow([name,agent_dataset, mixed_datasets, str_proportions, len(mixed_streams)+1, *list(results.values())])
+        writer.writerow([name,agent_dataset, mixed_datasets, str_proportions, np.sum(proportions!=0),
+                        LR0, LRF, BATCH_SIZE, n_iterations, train_size, val_size, test_size, BASE_MODEL,
+                        *list(results.values())])
 
 def select_random_images(directory, proportion):
     # List all files in the directory
@@ -297,7 +306,7 @@ class Network():
 
         results = agent.evaluate(test_name=name)
 
-        encode_results(results, csv_path, agent.stream, mixed_streams, proportions, name=name)
+        encode_results(results, csv_path, agent.stream, mixed_streams, proportions, n_iterations, name=name)
 
 class Experimental_Environment:
     def __init__(self, n_seeds, all_weights, all_streams, all_ids=None):
@@ -369,9 +378,9 @@ class Experimental_Environment:
         os.rmdir(temp_dir)
 
 if __name__ == '__main__':
-    #freeze_support()  
+    freeze_support()  
 
-    all_weights = ["yolov10n"]*9
+    all_weights = [BASE_MODEL]*9
     all_streams = [os.path.join(PATH_TO_DATA,f'cam{i}') for i in range(1,10)]
 
     all_ids = [f"cam{i}" for i in range(1,10)]
