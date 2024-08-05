@@ -10,6 +10,7 @@ import gc
 import functools
 import tempfile
 import csv
+import uuid
 
 sys.path.append(os.path.join(sys.path[0], "yolov10", "ultralytics"))
 from ultralytics import YOLO
@@ -22,8 +23,8 @@ BASE_MODEL = "yolov10n"
 
 LR0=LRF=5e-3
 
-TRAIN = False
-EVALUATE=False
+TRAIN = True
+EVALUATE=True
 
 TRAIN_PARAMS={"exist_ok":True,
               "deterministic":False,
@@ -336,9 +337,10 @@ class Experimental_Environment:
         #generate a list of networks with a distinct excluded agent for each network
         self.networks = [Network([agent for agent in all_agents if agent!=out_agent]) for out_agent in self.out_agents]
     
-    def train_and_reset(self, i, proportion, network, out_agent, n_iterations, temp_csv_path):
+    def train_and_reset(self, proportion, network, out_agent, n_iterations, temp_csv_path):
         # Train the agent and write to a temporary CSV file
-        network.train_new_agent(out_agent, n_iterations, proportion, temp_csv_path, name=f"cam{i+1}_and_helping_agents_100")
+        name = str(uuid.uuid4())[:8]
+        network.train_new_agent(out_agent, n_iterations, proportion, temp_csv_path, name=name)
         out_agent.weights = "yolov10n"
         out_agent.flush_model()
 
@@ -351,7 +353,12 @@ class Experimental_Environment:
         #proportions for: any pair of two agents
         #all_proportions=np.hstack((np.identity(n_seeds-1), np.ones((n_seeds-1,1))))
         
+        all_proportions = np.vstack((np.hstack((np.zeros((1, n_seeds-1)), np.ones((1,1)))),np.ones(n_seeds),np.hstack((np.identity(n_seeds-1), np.ones((n_seeds-1,1))))))
+        #reduce the image budget
+        all_proportions*=0.5
+
         #proportions for: agent with any agent that benefited it when paired with it.
+        """
         all_proportions=np.array([[1,1,0,1,0,0,0,1,1],
                                   [1,0,0,0,0,0,0,1,1],
                                   [1,1,0,0,0,0,0,1,1],
@@ -361,7 +368,7 @@ class Experimental_Environment:
                                   [1,0,0,1,1,0,1,0,1],
                                   [1,0,1,1,0,1,1,0,1],
                                   [1,0,1,0,0,0,0,0,1]])
-
+        """
         # Create a directory for temporary CSV files
         temp_dir = "temp_csv_files"
         os.makedirs(temp_dir, exist_ok=True)
@@ -372,18 +379,21 @@ class Experimental_Environment:
         with concurrent.futures.ThreadPoolExecutor(max_workers=n_threads) as executor:
             futures = []
             #with same proportions for every seed
-            """for i in range(n_seeds):
+            #"""
+            for i in range(n_seeds):
                 for p, proportion in enumerate(all_proportions):
                     temp_csv_path = os.path.join(temp_dir, f"temp_{i}_{p}.csv")
                     temp_csv_paths.append(temp_csv_path)
-                    futures.append(executor.submit(self.train_and_reset, i, proportion, self.networks[i], self.out_agents[i], n_iterations, temp_csv_path))"""
+                    futures.append(executor.submit(self.train_and_reset, proportion, self.networks[i], self.out_agents[i], n_iterations, temp_csv_path))
+            #"""
             
             #with 1 custom proportion per seed
+            """
             for p, proportion in enumerate(all_proportions):
-                    temp_csv_path = os.path.join(temp_dir, f"temp_{p}.csv")
-                    temp_csv_paths.append(temp_csv_path)
-                    futures.append(executor.submit(self.train_and_reset, p, proportion, self.networks[p], self.out_agents[p], n_iterations, temp_csv_path))
-
+                temp_csv_path = os.path.join(temp_dir, f"temp_{p}.csv")
+                temp_csv_paths.append(temp_csv_path)
+                futures.append(executor.submit(self.train_and_reset, proportion, self.networks[p], self.out_agents[p], n_iterations, temp_csv_path))
+            """
             # Wait for all futures to complete
             concurrent.futures.wait(futures)
         
@@ -404,4 +414,4 @@ if __name__ == '__main__':
     all_ids = [f"cam{i}" for i in range(1,10)]
 
     the_env = Experimental_Environment(9, all_weights, all_streams, all_ids)
-    the_env.main('learning_with_benefiting_agents.csv', n_iterations=10_000)
+    the_env.main('learning_low_budget.csv', n_iterations=5_000)
