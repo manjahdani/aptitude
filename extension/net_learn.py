@@ -214,7 +214,7 @@ class Agent():
 
     @check_train
     @with_temp_dir
-    def train(self, mixed_streams, n_iterations, proportions, temp_dir, train_name):
+    def train(self, mixed_streams, n_iterations, proportions, train_name, temp_dir):
         """
         :param mixed_streams: list of streams from other agents used to enrich training (e.g. ["path/to/stream_1", "path/to/stream_2"])
         :param n_iterations: the number of backpropagations desired for training (as n_iteration = n_batches*n_epochs, and the number of batches is not consistent).
@@ -270,7 +270,7 @@ class Agent():
 
     @check_evaluate
     @with_temp_dir
-    def evaluate(self, temp_dir, test_name):
+    def evaluate(self, test_name, temp_dir):
         test_dir = os.path.join(temp_dir, 'val')
         test_path = os.path.join(self.stream, "test")
 
