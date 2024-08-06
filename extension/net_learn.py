@@ -11,6 +11,8 @@ import functools
 import tempfile
 import csv
 import uuid
+import traceback
+
 
 sys.path.append(os.path.join(sys.path[0], "yolov10", "ultralytics"))
 from ultralytics import YOLO
@@ -133,7 +135,7 @@ def build_yaml_file(path: str, base_file: str):
     with open(f'{path}/TRAIN_YAML.yaml', 'w') as f:
         f.writelines(modified_lines)
 
-def encode_results(results, csv_path, agent_stream, mixed_streams, proportions, n_iterations, name=None):
+def encode_results(results, csv_path, agent_stream, mixed_streams, proportions, n_iterations, name):
     if not os.path.isfile(csv_path):
         with open(csv_path, 'w') as f:
             writer = csv.writer(f)
@@ -149,8 +151,6 @@ def encode_results(results, csv_path, agent_stream, mixed_streams, proportions, 
     train_size = int(np.array([len(os.listdir(os.path.join(stream,"train/images"))) for stream in mixed_streams+[agent_stream]])@proportions)
     val_size = len(os.listdir(os.path.join(agent_stream,"val/images")))
     test_size = len(os.listdir(os.path.join(agent_stream,"test/images")))
-
-    name = 'blank' if name is None else name
 
     with open(csv_path, 'a+') as f:
         writer = csv.writer(f)
@@ -176,6 +176,9 @@ def select_random_images(directory, proportion):
 def merge_csv_files(temp_csv_paths, final_csv_path):
     # Merge all temporary CSV files into a final CSV file
     df_list = [pd.read_csv(file) for file in temp_csv_paths]
+    # Filter away files with only NaNs
+    df_list = [df for df in df_list if not df.isna().all().all()]
+
     final_df = pd.concat(df_list, ignore_index=True)
     final_df.to_csv(final_csv_path, index=False)
 
@@ -197,17 +200,21 @@ class Agent():
         # id to identify the training weights in case of re-training
         self._train_id = 0
 
+    def copy(self):
+        return Agent(self._ID, self.model, self.weights, self.stream)
+
     def flush_model(self):
         """
         Re-instantiates the agent model to circumvent ultralytics limitations.
         """
-        del self.model
-        gc.collect() 
-        self.model = YOLO(os.path.join(PATH, self.weights))
+        if self.model is not None:
+            del self.model
+            gc.collect() 
+            self.model = YOLO(os.path.join(PATH, self.weights))
 
     @check_train
     @with_temp_dir
-    def train(self, mixed_streams, n_iterations, proportions, temp_dir, train_name=None):
+    def train(self, mixed_streams, n_iterations, proportions, temp_dir, train_name):
         """
         :param mixed_streams: list of streams from other agents used to enrich training (e.g. ["path/to/stream_1", "path/to/stream_2"])
         :param n_iterations: the number of backpropagations desired for training (as n_iteration = n_batches*n_epochs, and the number of batches is not consistent).
@@ -249,7 +256,7 @@ class Agent():
         #make yaml file to give instructions for training
         build_yaml_file(temp_dir,os.path.join('templates','base.yaml'))
 
-        name = f"agent_{self._ID}_train_{self._train_id}" if train_name is None else train_name + "_train"
+        name = train_name + "_train"
 
         n_data = len(os.listdir(os.path.join(train_dir, "images")))
 
@@ -263,7 +270,7 @@ class Agent():
 
     @check_evaluate
     @with_temp_dir
-    def evaluate(self, temp_dir, test_name=None):
+    def evaluate(self, temp_dir, test_name):
         test_dir = os.path.join(temp_dir, 'val')
         test_path = os.path.join(self.stream, "test")
 
@@ -277,7 +284,7 @@ class Agent():
         #make yaml file to give instructions for testing
         build_yaml_file(temp_dir,os.path.join('templates','base.yaml'))
 
-        name = f"agent_{self._ID}_test_{self._train_id}" if test_name is None else test_name + "_test"
+        name = test_name + "_test"
         results = self.model.val(data=os.path.join(temp_dir,'TRAIN_YAML.yaml'), name=name, device=device, verbose=False, plots=False).results_dict
 
         self.flush_model()
@@ -292,7 +299,11 @@ class Network():
         self.agents_list=agents_list
         self.n_agents=len(agents_list)
 
-    def train_new_agent(self, agent, n_iterations, proportions, csv_path, name=None):
+    def copy(self):
+        agents_list_copy = [agent.copy() for agent in self.agents_list]
+        return Network(agents_list_copy)
+
+    def train_new_agent(self, agent, n_iterations, proportions, csv_path, name):
         """
         :param agent: instance of Agent that is not the the network agent_list
         :param n_iterations: the number of backpropagations desired for training (as n_iteration = n_batches*n_epochs, and the number of batches is not consistent).
@@ -303,11 +314,11 @@ class Network():
 
         #train and test the new agent
         mixed_streams = [agent.stream for agent in self.agents_list]
-        agent.train(mixed_streams, n_iterations, proportions, train_name=name)
+        agent.train(mixed_streams, n_iterations, proportions, name)
 
-        results = agent.evaluate(test_name=name)
+        results = agent.evaluate(name)
 
-        encode_results(results, csv_path, agent.stream, mixed_streams, proportions, n_iterations, name=name)
+        encode_results(results, csv_path, agent.stream, mixed_streams, proportions, n_iterations, name)
 
 class Experimental_Environment:
     def __init__(self, n_seeds, all_weights, all_streams, all_ids=None):
@@ -336,13 +347,6 @@ class Experimental_Environment:
 
         #generate a list of networks with a distinct excluded agent for each network
         self.networks = [Network([agent for agent in all_agents if agent!=out_agent]) for out_agent in self.out_agents]
-    
-    def train_and_reset(self, proportion, network, out_agent, n_iterations, temp_csv_path):
-        # Train the agent and write to a temporary CSV file
-        name = str(uuid.uuid4())[:8]
-        network.train_new_agent(out_agent, n_iterations, proportion, temp_csv_path, name=name)
-        out_agent.weights = "yolov10n"
-        out_agent.flush_model()
 
     def main(self, csv_path, n_iterations=10_000, n_threads=3):
         n_seeds = len(self.networks)
@@ -373,30 +377,35 @@ class Experimental_Environment:
         temp_dir = "temp_csv_files"
         os.makedirs(temp_dir, exist_ok=True)
 
-        temp_csv_paths = []
-
         # Create thread pool
         with concurrent.futures.ThreadPoolExecutor(max_workers=n_threads) as executor:
             futures = []
+            futures_names = []
             #with same proportions for every seed
-            #"""
             for i in range(n_seeds):
                 for p, proportion in enumerate(all_proportions):
                     temp_csv_path = os.path.join(temp_dir, f"temp_{i}_{p}.csv")
-                    temp_csv_paths.append(temp_csv_path)
-                    futures.append(executor.submit(self.train_and_reset, proportion, self.networks[i], self.out_agents[i], n_iterations, temp_csv_path))
-            #"""
+                    name = str(uuid.uuid4())[:8]
+                    futures.append(executor.submit(self.networks[i].train_new_agent, self.out_agents[i].copy(), n_iterations, proportion, temp_csv_path, name))
+                    futures_names.append(f"Seed-{i}_Prop-{p}")
             
-            #with 1 custom proportion per seed
-            """
-            for p, proportion in enumerate(all_proportions):
-                temp_csv_path = os.path.join(temp_dir, f"temp_{p}.csv")
-                temp_csv_paths.append(temp_csv_path)
-                futures.append(executor.submit(self.train_and_reset, proportion, self.networks[p], self.out_agents[p], n_iterations, temp_csv_path))
-            """
             # Wait for all futures to complete
             concurrent.futures.wait(futures)
         
+        error_log_path = os.path.join(PATH, "error_log.txt")
+        with open(error_log_path, 'w') as error_file:
+            for future, job_name in zip(futures, futures_names):
+                try:
+                    result = future.result()  # This will re-raise any exception raised during the execution
+                except Exception as e:
+                    # Log the error to the error file
+                    error_message = f"Error in thread {job_name}:\n"
+                    error_message += ''.join(traceback.format_exception(None, e, e.__traceback__))
+                    error_file.write(error_message)
+                    error_file.write("\n" + "-"*80 + "\n")
+                    print(f"Logged an error for {job_name}: {e}")
+
+        temp_csv_paths = [os.path.join(temp_dir, file) for file in os.listdir(temp_dir)]
         # Merge all temporary CSV files into the final CSV
         merge_csv_files(temp_csv_paths, csv_path)
 
