@@ -183,25 +183,21 @@ def merge_csv_files(temp_csv_paths, final_csv_path):
     final_df.to_csv(final_csv_path, index=False)
 
 class Agent():
-    def __init__(self, id, model, weights, stream):
+    def __init__(self, id, weights, stream):
         """
         :param id: The id of the agent, immutable (int).
-        :param model: The DNN architecture used by the agent (e.g. YOLO instance)
         :param weights: The initial DNN weights (e.g. "path/to/weights.pt", "ultralytics/yolovXX.pt")
         :param stream: The directory with the data stream of the agent (e.g. "path/to/data/camX/weekX/bank")
 
         Instantiates an agent -> a DNN that is specialized on a correlated stream
         """
         self._ID = id
-        self.model = model
+        self.model = YOLO(os.path.join(PATH, weights))
         self.weights = weights
         self.stream = stream
 
-        # id to identify the training weights in case of re-training
-        self._train_id = 0
-
     def copy(self):
-        return Agent(self._ID, self.model, self.weights, self.stream)
+        return Agent(self._ID, self.weights, self.stream)
 
     def flush_model(self):
         """
@@ -220,13 +216,10 @@ class Agent():
         :param n_iterations: the number of backpropagations desired for training (as n_iteration = n_batches*n_epochs, and the number of batches is not consistent).
         :param proportions: list of the proportions of the datasets of the agents in the network. Last element of the list is for the new agent. Total proportions can go above 1.
         :param temp_dir: temporary directory provided by the decorator @with_temp_dir. Do not fill.
-        :param train_name: name of the resulting training weights. If None, will use the format "agent_{self._ID}_train_{self._train_id}".
+        :param train_name: name of the resulting training weights.
 
         Trains the agent DNN on samples from the agents stream and streams from other agents.
         """
-
-        #increment the training id
-        self._train_id+=1
 
         # change weights so that they do not overwrite
         train_dir = os.path.join(temp_dir, 'train')
@@ -337,16 +330,22 @@ class Experimental_Environment:
         if all_ids==None:
             all_ids = list(range(len(all_streams)))
 
-        all_models = [YOLO(weights) for weights in all_weights]
-
         #build the agents from their streams and weights
-        all_agents = [Agent(id, model, weights, stream) for id, model, weights, stream in zip(all_ids, all_models, all_weights, all_streams)]
+        all_agents = [Agent(id, weights, stream) for id, weights, stream in zip(all_ids, all_weights, all_streams)]
 
         # list of excluded agent in each network
         self.out_agents = all_agents.copy()[:n_seeds]
 
         #generate a list of networks with a distinct excluded agent for each network
         self.networks = [Network([agent for agent in all_agents if agent!=out_agent]) for out_agent in self.out_agents]
+
+    def test_proportions_on_new_agent(self, i, network, out_agent, n_iterations, proportions, temp_dir):
+        for p, proportion in enumerate(proportions):
+            temp_csv_path = os.path.join(temp_dir, f"temp_{i}_{p}.csv")
+            name = str(uuid.uuid4())[:8]
+            network.train_new_agent(out_agent, n_iterations, proportion, temp_csv_path, name)
+            out_agent.weights = "yolov10n"
+            out_agent.flush_model()
 
     def main(self, csv_path, n_iterations=10_000, n_threads=3):
         n_seeds = len(self.networks)
@@ -383,11 +382,8 @@ class Experimental_Environment:
             futures_names = []
             #with same proportions for every seed
             for i in range(n_seeds):
-                for p, proportion in enumerate(all_proportions):
-                    temp_csv_path = os.path.join(temp_dir, f"temp_{i}_{p}.csv")
-                    name = str(uuid.uuid4())[:8]
-                    futures.append(executor.submit(self.networks[i].train_new_agent, self.out_agents[i].copy(), n_iterations, proportion, temp_csv_path, name))
-                    futures_names.append(f"Seed-{i}_Prop-{p}")
+                futures.append(executor.submit(self.test_proportions_on_new_agent, i, self.networks[i], self.out_agents[i], n_iterations, all_proportions, temp_dir))
+                futures_names.append(f"Seed-{i}")
             
             # Wait for all futures to complete
             concurrent.futures.wait(futures)
@@ -423,4 +419,4 @@ if __name__ == '__main__':
     all_ids = [f"cam{i}" for i in range(1,10)]
 
     the_env = Experimental_Environment(9, all_weights, all_streams, all_ids)
-    the_env.main('learning_low_budget.csv', n_iterations=5_000)
+    the_env.main('learning_low_budget.csv', n_iterations=2500, n_threads=5)
