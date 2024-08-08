@@ -194,19 +194,27 @@ class Agent():
         self._ID = id
         self.model = YOLO(os.path.join(PATH, weights))
         self.weights = weights
+        self._init_weights = weights
         self.stream = stream
 
     def copy(self):
         return Agent(self._ID, self.weights, self.stream)
 
-    def flush_model(self):
+    def flush_model(self, weights="init"):
         """
+        :param weights: what weights to use for the model after flushing. "init" will reuse the initial model weights, 
+                        "same" will use the last registered model weights. Any other string is considered as the path to new weights.
         Re-instantiates the agent model to circumvent ultralytics limitations.
         """
-        if self.model is not None:
-            del self.model
-            gc.collect() 
-            self.model = YOLO(os.path.join(PATH, self.weights))
+        del self.model
+        gc.collect()
+
+        if weights=="init":
+            self.weights = self._init_weights
+        elif weights!="same":
+            self.weights=weights
+        
+        self.model = YOLO(os.path.join(PATH, self.weights))
 
     @check_train
     @with_temp_dir
@@ -229,7 +237,7 @@ class Agent():
         os.makedirs(val_dir)
 
         train_path = os.path.join(self.stream, "train")
-        val_path = os.path.join(self.stream, "val")
+        val_path = os.path.join(self.stream, "test") ##################################################### Change back to "val" after debug
 
         device = "cuda:0" if torch.cuda.is_available() else None
 
@@ -258,8 +266,7 @@ class Agent():
 
         self.model.train(data=os.path.join(temp_dir,'TRAIN_YAML.yaml'), epochs=n_epochs, name=name, device=device, **TRAIN_PARAMS)
 
-        self.weights = f"runs/detect/{name}/weights/best.pt"
-        self.flush_model()
+        self.flush_model(weights=f"runs/detect/{name}/weights/best.pt")
 
     @check_evaluate
     @with_temp_dir
@@ -280,7 +287,7 @@ class Agent():
         name = test_name + "_test"
         results = self.model.val(data=os.path.join(temp_dir,'TRAIN_YAML.yaml'), name=name, device=device, verbose=False, plots=False).results_dict
 
-        self.flush_model()
+        self.flush_model(weights="same")
 
         return results
 
@@ -344,8 +351,7 @@ class Experimental_Environment:
             temp_csv_path = os.path.join(temp_dir, f"temp_{i}_{p}.csv")
             name = str(uuid.uuid4())[:8]
             network.train_new_agent(out_agent, n_iterations, proportion, temp_csv_path, name)
-            out_agent.weights = "yolov10n"
-            out_agent.flush_model()
+            out_agent.flush_model(weights="init")
 
     def main(self, csv_path, n_iterations=10_000, n_threads=3):
         n_seeds = len(self.networks)
@@ -419,4 +425,4 @@ if __name__ == '__main__':
     all_ids = [f"cam{i}" for i in range(1,10)]
 
     the_env = Experimental_Environment(9, all_weights, all_streams, all_ids)
-    the_env.main('learning_low_budget.csv', n_iterations=2500, n_threads=5)
+    the_env.main('learning_low_budget.csv', n_iterations=1_000, n_threads=5)
