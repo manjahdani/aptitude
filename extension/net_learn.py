@@ -21,14 +21,14 @@ BATCH_SIZE = 16
 MAX_PROCESSES = cpu_count()
 PATH = "."
 PATH_TO_DATA = "./data"
-BASE_MODEL = "yolov10n"
+BASE_MODEL = "yolov10n.yaml" # "yolov10n.pt"
 
 LR0=LRF=5e-3
 
-TRAIN = True
-EVALUATE=True
+TRAIN = False
+EVALUATE=False
 
-TRAIN_PARAMS={"exist_ok":True,
+TRAIN_PARAMS={"exist_ok":False,
               "deterministic":False,
               "batch":BATCH_SIZE,
               "optimizer":'SGD',
@@ -37,7 +37,7 @@ TRAIN_PARAMS={"exist_ok":True,
               "patience":1000, 
               "plots":False,
               "workers":4,
-              "verbose":True}
+              "verbose":False}
 
 def check_train(func):
     @functools.wraps(func)
@@ -417,7 +417,7 @@ class Experimental_Environment:
         os.rmdir(temp_dir)
 
 if __name__ == '__main__':
-    #freeze_support()  
+    freeze_support()  
 
     all_weights = [BASE_MODEL]*9
     all_streams = [os.path.join(PATH_TO_DATA,f'cam{i}') for i in range(1,10)]
@@ -425,4 +425,4 @@ if __name__ == '__main__':
     all_ids = [f"cam{i}" for i in range(1,10)]
 
     the_env = Experimental_Environment(9, all_weights, all_streams, all_ids)
-    the_env.main('learning_low_budget.csv', n_iterations=1_000, n_threads=5)
+    the_env.main('learning_from_scratch.csv', n_iterations=10_000, n_threads=5)
